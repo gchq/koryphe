@@ -13,3 +13,5 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 # Koryphe
+
+Koryphe is a flexible functions library for filtering, aggregating and transforming streams of data based on the Java 8 Functions classes.
