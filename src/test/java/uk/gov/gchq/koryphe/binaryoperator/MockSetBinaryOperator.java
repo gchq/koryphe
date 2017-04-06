@@ -13,12 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.gov.gchq.koryphe.bifunction;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import java.util.function.BiFunction;
+package uk.gov.gchq.koryphe.binaryoperator;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
-@FunctionalInterface
-public interface IKorypheBiFunction<T, U, R> extends BiFunction<T, U, R> {
+import java.util.Set;
+import java.util.function.BinaryOperator;
+
+public class MockSetBinaryOperator implements BinaryOperator<Set<String>> {
+    @Override
+    public Set<String> apply(Set<String> input, Set<String> state) {
+        state.addAll(input);
+        return state;
+    }
 }

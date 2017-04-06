@@ -1,7 +1,7 @@
 package uk.gov.gchq.koryphe.impl.aggregate;
 
 import org.junit.Test;
-import uk.gov.gchq.koryphe.bifunction.BiFunctionTest;
+import uk.gov.gchq.koryphe.binaryoperator.BinaryOperatorTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.TreeSet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class CollectionConcatTest extends BiFunctionTest {
+public class CollectionConcatTest extends BinaryOperatorTest {
     @Test
     public void shouldConcatArraysTogether() {
         // Given

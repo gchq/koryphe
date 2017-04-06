@@ -17,7 +17,7 @@ package uk.gov.gchq.koryphe.impl.aggregate;
 
 import org.junit.Before;
 import org.junit.Test;
-import uk.gov.gchq.koryphe.bifunction.BiFunctionTest;
+import uk.gov.gchq.koryphe.binaryoperator.BinaryOperatorTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 
@@ -26,7 +26,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-public class MaxTest extends BiFunctionTest {
+public class MaxTest extends BinaryOperatorTest {
     private Comparable state;
 
     @Before

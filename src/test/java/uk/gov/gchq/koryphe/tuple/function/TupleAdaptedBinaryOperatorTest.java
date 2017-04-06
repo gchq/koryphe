@@ -16,21 +16,19 @@
 
 package uk.gov.gchq.koryphe.tuple.function;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.junit.Test;
-import uk.gov.gchq.koryphe.bifunction.MockBiFunction;
+import uk.gov.gchq.koryphe.binaryoperator.MockSetBinaryOperator;
 import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.tuple.TupleInputAdapter;
 import uk.gov.gchq.koryphe.tuple.TupleReverseOutputAdapter;
-import uk.gov.gchq.koryphe.tuple.bifunction.TupleAdaptedBiFunction;
+import uk.gov.gchq.koryphe.tuple.binaryoperator.TupleAdaptedBinaryOperator;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.function.BiFunction;
+import java.util.function.BinaryOperator;
 
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
@@ -39,22 +37,25 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public class TupleAdaptedBiFunctionTest {
+public class TupleAdaptedBinaryOperatorTest {
 
     @Test
     public void testTupleCombination() {
-        String[] inputs = new String[]{"input1", "input2", "input3"};
-        Set<String> output1 = Sets.newHashSet(Collections.singletonList("input1"));
+        Set<String> input1 = Sets.newHashSet("input1");
+        Set<String> input2 = Sets.newHashSet("input2");
+        Set<String> input3 = Sets.newHashSet( "input3");
+        List<Set<String>> inputsArray = Lists.newArrayList(input1, input2, input3);
+
+        Set<String> output1 = Sets.newHashSet("input1");
         Set<String> output2 = Sets.newHashSet("input1", "input2");
         Set<String> output3 = Sets.newHashSet("input1", "input2", "input3");
-        List<Set<String>> outputsArray = new ArrayList<>();
-        outputsArray.addAll(Arrays.asList(output1, output2, output3));
+        List<Set<String>> outputsArray = Lists.newArrayList(output1, output2, output3);
 
         Tuple<String>[] tuples = new Tuple[]{mock(Tuple.class), mock(Tuple.class), mock(Tuple.class)};
-        BiFunction<String, Set<String>, Set<String>> function = mock(BiFunction.class);
-        TupleInputAdapter<String, String> inputAdapter = mock(TupleInputAdapter.class);
-        TupleAdaptedBiFunction<String, String, Set<String>> combiner = new TupleAdaptedBiFunction<>(function);
-        TupleReverseOutputAdapter<String,Set<String>> reverseOutputAdapter = mock(TupleReverseOutputAdapter.class);
+        BinaryOperator<Set<String>> function = mock(BinaryOperator.class);
+        TupleInputAdapter<String, Set<String>> inputAdapter = mock(TupleInputAdapter.class);
+        TupleAdaptedBinaryOperator<String, Set<String>> combiner = new TupleAdaptedBinaryOperator<>(function);
+        TupleReverseOutputAdapter<String, Set<String>> reverseOutputAdapter = mock(TupleReverseOutputAdapter.class);
 
         combiner.setInputAdapter(inputAdapter);
         combiner.setReverseOutputAdapter(reverseOutputAdapter);
@@ -70,15 +71,15 @@ public class TupleAdaptedBiFunctionTest {
             if (i < 1) {
                 given(reverseOutputAdapter.apply(null)).willReturn(null);
             }
-            given(inputAdapter.apply(tuples[i])).willReturn(inputs[i]);
-            given(function.apply(inputs[i], previousOutput)).willReturn(outputsArray.get(i));
+            given(inputAdapter.apply(tuples[i])).willReturn(inputsArray.get(i));
+            given(function.apply(inputsArray.get(i), previousOutput)).willReturn(outputsArray.get(i));
 
             state = combiner.apply(tuples[i], state);
         }
 
         // check the expected calls
         for (int i = 0; i < tuples.length; i++) {
-            String in1 = inputs[i];
+            Set<String> in1 = inputsArray.get(i);
             Set<String> in2 = null;
             if (i > 0) {
                 in2 = outputsArray.get(i - 1);
@@ -89,17 +90,17 @@ public class TupleAdaptedBiFunctionTest {
 
     @Test
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
-        MockBiFunction function = new MockBiFunction();
-        TupleAdaptedBiFunction<String, String, Set<String>> combiner = new TupleAdaptedBiFunction<>(function);
+        MockSetBinaryOperator function = new MockSetBinaryOperator();
+        TupleAdaptedBinaryOperator<String, Set<String>> combiner = new TupleAdaptedBinaryOperator<>(function);
 
         String json = JsonSerialiser.serialise(combiner);
-        TupleAdaptedBiFunction<String, String, Set<String>> deserialisedBiFunction = JsonSerialiser.deserialise(json, TupleAdaptedBiFunction.class);
+        TupleAdaptedBinaryOperator<String, Set<String>> deserialisedBinaryOperator = JsonSerialiser.deserialise(json, TupleAdaptedBinaryOperator.class);
 
         // check deserialisation
-        assertNotSame(combiner, deserialisedBiFunction);
+        assertNotSame(combiner, deserialisedBinaryOperator);
 
-        BiFunction<String, Set<String>, Set<String>> deserialisedFunction = deserialisedBiFunction.getFunction();
+        BinaryOperator<Set<String>> deserialisedFunction = deserialisedBinaryOperator.getFunction();
         assertNotSame(function, deserialisedFunction);
-        assertTrue(deserialisedFunction instanceof MockBiFunction);
+        assertTrue(deserialisedFunction instanceof MockSetBinaryOperator);
     }
 }

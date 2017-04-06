@@ -16,10 +16,12 @@
 
 package uk.gov.gchq.koryphe.tuple.binaryoperator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import uk.gov.gchq.koryphe.binaryoperator.AdaptedBinaryOperator;
+import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.tuple.TupleInputAdapter;
 import uk.gov.gchq.koryphe.tuple.TupleOutputAdapter;
 import uk.gov.gchq.koryphe.tuple.TupleReverseOutputAdapter;
-import uk.gov.gchq.koryphe.tuple.bifunction.TupleAdaptedBiFunction;
 import java.util.function.BinaryOperator;
 
 /**
@@ -29,7 +31,7 @@ import java.util.function.BinaryOperator;
  *
  * @param <R> The type of reference used by tuples.
  */
-public class TupleAdaptedBinaryOperator<R, FT> extends TupleAdaptedBiFunction<R, FT, FT> {
+public class TupleAdaptedBinaryOperator<R, FT> extends AdaptedBinaryOperator<Tuple<R>, FT> {
     public TupleAdaptedBinaryOperator() {
         setInputAdapter(new TupleInputAdapter<>());
         setOutputAdapter(new TupleOutputAdapter<>());
@@ -46,5 +48,34 @@ public class TupleAdaptedBinaryOperator<R, FT> extends TupleAdaptedBiFunction<R,
     @Override
     public BinaryOperator<FT> getFunction() {
         return (BinaryOperator<FT>) super.getFunction();
+    }
+
+    public R[] getSelection() {
+        return getInputAdapter().getSelection();
+    }
+
+    @SafeVarargs
+    public final void setSelection(final R... selection) {
+        getInputAdapter().setSelection(selection);
+        getOutputAdapter().setProjection(selection);
+        getReverseOutputAdapter().setProjection(selection);
+    }
+
+    @JsonIgnore
+    @Override
+    public TupleInputAdapter<R, FT> getInputAdapter() {
+        return (TupleInputAdapter<R, FT>) super.getInputAdapter();
+    }
+
+    @JsonIgnore
+    @Override
+    public TupleOutputAdapter<R, FT> getOutputAdapter() {
+        return (TupleOutputAdapter<R, FT>) super.getOutputAdapter();
+    }
+
+    @JsonIgnore
+    @Override
+    public TupleReverseOutputAdapter<R, FT> getReverseOutputAdapter() {
+        return (TupleReverseOutputAdapter<R, FT>) super.getReverseOutputAdapter();
     }
 }
