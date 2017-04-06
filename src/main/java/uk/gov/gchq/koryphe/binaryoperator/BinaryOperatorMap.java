@@ -16,7 +16,7 @@
 
 package uk.gov.gchq.koryphe.binaryoperator;
 
-import uk.gov.gchq.koryphe.bifunction.BiFunctionMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BinaryOperator;
 
@@ -27,11 +27,36 @@ import java.util.function.BinaryOperator;
  * @param <K> Type of key
  * @param <T> Type of input/output value
  */
-public class BinaryOperatorMap<K, T> extends BiFunctionMap<K, T, T> implements BinaryOperator<Map<K, T>> {
+public class BinaryOperatorMap<K, T> implements BinaryOperator<Map<K, T>> {
+
+    private BinaryOperator<T> function;
+
     public BinaryOperatorMap() {
     }
 
     public BinaryOperatorMap(final BinaryOperator<T> function) {
         setFunction(function);
+    }
+
+    public void setFunction(final BinaryOperator<T> function) {
+        this.function = function;
+    }
+
+    public BinaryOperator<T> getFunction() {
+        return function;
+    }
+
+    @Override
+    public Map<K, T> apply(final Map<K, T> input, final Map<K, T> state) {
+        if (input == null) {
+            return state;
+        } else {
+            Map<K, T> output = state == null ? new HashMap<>() : state;
+            for (final Map.Entry<K, T> entry : input.entrySet()) {
+                T currentState = output.get(entry.getKey());
+                output.put(entry.getKey(), function.apply(entry.getValue(), currentState));
+            }
+            return output;
+        }
     }
 }

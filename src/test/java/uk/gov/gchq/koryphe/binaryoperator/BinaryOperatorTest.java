@@ -16,13 +16,82 @@
 
 package uk.gov.gchq.koryphe.binaryoperator;
 
-import uk.gov.gchq.koryphe.bifunction.BiFunctionTest;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Test;
+import java.io.IOException;
 import java.util.function.BinaryOperator;
 
-public abstract class BinaryOperatorTest extends BiFunctionTest {
-    @Override
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+
+public abstract class BinaryOperatorTest {
+    private static final ObjectMapper MAPPER = createObjectMapper();
+
+    private static ObjectMapper createObjectMapper() {
+        final ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
+        return mapper;
+    }
+
     protected abstract BinaryOperator getInstance();
 
-    @Override
     protected abstract Class<? extends BinaryOperator> getFunctionClass();
+
+    @Test
+    public abstract void shouldJsonSerialiseAndDeserialise() throws IOException;
+
+    protected String serialise(Object object) throws IOException {
+        return MAPPER.writeValueAsString(object);
+    }
+
+    protected BinaryOperator deserialise(String json) throws IOException {
+        return MAPPER.readValue(json, getFunctionClass());
+    }
+
+    @Test
+    public void shouldEquals() {
+        // Given
+        final BinaryOperator instance = getInstance();
+
+        // When
+        final BinaryOperator other = getInstance();
+
+        // Then
+        assertEquals(instance, other);
+        assertEquals(instance.hashCode(), other.hashCode());
+    }
+
+    @Test
+    public void shouldEqualsWhenSameObject() {
+        // Given
+        final BinaryOperator instance = getInstance();
+
+        // Then
+        assertEquals(instance, instance);
+        assertEquals(instance.hashCode(), instance.hashCode());
+    }
+
+    @Test
+    public void shouldNotEqualsWhenDifferentClass() {
+        // Given
+        final BinaryOperator instance = getInstance();
+
+        // When
+        final Object other = new Object();
+
+        // Then
+        assertNotEquals(instance, other);
+        assertNotEquals(instance.hashCode(), other.hashCode());
+    }
+
+    @Test
+    public void shouldNotEqualsNull() {
+        // Given
+        final BinaryOperator instance = getInstance();
+
+        // Then
+        assertNotEquals(instance, null);
+    }
 }
