@@ -63,7 +63,7 @@ public class TupleFunctionTest {
         // check it was called as expected
         verify(inputAdapter, times(1)).apply(tuple);
         verify(function1, times(1)).apply(input1);
-        verify(outputAdapter, times(1)).apply(output1, tuple);
+        verify(outputAdapter, times(1)).apply(tuple, output1);
     }
 
     @Test
@@ -101,7 +101,7 @@ public class TupleFunctionTest {
         for (int i = 0; i < times; i++) {
             verify(inputAdapter, times(1)).apply(tuples[i]);
             verify(function1, times(1)).apply(input + i);
-            verify(outputAdapter, times(1)).apply(output + i, tuples[i]);
+            verify(outputAdapter, times(1)).apply(tuples[i], output + i);
         }
     }
 

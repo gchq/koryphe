@@ -15,9 +15,18 @@
  */
 package uk.gov.gchq.koryphe.predicate;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
-public abstract class KoryphePredicate<T> implements IKoryphePredicate<T> {
+import java.util.function.Predicate;
+
+/**
+ * Abstract superclass provided for convenience.
+ *
+ * @param <I> Input type
+ */
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+public abstract class KoryphePredicate<I> implements Predicate<I> {
     @SuppressFBWarnings(value = "BC_EQUALS_METHOD_SHOULD_WORK_FOR_ALL_OBJECTS", justification = "the method classEquals does the check")
     @Override
     public boolean equals(final Object other) {

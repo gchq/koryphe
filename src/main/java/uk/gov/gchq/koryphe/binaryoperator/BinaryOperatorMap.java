@@ -16,45 +16,57 @@
 
 package uk.gov.gchq.koryphe.binaryoperator;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BinaryOperator;
 
 /**
- * Applies an {@link java.util.function.BinaryOperator} to the values of an input {@link java.util.Map}, updating the output {@link java.util.Map} with the current
- * state.
+ * Applies a {@link BinaryOperator} to the values of an input {@link Map}, combining values with matching keys.
  *
  * @param <K> Type of key
- * @param <T> Type of input/output value
+ * @param <T> Input/output type
  */
 public class BinaryOperatorMap<K, T> implements BinaryOperator<Map<K, T>> {
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    private BinaryOperator<T> binaryOperator;
 
-    private BinaryOperator<T> function;
-
+    /**
+     * Default - for serialisation.
+     */
     public BinaryOperatorMap() {
     }
 
-    public BinaryOperatorMap(final BinaryOperator<T> function) {
-        setFunction(function);
+    public BinaryOperatorMap(final BinaryOperator<T> binaryOperator) {
+        setBinaryOperator(binaryOperator);
     }
 
-    public void setFunction(final BinaryOperator<T> function) {
-        this.function = function;
+    public void setBinaryOperator(final BinaryOperator<T> binaryOperator) {
+        this.binaryOperator = binaryOperator;
     }
 
-    public BinaryOperator<T> getFunction() {
-        return function;
+    public BinaryOperator<T> getBinaryOperator() {
+        return binaryOperator;
     }
 
+    /**
+     * Iterate through the values of an input map, folding them into the state map using the wrapped
+     * <code>BinaryOperator</code>.
+     *
+     * @param state Current state map.
+     * @param input New input map.
+     * @return New state map.
+     */
     @Override
-    public Map<K, T> apply(final Map<K, T> input, final Map<K, T> state) {
+    public Map<K, T> apply(final Map<K, T> state, final Map<K, T> input) {
         if (input == null) {
             return state;
         } else {
             Map<K, T> output = state == null ? new HashMap<>() : state;
             for (final Map.Entry<K, T> entry : input.entrySet()) {
                 T currentState = output.get(entry.getKey());
-                output.put(entry.getKey(), function.apply(entry.getValue(), currentState));
+                output.put(entry.getKey(), binaryOperator.apply(entry.getValue(), currentState));
             }
             return output;
         }

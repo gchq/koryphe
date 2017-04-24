@@ -21,8 +21,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * A <code>MapTuple</code> is an implementation of {@link Tuple} backed by a
- * {@link java.util.Map}.
+ * A <code>MapTuple</code> is an implementation of {@link Tuple} backed by a {@link java.util.Map}.
  */
 public class MapTuple<R> implements Tuple<R> {
     private Map<R, Object> values;

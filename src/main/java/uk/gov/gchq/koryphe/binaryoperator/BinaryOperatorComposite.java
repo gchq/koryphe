@@ -16,21 +16,48 @@
 
 package uk.gov.gchq.koryphe.binaryoperator;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import uk.gov.gchq.koryphe.composite.Composite;
+
+import java.util.List;
 import java.util.function.BinaryOperator;
 
 /**
- * A composite {@link java.util.function.BinaryOperator} that applies each aggregator in turn, supplying the result of each aggregator as
- * the state of the next, and returning the result of the last aggregator.
+ * A {@link Composite} {@link BinaryOperator} that applies each operator in turn, supplying the result of each operator
+ * as the state of the next, and returning the result of the last operator.
  *
- * @param <T> Type of aggregator input/output
+ * @param <T> Input/output type
+ * @param <C> Type of BinaryOperator components
  */
-public class BinaryOperatorComposite<T> extends Composite<BinaryOperator<T>> implements BinaryOperator<T> {
+public class BinaryOperatorComposite<T, C extends BinaryOperator<T>> extends Composite<C> implements BinaryOperator<T> {
+    /**
+     * Default - for serialisation.
+     */
+    public BinaryOperatorComposite() {
+        super();
+    }
+
+    public BinaryOperatorComposite(List<C> binaryOperators) {
+        super(binaryOperators);
+    }
+
+    @JsonProperty("operators")
+    public List<C> getComponents() {
+        return super.getComponents();
+    }
+
+    /**
+     * Apply the BinaryOperator components in turn, returning the output of the last.
+     *
+     * @param state Value to fold into
+     * @param input New input to fold in
+     * @return New state
+     */
     @Override
-    public T apply(final T input, final T state) {
+    public T apply(final T state, final T input) {
         T result = state;
-        for (final BinaryOperator<T> function : getFunctions()) {
-            result = function.apply(input, result);
+        for (final BinaryOperator<T> component : this.components) {
+            result = component.apply(result, input);
         }
         return result;
     }

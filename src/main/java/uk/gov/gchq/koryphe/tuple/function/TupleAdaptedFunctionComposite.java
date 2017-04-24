@@ -16,73 +16,76 @@
 
 package uk.gov.gchq.koryphe.tuple.function;
 
-import uk.gov.gchq.koryphe.composite.Composite;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import uk.gov.gchq.koryphe.function.FunctionComposite;
 import uk.gov.gchq.koryphe.tuple.Tuple;
+
+import java.util.List;
 import java.util.function.Function;
 
-public class TupleAdaptedFunctionComposite
-        extends Composite<TupleAdaptedFunction<String, ?, ?>>
-        implements Function<Tuple<String>, Tuple<String>> {
-    @Override
-    public Tuple<String> apply(final Tuple<String> input) {
-        Tuple<String> result = input;
-        for (final TupleAdaptedFunction<String, ?, ?> function : getFunctions()) {
-            // Assume the output of one is the input of the next
-            result = function.apply(result);
-        }
-        return result;
+/**
+ * A {@link uk.gov.gchq.koryphe.composite.Composite} {@link TupleAdaptedFunction}, allowing different
+ * {@link Function}s to be applied to different fields in tuples as a single Function.
+ *
+ * @param <R> Reference type used by tuples
+ */
+public class TupleAdaptedFunctionComposite<R>
+        extends FunctionComposite<Tuple<R>, Tuple<R>, TupleAdaptedFunction<R, ? extends Object, ? extends Object>> {
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
+    public List<TupleAdaptedFunction<R, ? extends Object, ? extends Object>> getComponents() {
+        return super.getComponents();
     }
 
-    public static class Builder {
-        private final TupleAdaptedFunctionComposite transformer;
+    public static class Builder<R> {
+        private final TupleAdaptedFunctionComposite<R> transformer;
 
         public Builder() {
-            this(new TupleAdaptedFunctionComposite());
+            this(new TupleAdaptedFunctionComposite<R>());
         }
 
-        private Builder(final TupleAdaptedFunctionComposite transformer) {
+        private Builder(final TupleAdaptedFunctionComposite<R> transformer) {
             this.transformer = transformer;
         }
 
-        public SelectedBuilder select(final String... selection) {
-            final TupleAdaptedFunction<String, Object, Object> current = new TupleAdaptedFunction<>();
+        public SelectedBuilder<R> select(final R... selection) {
+            final TupleAdaptedFunction<R, ?, ?> current = new TupleAdaptedFunction<>();
             current.setSelection(selection);
-            return new SelectedBuilder(transformer, current);
+            return new SelectedBuilder<R>(transformer, current);
         }
 
-        public TupleAdaptedFunctionComposite build() {
+        public TupleAdaptedFunctionComposite<R> build() {
             return transformer;
         }
     }
 
-    public static final class SelectedBuilder {
-        private final TupleAdaptedFunctionComposite transformer;
-        private final TupleAdaptedFunction<String, Object, Object> current;
+    public static final class SelectedBuilder<R> {
+        private final TupleAdaptedFunctionComposite<R> transformer;
+        private final TupleAdaptedFunction<R, ?, ?> current;
 
-        private SelectedBuilder(final TupleAdaptedFunctionComposite transformer, final TupleAdaptedFunction<String, Object, Object> current) {
+        private SelectedBuilder(final TupleAdaptedFunctionComposite<R> transformer, final TupleAdaptedFunction<R, ?, ?> current) {
             this.transformer = transformer;
             this.current = current;
         }
 
-        public ExecutedBuilder execute(final Function function) {
+        public ExecutedBuilder<R> execute(final Function function) {
             current.setFunction(function);
-            return new ExecutedBuilder(transformer, current);
+            return new ExecutedBuilder<R>(transformer, current);
         }
     }
 
-    public static final class ExecutedBuilder {
-        private final TupleAdaptedFunctionComposite transformer;
-        private final TupleAdaptedFunction<String, Object, Object> current;
+    public static final class ExecutedBuilder<R> {
+        private final TupleAdaptedFunctionComposite<R> transformer;
+        private final TupleAdaptedFunction<R, ?, ?> current;
 
-        private ExecutedBuilder(final TupleAdaptedFunctionComposite transformer, final TupleAdaptedFunction<String, Object, Object> current) {
+        private ExecutedBuilder(final TupleAdaptedFunctionComposite<R> transformer, final TupleAdaptedFunction<R, ?, ?> current) {
             this.transformer = transformer;
             this.current = current;
         }
 
-        public Builder project(final String... projection) {
+        public Builder<R> project(final R... projection) {
             current.setProjection(projection);
-            transformer.getFunctions().add(current);
-            return new Builder(transformer);
+            transformer.components.add(current);
+            return new Builder<R>(transformer);
         }
     }
 }

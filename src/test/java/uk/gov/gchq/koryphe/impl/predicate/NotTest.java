@@ -16,7 +16,6 @@
 package uk.gov.gchq.koryphe.impl.predicate;
 
 import org.junit.Test;
-import uk.gov.gchq.koryphe.predicate.IsA;
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
@@ -85,8 +84,8 @@ public class NotTest extends PredicateTest {
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
                 "  \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.Not\",%n" +
-                "  \"function\" : {%n" +
-                "    \"class\" : \"uk.gov.gchq.koryphe.predicate.IsA\",%n" +
+                "  \"predicate\" : {%n" +
+                "    \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.IsA\",%n" +
                 "    \"type\" : \"java.lang.String\"%n" +
                 "  }%n" +
                 "}"), json);
@@ -96,7 +95,7 @@ public class NotTest extends PredicateTest {
 
         // Then 2
         assertNotNull(deserialisedFilter);
-        assertEquals(String.class.getName(), ((IsA) deserialisedFilter.getFunction()).getType());
+        assertEquals(String.class.getName(), ((IsA) deserialisedFilter.getPredicate()).getType());
     }
 
     @Override

@@ -17,29 +17,32 @@
 package uk.gov.gchq.koryphe.function;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import uk.gov.gchq.koryphe.adapted.Adapted;
+
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * A {@link java.util.function.Function} that applies a {@link java.util.function.Function} to both the input and output so that the function can be
- * applied in a different context.
+ * An {@link Adapted} {@link Function}.
  *
- * @param <I>  Type of input to be transformed
- * @param <FI> Type of input expected by the function
- * @param <FO> Type of output produced by the function
- * @param <O>  Type of transformed output
+ * @param <I> Input type
+ * @param <FI> Adapted input type for function
+ * @param <FO> Function output to be adapted
+ * @param <O> Output type
  */
-public abstract class AdaptedFunction<I, FI, FO, O> implements Function<I, O> {
+public abstract class AdaptedFunction<I, FI, FO, O> extends Adapted<I, FI, FO, O, I> implements Function<I, O> {
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
     protected Function<FI, FO> function;
-    protected Function<I, FI> inputAdapter;
-    protected BiFunction<FO, I, O> outputAdapter;
 
+    /**
+     * Default - for serialisation.
+     */
     public AdaptedFunction() {
     }
 
     public AdaptedFunction(final Function<FI, FO> function,
                            final Function<I, FI> inputAdapter,
-                           final BiFunction<FO, I, O> outputAdapter) {
+                           final BiFunction<I, FO, O> outputAdapter) {
         setInputAdapter(inputAdapter);
         setFunction(function);
         setOutputAdapter(outputAdapter);
@@ -48,59 +51,27 @@ public abstract class AdaptedFunction<I, FI, FO, O> implements Function<I, O> {
     public AdaptedFunction(final Function<FI, FO> function,
                            final Function<I, FI> inputAdapter,
                            final Function<FO, O> outputAdapter) {
-        this(function, inputAdapter, (fo, i) -> outputAdapter.apply(fo));
+        setInputAdapter(inputAdapter);
+        setFunction(function);
+        setOutputAdapter(outputAdapter);
     }
 
+    /**
+     * Apply the Function by adapting the input and outputs.
+     *
+     * @param input Input to adapt and apply function to
+     * @return Adapted output
+     */
     @Override
     public O apply(final I input) {
         return adaptOutput(function.apply(adaptInput(input)), input);
     }
 
-    /**
-     * Adapt the input value to the type expected by the function. If no input adapter has been specified, this method
-     * assumes no transformation is required and simply casts the input to the transformed type.
-     *
-     * @param input Input to be transformed
-     * @return Transformed input
-     */
-    protected FI adaptInput(final I input) {
-        return inputAdapter == null ? (FI) input : inputAdapter.apply(input);
-    }
-
-    /**
-     * Adapt the output value from the type produced by the function. If no output adapter has been specified, this
-     * method assumes no transformation is required and simply casts the output to the transformed type.
-     *
-     * @param output Output to be transformed
-     * @param state  state of function - this will be the input value
-     * @return Transformed output
-     */
-    protected O adaptOutput(final FO output, final I state) {
-        return outputAdapter == null ? (O) output : outputAdapter.apply(output, state);
-    }
-
-    public void setInputAdapter(final Function<I, FI> inputAdapter) {
-        this.inputAdapter = inputAdapter;
-    }
-
-    public Function<I, FI> getInputAdapter() {
-        return inputAdapter;
-    }
-
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
     public Function<FI, FO> getFunction() {
         return function;
     }
 
     public void setFunction(final Function<FI, FO> function) {
         this.function = function;
-    }
-
-    public void setOutputAdapter(final BiFunction<FO, I, O> outputAdapter) {
-        this.outputAdapter = outputAdapter;
-    }
-
-    public BiFunction<FO, I, O> getOutputAdapter() {
-        return outputAdapter;
     }
 }

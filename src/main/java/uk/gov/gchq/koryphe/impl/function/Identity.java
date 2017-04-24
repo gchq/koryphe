@@ -13,31 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.gov.gchq.koryphe.function;
+package uk.gov.gchq.koryphe.impl.function;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import uk.gov.gchq.koryphe.function.KorypheFunction;
 
-import java.util.function.Function;
-
-/**
- * Abstract superclass provided for convenience.
- *
- * @param <I> Input type
- * @param <O> Output type
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
-public abstract class KorypheFunction<I, O> implements Function<I, O> {
+public class Identity extends KorypheFunction<Object, Object> {
     @Override
-    public boolean equals(final Object other) {
-        return this == other || classEquals(other);
+    public Object apply(final Object input) {
+        return input;
     }
 
-    protected boolean classEquals(final Object other) {
-        return null != other && getClass().equals(other.getClass());
+    @Override
+    public boolean equals(final Object o) {
+        return this == o || o != null && getClass() == o.getClass();
     }
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return new HashCodeBuilder(17, 37)
+                .append(getClass())
+                .toHashCode();
     }
 }

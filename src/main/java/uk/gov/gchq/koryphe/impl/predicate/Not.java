@@ -20,36 +20,37 @@ package uk.gov.gchq.koryphe.impl.predicate;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.util.function.Predicate;
 
 /**
- * A {@link java.util.function.Predicate} that returns the inverse of the wrapped function.
+ * A {@link java.util.function.Predicate} that returns the inverse of the wrapped predicate.
  *
  * @param <I> Type of input to be validated
  */
-public final class Not<I> extends KoryphePredicate<I> {
-    private Predicate<I> function;
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+public final class Not<I> implements Predicate<I> {
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    private Predicate<I> predicate;
 
     public Not() {
     }
 
-    public Not(final Predicate<I> function) {
-        setFunction(function);
+    public Not(final Predicate<I> predicate) {
+        this.predicate = predicate;
     }
 
-    public void setFunction(final Predicate<I> function) {
-        this.function = function;
+    public void setPredicate(final Predicate<I> predicate) {
+        this.predicate = predicate;
     }
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
-    public Predicate<I> getFunction() {
-        return function;
+    public Predicate<I> getPredicate() {
+        return predicate;
     }
 
     @Override
     public boolean test(final I input) {
-        return null != function && !function.test(input);
+        return null != predicate && !predicate.test(input);
     }
 
     @Override
@@ -58,20 +59,28 @@ public final class Not<I> extends KoryphePredicate<I> {
             return true;
         }
 
-        if (null == o || !getClass().equals(o.getClass())) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         final Not not = (Not) o;
+
         return new EqualsBuilder()
-                .append(function, not.function)
+                .append(predicate, not.predicate)
                 .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-                .append(function)
+                .append(predicate)
                 .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("predicate", predicate)
+                .toString();
     }
 }

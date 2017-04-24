@@ -17,58 +17,48 @@
 package uk.gov.gchq.koryphe.predicate;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import uk.gov.gchq.koryphe.adapted.InputAdapted;
+
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
- * A {@link java.util.function.Function} that applies a {@link java.util.function.Function} to the input so that the function can be applied in a different
- * context.
+ * An {@link InputAdapted} {@link Predicate}.
  *
- * @param <I>  Type of input to be transformed
- * @param <FI> Type of input expected by the function
+ * @param <I> Input type
+ * @param <PI> Adapted input type for predicate
  */
-public class AdaptedPredicate<I, FI> implements Predicate<I> {
-    protected Function<I, FI> inputAdapter;
-    protected Predicate<FI> function;
+public class AdaptedPredicate<I, PI> extends InputAdapted<I, PI> implements Predicate<I> {
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    protected Predicate<PI> predicate;
 
+    /**
+     * Default - for serialisation.
+     */
     public AdaptedPredicate() {
     }
 
-    public AdaptedPredicate(final Function<I, FI> inputAdapter, final Predicate<FI> function) {
+    public AdaptedPredicate(final Function<I, PI> inputAdapter, final Predicate<PI> predicate) {
         setInputAdapter(inputAdapter);
-        setFunction(function);
-    }
-
-    @Override
-    public boolean test(final I input) {
-        return null == function || function.test(adaptInput(input));
+        setPredicate(predicate);
     }
 
     /**
-     * Adapt the input value to the type expected by the function. If no input adapter has been specified, this method
-     * assumes no transformation is required and simply casts the input to the transformed type.
+     * Apply the Predicate by adapting the input.
      *
-     * @param input Input to be transformed
-     * @return Transformed input
+     * @param input Input to adapt and apply predicate to
+     * @return Predicate result
      */
-    protected FI adaptInput(final I input) {
-        return inputAdapter == null ? (FI) input : inputAdapter.apply(input);
+    @Override
+    public boolean test(final I input) {
+        return null == predicate || predicate.test(adaptInput(input));
     }
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
-    public Predicate<FI> getFunction() {
-        return function;
+    public Predicate<PI> getPredicate() {
+        return predicate;
     }
 
-    public void setFunction(final Predicate<FI> function) {
-        this.function = function;
-    }
-
-    public Function<I, FI> getInputAdapter() {
-        return inputAdapter;
-    }
-
-    public void setInputAdapter(final Function<I, FI> inputAdapter) {
-        this.inputAdapter = inputAdapter;
+    public void setPredicate(final Predicate<PI> predicate) {
+        this.predicate = predicate;
     }
 }

@@ -16,7 +16,6 @@
 package uk.gov.gchq.koryphe.impl.predicate;
 
 import org.junit.Test;
-import uk.gov.gchq.koryphe.predicate.IsA;
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
@@ -112,8 +111,8 @@ public class OrTest extends PredicateTest {
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
                 "  \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.Or\",%n" +
-                "  \"functions\" : [ {%n" +
-                "    \"class\" : \"uk.gov.gchq.koryphe.predicate.IsA\"%n" +
+                "  \"predicates\" : [ {%n" +
+                "    \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.IsA\"%n" +
                 "  } ]%n" +
                 "}"), json);
 
