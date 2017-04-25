@@ -4,11 +4,11 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * An <code>Adapted</code> class is one that applies components to it's inputs and outputs, allowing it to be applied
+ * An <code>Adapted</code> class is one that applies functions to it's inputs and outputs, allowing it to be applied
  * to different input and output types. It can also be used to apply a function to values contained within a complex
  * object.
  *
- * For example, if we wanted to apply the existing function <code>(i -&gt; i++)</code> to increment a specific integer
+ * For example, if we wanted to apply the existing function <code>(i -&gt; i+1)</code> to increment a specific integer
  * member variable <code>count</code> of a context object (co), we could use an <code>Adapted</code> function with the
  * input adapter function <code>(co -&gt; co.getCount())</code> and the output adapter function
  * <code>((co, o) -&gt; co.setCount(o))</code>.

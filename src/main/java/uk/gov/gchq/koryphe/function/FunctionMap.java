@@ -17,6 +17,7 @@
 package uk.gov.gchq.koryphe.function;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import uk.gov.gchq.koryphe.function.KorypheFunction;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +30,7 @@ import java.util.function.Function;
  * @param <I> Input type
  * @param <O> Output type
  */
-public class FunctionMap<K, I, O> implements Function<Map<K, I>, Map<K, O>> {
+public class FunctionMap<K, I, O> extends KorypheFunction<Map<K, I>, Map<K, O>> {
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
     private Function<I, O> function;
 

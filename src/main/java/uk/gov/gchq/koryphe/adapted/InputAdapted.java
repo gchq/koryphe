@@ -8,7 +8,7 @@ import java.util.function.Function;
  *
  * For example, if we wanted to apply the existing predicate <code>(i -&gt; i != null)</code> to validate the existence of
  * member variable <code>value</code> of a context object (co), we could use an <code>InputAdapted</code> predicate with
- * the input adapter function <code>co -&gt; co.getValue()</code>.
+ * the input adapter function <code>(co -&gt; co.getValue())</code>.
  *
  * @param <I> Input type
  * @param <AI> Type adapted from input

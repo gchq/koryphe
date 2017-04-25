@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.gov.gchq.koryphe.impl.predicate;
+package uk.gov.gchq.koryphe.predicate;
 
 import org.junit.Before;
 import org.junit.Test;
-import uk.gov.gchq.koryphe.predicate.PredicateTest;
+import uk.gov.gchq.koryphe.impl.predicate.IsA;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Date;
@@ -125,7 +125,7 @@ public class PredicateMapTest extends PredicateTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{\n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.PredicateMap\",\n" +
+                "  \"class\" : \"uk.gov.gchq.koryphe.predicate.PredicateMap\",\n" +
                 "  \"predicate\" : {\n" +
                 "    \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.IsA\",\n" +
                 "    \"type\" : \"java.util.Map\"\n" +
