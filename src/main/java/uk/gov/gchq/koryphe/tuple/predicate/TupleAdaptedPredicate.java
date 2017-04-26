@@ -1,0 +1,63 @@
+/*
+ * Copyright 2017 Crown Copyright
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package uk.gov.gchq.koryphe.tuple.predicate;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import uk.gov.gchq.koryphe.predicate.AdaptedPredicate;
+import uk.gov.gchq.koryphe.tuple.Tuple;
+import uk.gov.gchq.koryphe.tuple.TupleInputAdapter;
+import java.util.function.Predicate;
+
+/**
+ * A <code>TupleAdaptedPredicate</code> adapts a {@link Predicate} so it can be applied to selected
+ * fields from a {@link Tuple}.
+ *
+ * @param <R> Reference type used by tuples
+ * @param <PI> Input type of the Predicate
+ *
+ * @see TupleInputAdapter
+ */
+public final class TupleAdaptedPredicate<R, PI> extends AdaptedPredicate<Tuple<R>, PI> {
+    /**
+     * Default constructor - for serialisation.
+     */
+    public TupleAdaptedPredicate() {
+        setInputAdapter(new TupleInputAdapter<>());
+    }
+
+    @SafeVarargs
+    public TupleAdaptedPredicate(final Predicate<PI> predicate, final R... selection) {
+        this();
+        setPredicate(predicate);
+        setSelection(selection);
+    }
+
+    public R[] getSelection() {
+        return getInputAdapter().getSelection();
+    }
+
+    @SafeVarargs
+    public final void setSelection(final R... selection) {
+        getInputAdapter().setSelection(selection);
+    }
+
+    @JsonIgnore
+    @Override
+    public TupleInputAdapter<R, PI> getInputAdapter() {
+        return (TupleInputAdapter<R, PI>) super.getInputAdapter();
+    }
+}
