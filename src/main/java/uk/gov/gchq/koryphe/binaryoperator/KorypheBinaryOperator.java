@@ -13,27 +13,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.binaryoperator;
 
-public abstract class KorypheBinaryOperator<T> implements IKorypheBinaryOperator<T> {
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import java.util.function.BinaryOperator;
+
+/**
+ * Abstract superclass provided for convenience.
+ *
+ * @param <T> Input/Output type
+ */
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+public abstract class KorypheBinaryOperator<T> implements BinaryOperator<T> {
+    /**
+     * Apply the operator after completing null checks.
+     *
+     * @param state Current state
+     * @param input New input
+     * @return New state
+     */
     @Override
-    public T apply(final T a, final T b) {
-        if (null == a) {
-            return b;
+    public T apply(final T state, final T input) {
+        if (null == state) {
+            return input;
         }
 
-        if (null == b) {
-            return a;
+        if (null == input) {
+            return state;
         }
 
-        return _apply(a, b);
+        return _apply(state, input);
     }
 
     protected abstract T _apply(final T a, final T b);
 
     @Override
-    public boolean equals(final Object other) {
-        return this == other || classEquals(other);
+    public boolean equals(final Object obj) {
+        return this == obj || classEquals(obj);
     }
 
     protected boolean classEquals(final Object other) {

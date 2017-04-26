@@ -16,55 +16,58 @@
 
 package uk.gov.gchq.koryphe.tuple.predicate;
 
-import uk.gov.gchq.koryphe.composite.Composite;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import uk.gov.gchq.koryphe.predicate.PredicateComposite;
 import uk.gov.gchq.koryphe.tuple.Tuple;
+import java.util.List;
 import java.util.function.Predicate;
 
-public class TupleAdaptedPredicateComposite extends Composite<TupleAdaptedPredicate<String, ?>> implements Predicate<Tuple<String>> {
-    @Override
-    public boolean test(final Tuple<String> input) {
-        for (final TupleAdaptedPredicate<String, ?> predicate : getFunctions()) {
-            if (!predicate.test(input)) {
-                return false;
-            }
-        }
-        return true;
+/**
+ * A {@link uk.gov.gchq.koryphe.composite.Composite} {@link TupleAdaptedPredicate}, allowing different
+ * {@link Predicate}s to be applied to different fields in tuples as a single Predicate.
+ *
+ * @param <R> Reference type used by tuples
+ */
+public class TupleAdaptedPredicateComposite<R> extends PredicateComposite<Tuple<R>, TupleAdaptedPredicate<R, ? extends Object>> {
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
+    public List<TupleAdaptedPredicate<R, ? extends Object>> getComponents() {
+        return super.getComponents();
     }
 
-    public static class Builder {
-        private final TupleAdaptedPredicateComposite composite;
+    public static class Builder<R> {
+        private final TupleAdaptedPredicateComposite<R> composite;
 
         public Builder() {
-            this(new TupleAdaptedPredicateComposite());
+            this(new TupleAdaptedPredicateComposite<R>());
         }
 
-        private Builder(final TupleAdaptedPredicateComposite composite) {
+        private Builder(final TupleAdaptedPredicateComposite<R> composite) {
             this.composite = composite;
         }
 
-        public SelectedBuilder select(final String... selection) {
-            final TupleAdaptedPredicate<String, Object> current = new TupleAdaptedPredicate<>();
+        public SelectedBuilder<R> select(final R... selection) {
+            final TupleAdaptedPredicate<R, ?> current = new TupleAdaptedPredicate<>();
             current.setSelection(selection);
-            return new SelectedBuilder(composite, current);
+            return new SelectedBuilder<R>(composite, current);
         }
 
-        public TupleAdaptedPredicateComposite build() {
+        public TupleAdaptedPredicateComposite<R> build() {
             return composite;
         }
     }
 
-    public static final class SelectedBuilder {
+    public static final class SelectedBuilder<R> {
         private final TupleAdaptedPredicateComposite filter;
-        private final TupleAdaptedPredicate<String, Object> current;
+        private final TupleAdaptedPredicate<R, ?> current;
 
-        private SelectedBuilder(final TupleAdaptedPredicateComposite filter, final TupleAdaptedPredicate<String, Object> current) {
+        private SelectedBuilder(final TupleAdaptedPredicateComposite filter, final TupleAdaptedPredicate<R, ?> current) {
             this.filter = filter;
             this.current = current;
         }
 
-        public Builder execute(final Predicate function) {
-            current.setFunction(function);
-            filter.getFunctions().add(current);
+        public Builder<R> execute(final Predicate function) {
+            current.setPredicate(function);
+            filter.components.add(current);
             return new Builder(filter);
         }
     }

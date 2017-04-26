@@ -13,12 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.function;
 
-public abstract class KorypheFunction<T, R> implements IKorypheFunction<T, R> {
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import java.util.function.Function;
+
+/**
+ * Abstract superclass provided for convenience.
+ *
+ * @param <I> Input type
+ * @param <O> Output type
+ */
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+public abstract class KorypheFunction<I, O> implements Function<I, O> {
     @Override
-    public boolean equals(final Object other) {
-        return this == other || classEquals(other);
+    public boolean equals(final Object obj) {
+        return this == obj || classEquals(obj);
     }
 
     protected boolean classEquals(final Object other) {

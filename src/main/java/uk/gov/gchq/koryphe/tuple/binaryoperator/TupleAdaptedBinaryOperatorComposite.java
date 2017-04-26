@@ -16,55 +16,59 @@
 
 package uk.gov.gchq.koryphe.tuple.binaryoperator;
 
-import uk.gov.gchq.koryphe.composite.Composite;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import uk.gov.gchq.koryphe.binaryoperator.BinaryOperatorComposite;
 import uk.gov.gchq.koryphe.tuple.Tuple;
+import java.util.List;
 import java.util.function.BinaryOperator;
 
-public class TupleAdaptedBinaryOperatorComposite extends Composite<TupleAdaptedBinaryOperator<String, ?>> implements BinaryOperator<Tuple<String>> {
-    @Override
-    public Tuple<String> apply(final Tuple<String> input, final Tuple<String> state) {
-        Tuple<String> result = state;
-        for (final TupleAdaptedBinaryOperator<String, ?> function : getFunctions()) {
-            result = function.apply(input, result);
-        }
-        return result;
+/**
+ * A {@link uk.gov.gchq.koryphe.composite.Composite} {@link TupleAdaptedBinaryOperator}, allowing different
+ * {@link BinaryOperator}s to be applied to different fields in tuples as a single BinaryOperator.
+ *
+ * @param <R> Reference type used by tuples
+ */
+public class TupleAdaptedBinaryOperatorComposite<R> extends BinaryOperatorComposite<Tuple<R>, TupleAdaptedBinaryOperator<R, ? extends Object>> {
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
+    public List<TupleAdaptedBinaryOperator<R, ? extends Object>> getComponents() {
+        return super.getComponents();
     }
 
-    public static class Builder {
-        private final TupleAdaptedBinaryOperatorComposite composite;
+    public static class Builder<R> {
+        private final TupleAdaptedBinaryOperatorComposite<R> binaryOperator;
 
         public Builder() {
-            this(new TupleAdaptedBinaryOperatorComposite());
+            this(new TupleAdaptedBinaryOperatorComposite<R>());
         }
 
-        private Builder(final TupleAdaptedBinaryOperatorComposite composite) {
-            this.composite = composite;
+        private Builder(final TupleAdaptedBinaryOperatorComposite<R> binaryOperator) {
+            this.binaryOperator = binaryOperator;
         }
 
-        public SelectedBuilder select(final String... selection) {
-            final TupleAdaptedBinaryOperator<String, Object> current = new TupleAdaptedBinaryOperator<>();
+        public SelectedBuilder<R> select(final R... selection) {
+            final TupleAdaptedBinaryOperator<R, ?> current = new TupleAdaptedBinaryOperator<>();
             current.setSelection(selection);
-            return new SelectedBuilder(composite, current);
+            return new SelectedBuilder(binaryOperator, current);
         }
 
-        public TupleAdaptedBinaryOperatorComposite build() {
-            return composite;
+        public TupleAdaptedBinaryOperatorComposite<R> build() {
+            return binaryOperator;
         }
     }
 
-    public static final class SelectedBuilder {
-        private final TupleAdaptedBinaryOperatorComposite composite;
-        private final TupleAdaptedBinaryOperator<String, Object> current;
+    public static final class SelectedBuilder<R> {
+        private final TupleAdaptedBinaryOperatorComposite<R> binaryOperator;
+        private final TupleAdaptedBinaryOperator<R, ?> current;
 
-        private SelectedBuilder(final TupleAdaptedBinaryOperatorComposite composite, final TupleAdaptedBinaryOperator<String, Object> current) {
-            this.composite = composite;
+        private SelectedBuilder(final TupleAdaptedBinaryOperatorComposite<R> binaryOperator, final TupleAdaptedBinaryOperator<R, ?> current) {
+            this.binaryOperator = binaryOperator;
             this.current = current;
         }
 
-        public Builder execute(final BinaryOperator function) {
-            current.setFunction(function);
-            composite.getFunctions().add(current);
-            return new Builder(composite);
+        public Builder<R> execute(final BinaryOperator function) {
+            current.setBinaryOperator(function);
+            binaryOperator.components.add(current);
+            return new Builder(binaryOperator);
         }
     }
 }

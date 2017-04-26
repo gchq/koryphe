@@ -21,33 +21,32 @@ import uk.gov.gchq.koryphe.binaryoperator.AdaptedBinaryOperator;
 import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.tuple.TupleInputAdapter;
 import uk.gov.gchq.koryphe.tuple.TupleOutputAdapter;
-import uk.gov.gchq.koryphe.tuple.TupleReverseOutputAdapter;
 import java.util.function.BinaryOperator;
 
 /**
- * A <code>TupleAdaptedBinaryOperator</code> aggregates {@link uk.gov.gchq.koryphe.tuple.Tuple}s by applying a
- * {@link java.util.function.BinaryOperator} to aggregate the tuple values. Projects aggregated values into a
- * single output {@link uk.gov.gchq.koryphe.tuple.Tuple}, which will be the second tuple supplied as input.
+ * A <code>TupleAdaptedBinaryOperator</code> adapts a {@link BinaryOperator} so it can be applied to selected
+ * fields from a {@link Tuple}.
  *
- * @param <R> The type of reference used by tuples.
+ * @param <R> Reference type used by tuples.
+ * @param <OT> Input/Output type of the BinaryOperator
+ *
+ * @see TupleInputAdapter
+ * @see TupleOutputAdapter
  */
-public class TupleAdaptedBinaryOperator<R, FT> extends AdaptedBinaryOperator<Tuple<R>, FT> {
+public final class TupleAdaptedBinaryOperator<R, OT> extends AdaptedBinaryOperator<Tuple<R>, OT> {
+    /**
+     * Default - for serialisation.
+     */
     public TupleAdaptedBinaryOperator() {
         setInputAdapter(new TupleInputAdapter<>());
         setOutputAdapter(new TupleOutputAdapter<>());
-        setReverseOutputAdapter(new TupleReverseOutputAdapter<>());
     }
 
     @SafeVarargs
-    public TupleAdaptedBinaryOperator(final BinaryOperator<FT> function, final R... selection) {
+    public TupleAdaptedBinaryOperator(final BinaryOperator<OT> binaryOperator, final R... selection) {
         this();
-        setFunction(function);
+        setBinaryOperator(binaryOperator);
         setSelection(selection);
-    }
-
-    @Override
-    public BinaryOperator<FT> getFunction() {
-        return (BinaryOperator<FT>) super.getFunction();
     }
 
     public R[] getSelection() {
@@ -58,24 +57,17 @@ public class TupleAdaptedBinaryOperator<R, FT> extends AdaptedBinaryOperator<Tup
     public final void setSelection(final R... selection) {
         getInputAdapter().setSelection(selection);
         getOutputAdapter().setProjection(selection);
-        getReverseOutputAdapter().setProjection(selection);
     }
 
     @JsonIgnore
     @Override
-    public TupleInputAdapter<R, FT> getInputAdapter() {
-        return (TupleInputAdapter<R, FT>) super.getInputAdapter();
+    public TupleInputAdapter<R, OT> getInputAdapter() {
+        return (TupleInputAdapter<R, OT>) super.getInputAdapter();
     }
 
     @JsonIgnore
     @Override
-    public TupleOutputAdapter<R, FT> getOutputAdapter() {
-        return (TupleOutputAdapter<R, FT>) super.getOutputAdapter();
-    }
-
-    @JsonIgnore
-    @Override
-    public TupleReverseOutputAdapter<R, FT> getReverseOutputAdapter() {
-        return (TupleReverseOutputAdapter<R, FT>) super.getReverseOutputAdapter();
+    public TupleOutputAdapter<R, OT> getOutputAdapter() {
+        return (TupleOutputAdapter<R, OT>) super.getOutputAdapter();
     }
 }

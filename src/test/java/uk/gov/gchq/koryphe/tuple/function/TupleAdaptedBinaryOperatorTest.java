@@ -16,19 +16,16 @@
 
 package uk.gov.gchq.koryphe.tuple.function;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import org.junit.Test;
-import uk.gov.gchq.koryphe.binaryoperator.MockSetBinaryOperator;
+import uk.gov.gchq.koryphe.binaryoperator.MockBinaryOperator;
 import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.tuple.TupleInputAdapter;
-import uk.gov.gchq.koryphe.tuple.TupleReverseOutputAdapter;
+import uk.gov.gchq.koryphe.tuple.TupleOutputAdapter;
 import uk.gov.gchq.koryphe.tuple.binaryoperator.TupleAdaptedBinaryOperator;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
-import java.util.List;
-import java.util.Set;
 import java.util.function.BinaryOperator;
+import java.util.function.Function;
 
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
@@ -40,67 +37,64 @@ import static org.mockito.Mockito.verify;
 public class TupleAdaptedBinaryOperatorTest {
 
     @Test
-    public void testTupleCombination() {
-        Set<String> input1 = Sets.newHashSet("input1");
-        Set<String> input2 = Sets.newHashSet("input2");
-        Set<String> input3 = Sets.newHashSet( "input3");
-        List<Set<String>> inputsArray = Lists.newArrayList(input1, input2, input3);
+    public void testTupleAggregation() {
+        String[] inputs = new String[]{"input1", "input2", "input3"};
+        String[] outputs = new String[]{"output1", "output2", "output3"};
 
-        Set<String> output1 = Sets.newHashSet("input1");
-        Set<String> output2 = Sets.newHashSet("input1", "input2");
-        Set<String> output3 = Sets.newHashSet("input1", "input2", "input3");
-        List<Set<String>> outputsArray = Lists.newArrayList(output1, output2, output3);
-
+        TupleAdaptedBinaryOperator<String, String> binaryOperator = new TupleAdaptedBinaryOperator<>();
         Tuple<String>[] tuples = new Tuple[]{mock(Tuple.class), mock(Tuple.class), mock(Tuple.class)};
-        BinaryOperator<Set<String>> function = mock(BinaryOperator.class);
-        TupleInputAdapter<String, Set<String>> inputAdapter = mock(TupleInputAdapter.class);
-        TupleAdaptedBinaryOperator<String, Set<String>> combiner = new TupleAdaptedBinaryOperator<>(function);
-        TupleReverseOutputAdapter<String, Set<String>> reverseOutputAdapter = mock(TupleReverseOutputAdapter.class);
-
-        combiner.setInputAdapter(inputAdapter);
-        combiner.setReverseOutputAdapter(reverseOutputAdapter);
 
         // set up the function
-        Tuple<String> state = null;
-        for (int i = 0; i < tuples.length; i++) {
-            Set<String> previousOutput = null;
-            if (i > 0) {
-                previousOutput = outputsArray.get(i - 1);
-                given(reverseOutputAdapter.apply(null)).willReturn(outputsArray.get(i - 1));
-            }
-            if (i < 1) {
-                given(reverseOutputAdapter.apply(null)).willReturn(null);
-            }
-            given(inputAdapter.apply(tuples[i])).willReturn(inputsArray.get(i));
-            given(function.apply(inputsArray.get(i), previousOutput)).willReturn(outputsArray.get(i));
+        BinaryOperator<String> function = mock(BinaryOperator.class);
+        TupleInputAdapter<String, String> inputAdapter = mock(TupleInputAdapter.class);
+        TupleOutputAdapter<String, String> outputAdapter = mock(TupleOutputAdapter.class);
 
-            state = combiner.apply(tuples[i], state);
+        binaryOperator.setBinaryOperator(function);
+        binaryOperator.setInputAdapter(inputAdapter);
+        binaryOperator.setOutputAdapter(outputAdapter);
+
+        Tuple<String> state = tuples[0];
+
+        for (int i = 1; i < tuples.length; i++) {
+            given(inputAdapter.apply(tuples[i])).willReturn(inputs[i]);
+            given(inputAdapter.apply(state)).willReturn(outputs[i - 1]);
+            given(function.apply(outputs[i - 1], inputs[i])).willReturn(outputs[i]);
+            given(outputAdapter.apply(state, outputs[i])).willReturn(state);
+            state = binaryOperator.apply(state, tuples[i]);
         }
 
         // check the expected calls
-        for (int i = 0; i < tuples.length; i++) {
-            Set<String> in1 = inputsArray.get(i);
-            Set<String> in2 = null;
-            if (i > 0) {
-                in2 = outputsArray.get(i - 1);
-            }
+        for (int i = 1; i < tuples.length; i++) {
+            verify(inputAdapter, times(1)).apply(tuples[i]);
+            String in1 = outputs[i - 1];
+            String in2 = inputs[i];
             verify(function, times(1)).apply(in1, in2);
+            verify(inputAdapter, times(1)).apply(tuples[i]);
+            verify(outputAdapter, times(1)).apply(tuples[0], outputs[i]);
         }
+        verify(inputAdapter, times(2)).apply(tuples[0]);
     }
 
     @Test
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
-        MockSetBinaryOperator function = new MockSetBinaryOperator();
-        TupleAdaptedBinaryOperator<String, Set<String>> combiner = new TupleAdaptedBinaryOperator<>(function);
+        TupleAdaptedBinaryOperator<String, Integer> binaryOperator = new TupleAdaptedBinaryOperator<>();
+        MockBinaryOperator function = new MockBinaryOperator();
+        TupleInputAdapter<String, Integer> inputAdapter = new TupleInputAdapter();
+        binaryOperator.setInputAdapter(inputAdapter);
+        binaryOperator.setBinaryOperator(function);
 
-        String json = JsonSerialiser.serialise(combiner);
-        TupleAdaptedBinaryOperator<String, Set<String>> deserialisedBinaryOperator = JsonSerialiser.deserialise(json, TupleAdaptedBinaryOperator.class);
+        String json = JsonSerialiser.serialise(binaryOperator);
+        TupleAdaptedBinaryOperator<String, Integer> deserialisedBinaryOperator = JsonSerialiser.deserialise(json, TupleAdaptedBinaryOperator.class);
 
         // check deserialisation
-        assertNotSame(combiner, deserialisedBinaryOperator);
+        assertNotSame(binaryOperator, deserialisedBinaryOperator);
 
-        BinaryOperator<Set<String>> deserialisedFunction = deserialisedBinaryOperator.getFunction();
+        BinaryOperator<Integer> deserialisedFunction = deserialisedBinaryOperator.getBinaryOperator();
         assertNotSame(function, deserialisedFunction);
-        assertTrue(deserialisedFunction instanceof MockSetBinaryOperator);
+        assertTrue(deserialisedFunction instanceof MockBinaryOperator);
+
+        Function<Tuple<String>, Integer> deserialisedInputMask = deserialisedBinaryOperator.getInputAdapter();
+        assertNotSame(inputAdapter, deserialisedInputMask);
+        assertTrue(deserialisedInputMask instanceof Function);
     }
 }

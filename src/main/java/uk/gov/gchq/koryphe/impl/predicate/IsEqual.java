@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.predicate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -57,16 +58,16 @@ public class IsEqual extends KoryphePredicate<Object> {
     }
 
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
 
-        if (null == o || !getClass().equals(o.getClass())) {
+        if (null == obj || !getClass().equals(obj.getClass())) {
             return false;
         }
 
-        final IsEqual isEqual = (IsEqual) o;
+        final IsEqual isEqual = (IsEqual) obj;
         return new EqualsBuilder()
                 .append(controlValue, isEqual.controlValue)
                 .isEquals();

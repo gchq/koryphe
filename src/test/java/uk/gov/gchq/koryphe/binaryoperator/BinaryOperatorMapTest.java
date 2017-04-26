@@ -38,11 +38,11 @@ public class BinaryOperatorMapTest {
         }
 
         BinaryOperatorMap<String, Integer> mapBinaryOperator = new BinaryOperatorMap<>();
-        mapBinaryOperator.setFunction(aggregator);
+        mapBinaryOperator.setBinaryOperator(aggregator);
 
         Map<String, Integer> state = null;
         for (Map<String, Integer> input : inputs) {
-            state = mapBinaryOperator.apply(input, state);
+            state = mapBinaryOperator.apply(state, input);
         }
 
         assertEquals(noInputs * inA, (int) state.get("a"));

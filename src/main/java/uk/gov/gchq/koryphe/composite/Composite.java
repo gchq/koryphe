@@ -24,45 +24,44 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A <code>CompositeFunction</code> is a {@link java.util.List} of functions that combine to make a composite
- * function.
+ * A <code>Composite</code> contains an {@link ArrayList} of components that combine to make a composite.
  *
- * @param <F> The type of Function
+ * @param <C> The type of components
  */
-public abstract class Composite<F> {
-    protected List<F> functions;
+public abstract class Composite<C> {
+    protected List<C> components;
 
     public Composite() {
         this(new ArrayList<>());
     }
 
-    public Composite(final List<F> functions) {
-        this.functions = functions;
+    public Composite(final List<C> components) {
+        this.components = components;
     }
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
-    public List<F> getFunctions() {
-        return functions;
+    public List<C> getComponents() {
+        return components;
     }
 
-    public void setFunctions(final List<F> functions) {
-        this.functions = functions;
+    public void setComponents(final List<C> components) {
+        this.components = components;
     }
 
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
 
-        if (o == null || getClass() != o.getClass()) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
 
-        final Composite composite = (Composite) o;
+        final Composite composite = (Composite) obj;
 
         return new EqualsBuilder()
-                .append(functions, composite.functions)
+                .append(components, composite.components)
                 .isEquals();
     }
 
@@ -70,14 +69,14 @@ public abstract class Composite<F> {
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 .append(getClass())
-                .append(functions)
+                .append(components)
                 .toHashCode();
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("functions", functions)
+                .append("components", components)
                 .toString();
     }
 }

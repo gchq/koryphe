@@ -23,12 +23,15 @@ import uk.gov.gchq.koryphe.tuple.TupleInputAdapter;
 import java.util.function.Predicate;
 
 /**
- * A <code>TuplePredicate</code> validates input {@link Tuple}s by applying a
- * {@link java.util.function.Predicate} to the tuple values.
+ * A <code>TupleAdaptedPredicate</code> adapts a {@link Predicate} so it can be applied to selected
+ * fields from a {@link Tuple}.
  *
- * @param <R> The type of reference used by tuples.
+ * @param <R> Reference type used by tuples
+ * @param <PI> Input type of the Predicate
+ *
+ * @see TupleInputAdapter
  */
-public class TupleAdaptedPredicate<R, FI> extends AdaptedPredicate<Tuple<R>, FI> {
+public final class TupleAdaptedPredicate<R, PI> extends AdaptedPredicate<Tuple<R>, PI> {
     /**
      * Default constructor - for serialisation.
      */
@@ -37,9 +40,9 @@ public class TupleAdaptedPredicate<R, FI> extends AdaptedPredicate<Tuple<R>, FI>
     }
 
     @SafeVarargs
-    public TupleAdaptedPredicate(final Predicate<FI> function, final R... selection) {
+    public TupleAdaptedPredicate(final Predicate<PI> predicate, final R... selection) {
         this();
-        setFunction(function);
+        setPredicate(predicate);
         setSelection(selection);
     }
 
@@ -54,7 +57,7 @@ public class TupleAdaptedPredicate<R, FI> extends AdaptedPredicate<Tuple<R>, FI>
 
     @JsonIgnore
     @Override
-    public TupleInputAdapter<R, FI> getInputAdapter() {
-        return (TupleInputAdapter<R, FI>) super.getInputAdapter();
+    public TupleInputAdapter<R, PI> getInputAdapter() {
+        return (TupleInputAdapter<R, PI>) super.getInputAdapter();
     }
 }

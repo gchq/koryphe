@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package uk.gov.gchq.koryphe.predicate;
+package uk.gov.gchq.koryphe.impl.predicate;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 /**
  * An <code>IsA</code> {@link java.util.function.Predicate} tests whether an input {@link Object} is an
@@ -81,16 +82,16 @@ public class IsA extends KoryphePredicate<Object> {
     }
 
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
 
-        if (null == o || !getClass().equals(o.getClass())) {
+        if (null == obj || !getClass().equals(obj.getClass())) {
             return false;
         }
 
-        final IsA isA = (IsA) o;
+        final IsA isA = (IsA) obj;
         return new EqualsBuilder()
                 .append(type, isA.type)
                 .isEquals();

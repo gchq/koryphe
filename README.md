@@ -14,4 +14,30 @@ limitations under the License.
 
 # Koryphe
 
-Koryphe is a flexible functions library for filtering, aggregating and transforming streams of data based on the Java 8 Functions classes.
+Koryphe is an extensible functions library for filtering, aggregating and transforming data based on the Java Function API. It provides:
+
+ - Context adapted functions.
+ - Function composition.
+ - Functions with multiple inputs/outputs.
+ - JSON serialisation.
+ - Library of re-usable functions.
+ 
+## Context adapted functions
+
+Koryphe allows any Java 8 Function, BinaryOperator or Predicate to be adapted and applied to the values contained within a complex object such as a Tuple.
+
+## Function composition
+
+Functions (or BinaryOperators or Predicates) can be combined and applied together in a single composite function. This is particularly powerful when combined with context adapted functions, allowing composite functions to be built from a library of simple functions and applied to complex objects.
+
+## Functions with multiple inputs/outputs
+
+Koryphe can combine inputs and outputs into tuples, providing type-safe interfaces for functions that apply to and/or return more than one value.
+
+## JSON serialisation
+
+Functions, including composites, can be JSON serialised, allowing them to be used across distributed applications.
+
+## Library of re-usable functions
+
+Koryphe provides a number of useful Functions, BinaryOperators and Predicates for building simple applications.

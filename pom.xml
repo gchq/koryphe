@@ -20,6 +20,7 @@
         <slf4j.api.version>1.7.5</slf4j.api.version>
 
         <checkstyle.plugin.version>2.17</checkstyle.plugin.version>
+        <commons-lang3.version>3.3.2</commons-lang3.version>
         <compiler.plugin.verson>2.3.2</compiler.plugin.verson>
         <findbugs.plugin.version>3.0.3</findbugs.plugin.version>
         <gpg.plugin.version>1.6</gpg.plugin.version>
@@ -105,7 +106,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.4</version>
+            <version>${commons-lang3.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -148,6 +149,35 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${checkstyle.plugin.version}</version>
+                <configuration>
+                    <configLocation>docs/checkstyle.xml</configLocation>
+                    <encoding>UTF-8</encoding>
+                    <consoleOutput>true</consoleOutput>
+                    <failsOnError>true</failsOnError>
+                    <headerLocation>docs/licenseHeader.txt</headerLocation>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>validate</id>
+                        <phase>test</phase>
+                        <configuration>
+                            <configLocation>docs/checkstyle.xml</configLocation>
+                            <encoding>UTF-8</encoding>
+                            <consoleOutput>true</consoleOutput>
+                            <failsOnError>true</failsOnError>
+                            <headerLocation>docs/licenseHeader.txt
+                            </headerLocation>
+                        </configuration>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>

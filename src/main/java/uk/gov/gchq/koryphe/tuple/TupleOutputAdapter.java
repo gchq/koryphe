@@ -16,7 +16,6 @@
 
 package uk.gov.gchq.koryphe.tuple;
 
-
 import java.util.Arrays;
 import java.util.function.BiFunction;
 
@@ -24,7 +23,7 @@ import java.util.function.BiFunction;
  * @param <R>  The type of reference used by tuples.
  * @param <FO> The adapted output type.
  */
-public class TupleOutputAdapter<R, FO> implements BiFunction<FO, Tuple<R>, Tuple<R>> {
+public class TupleOutputAdapter<R, FO> implements BiFunction<Tuple<R>, FO, Tuple<R>> {
     private R[] projection;
 
     /**
@@ -45,7 +44,7 @@ public class TupleOutputAdapter<R, FO> implements BiFunction<FO, Tuple<R>, Tuple
     }
 
     @Override
-    public Tuple<R> apply(final FO output, final Tuple<R> state) {
+    public Tuple<R> apply(final Tuple<R> state, final FO output) {
         if (null == projection) {
             throw new IllegalArgumentException("Projection is required");
         }

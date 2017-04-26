@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.predicate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -78,16 +79,16 @@ public class IsMoreThan extends KoryphePredicate<Comparable> {
     }
 
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
 
-        if (null == o || !getClass().equals(o.getClass())) {
+        if (null == obj || !getClass().equals(obj.getClass())) {
             return false;
         }
 
-        final IsMoreThan that = (IsMoreThan) o;
+        final IsMoreThan that = (IsMoreThan) obj;
         return new EqualsBuilder()
                 .append(orEqualTo, that.orEqualTo)
                 .append(controlValue, that.controlValue)

@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.gov.gchq.koryphe.function;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import java.util.function.Function;
+package uk.gov.gchq.koryphe.impl.function;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
-@FunctionalInterface
-public interface IKorypheFunction<T, R> extends Function<T, R> {
+import uk.gov.gchq.koryphe.function.KorypheFunction;
+
+public class Identity extends KorypheFunction<Object, Object> {
+    @Override
+    public Object apply(final Object input) {
+        return input;
+    }
 }

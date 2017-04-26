@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -31,7 +32,7 @@ public class StringConcat extends KorypheBinaryOperator<String> {
 
     @Override
     public String _apply(final String a, final String b) {
-        return b + separator + a;
+        return a + separator + b;
     }
 
     public String getSeparator() {
@@ -43,16 +44,16 @@ public class StringConcat extends KorypheBinaryOperator<String> {
     }
 
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
 
-        if (null == o || !getClass().equals(o.getClass())) {
+        if (null == obj || !getClass().equals(obj.getClass())) {
             return false;
         }
 
-        final StringConcat that = (StringConcat) o;
+        final StringConcat that = (StringConcat) obj;
         return new EqualsBuilder()
                 .append(separator, that.separator)
                 .isEquals();

@@ -44,7 +44,7 @@ public class TuplePredicateTest {
         Function<Tuple<String>, String> inputAdapter = mock(Function.class);
         predicate.setInputAdapter(inputAdapter);
         Predicate<String> function = mock(Predicate.class);
-        predicate.setFunction(function);
+        predicate.setPredicate(function);
         Tuple<String> tuple = mock(Tuple.class);
 
         // set up mocks
@@ -87,7 +87,7 @@ public class TuplePredicateTest {
         Predicate<String> function = mock(Predicate.class);
         Function<Tuple<String>, String> inputAdapter = mock(Function.class);
         predicate.setInputAdapter(inputAdapter);
-        predicate.setFunction(function);
+        predicate.setPredicate(function);
 
         for (int i = 0; i < times; i++) {
             given(inputAdapter.apply(tuples[i])).willReturn(input + i);
@@ -101,7 +101,7 @@ public class TuplePredicateTest {
             assertEquals(result, predicate.test(tuples[i]));
         }
 
-        // and check functions were called expected number of times
+        // and check components were called expected number of times
         for (int i = 0; i < times; i++) {
             verify(inputAdapter, times(1)).apply(tuples[i]);
             verify(function, times(1)).test(input + i);
@@ -113,7 +113,7 @@ public class TuplePredicateTest {
         // set up a tuple validate
         TupleAdaptedPredicate<String, Object> predicate = new TupleAdaptedPredicate<>();
         Predicate<Object> function = new MockPredicateObject();
-        predicate.setFunction(function);
+        predicate.setPredicate(function);
         Function<Tuple<String>, Object> inputAdapter = new TupleInputAdapter<>();
         predicate.setInputAdapter(inputAdapter);
 
@@ -122,7 +122,7 @@ public class TuplePredicateTest {
         TupleAdaptedPredicate<String, Object> deserialisedPredicate = JsonSerialiser.deserialise(json, TupleAdaptedPredicate.class);
         assertNotSame(predicate, deserialisedPredicate);
 
-        Predicate deserialisedFunction = deserialisedPredicate.getFunction();
+        Predicate deserialisedFunction = deserialisedPredicate.getPredicate();
         assertNotSame(function, deserialisedFunction);
 
         Function<Tuple<String>, Object> deserialisedInputAdapter = deserialisedPredicate.getInputAdapter();

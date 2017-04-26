@@ -24,12 +24,20 @@ import uk.gov.gchq.koryphe.tuple.TupleOutputAdapter;
 import java.util.function.Function;
 
 /**
- * A <code>TupleFunction</code> transforms input {@link Tuple}s by applying a
- * {@link java.util.function.Function} to the tuple values.
+ * A <code>TupleAdaptedFunction</code> adapts a {@link Function} so it can be applied to selected
+ * fields from a {@link Tuple}, projecting it's output back into the tuple.
  *
- * @param <R> The type of reference used by tuples.
+ * @param <R> Reference type used by tuples
+ * @param <FI> Input type of the Function
+ * @param <FO> Output type of the Function
+ *
+ * @see TupleInputAdapter
+ * @see TupleOutputAdapter
  */
-public class TupleAdaptedFunction<R, FI, FO> extends AdaptedFunction<Tuple<R>, FI, FO, Tuple<R>> {
+public final class TupleAdaptedFunction<R, FI, FO> extends AdaptedFunction<Tuple<R>, FI, FO, Tuple<R>> {
+    /**
+     * Default - for serialisation.
+     */
     public TupleAdaptedFunction() {
         setInputAdapter(new TupleInputAdapter<>());
         setOutputAdapter(new TupleOutputAdapter<>());

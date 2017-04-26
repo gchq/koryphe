@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.gchq.koryphe.predicate;
+package uk.gov.gchq.koryphe.impl.predicate;
 
 import org.junit.Test;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -106,7 +106,7 @@ public class IsATest {
         final String json = JsonSerialiser.serialise(filter);
 
         // Then
-        assertEquals("{\"class\":\"uk.gov.gchq.koryphe.predicate.IsA\",\"type\":\"java.lang.Integer\"}", json);
+        assertEquals("{\"class\":\"uk.gov.gchq.koryphe.impl.predicate.IsA\",\"type\":\"java.lang.Integer\"}", json);
 
         // When 2
         final IsA deserialisedFilter = JsonSerialiser.deserialise(json, IsA.class);

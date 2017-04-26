@@ -16,23 +16,46 @@
 
 package uk.gov.gchq.koryphe.function;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import uk.gov.gchq.koryphe.composite.Composite;
+import java.util.List;
 import java.util.function.Function;
 
 /**
- * A composite {@link java.util.function.Function} that applies each function in turn, supplying the result of each function as
- * the input to the next, and returning the result of the last function. Function input/output types are assumed
- * to be compatible - no checking is done, and a class cast exception will be thrown if incompatible functions are
- * executed.
+ * A {@link Composite} {@link Function} that applies each function in turn, supplying the result of each function
+ * as the input of the next, and returning the result of the last function.
  *
- * @param <I> Type of input of first function
- * @param <O> Type of output of last function
+ * @param <I> Input type
+ * @param <O> Output type
+ * @param <C> Type of BinaryOperator components
  */
-public class FunctionComposite<I, O> extends Composite<Function> implements Function<I, O> {
+public class FunctionComposite<I, O, C extends Function> extends Composite<C> implements Function<I, O> {
+    /**
+     * Default - for serialisation.
+     */
+    public FunctionComposite() {
+        super();
+    }
+
+    public FunctionComposite(final List<C> functions) {
+        super(functions);
+    }
+
+    @JsonProperty("functions")
+    public List<C> getComponents() {
+        return super.getComponents();
+    }
+
+    /**
+     * Apply the Function components in turn, returning the result of the last.
+     *
+     * @param input Input
+     * @return Output
+     */
     @Override
     public O apply(final I input) {
         Object result = input;
-        for (final Function function : getFunctions()) {
+        for (final Function function : this.components) {
             // Assume the output of one is the input of the next
             result = function.apply(result);
         }

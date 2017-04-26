@@ -16,9 +16,10 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.google.common.collect.Lists;
-import uk.gov.gchq.koryphe.composite.Composite;
-import uk.gov.gchq.koryphe.predicate.IKoryphePredicate;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import uk.gov.gchq.koryphe.predicate.PredicateComposite;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -27,7 +28,8 @@ import java.util.function.Predicate;
  *
  * @param <I> Type of input to be validated
  */
-public final class And<I> extends Composite<Predicate<I>> implements IKoryphePredicate<I> {
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+public final class And<I> extends PredicateComposite<I, Predicate<I>> {
     public And() {
         super();
     }
@@ -43,11 +45,17 @@ public final class And<I> extends Composite<Predicate<I>> implements IKoryphePre
 
     @Override
     public boolean test(final I input) {
-        for (final Predicate<I> predicate : getFunctions()) {
-            if (!predicate.test(input)) {
-                return false;
-            }
+        if (components == null || components.size() < 1) {
+            return true;
+        } else {
+            return super.test(input);
         }
-        return true;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append(this)
+                .toString();
     }
 }
