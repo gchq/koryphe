@@ -264,6 +264,20 @@
         </plugins>
     </build>
 
+    <distributionManagement>
+        <repository>
+            <id>${releases.repository.id}</id>
+            <name>${releases.repository.name}</name>
+            <url>${releases.repository.url}</url>
+        </repository>
+        <snapshotRepository>
+            <id>${snapshots.repository.id}</id>
+            <uniqueVersion>false</uniqueVersion>
+            <name>${snapshots.repository.name}</name>
+            <url>${snapshots.repository.url}</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <profiles>
         <profile>
             <id>quick</id>
