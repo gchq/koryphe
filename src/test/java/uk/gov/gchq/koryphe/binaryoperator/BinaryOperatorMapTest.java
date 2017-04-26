@@ -1,7 +1,6 @@
 package uk.gov.gchq.koryphe.binaryoperator;
 
 import org.junit.Test;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BinaryOperator;

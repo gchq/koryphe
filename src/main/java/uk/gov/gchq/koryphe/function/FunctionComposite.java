@@ -18,7 +18,6 @@ package uk.gov.gchq.koryphe.function;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import uk.gov.gchq.koryphe.composite.Composite;
-
 import java.util.List;
 import java.util.function.Function;
 
@@ -38,7 +37,7 @@ public class FunctionComposite<I, O, C extends Function> extends Composite<C> im
         super();
     }
 
-    public FunctionComposite(List<C> functions) {
+    public FunctionComposite(final List<C> functions) {
         super(functions);
     }
 

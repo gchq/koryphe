@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -54,16 +55,16 @@ public class Concat extends KorypheFunction2<Object, Object, String> {
     }
 
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
 
-        if (o == null || getClass() != o.getClass()) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
 
-        final Concat concat = (Concat) o;
+        final Concat concat = (Concat) obj;
 
         return new EqualsBuilder()
                 .append(separator, concat.separator)

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.predicate;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -50,16 +51,16 @@ public class CollectionContains extends KoryphePredicate<Collection<?>> {
     }
 
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
 
-        if (null == o || !getClass().equals(o.getClass())) {
+        if (null == obj || !getClass().equals(obj.getClass())) {
             return false;
         }
 
-        final CollectionContains that = (CollectionContains) o;
+        final CollectionContains that = (CollectionContains) obj;
 
         return new EqualsBuilder()
                 .append(value, that.value)

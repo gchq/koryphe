@@ -16,11 +16,9 @@
 
 package uk.gov.gchq.koryphe.tuple.binaryoperator;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import uk.gov.gchq.koryphe.binaryoperator.BinaryOperatorComposite;
 import uk.gov.gchq.koryphe.tuple.Tuple;
-
 import java.util.List;
 import java.util.function.BinaryOperator;
 

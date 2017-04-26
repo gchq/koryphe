@@ -27,11 +27,11 @@ import java.util.function.BinaryOperator;
  * A <code>TupleAdaptedBinaryOperator</code> adapts a {@link BinaryOperator} so it can be applied to selected
  * fields from a {@link Tuple}.
  *
- * @see TupleInputAdapter
- * @see TupleOutputAdapter
- *
  * @param <R> Reference type used by tuples.
  * @param <OT> Input/Output type of the BinaryOperator
+ *
+ * @see TupleInputAdapter
+ * @see TupleOutputAdapter
  */
 public final class TupleAdaptedBinaryOperator<R, OT> extends AdaptedBinaryOperator<Tuple<R>, OT> {
     /**

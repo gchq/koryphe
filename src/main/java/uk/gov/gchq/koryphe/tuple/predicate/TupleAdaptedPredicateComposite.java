@@ -19,7 +19,6 @@ package uk.gov.gchq.koryphe.tuple.predicate;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import uk.gov.gchq.koryphe.predicate.PredicateComposite;
 import uk.gov.gchq.koryphe.tuple.Tuple;
-
 import java.util.List;
 import java.util.function.Predicate;
 

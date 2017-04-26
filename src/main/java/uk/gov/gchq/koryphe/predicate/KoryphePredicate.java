@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.predicate;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 import java.util.function.Predicate;
 
 /**
@@ -29,8 +29,8 @@ import java.util.function.Predicate;
 public abstract class KoryphePredicate<I> implements Predicate<I> {
     @SuppressFBWarnings(value = "BC_EQUALS_METHOD_SHOULD_WORK_FOR_ALL_OBJECTS", justification = "the method classEquals does the check")
     @Override
-    public boolean equals(final Object other) {
-        return this == other || (null != other && getClass().equals(other.getClass()));
+    public boolean equals(final Object obj) {
+        return this == obj || (null != obj && getClass().equals(obj.getClass()));
     }
 
     @Override

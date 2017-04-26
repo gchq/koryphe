@@ -20,7 +20,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import uk.gov.gchq.koryphe.predicate.PredicateComposite;
-
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -46,7 +45,7 @@ public final class Or<I> extends PredicateComposite<I, Predicate<I>> {
 
     @Override
     public boolean test(final I input) {
-        for (Predicate<I> predicate : components) {
+        for (final Predicate<I> predicate : components) {
             if (predicate.test(input)) {
                 return true;
             }

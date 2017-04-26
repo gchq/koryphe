@@ -17,8 +17,6 @@
 package uk.gov.gchq.koryphe.function;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import uk.gov.gchq.koryphe.function.KorypheFunction;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;

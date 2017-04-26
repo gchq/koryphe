@@ -13,26 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
 public class Identity extends KorypheFunction<Object, Object> {
     @Override
     public Object apply(final Object input) {
         return input;
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        return this == o || o != null && getClass() == o.getClass();
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 37)
-                .append(getClass())
-                .toHashCode();
     }
 }

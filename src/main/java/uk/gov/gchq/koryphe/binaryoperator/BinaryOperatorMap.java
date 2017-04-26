@@ -17,8 +17,6 @@
 package uk.gov.gchq.koryphe.binaryoperator;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BinaryOperator;
@@ -64,7 +62,7 @@ public class BinaryOperatorMap<K, T> extends KorypheBinaryOperator<Map<K, T>> {
         if (input == null) {
             return state;
         } else {
-            Map<K, T> output = state == null ? new HashMap<>() : state;
+            final Map<K, T> output = state == null ? new HashMap<>() : state;
             for (final Map.Entry<K, T> entry : input.entrySet()) {
                 T currentState = output.get(entry.getKey());
                 output.put(entry.getKey(), binaryOperator.apply(entry.getValue(), currentState));

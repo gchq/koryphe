@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.binaryoperator;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-
 import java.util.function.BinaryOperator;
 
 /**
@@ -49,8 +49,8 @@ public abstract class KorypheBinaryOperator<T> implements BinaryOperator<T> {
     protected abstract T _apply(final T a, final T b);
 
     @Override
-    public boolean equals(final Object other) {
-        return this == other || classEquals(other);
+    public boolean equals(final Object obj) {
+        return this == obj || classEquals(obj);
     }
 
     protected boolean classEquals(final Object other) {

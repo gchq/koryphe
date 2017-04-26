@@ -18,7 +18,6 @@ package uk.gov.gchq.koryphe.function;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import uk.gov.gchq.koryphe.adapted.Adapted;
-
 import java.util.function.BiFunction;
 import java.util.function.Function;
 

@@ -20,17 +20,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import uk.gov.gchq.koryphe.predicate.AdaptedPredicate;
 import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.tuple.TupleInputAdapter;
-
 import java.util.function.Predicate;
 
 /**
  * A <code>TupleAdaptedPredicate</code> adapts a {@link Predicate} so it can be applied to selected
  * fields from a {@link Tuple}.
  *
- * @see TupleInputAdapter
- *
  * @param <R> Reference type used by tuples
  * @param <PI> Input type of the Predicate
+ *
+ * @see TupleInputAdapter
  */
 public final class TupleAdaptedPredicate<R, PI> extends AdaptedPredicate<Tuple<R>, PI> {
     /**

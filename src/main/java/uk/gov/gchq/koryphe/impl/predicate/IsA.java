@@ -82,16 +82,16 @@ public class IsA extends KoryphePredicate<Object> {
     }
 
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
 
-        if (null == o || !getClass().equals(o.getClass())) {
+        if (null == obj || !getClass().equals(obj.getClass())) {
             return false;
         }
 
-        final IsA isA = (IsA) o;
+        final IsA isA = (IsA) obj;
         return new EqualsBuilder()
                 .append(type, isA.type)
                 .isEquals();

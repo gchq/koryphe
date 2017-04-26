@@ -17,7 +17,6 @@
 package uk.gov.gchq.koryphe.impl.predicate;
 
 import org.junit.Test;
-import uk.gov.gchq.koryphe.impl.predicate.IsA;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 

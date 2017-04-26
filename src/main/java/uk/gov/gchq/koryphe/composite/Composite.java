@@ -49,16 +49,16 @@ public abstract class Composite<C> {
     }
 
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
 
-        if (o == null || getClass() != o.getClass()) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
 
-        final Composite composite = (Composite) o;
+        final Composite composite = (Composite) obj;
 
         return new EqualsBuilder()
                 .append(components, composite.components)
