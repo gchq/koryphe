@@ -16,6 +16,10 @@
 
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import uk.gov.gchq.koryphe.ValidationResult;
+
 /**
  * An <code>Min</code> is a {@link java.util.function.BinaryOperator} that takes in
  * {@link Number}s of the same type and calculates the sum.
@@ -25,6 +29,8 @@ package uk.gov.gchq.koryphe.impl.binaryoperator;
  * @see NumericAggregateFunction
  */
 public class Sum extends NumericAggregateFunction {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ValidationResult.class);
+
     @Override
     protected Integer aggregateInt(final Integer a, final Integer b) {
         return a + b;
@@ -49,7 +55,8 @@ public class Sum extends NumericAggregateFunction {
     protected Short aggregateShort(final Short a, final Short b) {
         int sum = a + b;
         if (sum > Short.MAX_VALUE) {
-            throw new IllegalArgumentException("Cannot aggregate " + a + ", " + b + " as it is bigger than Short MAX_VALUE");
+            LOGGER.warn("Sum of " + a + " and " + b + " exceeded the max short value. The max short value (32767) was used instead.");
+            return Short.MAX_VALUE;
         }
 
         return (short) sum;

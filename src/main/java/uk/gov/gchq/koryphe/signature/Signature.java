@@ -36,7 +36,7 @@ public abstract class Signature {
      * Tests whether this <code>Signature</code> is compatible with the types supplied.
      *
      * @param arguments Class or Tuple of classes to test.
-     * @return ValidationResult containing the an isInputValid flag and errors messages.
+     * @return ValidationResult containing the isValid flag and errors messages.
      */
     public abstract ValidationResult assignable(final Class<?>... arguments);
 
