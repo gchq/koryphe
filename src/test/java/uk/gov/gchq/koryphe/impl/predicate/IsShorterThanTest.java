@@ -20,6 +20,10 @@ import org.junit.Test;
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -115,6 +119,23 @@ public class IsShorterThanTest extends PredicateTest {
         // Then 2
         assertNotNull(deserialisedFilter);
         assertEquals(max, deserialisedFilter.getMaxLength());
+    }
+
+    @Test
+    public void shouldCheckInputClass() {
+        final IsShorterThan predicate = new IsShorterThan(10);
+
+        assertTrue(predicate.isInputValid(String.class).isValid());
+        assertTrue(predicate.isInputValid(Object[].class).isValid());
+        assertTrue(predicate.isInputValid(Integer[].class).isValid());
+        assertTrue(predicate.isInputValid(Collection.class).isValid());
+        assertTrue(predicate.isInputValid(List.class).isValid());
+        assertTrue(predicate.isInputValid(Map.class).isValid());
+        assertTrue(predicate.isInputValid(HashMap.class).isValid());
+
+        assertFalse(predicate.isInputValid(String.class, HashMap.class).isValid());
+        assertFalse(predicate.isInputValid(Double.class).isValid());
+        assertFalse(predicate.isInputValid(Integer.class, Integer.class).isValid());
     }
 
     @Override

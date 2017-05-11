@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import uk.gov.gchq.koryphe.predicate.PredicateComposite;
+import uk.gov.gchq.koryphe.tuple.predicate.IntegerTupleAdaptedPredicate;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -29,23 +30,22 @@ import java.util.function.Predicate;
  * @param <I> Type of input to be validated
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
-public final class And<I> extends PredicateComposite<I, Predicate<I>> {
+public class And<I> extends PredicateComposite<I, Predicate<I>> {
     public And() {
         super();
     }
 
-    @SafeVarargs
-    public And(final Predicate<I>... predicates) {
-        super(Lists.newArrayList(predicates));
+    public And(final Predicate<?>... predicates) {
+        this(Lists.newArrayList(predicates));
     }
 
-    public And(final List<Predicate<I>> predicates) {
-        super(predicates);
+    public And(final List<Predicate> predicates) {
+        super((List) predicates);
     }
 
     @Override
     public boolean test(final I input) {
-        if (components == null || components.size() < 1) {
+        if (components == null || components.isEmpty()) {
             return true;
         } else {
             return super.test(input);
@@ -57,5 +57,43 @@ public final class And<I> extends PredicateComposite<I, Predicate<I>> {
         return new ToStringBuilder(this)
                 .append(this)
                 .toString();
+    }
+
+    public static class Builder {
+        private final And andComposite;
+
+        public Builder() {
+            this(new And());
+        }
+
+        private Builder(final And andComposite) {
+            this.andComposite = andComposite;
+        }
+
+        public And.SelectedBuilder select(final Integer... selection) {
+            final IntegerTupleAdaptedPredicate current = new IntegerTupleAdaptedPredicate();
+            current.setSelection(selection);
+            return new And.SelectedBuilder(andComposite, current);
+        }
+
+        public And build() {
+            return andComposite;
+        }
+    }
+
+    public static final class SelectedBuilder {
+        private final And andComposite;
+        private final IntegerTupleAdaptedPredicate current;
+
+        private SelectedBuilder(final And andComposite, final IntegerTupleAdaptedPredicate current) {
+            this.andComposite = andComposite;
+            this.current = current;
+        }
+
+        public And.Builder execute(final Predicate function) {
+            current.setPredicate(function);
+            andComposite.getComponents().add(current);
+            return new And.Builder(andComposite);
+        }
     }
 }

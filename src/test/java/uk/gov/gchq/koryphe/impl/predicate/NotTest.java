@@ -18,13 +18,16 @@ package uk.gov.gchq.koryphe.impl.predicate;
 
 import org.junit.Test;
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
+import uk.gov.gchq.koryphe.signature.Signature;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.function.Predicate;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -107,5 +110,24 @@ public class NotTest extends PredicateTest {
     @Override
     protected Not<Object> getInstance() {
         return new Not<>(new IsA(String.class));
+    }
+
+    @Test
+    public void shouldCheckInputClass() {
+        Predicate predicate = new Not<>(new IsMoreThan(1));
+        Signature input = Signature.getInputSignature(predicate);
+        assertTrue(input.assignable(Integer.class).isValid());
+        assertFalse(input.assignable(Double.class).isValid());
+        assertFalse(input.assignable(Integer.class, Integer.class).isValid());
+
+        predicate = new Not<>(new IsXLessThanY());
+        input = Signature.getInputSignature(predicate);
+        assertTrue(input.assignable(Integer.class, Integer.class).isValid());
+        assertTrue(input.assignable(Double.class, Double.class).isValid());
+        assertFalse(input.assignable(Integer.class).isValid());
+        assertFalse(input.assignable(Double.class, Integer.class).isValid());
+
+        assertArrayEquals(new Class[]{Signature.UnknownType.class}, input.getClasses());
+        assertNull(input.getNumClasses());
     }
 }

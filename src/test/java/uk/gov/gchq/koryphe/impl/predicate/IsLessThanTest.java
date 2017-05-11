@@ -136,6 +136,15 @@ public class IsLessThanTest extends PredicateTest {
         assertEquals(controlValue, deserialisedFilter.getControlValue());
     }
 
+    @Test
+    public void shouldCheckInputClass() {
+        final IsLessThan predicate = new IsLessThan(1);
+
+        assertTrue(predicate.isInputValid(Integer.class).isValid());
+        assertFalse(predicate.isInputValid(Double.class).isValid());
+        assertFalse(predicate.isInputValid(Integer.class, Integer.class).isValid());
+    }
+
     @Override
     protected Class<IsLessThan> getPredicateClass() {
         return IsLessThan.class;

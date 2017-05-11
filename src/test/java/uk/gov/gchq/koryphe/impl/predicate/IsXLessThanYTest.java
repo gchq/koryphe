@@ -67,6 +67,17 @@ public class IsXLessThanYTest extends PredicateTest {
         assertNotNull(deserialisedFilter);
     }
 
+    @Test
+    public void shouldCheckInputClass() {
+        final IsXLessThanY predicate = new IsXLessThanY();
+
+        assertTrue(predicate.isInputValid(Integer.class, Integer.class).isValid());
+        assertTrue(predicate.isInputValid(String.class, String.class).isValid());
+
+        assertFalse(predicate.isInputValid(Double.class).isValid());
+        assertFalse(predicate.isInputValid(Integer.class, Double.class).isValid());
+    }
+
     @Override
     protected Class<IsXLessThanY> getPredicateClass() {
         return IsXLessThanY.class;

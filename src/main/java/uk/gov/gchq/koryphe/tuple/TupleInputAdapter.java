@@ -16,6 +16,7 @@
 
 package uk.gov.gchq.koryphe.tuple;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.Arrays;
 import java.util.function.Function;
 
@@ -38,8 +39,7 @@ public class TupleInputAdapter<R, FI> implements Function<Tuple<R>, FI> {
      *
      * @param selection Field references.
      */
-    @SafeVarargs
-    public TupleInputAdapter(final R... selection) {
+    public TupleInputAdapter(final R[] selection) {
         setSelection(selection);
     }
 
@@ -70,7 +70,8 @@ public class TupleInputAdapter<R, FI> implements Function<Tuple<R>, FI> {
      *
      * @param selection Field references.
      */
-    public void setSelection(final R... selection) {
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "Cloning the array would be expensive - we will have to reply on users not modifying the array")
+    public void setSelection(final R[] selection) {
         if (null == selection) {
             this.selection = (R[]) new Object[0];
         } else {

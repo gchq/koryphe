@@ -18,6 +18,7 @@ package uk.gov.gchq.koryphe.impl.predicate;
 
 import org.junit.Test;
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
+import uk.gov.gchq.koryphe.tuple.predicate.IntegerTupleAdaptedPredicate;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.function.Predicate;
@@ -120,6 +121,82 @@ public class AndTest extends PredicateTest {
 
         // Then 2
         assertNotNull(deserialisedFilter);
+    }
+
+    @Test
+    public void shouldJsonSerialiseAndDeserialiseComplex() throws IOException {
+        // Given
+        final And predicate = new And.Builder()
+                .select(0)
+                .execute(new IsMoreThan(1))
+                .select(1)
+                .execute(new IsLessThan(10.0))
+                .build();
+
+        // When
+        final String json = JsonSerialiser.serialise(predicate);
+
+        // Then
+        JsonSerialiser.assertEquals("{" +
+                "\"class\":\"uk.gov.gchq.koryphe.impl.predicate.And\"," +
+                "\"predicates\":[{" +
+                "\"class\":\"uk.gov.gchq.koryphe.tuple.predicate.IntegerTupleAdaptedPredicate\"," +
+                "\"predicate\":{" +
+                "\"class\":\"uk.gov.gchq.koryphe.impl.predicate.IsMoreThan\"," +
+                "\"orEqualTo\":false," +
+                "\"value\":1}," +
+                "\"selection\":[0]" +
+                "}," +
+                "{\"class\":\"uk.gov.gchq.koryphe.tuple.predicate.IntegerTupleAdaptedPredicate\"," +
+                "\"predicate\":{" +
+                "\"class\":\"uk.gov.gchq.koryphe.impl.predicate.IsLessThan\"," +
+                "\"orEqualTo\":false," +
+                "\"value\":10.0" +
+                "}," +
+                "\"selection\":[1]" +
+                "}" +
+                "]}", json);
+
+        // When 2
+        final And deserialisedFilter = JsonSerialiser.deserialise(json, And.class);
+
+        // Then 2
+        assertNotNull(deserialisedFilter);
+    }
+
+    @Test
+    public void shouldCheckInputClass() {
+        And<?> predicate = new And<>(new IsMoreThan(1), new IsLessThan(10));
+        assertTrue(predicate.isInputValid(Integer.class).isValid());
+        assertFalse(predicate.isInputValid(Double.class).isValid());
+        assertFalse(predicate.isInputValid(Integer.class, Integer.class).isValid());
+
+        predicate = new And<>(new IsMoreThan(1.0), new IsLessThan(10.0));
+        assertTrue(predicate.isInputValid(Double.class).isValid());
+        assertFalse(predicate.isInputValid(Integer.class).isValid());
+
+        predicate = new And<>(new IsMoreThan(1), new IsLessThan(10.0));
+        assertFalse(predicate.isInputValid(Integer.class).isValid());
+        assertFalse(predicate.isInputValid(Integer.class, Double.class).isValid());
+
+        predicate = new And<>(
+                new IntegerTupleAdaptedPredicate(new IsMoreThan(1), 0),
+                new IntegerTupleAdaptedPredicate(new IsLessThan(10.0), 1)
+        );
+        assertTrue(predicate.isInputValid(Integer.class, Double.class).isValid());
+        assertFalse(predicate.isInputValid(Integer.class).isValid());
+        assertFalse(predicate.isInputValid(Double.class, Integer.class).isValid());
+
+
+        predicate = new And.Builder()
+                .select(0)
+                .execute(new IsMoreThan(1))
+                .select(1)
+                .execute(new IsLessThan(10.0))
+                .build();
+        assertTrue(predicate.isInputValid(Integer.class, Double.class).isValid());
+        assertFalse(predicate.isInputValid(Integer.class).isValid());
+        assertFalse(predicate.isInputValid(Double.class, Integer.class).isValid());
     }
 
     @Override

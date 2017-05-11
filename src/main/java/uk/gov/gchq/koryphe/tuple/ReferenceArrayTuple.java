@@ -16,6 +16,8 @@
 
 package uk.gov.gchq.koryphe.tuple;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import uk.gov.gchq.koryphe.tuple.n.Tuple5;
 import java.util.Iterator;
 
@@ -23,8 +25,8 @@ public class ReferenceArrayTuple<R> extends Tuple5 {
     private final R[] fields;
     private final Tuple<R> tuple;
 
-    @SafeVarargs
-    public ReferenceArrayTuple(final Tuple<R> tuple, final R... fields) {
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "Cloning the array would be expensive - we will have to reply on users not modifying the array")
+    public ReferenceArrayTuple(final Tuple<R> tuple, final R[] fields) {
         this.tuple = tuple;
         this.fields = fields;
     }
@@ -58,5 +60,13 @@ public class ReferenceArrayTuple<R> extends Tuple5 {
     @Override
     public Iterator<Object> iterator() {
         return values().iterator();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("fields", fields)
+                .append("tuple", tuple)
+                .build();
     }
 }

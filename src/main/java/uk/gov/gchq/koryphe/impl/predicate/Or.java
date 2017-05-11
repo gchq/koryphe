@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import uk.gov.gchq.koryphe.predicate.PredicateComposite;
+import uk.gov.gchq.koryphe.tuple.predicate.IntegerTupleAdaptedPredicate;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -29,18 +30,17 @@ import java.util.function.Predicate;
  * @param <I> Type of input to be validated.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
-public final class Or<I> extends PredicateComposite<I, Predicate<I>> {
+public class Or<I> extends PredicateComposite<I, Predicate<I>> {
     public Or() {
         super();
     }
 
-    @SafeVarargs
-    public Or(final Predicate<I>... predicates) {
-        super(Lists.newArrayList(predicates));
+    public Or(final Predicate<?>... predicates) {
+        this(Lists.newArrayList(predicates));
     }
 
-    public Or(final List<Predicate<I>> predicates) {
-        super(predicates);
+    public Or(final List<Predicate> predicates) {
+        super((List) predicates);
     }
 
     @Override
@@ -58,5 +58,43 @@ public final class Or<I> extends PredicateComposite<I, Predicate<I>> {
         return new ToStringBuilder(this)
                 .append(this)
                 .toString();
+    }
+
+    public static class Builder {
+        private final Or orComposite;
+
+        public Builder() {
+            this(new Or());
+        }
+
+        private Builder(final Or orComposite) {
+            this.orComposite = orComposite;
+        }
+
+        public Or.SelectedBuilder select(final Integer... selection) {
+            final IntegerTupleAdaptedPredicate current = new IntegerTupleAdaptedPredicate();
+            current.setSelection(selection);
+            return new Or.SelectedBuilder(orComposite, current);
+        }
+
+        public Or build() {
+            return orComposite;
+        }
+    }
+
+    public static final class SelectedBuilder {
+        private final Or orComposite;
+        private final IntegerTupleAdaptedPredicate current;
+
+        private SelectedBuilder(final Or orComposite, final IntegerTupleAdaptedPredicate current) {
+            this.orComposite = orComposite;
+            this.current = current;
+        }
+
+        public Or.Builder execute(final Predicate function) {
+            current.setPredicate(function);
+            orComposite.getComponents().add(current);
+            return new Or.Builder(orComposite);
+        }
     }
 }

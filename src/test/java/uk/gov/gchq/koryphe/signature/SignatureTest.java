@@ -17,41 +17,32 @@
 package uk.gov.gchq.koryphe.signature;
 
 import org.junit.Test;
+import uk.gov.gchq.koryphe.ValidationResult;
 import uk.gov.gchq.koryphe.function.MockFunction;
 import uk.gov.gchq.koryphe.function.MockFunction2;
 import uk.gov.gchq.koryphe.function.MockFunction2b;
 import uk.gov.gchq.koryphe.function.MockFunction3;
 import uk.gov.gchq.koryphe.function.MockFunctionMultiParents2;
+import uk.gov.gchq.koryphe.impl.predicate.IsLessThan;
+import uk.gov.gchq.koryphe.impl.predicate.IsMoreThan;
+import uk.gov.gchq.koryphe.impl.predicate.Or;
 import uk.gov.gchq.koryphe.predicate.MockPredicate2False;
 import uk.gov.gchq.koryphe.predicate.MockPredicateFalse;
 import uk.gov.gchq.koryphe.predicate.MockPredicateTrue;
+import java.util.Collection;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class SignatureTest {
     @Test
-    public void shouldCheckSingletonSignature() {
-        Signature signature = Signature.createSignature(1, Number.class);
-
-        assertTrue(signature instanceof SingletonSignature);
-
-        // exact matches should work
-        assertTrue(signature.assignableFrom(Number.class).isValid());
-        assertTrue(signature.assignableTo(Number.class).isValid());
-
-        // class hierarchy should work
-        assertTrue(signature.assignableFrom(Integer.class).isValid()); // Cast Integer to Number is OK.
-        assertFalse(signature.assignableFrom(Object.class).isValid()); // Cast Object to Number is not.
-        assertFalse(signature.assignableTo(Integer.class).isValid()); // Cast Number to Integer is not.
-        assertTrue(signature.assignableTo(Object.class).isValid()); // Cast Number to Object is OK.
-    }
-
-    @Test
     public void shouldCheckFunctionTypes() {
-        Function function = new MockFunction();
+        final Function function = new MockFunction();
         final Signature input = Signature.getInputSignature(function);
         final Signature output = Signature.getOutputSignature(function);
 
@@ -61,11 +52,17 @@ public class SignatureTest {
 
         assertFalse(input.assignable(Object.class, Long.class).isValid());
         assertFalse(output.assignable(Long.class).isValid());
+
+        assertArrayEquals(new Class[]{Object.class}, input.getClasses());
+        assertEquals((Integer) 1, input.getNumClasses());
+
+        assertArrayEquals(new Class[]{String.class}, output.getClasses());
+        assertEquals((Integer) 1, output.getNumClasses());
     }
 
     @Test
     public void shouldCheckFunction2Types() {
-        Function function = new MockFunction2();
+        final Function function = new MockFunction2();
         final Signature input = Signature.getInputSignature(function);
         final Signature output = Signature.getOutputSignature(function);
 
@@ -74,11 +71,17 @@ public class SignatureTest {
 
         assertFalse(input.assignable(String.class).isValid());
         assertFalse(output.assignable(Double.class, Object.class).isValid());
+
+        assertArrayEquals(new Class[]{Double.class, Object.class}, input.getClasses());
+        assertEquals((Integer) 2, input.getNumClasses());
+
+        assertArrayEquals(new Class[]{String.class}, output.getClasses());
+        assertEquals((Integer) 1, output.getNumClasses());
     }
 
     @Test
     public void shouldCheckFunctionMultiParentsTypes() {
-        Function function = new MockFunctionMultiParents2();
+        final Function function = new MockFunctionMultiParents2();
         final Signature input = Signature.getInputSignature(function);
         final Signature output = Signature.getOutputSignature(function);
 
@@ -88,11 +91,17 @@ public class SignatureTest {
 
         assertFalse(input.assignable(String.class).isValid());
         assertFalse(output.assignable(Double.class, Object.class, Integer.class).isValid());
+
+        assertArrayEquals(new Class[]{Double.class, Object.class, Integer.class}, input.getClasses());
+        assertEquals((Integer) 3, input.getNumClasses());
+
+        assertArrayEquals(new Class[]{String.class}, output.getClasses());
+        assertEquals((Integer) 1, output.getNumClasses());
     }
 
     @Test
     public void shouldCheckFunction2bTypes() {
-        Function function = new MockFunction2b();
+        final Function function = new MockFunction2b();
         final Signature input = Signature.getInputSignature(function);
         final Signature output = Signature.getOutputSignature(function);
 
@@ -102,11 +111,17 @@ public class SignatureTest {
 
         assertFalse(input.assignable(String.class).isValid());
         assertFalse(output.assignable(Integer.class, Double.class, Object.class).isValid());
+
+        assertArrayEquals(new Class[]{Double.class, Object.class}, input.getClasses());
+        assertEquals((Integer) 2, input.getNumClasses());
+
+        assertArrayEquals(new Class[]{String.class}, output.getClasses());
+        assertEquals((Integer) 1, output.getNumClasses());
     }
 
     @Test
     public void shouldCheckFunction3Types() {
-        Function function = new MockFunction3();
+        final Function function = new MockFunction3();
         final Signature input = Signature.getInputSignature(function);
         final Signature output = Signature.getOutputSignature(function);
 
@@ -115,35 +130,69 @@ public class SignatureTest {
 
         assertFalse(input.assignable(String.class).isValid());
         assertFalse(output.assignable(Integer.class, Double.class, Object.class).isValid());
+
+        assertArrayEquals(new Class[]{Integer.class, Double.class, Object.class}, input.getClasses());
+        assertEquals((Integer) 3, input.getNumClasses());
+
+        assertArrayEquals(new Class[]{String.class}, output.getClasses());
+        assertEquals((Integer) 1, output.getNumClasses());
     }
 
     @Test
     public void shouldCheckPredicateTypes() {
-        Predicate predicate = new MockPredicateTrue();
+        final Predicate predicate = new MockPredicateTrue();
         final Signature input = Signature.getInputSignature(predicate);
 
         assertTrue(input.assignable(Double.class).isValid());
         assertFalse(input.assignable(String.class).isValid());
         assertFalse(input.assignable(Double.class, Double.class).isValid());
+
+        assertArrayEquals(new Class[]{Double.class}, input.getClasses());
+        assertEquals((Integer) 1, input.getNumClasses());
     }
 
     @Test
     public void shouldCheckPredicateTypes1() {
-        Predicate predicate = new MockPredicateFalse();
+        final Predicate predicate = new MockPredicateFalse();
         final Signature input = Signature.getInputSignature(predicate);
 
         assertTrue(input.assignable(Double.class).isValid());
         assertFalse(input.assignable(String.class).isValid());
         assertFalse(input.assignable(Double.class, Integer.class).isValid());
+        assertArrayEquals(new Class[]{Double.class}, input.getClasses());
+        assertEquals((Integer) 1, input.getNumClasses());
     }
 
     @Test
     public void shouldCheckPredicateTypes2() {
-        Predicate predicate = new MockPredicate2False();
+        final Predicate predicate = new MockPredicate2False();
         final Signature input = Signature.getInputSignature(predicate);
 
         assertTrue(input.assignable(Double.class, Integer.class).isValid());
         assertFalse(input.assignable(String.class, Integer.class).isValid());
         assertFalse(input.assignable(Double.class, Integer.class, Integer.class).isValid());
+
+        assertArrayEquals(new Class[]{Double.class, Integer.class}, input.getClasses());
+        assertEquals((Integer) 2, input.getNumClasses());
+    }
+
+    @Test
+    public void shouldCheckOrInputClass() {
+        final Predicate predicate = new Or.Builder()
+                .select(0)
+                .execute(new IsMoreThan(1))
+                .select(1)
+                .execute(new IsLessThan(10.0))
+                .build();
+        final Signature input = Signature.getInputSignature(predicate);
+
+        final ValidationResult result = input.assignable(Integer.class, Double.class);
+        assertTrue(result.getErrorString(), result.isValid());
+
+        assertFalse(input.assignable(Integer.class, Collection.class).isValid());
+        assertFalse(input.assignable(Double.class).isValid());
+
+        assertArrayEquals(new Class[]{Signature.UnknownType.class}, input.getClasses());
+        assertNull(input.getNumClasses());
     }
 }

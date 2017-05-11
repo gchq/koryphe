@@ -39,4 +39,19 @@ public class Sum extends NumericAggregateFunction {
     protected Double aggregateDouble(final Double a, final Double b) {
         return a + b;
     }
+
+    @Override
+    protected Float aggregateFloat(final Float a, final Float b) {
+        return a + b;
+    }
+
+    @Override
+    protected Short aggregateShort(final Short a, final Short b) {
+        int sum = a + b;
+        if (sum > Short.MAX_VALUE) {
+            throw new IllegalArgumentException("Cannot aggregate " + a + ", " + b + " as it is bigger than Short MAX_VALUE");
+        }
+
+        return (short) sum;
+    }
 }

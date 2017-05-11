@@ -16,17 +16,34 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
+import uk.gov.gchq.koryphe.ValidationResult;
+import uk.gov.gchq.koryphe.signature.InputValidator;
 import uk.gov.gchq.koryphe.tuple.predicate.KoryphePredicate2;
 
 /**
  * An <code>IsXLessThanY</code> is a {@link java.util.function.BiPredicate} that checks that the first input
  * {@link Comparable} is less than the second input {@link Comparable}.
  */
-public class IsXLessThanY extends KoryphePredicate2<Comparable, Comparable> {
+public class IsXLessThanY extends KoryphePredicate2<Comparable, Comparable> implements InputValidator {
     @Override
     public boolean test(final Comparable input1, final Comparable input2) {
         return null != input1 && null != input2
                 && input1.getClass() == input2.getClass()
                 && (input1.compareTo(input2) < 0);
+    }
+
+    @Override
+    public ValidationResult isInputValid(final Class<?>... arguments) {
+        final ValidationResult result = new ValidationResult();
+        if (null == arguments || 2 != arguments.length || null == arguments[0] || null == arguments[1]) {
+            result.addError("Incorrect number of arguments for " + getClass().getName() + ". 2 arguments are required.");
+            return result;
+        }
+
+        if (!arguments[0].equals(arguments[1]) || !Comparable.class.isAssignableFrom(arguments[0])) {
+            result.addError("Inputs must be the same class type and comparable: " + arguments[0] + "," + arguments[1]);
+        }
+
+        return result;
     }
 }
