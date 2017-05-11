@@ -33,7 +33,7 @@ public class ReferenceArrayTuple<R> extends Tuple5 {
 
     @Override
     public Object get(final Integer index) {
-        if (null != tuple) {
+        if (null != tuple && index < fields.length) {
             return tuple.get(fields[index]);
         }
 
@@ -42,7 +42,7 @@ public class ReferenceArrayTuple<R> extends Tuple5 {
 
     @Override
     public void put(final Integer index, final Object value) {
-        if (null != tuple) {
+        if (null != tuple && index < fields.length) {
             final R field = fields[index];
             tuple.put(field, value);
         }

@@ -54,7 +54,11 @@ public class ArrayTuple implements Tuple<Integer> {
      * @return Value.
      */
     public Object get(final Integer index) {
-        return values[index];
+        if (index < values.length) {
+            return values[index];
+        }
+
+        return null;
     }
 
     /**
@@ -64,7 +68,9 @@ public class ArrayTuple implements Tuple<Integer> {
      * @param value Value to put.
      */
     public void put(final Integer index, final Object value) {
-        values[index] = value;
+        if (index < values.length) {
+            values[index] = value;
+        }
     }
 
     @Override
