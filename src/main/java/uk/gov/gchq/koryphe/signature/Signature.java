@@ -23,7 +23,6 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -34,39 +33,16 @@ import java.util.function.Predicate;
  */
 public abstract class Signature {
     /**
-     * Tests whether the supplied types can be assigned to this <code>Signature</code>.
-     *
-     * @param arguments Class or Tuple of classes to test.
-     * @return ValidationResult containing the an isValid flag and errors messages.
-     */
-    public ValidationResult assignableFrom(final Class... arguments) {
-        return assignable(false, arguments);
-    }
-
-    /**
-     * Tests whether this <code>Signature</code> can be assigned to the supplied types.
-     *
-     * @param arguments Class or Tuple of classes to test with.
-     * @return ValidationResult containing the an isValid flag and errors messages.
-     */
-    public ValidationResult assignableTo(final Class... arguments) {
-        return assignable(true, arguments);
-    }
-
-    /**
      * Tests whether this <code>Signature</code> is compatible with the types supplied.
      *
-     * @param to        If the test should be performed as an assignableTo.
      * @param arguments Class or Tuple of classes to test.
-     * @return ValidationResult containing the an isValid flag and errors messages.
+     * @return ValidationResult containing the isValid flag and errors messages.
      */
-    public abstract ValidationResult assignable(final boolean to, final Class<?>... arguments);
-
-    public ValidationResult assignable(final Class<?>... arguments) {
-        return assignable(false, arguments);
-    }
+    public abstract ValidationResult assignable(final Class<?>... arguments);
 
     public abstract Class[] getClasses();
+
+    public abstract Integer getNumClasses();
 
     /**
      * Get the input signature of a function.
@@ -75,7 +51,7 @@ public abstract class Signature {
      * @return Input signature.
      */
     public static Signature getInputSignature(final Predicate function) {
-        return createSignatureFromTypeVariable(function, Predicate.class, 0);
+        return createSignatureFromTypeVariable(function, Predicate.class, 0, true);
     }
 
     /**
@@ -85,7 +61,7 @@ public abstract class Signature {
      * @return Input signature.
      */
     public static Signature getInputSignature(final Function function) {
-        return createSignatureFromTypeVariable(function, Function.class, 0);
+        return createSignatureFromTypeVariable(function, Function.class, 0, true);
     }
 
     /**
@@ -98,7 +74,7 @@ public abstract class Signature {
      * @return Input signature
      */
     public static <F extends BiFunction<I, O, O>, I, O> Signature getInputSignature(final F function) {
-        return createSignatureFromTypeVariable(function, BiFunction.class, 0);
+        return createSignatureFromTypeVariable(function, BiFunction.class, 0, true);
     }
 
     /**
@@ -108,7 +84,7 @@ public abstract class Signature {
      * @return Output signature.
      */
     public static Signature getOutputSignature(final Function function) {
-        return createSignatureFromTypeVariable(function, Function.class, 1);
+        return createSignatureFromTypeVariable(function, Function.class, 1, false);
     }
 
     /**
@@ -121,7 +97,7 @@ public abstract class Signature {
      * @return Output signature
      */
     public static <F extends BiFunction<I, O, O>, I, O> Signature getOutputSignature(final F function) {
-        return createSignatureFromTypeVariable(function, BiFunction.class, 2);
+        return createSignatureFromTypeVariable(function, BiFunction.class, 2, false);
     }
 
     /**
@@ -130,28 +106,17 @@ public abstract class Signature {
      * @param input             Function to create signature for.
      * @param functionClass     The input class
      * @param typeVariableIndex 0 for I or 1 for O.
+     * @param isInput           if true then it is an input signature otherwise it is an output signature
      * @return Signature of the type variable.
      */
-    protected static Signature createSignatureFromTypeVariable(final Object input, final Class functionClass, final int typeVariableIndex) {
+    private static Signature createSignatureFromTypeVariable(final Object input, final Class functionClass, final int typeVariableIndex, final boolean isInput) {
         TypeVariable<?> tv = functionClass.getTypeParameters()[typeVariableIndex];
         final Map<TypeVariable<?>, Type> typeArgs = TypeUtils.getTypeArguments(input.getClass(), functionClass);
         Type type = typeArgs.get(tv);
-        return createSignature(input, type, typeArgs);
+        return createSignature(input, type, typeArgs, isInput);
     }
 
-    /**
-     * Create a <code>Signature</code> for the supplied {@link java.lang.reflect.Type}. This could be a singleton or
-     * tuple.
-     *
-     * @param input the input function
-     * @param type  Type to create a signature for.
-     * @return Signature of supplied type.
-     */
-    protected static Signature createSignature(final Object input, final Type type) {
-        return createSignature(input, type, Collections.emptyMap());
-    }
-
-    protected static Signature createSignature(final Object input, final Type type, final Map<TypeVariable<?>, Type> typeArgs) {
+    private static Signature createSignature(final Object input, final Type type, final Map<TypeVariable<?>, Type> typeArgs, final boolean isInput) {
         final Class clazz = getTypeClass(type, typeArgs);
 
         if (Tuple.class.isAssignableFrom(clazz)) {
@@ -164,10 +129,10 @@ public abstract class Signature {
                 classes[i++] = getTypeClass(classTypeArgs.get(tupleType), typeArgs);
             }
 
-            return new TupleSignature(input, classes);
+            return new TupleSignature(input, clazz, classes, isInput);
         }
 
-        return new SingletonSignature(input, clazz);
+        return new SingletonSignature(input, clazz, isInput);
     }
 
     protected static Class getTypeClass(final Type type, final Map<TypeVariable<?>, Type> typeArgs) {
@@ -187,7 +152,10 @@ public abstract class Signature {
                 return getTypeClass(t, typeArgs);
             }
         }
-        // cannot resolve - default to Object;
-        return Object.class;
+        // cannot resolve - default to UnknownGenericType;
+        return UnknownGenericType.class;
+    }
+
+    public static class UnknownGenericType {
     }
 }

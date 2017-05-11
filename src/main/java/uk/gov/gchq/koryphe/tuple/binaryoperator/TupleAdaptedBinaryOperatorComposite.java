@@ -45,7 +45,7 @@ public class TupleAdaptedBinaryOperatorComposite<R> extends BinaryOperatorCompos
             this.binaryOperator = binaryOperator;
         }
 
-        public SelectedBuilder<R> select(final R... selection) {
+        public SelectedBuilder<R> select(final R[] selection) {
             final TupleAdaptedBinaryOperator<R, ?> current = new TupleAdaptedBinaryOperator<>();
             current.setSelection(selection);
             return new SelectedBuilder(binaryOperator, current);

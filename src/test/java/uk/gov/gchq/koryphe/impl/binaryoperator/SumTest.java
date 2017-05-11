@@ -37,6 +37,40 @@ public class SumTest extends BinaryOperatorTest {
     }
 
     @Test
+    public void testAggregateShorts() {
+        // Given
+        final Sum sum = new Sum();
+
+        // When 1
+        state = sum.apply((short) 1, state);
+
+        // Then 1
+        assertTrue(state instanceof Short);
+        assertEquals((short) 1, state);
+
+        // When 2
+        state = sum.apply((short) 3, state);
+
+        // Then 2
+        assertTrue(state instanceof Short);
+        assertEquals((short) 4, state);
+
+        // When 3
+        state = sum.apply((short) 2, state);
+
+        // Then 3
+        assertTrue(state instanceof Short);
+        assertEquals((short) 6, state);
+
+        // When 4 - check it cannot exceed MAX_VALUE
+        state = sum.apply((short) (Short.MAX_VALUE - (short) state + 1), state);
+
+        // Then 4
+        assertTrue(state instanceof Short);
+        assertEquals(Short.MAX_VALUE, state);
+    }
+
+    @Test
     public void testAggregateInIntMode() {
         // Given
         final Sum sum = new Sum();
@@ -158,6 +192,33 @@ public class SumTest extends BinaryOperatorTest {
         // Then 3
         assertTrue(state instanceof Long);
         assertEquals(3l, state);
+    }
+
+    @Test
+    public void testAggregateInFloatMode() {
+        // Given
+        final Sum sum = new Sum();
+
+        // When 1
+        state = sum.apply(1.1f, state);
+
+        // Then 1
+        assertTrue(state instanceof Float);
+        assertEquals(1.1f, state);
+
+        // When 2
+        state = sum.apply(2f, state);
+
+        // Then 2
+        assertTrue(state instanceof Float);
+        assertEquals(3.1f, state);
+
+        // When 3
+        state = sum.apply(1.5f, state);
+
+        // Then 3
+        assertTrue(state instanceof Float);
+        assertEquals(4.6f, state);
     }
 
     @Test

@@ -27,13 +27,12 @@ import java.util.function.BinaryOperator;
  * A <code>TupleAdaptedBinaryOperator</code> adapts a {@link BinaryOperator} so it can be applied to selected
  * fields from a {@link Tuple}.
  *
- * @param <R> Reference type used by tuples.
+ * @param <R>  Reference type used by tuples.
  * @param <OT> Input/Output type of the BinaryOperator
- *
  * @see TupleInputAdapter
  * @see TupleOutputAdapter
  */
-public final class TupleAdaptedBinaryOperator<R, OT> extends AdaptedBinaryOperator<Tuple<R>, OT> {
+public class TupleAdaptedBinaryOperator<R, OT> extends AdaptedBinaryOperator<Tuple<R>, OT> {
     /**
      * Default - for serialisation.
      */
@@ -42,8 +41,7 @@ public final class TupleAdaptedBinaryOperator<R, OT> extends AdaptedBinaryOperat
         setOutputAdapter(new TupleOutputAdapter<>());
     }
 
-    @SafeVarargs
-    public TupleAdaptedBinaryOperator(final BinaryOperator<OT> binaryOperator, final R... selection) {
+    public TupleAdaptedBinaryOperator(final BinaryOperator<OT> binaryOperator, final R[] selection) {
         this();
         setBinaryOperator(binaryOperator);
         setSelection(selection);
@@ -53,8 +51,7 @@ public final class TupleAdaptedBinaryOperator<R, OT> extends AdaptedBinaryOperat
         return getInputAdapter().getSelection();
     }
 
-    @SafeVarargs
-    public final void setSelection(final R... selection) {
+    public void setSelection(final R[] selection) {
         getInputAdapter().setSelection(selection);
         getOutputAdapter().setProjection(selection);
     }

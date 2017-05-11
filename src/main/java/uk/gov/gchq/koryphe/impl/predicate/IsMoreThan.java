@@ -21,14 +21,16 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import uk.gov.gchq.koryphe.ValidationResult;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
+import uk.gov.gchq.koryphe.signature.InputValidator;
 
 /**
  * An <code>IsMoreThan</code> is a {@link java.util.function.Predicate} that checks that the input
  * {@link Comparable} is more than a control value. There is also an orEqualTo flag that can be set to allow
  * the input value to be more than or equal to the control value.
  */
-public class IsMoreThan extends KoryphePredicate<Comparable> {
+public class IsMoreThan extends KoryphePredicate<Comparable> implements InputValidator {
     private Comparable controlValue;
     private boolean orEqualTo;
 
@@ -109,5 +111,25 @@ public class IsMoreThan extends KoryphePredicate<Comparable> {
                 .append("controlValue", controlValue)
                 .append("orEqualTo", orEqualTo)
                 .toString();
+    }
+
+    @Override
+    public ValidationResult isInputValid(final Class<?>... arguments) {
+        final ValidationResult result = new ValidationResult();
+        if (null == controlValue) {
+            result.addError("Control value has not been set");
+            return result;
+        }
+
+        if (null == arguments || 1 != arguments.length || null == arguments[0]) {
+            result.addError("Incorrect number of arguments for " + getClass().getName() + ". 1 argument is required.");
+            return result;
+        }
+
+        if (!controlValue.getClass().isAssignableFrom(arguments[0])) {
+            result.addError("Control value class " + controlValue.getClass().getName() + " is not compatible with the input type: " + arguments[0]);
+        }
+
+        return result;
     }
 }

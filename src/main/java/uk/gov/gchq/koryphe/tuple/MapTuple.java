@@ -16,6 +16,7 @@
 
 package uk.gov.gchq.koryphe.tuple;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -68,5 +69,12 @@ public class MapTuple<R> implements Tuple<R> {
 
     public void setValues(final Map<R, Object> values) {
         this.values = values;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("values", values)
+                .build();
     }
 }

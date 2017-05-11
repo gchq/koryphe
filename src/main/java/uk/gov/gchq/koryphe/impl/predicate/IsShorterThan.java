@@ -19,7 +19,9 @@ package uk.gov.gchq.koryphe.impl.predicate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import uk.gov.gchq.koryphe.ValidationResult;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
+import uk.gov.gchq.koryphe.signature.InputValidator;
 import java.util.Collection;
 import java.util.Map;
 
@@ -31,7 +33,7 @@ import java.util.Map;
  * Allowed object types are {@link String}s, arrays, {@link java.util.Collection}s and {@link java.util.Map}s.
  * Additional object types can easily be added by modifying the getLength(Object) method.
  */
-public class IsShorterThan extends KoryphePredicate<Object> {
+public class IsShorterThan extends KoryphePredicate<Object> implements InputValidator {
     private int maxLength;
     private boolean orEqualTo;
 
@@ -87,6 +89,28 @@ public class IsShorterThan extends KoryphePredicate<Object> {
         }
 
         return length;
+    }
+
+    @Override
+    public ValidationResult isInputValid(final Class<?>... arguments) {
+        final ValidationResult result = new ValidationResult();
+        if (null == arguments || 1 != arguments.length || null == arguments[0]) {
+            result.addError("Incorrect number of arguments for " + getClass().getName() + ". 1 argument is required.");
+            return result;
+        }
+
+        if (!String.class.isAssignableFrom(arguments[0])
+                && !Object[].class.isAssignableFrom(arguments[0])
+                && !Collection.class.isAssignableFrom(arguments[0])
+                && !Map.class.isAssignableFrom(arguments[0])) {
+            result.addError("Input class " + arguments[0].getName() + " must be one of the following: "
+                    + String.class.getName() + ", "
+                    + Object[].class.getName() + ", "
+                    + Collection.class.getName() + ", "
+                    + Map.class.getName());
+        }
+
+        return result;
     }
 
     @Override

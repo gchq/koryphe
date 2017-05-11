@@ -36,6 +36,41 @@ public class ProductTest extends BinaryOperatorTest {
     }
 
     @Test
+    public void testAggregateInShortMode() {
+        // Given
+        final Product product = new Product();
+
+        // When 1
+        state = product.apply((short) 2, state);
+
+        // Then 1
+        assertTrue(state instanceof Short);
+        assertEquals((short) 2, state);
+
+        // When 2
+        state = product.apply((short) 3, state);
+
+        // Then 2
+        assertTrue(state instanceof Short);
+        assertEquals((short) 6, state);
+
+        // When 3
+        state = product.apply((short) 8, state);
+
+        // Then 3
+        assertTrue(state instanceof Short);
+        assertEquals((short) 48, state);
+
+        // When 4 - check it cannot exceed MAX_VALUE
+        state = product.apply(Short.MAX_VALUE, state);
+
+        // Then 4
+        assertTrue(state instanceof Short);
+        assertEquals(Short.MAX_VALUE, state);
+    }
+
+
+    @Test
     public void testAggregateInIntMode() {
         // Given
         final Product product = new Product();
@@ -184,6 +219,33 @@ public class ProductTest extends BinaryOperatorTest {
         // Then 3
         assertTrue(state instanceof Double);
         assertEquals(4.5d, state);
+    }
+
+    @Test
+    public void testAggregateInFloatMode() {
+        // Given
+        final Product product = new Product();
+
+        // When 1
+        state = product.apply(1.2f, state);
+
+        // Then 1
+        assertTrue(state instanceof Float);
+        assertEquals(1.2f, state);
+
+        // When 2
+        state = product.apply(2.5f, state);
+
+        // Then 2
+        assertTrue(state instanceof Float);
+        assertEquals(3.0f, state);
+
+        // When 3
+        state = product.apply(1.5f, state);
+
+        // Then 3
+        assertTrue(state instanceof Float);
+        assertEquals(4.5f, state);
     }
 
     @Test

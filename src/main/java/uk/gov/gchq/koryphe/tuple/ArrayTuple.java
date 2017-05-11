@@ -17,6 +17,7 @@
 package uk.gov.gchq.koryphe.tuple;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -53,7 +54,11 @@ public class ArrayTuple implements Tuple<Integer> {
      * @return Value.
      */
     public Object get(final Integer index) {
-        return values[index];
+        if (index < values.length) {
+            return values[index];
+        }
+
+        return null;
     }
 
     /**
@@ -63,7 +68,9 @@ public class ArrayTuple implements Tuple<Integer> {
      * @param value Value to put.
      */
     public void put(final Integer index, final Object value) {
-        values[index] = value;
+        if (index < values.length) {
+            values[index] = value;
+        }
     }
 
     @Override
@@ -74,5 +81,12 @@ public class ArrayTuple implements Tuple<Integer> {
     @Override
     public Iterator<Object> iterator() {
         return values().iterator();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("values", values)
+                .build();
     }
 }

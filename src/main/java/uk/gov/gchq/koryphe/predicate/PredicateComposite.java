@@ -17,7 +17,10 @@
 package uk.gov.gchq.koryphe.predicate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import uk.gov.gchq.koryphe.ValidationResult;
 import uk.gov.gchq.koryphe.composite.Composite;
+import uk.gov.gchq.koryphe.signature.InputValidator;
+import uk.gov.gchq.koryphe.signature.Signature;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -28,7 +31,7 @@ import java.util.function.Predicate;
  * @param <I> Input type
  * @param <C> Type of Predicate components
  */
-public class PredicateComposite<I, C extends Predicate<I>> extends Composite<C> implements Predicate<I> {
+public class PredicateComposite<I, C extends Predicate<I>> extends Composite<C> implements Predicate<I>, InputValidator {
     /**
      * Default - for serialisation.
      */
@@ -47,6 +50,7 @@ public class PredicateComposite<I, C extends Predicate<I>> extends Composite<C> 
 
     /**
      * Apply the predicate components in turn, returning false if any fail the test.
+     *
      * @param input Input value
      * @return True if all components pass, otherwise false.
      */
@@ -58,5 +62,19 @@ public class PredicateComposite<I, C extends Predicate<I>> extends Composite<C> 
             }
         }
         return true;
+    }
+
+    @Override
+    public ValidationResult isInputValid(final Class<?>... arguments) {
+        if (null == components) {
+            return new ValidationResult();
+        }
+
+        final ValidationResult result = new ValidationResult();
+        for (final C component : components) {
+            result.add(Signature.getInputSignature(component).assignable(arguments));
+        }
+
+        return result;
     }
 }

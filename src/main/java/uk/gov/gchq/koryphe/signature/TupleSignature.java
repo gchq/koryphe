@@ -17,6 +17,7 @@
 package uk.gov.gchq.koryphe.signature;
 
 import uk.gov.gchq.koryphe.ValidationResult;
+import uk.gov.gchq.koryphe.tuple.n.Tuple1;
 import java.util.Arrays;
 
 /**
@@ -24,34 +25,65 @@ import java.util.Arrays;
  */
 public class TupleSignature extends Signature {
     private final Object input;
+    private final Integer numClasses;
     private final Class[] classes;
     private final SingletonSignature[] types;
+    private final boolean isInput;
 
-    TupleSignature(final Object input, final Class[] classes) {
+    TupleSignature(final Object input, final Class tupleClazz, final Class[] classes, final boolean isInput) {
         this.input = input;
         this.classes = classes;
+        this.isInput = isInput;
+        if (1 == classes.length && !(Tuple1.class.isAssignableFrom(tupleClazz))) {
+            // This tuple will accept any number of arguments
+            numClasses = null;
+        } else {
+            numClasses = classes.length;
+        }
+
         types = new SingletonSignature[classes.length];
         int i = 0;
         for (final Class clazz : classes) {
-            types[i++] = new SingletonSignature(input, clazz);
+            types[i++] = new SingletonSignature(input, clazz, isInput);
         }
     }
 
     @Override
-    public ValidationResult assignable(final boolean reverse, final Class<?>... arguments) {
-        final ValidationResult result = new ValidationResult();
-        if (types.length != arguments.length) {
-            result.addError("Incompatible number of types. " + input.getClass() + ": " + Arrays.toString(types)
-                    + ", arguments: " + Arrays.toString(arguments));
-            return result;
+    public ValidationResult assignable(final Class<?>... arguments) {
+        if (isInput) {
+            if (input instanceof InputValidator) {
+                return ((InputValidator) input).isInputValid(arguments);
+            }
+        } else if (input instanceof OutputValidator) {
+            return ((OutputValidator) input).isOutputValid(arguments);
         }
 
-        int i = 0;
-        for (final Class type : arguments) {
-            result.add(types[i].assignable(reverse, type));
-            i++;
+        final ValidationResult result = new ValidationResult();
+        if (null != types) {
+            if (null != numClasses && types.length != arguments.length) {
+                result.addError("Incompatible number of types. " + input.getClass() + ": " + Arrays.toString(types)
+                        + ", arguments: " + Arrays.toString(arguments));
+                return result;
+            }
+
+            if (null == numClasses) {
+                for (final Class type : arguments) {
+                    result.add(types[0].assignable(type));
+                }
+            } else {
+                int i = 0;
+                for (final Class type : arguments) {
+                    result.add(types[i].assignable(type));
+                    i++;
+                }
+            }
         }
         return result;
+    }
+
+    @Override
+    public Integer getNumClasses() {
+        return numClasses;
     }
 
     @Override
