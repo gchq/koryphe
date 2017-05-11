@@ -49,7 +49,7 @@ public class SingletonSignature extends Signature {
             return result;
         }
 
-        if (UnknownType.class.equals(type)) {
+        if (UnknownGenericType.class.equals(type)) {
             // unknown type so anything is assignable
             return result;
         }
@@ -75,6 +75,6 @@ public class SingletonSignature extends Signature {
 
     @Override
     public Integer getNumClasses() {
-        return UnknownType.class.equals(type) ? null : 1;
+        return UnknownGenericType.class.equals(type) ? null : 1;
     }
 }

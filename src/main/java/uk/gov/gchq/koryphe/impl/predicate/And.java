@@ -59,41 +59,41 @@ public class And<I> extends PredicateComposite<I, Predicate<I>> {
                 .toString();
     }
 
-    public static class Builder {
-        private final And andComposite;
+    public static class Builder<I> {
+        private final And<I> and;
 
         public Builder() {
-            this(new And());
+            this(new And<>());
         }
 
-        private Builder(final And andComposite) {
-            this.andComposite = andComposite;
+        private Builder(final And<I> and) {
+            this.and = and;
         }
 
-        public And.SelectedBuilder select(final Integer... selection) {
+        public And.SelectedBuilder<I> select(final Integer... selection) {
             final IntegerTupleAdaptedPredicate current = new IntegerTupleAdaptedPredicate();
             current.setSelection(selection);
-            return new And.SelectedBuilder(andComposite, current);
+            return new And.SelectedBuilder<>(and, current);
         }
 
-        public And build() {
-            return andComposite;
+        public And<I> build() {
+            return and;
         }
     }
 
-    public static final class SelectedBuilder {
-        private final And andComposite;
+    public static final class SelectedBuilder<I> {
+        private final And<I> and;
         private final IntegerTupleAdaptedPredicate current;
 
-        private SelectedBuilder(final And andComposite, final IntegerTupleAdaptedPredicate current) {
-            this.andComposite = andComposite;
+        private SelectedBuilder(final And<I> and, final IntegerTupleAdaptedPredicate current) {
+            this.and = and;
             this.current = current;
         }
 
-        public And.Builder execute(final Predicate function) {
+        public And.Builder<I> execute(final Predicate function) {
             current.setPredicate(function);
-            andComposite.getComponents().add(current);
-            return new And.Builder(andComposite);
+            and.getComponents().add((Predicate) current);
+            return new And.Builder<>(and);
         }
     }
 }

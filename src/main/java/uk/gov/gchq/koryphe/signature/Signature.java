@@ -152,10 +152,10 @@ public abstract class Signature {
                 return getTypeClass(t, typeArgs);
             }
         }
-        // cannot resolve - default to UnknownType;
-        return UnknownType.class;
+        // cannot resolve - default to UnknownGenericType;
+        return UnknownGenericType.class;
     }
 
-    public static class UnknownType {
+    public static class UnknownGenericType {
     }
 }

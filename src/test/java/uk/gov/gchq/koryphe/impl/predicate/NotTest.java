@@ -127,7 +127,7 @@ public class NotTest extends PredicateTest {
         assertFalse(input.assignable(Integer.class).isValid());
         assertFalse(input.assignable(Double.class, Integer.class).isValid());
 
-        assertArrayEquals(new Class[]{Signature.UnknownType.class}, input.getClasses());
+        assertArrayEquals(new Class[]{Signature.UnknownGenericType.class}, input.getClasses());
         assertNull(input.getNumClasses());
     }
 }

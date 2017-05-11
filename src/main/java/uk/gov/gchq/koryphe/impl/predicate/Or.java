@@ -60,41 +60,41 @@ public class Or<I> extends PredicateComposite<I, Predicate<I>> {
                 .toString();
     }
 
-    public static class Builder {
-        private final Or orComposite;
+    public static class Builder<I> {
+        private final Or<I> or;
 
         public Builder() {
-            this(new Or());
+            this(new Or<>());
         }
 
-        private Builder(final Or orComposite) {
-            this.orComposite = orComposite;
+        private Builder(final Or<I> or) {
+            this.or = or;
         }
 
-        public Or.SelectedBuilder select(final Integer... selection) {
+        public Or.SelectedBuilder<I> select(final Integer... selection) {
             final IntegerTupleAdaptedPredicate current = new IntegerTupleAdaptedPredicate();
             current.setSelection(selection);
-            return new Or.SelectedBuilder(orComposite, current);
+            return new Or.SelectedBuilder<>(or, current);
         }
 
-        public Or build() {
-            return orComposite;
+        public Or<I> build() {
+            return or;
         }
     }
 
-    public static final class SelectedBuilder {
-        private final Or orComposite;
+    public static final class SelectedBuilder<I> {
+        private final Or<I> or;
         private final IntegerTupleAdaptedPredicate current;
 
-        private SelectedBuilder(final Or orComposite, final IntegerTupleAdaptedPredicate current) {
-            this.orComposite = orComposite;
+        private SelectedBuilder(final Or<I> or, final IntegerTupleAdaptedPredicate current) {
+            this.or = or;
             this.current = current;
         }
 
-        public Or.Builder execute(final Predicate function) {
+        public Or.Builder<I> execute(final Predicate function) {
             current.setPredicate(function);
-            orComposite.getComponents().add(current);
-            return new Or.Builder(orComposite);
+            or.getComponents().add((Predicate) current);
+            return new Or.Builder<>(or);
         }
     }
 }

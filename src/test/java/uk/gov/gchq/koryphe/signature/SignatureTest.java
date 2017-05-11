@@ -192,7 +192,7 @@ public class SignatureTest {
         assertFalse(input.assignable(Integer.class, Collection.class).isValid());
         assertFalse(input.assignable(Double.class).isValid());
 
-        assertArrayEquals(new Class[]{Signature.UnknownType.class}, input.getClasses());
+        assertArrayEquals(new Class[]{Signature.UnknownGenericType.class}, input.getClasses());
         assertNull(input.getNumClasses());
     }
 }
