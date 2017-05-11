@@ -27,14 +27,13 @@ import java.util.function.Function;
  * A <code>TupleAdaptedFunction</code> adapts a {@link Function} so it can be applied to selected
  * fields from a {@link Tuple}, projecting it's output back into the tuple.
  *
- * @param <R> Reference type used by tuples
+ * @param <R>  Reference type used by tuples
  * @param <FI> Input type of the Function
  * @param <FO> Output type of the Function
- *
  * @see TupleInputAdapter
  * @see TupleOutputAdapter
  */
-public final class TupleAdaptedFunction<R, FI, FO> extends AdaptedFunction<Tuple<R>, FI, FO, Tuple<R>> {
+public class TupleAdaptedFunction<R, FI, FO> extends AdaptedFunction<Tuple<R>, FI, FO, Tuple<R>> {
     /**
      * Default - for serialisation.
      */
@@ -52,8 +51,7 @@ public final class TupleAdaptedFunction<R, FI, FO> extends AdaptedFunction<Tuple
         return getInputAdapter().getSelection();
     }
 
-    @SafeVarargs
-    public final void setSelection(final R... selection) {
+    public void setSelection(final R[] selection) {
         getInputAdapter().setSelection(selection);
     }
 
@@ -61,8 +59,7 @@ public final class TupleAdaptedFunction<R, FI, FO> extends AdaptedFunction<Tuple
         return getOutputAdapter().getProjection();
     }
 
-    @SafeVarargs
-    public final void setProjection(final R... fields) {
+    public void setProjection(final R[] fields) {
         getOutputAdapter().setProjection(fields);
     }
 

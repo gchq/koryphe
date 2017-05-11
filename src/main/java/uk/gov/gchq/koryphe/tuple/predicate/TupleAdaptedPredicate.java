@@ -26,12 +26,11 @@ import java.util.function.Predicate;
  * A <code>TupleAdaptedPredicate</code> adapts a {@link Predicate} so it can be applied to selected
  * fields from a {@link Tuple}.
  *
- * @param <R> Reference type used by tuples
+ * @param <R>  Reference type used by tuples
  * @param <PI> Input type of the Predicate
- *
  * @see TupleInputAdapter
  */
-public final class TupleAdaptedPredicate<R, PI> extends AdaptedPredicate<Tuple<R>, PI> {
+public class TupleAdaptedPredicate<R, PI> extends AdaptedPredicate<Tuple<R>, PI> {
     /**
      * Default constructor - for serialisation.
      */
@@ -39,8 +38,7 @@ public final class TupleAdaptedPredicate<R, PI> extends AdaptedPredicate<Tuple<R
         setInputAdapter(new TupleInputAdapter<>());
     }
 
-    @SafeVarargs
-    public TupleAdaptedPredicate(final Predicate<PI> predicate, final R... selection) {
+    public TupleAdaptedPredicate(final Predicate<PI> predicate, final R[] selection) {
         this();
         setPredicate(predicate);
         setSelection(selection);
@@ -50,8 +48,7 @@ public final class TupleAdaptedPredicate<R, PI> extends AdaptedPredicate<Tuple<R
         return getInputAdapter().getSelection();
     }
 
-    @SafeVarargs
-    public final void setSelection(final R... selection) {
+    public void setSelection(final R[] selection) {
         getInputAdapter().setSelection(selection);
     }
 

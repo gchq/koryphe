@@ -18,6 +18,7 @@ package uk.gov.gchq.koryphe;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Collections;
@@ -29,6 +30,13 @@ public class ValidationResult {
 
     private boolean isValid = true;
     private Set<String> errors;
+
+    public ValidationResult() {
+    }
+
+    public ValidationResult(final String errorMsg) {
+        addError(errorMsg);
+    }
 
     public void addError(final String msg) {
         isValid = false;
@@ -92,5 +100,13 @@ public class ValidationResult {
     @JsonIgnore
     public String getErrorString() {
         return "Validation errors: " + System.lineSeparator() + StringUtils.join(getErrors(), System.lineSeparator());
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("isInputValid", isValid)
+                .append("errors", errors)
+                .build();
     }
 }

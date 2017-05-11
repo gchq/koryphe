@@ -16,6 +16,7 @@
 
 package uk.gov.gchq.koryphe.tuple;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.Arrays;
 import java.util.function.BiFunction;
 
@@ -38,8 +39,7 @@ public class TupleOutputAdapter<R, FO> implements BiFunction<Tuple<R>, FO, Tuple
      *
      * @param projection Field references.
      */
-    @SafeVarargs
-    public TupleOutputAdapter(final R... projection) {
+    public TupleOutputAdapter(final R[] projection) {
         setProjection(projection);
     }
 
@@ -68,8 +68,8 @@ public class TupleOutputAdapter<R, FO> implements BiFunction<Tuple<R>, FO, Tuple
      *
      * @param projection Field references.
      */
-    @SafeVarargs
-    public final void setProjection(final R... projection) {
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "Cloning the array would be expensive - we will have to reply on users not modifying the array")
+    public void setProjection(final R[] projection) {
         if (null == projection) {
             this.projection = (R[]) new Object[0];
         } else {

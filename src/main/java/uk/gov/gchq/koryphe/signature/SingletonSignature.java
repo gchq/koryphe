@@ -24,18 +24,33 @@ import java.util.Arrays;
  */
 public class SingletonSignature extends Signature {
     private final Object input;
+    private final boolean isInput;
     private Class<?> type;
 
-    SingletonSignature(final Object input, final Class type) {
+    SingletonSignature(final Object input, final Class type, final boolean isInput) {
         this.input = input;
         this.type = type;
+        this.isInput = isInput;
     }
 
     @Override
-    public ValidationResult assignable(final boolean reverse, final Class<?>... arguments) {
+    public ValidationResult assignable(final Class<?>... arguments) {
+        if (isInput) {
+            if (input instanceof InputValidator) {
+                return ((InputValidator) input).isInputValid(arguments);
+            }
+        } else if (input instanceof OutputValidator) {
+            return ((OutputValidator) input).isOutputValid(arguments);
+        }
+
         final ValidationResult result = new ValidationResult();
         if (type == null) {
             result.addError("Type could not be extracted from function " + input.getClass().getName());
+            return result;
+        }
+
+        if (UnknownGenericType.class.equals(type)) {
+            // unknown type so anything is assignable
             return result;
         }
 
@@ -45,13 +60,7 @@ public class SingletonSignature extends Signature {
             return result;
         }
 
-        final boolean isAssignable;
-        if (reverse) {
-            isAssignable = arguments[0].isAssignableFrom(type);
-        } else {
-            isAssignable = type.isAssignableFrom(arguments[0]);
-        }
-
+        final boolean isAssignable = type.isAssignableFrom(arguments[0]);
         if (!isAssignable) {
             result.addError("Incompatible types. " + input.getClass().getName() + ": [" + type
                     + "], arguments: " + Arrays.toString(arguments));
@@ -62,5 +71,10 @@ public class SingletonSignature extends Signature {
     @Override
     public Class[] getClasses() {
         return new Class[]{type};
+    }
+
+    @Override
+    public Integer getNumClasses() {
+        return UnknownGenericType.class.equals(type) ? null : 1;
     }
 }

@@ -21,6 +21,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import uk.gov.gchq.koryphe.ValidationResult;
+import uk.gov.gchq.koryphe.signature.InputValidator;
+import uk.gov.gchq.koryphe.signature.Signature;
 import java.util.function.Predicate;
 
 /**
@@ -29,7 +32,7 @@ import java.util.function.Predicate;
  * @param <I> Type of input to be validated
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
-public final class Not<I> implements Predicate<I> {
+public class Not<I> implements Predicate<I>, InputValidator {
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
     private Predicate<I> predicate;
 
@@ -82,5 +85,14 @@ public final class Not<I> implements Predicate<I> {
         return new ToStringBuilder(this)
                 .append("predicate", predicate)
                 .toString();
+    }
+
+    @Override
+    public ValidationResult isInputValid(final Class<?>... arguments) {
+        if (null == predicate) {
+            return new ValidationResult();
+        }
+
+        return Signature.getInputSignature(predicate).assignable(arguments);
     }
 }

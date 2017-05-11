@@ -38,6 +38,10 @@ public abstract class NumericAggregateFunction extends KorypheBinaryOperator<Num
             return aggregateLong((Long) a, (Long) b);
         } else if (a instanceof Double) {
             return aggregateDouble((Double) a, (Double) b);
+        } else if (a instanceof Float) {
+            return aggregateFloat((Float) a, (Float) b);
+        } else if (a instanceof Short) {
+            return aggregateShort((Short) a, (Short) b);
         }
 
         return null;
@@ -48,4 +52,8 @@ public abstract class NumericAggregateFunction extends KorypheBinaryOperator<Num
     protected abstract Long aggregateLong(final Long a, final Long b);
 
     protected abstract Double aggregateDouble(final Double a, final Double b);
+
+    protected abstract Float aggregateFloat(final Float a, final Float b);
+
+    protected abstract Short aggregateShort(final Short a, final Short b);
 }
