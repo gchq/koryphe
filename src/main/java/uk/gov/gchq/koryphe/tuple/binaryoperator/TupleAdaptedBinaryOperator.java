@@ -51,7 +51,7 @@ public class TupleAdaptedBinaryOperator<R, OT> extends AdaptedBinaryOperator<Tup
         return getInputAdapter().getSelection();
     }
 
-    public void setSelection(final R[] selection) {
+    public void setSelection(final R... selection) {
         getInputAdapter().setSelection(selection);
         getOutputAdapter().setProjection(selection);
     }

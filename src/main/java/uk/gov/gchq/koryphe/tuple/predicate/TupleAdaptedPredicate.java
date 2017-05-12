@@ -48,7 +48,7 @@ public class TupleAdaptedPredicate<R, PI> extends AdaptedPredicate<Tuple<R>, PI>
         return getInputAdapter().getSelection();
     }
 
-    public void setSelection(final R[] selection) {
+    public void setSelection(final R... selection) {
         getInputAdapter().setSelection(selection);
     }
 

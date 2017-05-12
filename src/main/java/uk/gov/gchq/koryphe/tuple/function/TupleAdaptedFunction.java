@@ -51,7 +51,7 @@ public class TupleAdaptedFunction<R, FI, FO> extends AdaptedFunction<Tuple<R>, F
         return getInputAdapter().getSelection();
     }
 
-    public void setSelection(final R[] selection) {
+    public void setSelection(final R... selection) {
         getInputAdapter().setSelection(selection);
     }
 
@@ -59,7 +59,7 @@ public class TupleAdaptedFunction<R, FI, FO> extends AdaptedFunction<Tuple<R>, F
         return getOutputAdapter().getProjection();
     }
 
-    public void setProjection(final R[] fields) {
+    public void setProjection(final R... fields) {
         getOutputAdapter().setProjection(fields);
     }
 
