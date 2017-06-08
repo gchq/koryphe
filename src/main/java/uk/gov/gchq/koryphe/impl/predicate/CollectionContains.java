@@ -16,6 +16,7 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -37,6 +38,7 @@ public class CollectionContains extends KoryphePredicate<Collection<?>> {
         this.value = value;
     }
 
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
     public Object getValue() {
         return value;
     }

@@ -19,6 +19,7 @@ package uk.gov.gchq.koryphe.impl.predicate;
 import org.junit.Before;
 import org.junit.Test;
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
+import uk.gov.gchq.koryphe.util.CustomObj;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class CollectionContainsTest extends PredicateTest {
-    private static final String VALUE1 = "value1";
+    private static final CustomObj VALUE1 = new CustomObj();
     private static final String VALUE2 = "value2";
 
     private final List<Object> list = new ArrayList<>();
@@ -127,7 +128,7 @@ public class CollectionContainsTest extends PredicateTest {
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
                 "  \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.CollectionContains\",%n" +
-                "  \"value\" : \"value1\"%n" +
+                "  \"value\" : {\"class\":\"uk.gov.gchq.koryphe.util.CustomObj\", \"value\":\"1\"}%n" +
                 "}"), json);
 
         // When 2

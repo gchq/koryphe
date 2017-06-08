@@ -16,14 +16,16 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
+import com.google.common.collect.Sets;
 import org.junit.Test;
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
+import uk.gov.gchq.koryphe.util.CustomObj;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -56,7 +58,7 @@ public class IsInTest extends PredicateTest {
     @Test
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
-        final Object[] controlData = {1, 2, 3};
+        final Object[] controlData = {1, new CustomObj(), 3};
         final IsIn filter = new IsIn(Arrays.asList(controlData));
 
         // When
@@ -65,7 +67,7 @@ public class IsInTest extends PredicateTest {
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
                 "  \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.IsIn\",%n" +
-                "  \"values\" : [ 1, 2, 3 ]%n" +
+                "  \"values\" : [ 1, {\"uk.gov.gchq.koryphe.util.CustomObj\":{\"value\":\"1\"}}, 3 ]%n" +
                 "}"), json);
 
         // When 2
@@ -73,7 +75,7 @@ public class IsInTest extends PredicateTest {
 
         // Then 2
         assertNotNull(deserialisedFilter);
-        assertArrayEquals(controlData, deserialisedFilter.getAllowedValuesArray());
+        assertEquals(Sets.newHashSet(controlData), deserialisedFilter.getAllowedValues());
     }
 
     @Override
@@ -83,6 +85,6 @@ public class IsInTest extends PredicateTest {
 
     @Override
     protected IsIn getInstance() {
-        return new IsIn(Collections.singletonList((Object) "someValue"));
+        return new IsIn(Collections.singletonList("someValue"));
     }
 }
