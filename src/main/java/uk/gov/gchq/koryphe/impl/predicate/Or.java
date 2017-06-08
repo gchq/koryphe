@@ -20,7 +20,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import uk.gov.gchq.koryphe.predicate.PredicateComposite;
+import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.tuple.predicate.IntegerTupleAdaptedPredicate;
+import uk.gov.gchq.koryphe.tuple.predicate.TupleAdaptedPredicate;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -46,8 +48,19 @@ public class Or<I> extends PredicateComposite<I, Predicate<I>> {
     @Override
     public boolean test(final I input) {
         for (final Predicate<I> predicate : components) {
-            if (predicate.test(input)) {
-                return true;
+            try {
+                if (predicate.test(input)) {
+                    return true;
+                }
+            } catch (final ClassCastException e) {
+                // This may occur if the predicate was given a tuple1 and the tuple1 was automatically unpacked.
+                if (predicate instanceof TupleAdaptedPredicate && !(input instanceof Tuple)) {
+                    if (((TupleAdaptedPredicate) predicate).getPredicate().test(input)) {
+                        return true;
+                    }
+                } else {
+                    throw e;
+                }
             }
         }
         return false;
