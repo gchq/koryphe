@@ -16,7 +16,7 @@
 package uk.gov.gchq.koryphe.util;
 
 public final class CustomObj implements Comparable<CustomObj> {
-    public String value = "1";
+    public final String value = "1";
 
     @Override
     public boolean equals(final Object o) {
