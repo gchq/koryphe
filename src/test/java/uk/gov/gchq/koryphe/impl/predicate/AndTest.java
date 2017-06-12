@@ -18,6 +18,7 @@ package uk.gov.gchq.koryphe.impl.predicate;
 
 import org.junit.Test;
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
+import uk.gov.gchq.koryphe.tuple.ArrayTuple;
 import uk.gov.gchq.koryphe.tuple.predicate.IntegerTupleAdaptedPredicate;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
@@ -96,6 +97,43 @@ public class AndTest extends PredicateTest {
         verify(func1).test("value");
         verify(func2).test("value");
         verify(func3, never()).test("value");
+    }
+
+    @Test
+    public void shouldHandlePredicateWhenConstructedWithASingleSelection() {
+        // Given
+        final And and = new And<>(
+                new Exists(),
+                new IsA(String.class),
+                new IsEqual("test")
+        );
+
+        // When
+        final boolean result = and.test("test");
+
+        // Then
+        assertTrue(result);
+    }
+
+    @Test
+    public void shouldHandlePredicateWhenBuiltAndWithASingleSelection() {
+        // Given
+        final And and = new And.Builder<String>()
+                .select(0)
+                .execute(new Exists())
+                .select(0)
+                .execute(new IsA(String.class))
+                .select(0)
+                .execute(new IsEqual("test"))
+                .build();
+
+        // When
+        final boolean result = and.test("test");
+        final boolean tupleResult = and.test(new ArrayTuple("test"));
+
+        // Then
+        assertTrue(result);
+        assertTrue(tupleResult);
     }
 
     @Test
