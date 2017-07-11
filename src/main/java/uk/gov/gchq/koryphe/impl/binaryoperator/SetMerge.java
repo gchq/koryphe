@@ -23,7 +23,7 @@ import java.util.Set;
 public class SetMerge<V> extends KorypheBinaryOperator<Set<V>> {
 
     @Override
-    protected Set<V> _apply(Set<V> a, Set<V> b) {
+    protected Set<V> _apply(final Set<V> a, final Set<V> b) {
         b.forEach((v) -> a.add(v));
         return a;
     }

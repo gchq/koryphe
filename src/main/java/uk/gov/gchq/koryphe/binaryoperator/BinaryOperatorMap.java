@@ -17,7 +17,6 @@
 package uk.gov.gchq.koryphe.binaryoperator;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BinaryOperator;
 
