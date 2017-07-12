@@ -33,8 +33,8 @@ public class BinaryOperatorMapTest {
                 expectedA = i * inA;
                 expectedB = i * inB;
             }
-            given(aggregator.apply(inA, expectedA)).willReturn(inA + (expectedA == null ? 0 : expectedA));
-            given(aggregator.apply(inB, expectedB)).willReturn(inB + (expectedB == null ? 0 : expectedB));
+            given(aggregator.apply(expectedA, inA)).willReturn(inA + (expectedA == null ? 0 : expectedA));
+            given(aggregator.apply(expectedB, inB)).willReturn(inB + (expectedB == null ? 0 : expectedB));
         }
 
         BinaryOperatorMap<String, Integer> mapBinaryOperator = new BinaryOperatorMap<>();
