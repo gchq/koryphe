@@ -24,7 +24,7 @@ public class SetMerge<V> extends KorypheBinaryOperator<Set<V>> {
 
     @Override
     protected Set<V> _apply(final Set<V> a, final Set<V> b) {
-        b.forEach((v) -> a.add(v));
+        a.addAll(b);
         return a;
     }
 }

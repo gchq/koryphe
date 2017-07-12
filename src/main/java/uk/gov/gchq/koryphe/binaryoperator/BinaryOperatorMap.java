@@ -59,8 +59,8 @@ public class BinaryOperatorMap<K, T> extends KorypheBinaryOperator<Map<K, T>> {
     @Override
     public Map<K, T> _apply(final Map<K, T> state, final Map<K, T> input) {
         for (final Map.Entry<K, T> entry : input.entrySet()) {
-            T currentState = state.get(entry.getKey());
-            state.put(entry.getKey(), (T) binaryOperator.apply(entry.getValue(), currentState));
+            final T newValue = (T) binaryOperator.apply(state.get(entry.getKey()), entry.getValue());
+            state.put(entry.getKey(), newValue);
         }
         return state;
     }
