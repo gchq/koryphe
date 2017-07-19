@@ -19,6 +19,11 @@ package uk.gov.gchq.koryphe.impl.binaryoperator;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
 
+/**
+ * A <code>Or</code> is a {@link uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator}
+ * which takes two {@link java.lang.Boolean}s and returns the result of applying
+ * the logical OR operation on the inputs.
+ */
 public class Or extends KorypheBinaryOperator<Boolean> {
 
     @Override

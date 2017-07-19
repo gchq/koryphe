@@ -18,6 +18,11 @@ package uk.gov.gchq.koryphe.impl.binaryoperator;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
 
+/**
+ * A <code>And</code> is a {@link uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator}
+ * which takes two {@link java.lang.Boolean}s and returns the result of applying
+ * the logical AND operation on the inputs.
+ */
 public class And extends KorypheBinaryOperator<Boolean>{
 
     @Override
