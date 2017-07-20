@@ -17,6 +17,10 @@ package uk.gov.gchq.koryphe.impl.function;
 
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
+/**
+ * A <code>ToString</code> is a {@link java.util.function.Function} that takes in
+ * an object (null or otherwise), and calls toString on it.
+ */
 public class ToString extends KorypheFunction {
 
     @Override
