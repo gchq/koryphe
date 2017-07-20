@@ -25,6 +25,6 @@ public class ToString extends KorypheFunction {
 
     @Override
     public String apply(final Object o) {
-        return null == o ? "null" : String.valueOf(o);
+        return null == o ? null : String.valueOf(o);
     }
 }

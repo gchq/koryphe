@@ -47,7 +47,7 @@ public class ToStringTest extends FunctionTest {
         String output = ts.apply(null);
 
         // Then
-        assertEquals("null", output);
+        assertEquals(null, output);
 
     }
 
