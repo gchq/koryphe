@@ -16,6 +16,7 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import uk.gov.gchq.koryphe.function.KorypheFunction;
+import java.util.Arrays;
 
 /**
  * A <code>ToString</code> is a {@link java.util.function.Function} that takes in
@@ -25,6 +26,12 @@ public class ToString extends KorypheFunction {
 
     @Override
     public String apply(final Object o) {
-        return null == o ? null : String.valueOf(o);
+        if(null == o){
+            return null;
+        }
+        if(o instanceof Object[]){
+            return Arrays.toString((Object[]) o);
+        }
+        return String.valueOf(o);
     }
 }

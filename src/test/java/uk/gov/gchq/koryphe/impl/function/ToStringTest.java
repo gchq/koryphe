@@ -23,6 +23,7 @@ import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class ToStringTest extends FunctionTest {
 
@@ -39,6 +40,19 @@ public class ToStringTest extends FunctionTest {
     }
 
     @Test
+    public void shouldHandleArray() {
+        // Given
+        final ToString ts = new ToString();
+        final String[] testArray = new String[] {"test", "string"};
+
+        // When
+        String output = ts.apply(testArray);
+
+        // Then
+        assertEquals("[test, string]", output);
+    }
+
+    @Test
     public void shouldHandleNullObject() {
         // Given
         final ToString ts = new ToString();
@@ -47,8 +61,7 @@ public class ToStringTest extends FunctionTest {
         String output = ts.apply(null);
 
         // Then
-        assertEquals(null, output);
-
+        assertNull(output);
     }
 
     @Override
@@ -61,7 +74,7 @@ public class ToStringTest extends FunctionTest {
         return ToString.class;
     }
 
-    @Override
+    @Test
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
         final ToString ts = new ToString();
