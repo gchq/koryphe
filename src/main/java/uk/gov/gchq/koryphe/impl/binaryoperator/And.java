@@ -23,7 +23,7 @@ import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
  * which takes two {@link java.lang.Boolean}s and returns the result of applying
  * the logical AND operation on the inputs.
  */
-public class And extends KorypheBinaryOperator<Boolean>{
+public class And extends KorypheBinaryOperator<Boolean> {
 
     @Override
     protected Boolean _apply(final Boolean a, final Boolean b) {
