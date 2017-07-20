@@ -29,8 +29,8 @@ import java.util.stream.Collectors;
  * An <code>StringDeduplicateConcat</code> is a {@link KorypheBinaryOperator} that takes in
  * {@link String}s, potentially with separators, and concatenates them together, omitting
  * any duplicate substrings.
- * The default separator is a comma, you can set a custom
- * separator using setSeparator(String).
+ * The default separator is a comma, you can set a custom separator
+ * using setSeparator(String).
  */
 public class StringDeduplicateConcat extends KorypheBinaryOperator<String> {
 
@@ -70,7 +70,6 @@ public class StringDeduplicateConcat extends KorypheBinaryOperator<String> {
                 .append(separator, that.separator)
                 .isEquals();
     }
-
 
     @Override
     public int hashCode() {

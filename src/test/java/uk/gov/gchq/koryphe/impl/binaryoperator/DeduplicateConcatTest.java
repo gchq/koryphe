@@ -75,10 +75,10 @@ public class DeduplicateConcatTest extends BinaryOperatorTest {
                 "}"), json);
 
         // When 2
-        final StringDeduplicateConcat deserialisedAggregator =
+        final StringDeduplicateConcat deserialisedOperator =
                 JsonSerialiser.deserialise(json, getFunctionClass());
 
         // Then 2
-        assertNotNull(deserialisedAggregator);
+        assertNotNull(deserialisedOperator);
     }
 }
