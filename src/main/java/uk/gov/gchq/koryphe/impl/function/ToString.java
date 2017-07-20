@@ -26,10 +26,10 @@ public class ToString extends KorypheFunction {
 
     @Override
     public String apply(final Object o) {
-        if(null == o){
+        if (null == o) {
             return null;
         }
-        if(o instanceof Object[]){
+        if (o instanceof Object[]) {
             return Arrays.toString((Object[]) o);
         }
         return String.valueOf(o);
