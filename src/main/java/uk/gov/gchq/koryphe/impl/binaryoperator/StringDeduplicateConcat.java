@@ -15,15 +15,15 @@
  */
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * An <code>StringDeduplicateConcat</code> is a {@link KorypheBinaryOperator} that takes in
@@ -41,10 +41,14 @@ public class StringDeduplicateConcat extends KorypheBinaryOperator<String> {
     protected String _apply(final String a, final String b) {
         final Set<String> set = new LinkedHashSet<>();
 
-        set.addAll(Arrays.asList(a.split(separator)));
-        set.addAll(Arrays.asList(b.split(separator)));
+        if (a != null) {
+            Collections.addAll(set, StringUtils.removeStart(a, separator).split(separator));
+        }
+        if (b != null) {
+            Collections.addAll(set, StringUtils.removeStart(b, separator).split(separator));
+        }
 
-        return set.stream().collect(Collectors.joining(separator));
+        return StringUtils.join(set, separator);
     }
 
     public String getSeparator() {

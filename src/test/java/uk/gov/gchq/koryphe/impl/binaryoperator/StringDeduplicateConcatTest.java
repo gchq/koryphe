@@ -23,7 +23,7 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class DeduplicateConcatTest extends BinaryOperatorTest {
+public class StringDeduplicateConcatTest extends BinaryOperatorTest {
 
     @Test
     public void shouldRemoveDuplicate() {
@@ -35,6 +35,55 @@ public class DeduplicateConcatTest extends BinaryOperatorTest {
 
         // Then
         assertEquals("test,string,success", output);
+    }
+
+    @Test
+    public void shouldHandleTrailingDelimiter() {
+        // Given
+        final StringDeduplicateConcat sdc = new StringDeduplicateConcat();
+
+        // When
+        String output = sdc._apply("test,for,", "trailing,delimiters,");
+
+        // Then
+        assertEquals("test,for,trailing,delimiters", output);
+    }
+
+    @Test
+    public void shouldHandleLeadingDelimiter() {
+        // Given
+        final StringDeduplicateConcat sdc = new StringDeduplicateConcat();
+
+        // When
+        String output = sdc._apply(",test,for", ",leading,delimiters");
+
+        // Then
+        assertEquals("test,for,leading,delimiters", output);
+    }
+
+    @Test
+    public void shouldHandleNullSubstrings() {
+
+        // Given
+        final StringDeduplicateConcat sdc = new StringDeduplicateConcat();
+
+        // When 1
+        String nullString = sdc._apply(null, "test,first");
+
+        // Then 1
+        assertEquals("test,first", nullString);
+
+        // When 2
+        String stringNull = sdc._apply("test,second", null);
+
+        // Then 2
+        assertEquals("test,second", stringNull);
+
+        // When 3
+        String doubleNull = sdc._apply(null, null);
+
+        // Then 3
+        assertEquals("", doubleNull);
     }
 
     @Test
@@ -64,6 +113,7 @@ public class DeduplicateConcatTest extends BinaryOperatorTest {
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
         final StringDeduplicateConcat sdc = new StringDeduplicateConcat();
+        sdc.setSeparator(";");
 
         // When 1
         final String json = JsonSerialiser.serialise(sdc);
@@ -71,7 +121,7 @@ public class DeduplicateConcatTest extends BinaryOperatorTest {
         // Then 1
         JsonSerialiser.assertEquals(String.format("{%n" +
                 "  \"class\" : \"uk.gov.gchq.koryphe.impl.binaryoperator.StringDeduplicateConcat\",%n" +
-                "  \"separator\" : \",\"%n" +
+                "  \"separator\" : \";\"%n" +
                 "}"), json);
 
         // When 2
@@ -79,6 +129,6 @@ public class DeduplicateConcatTest extends BinaryOperatorTest {
                 JsonSerialiser.deserialise(json, getFunctionClass());
 
         // Then 2
-        assertNotNull(deserialisedOperator);
+        assertEquals(";", deserialisedOperator.getSeparator());
     }
 }
