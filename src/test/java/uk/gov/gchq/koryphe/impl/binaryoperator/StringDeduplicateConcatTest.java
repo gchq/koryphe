@@ -68,22 +68,22 @@ public class StringDeduplicateConcatTest extends BinaryOperatorTest {
         final StringDeduplicateConcat sdc = new StringDeduplicateConcat();
 
         // When 1
-        String nullString = sdc._apply(null, "test,first");
+        String nullString = sdc.apply(null, "test,first");
 
         // Then 1
         assertEquals("test,first", nullString);
 
         // When 2
-        String stringNull = sdc._apply("test,second", null);
+        String stringNull = sdc.apply("test,second", null);
 
         // Then 2
         assertEquals("test,second", stringNull);
 
         // When 3
-        String doubleNull = sdc._apply(null, null);
+        String doubleNull = sdc.apply(null, null);
 
         // Then 3
-        assertEquals("", doubleNull);
+        assertEquals(null, doubleNull);
     }
 
     @Test

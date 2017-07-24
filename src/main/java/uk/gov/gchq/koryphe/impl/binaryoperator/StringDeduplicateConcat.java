@@ -24,6 +24,8 @@ import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.regex.Pattern;
+
 
 /**
  * An <code>StringDeduplicateConcat</code> is a {@link KorypheBinaryOperator} that takes in
@@ -36,19 +38,16 @@ public class StringDeduplicateConcat extends KorypheBinaryOperator<String> {
 
     private static final String DEFAULT_SEPARATOR = ",";
     private String separator = DEFAULT_SEPARATOR;
+    private Pattern p = Pattern.compile(DEFAULT_SEPARATOR);
 
     @Override
     protected String _apply(final String a, final String b) {
         final Set<String> set = new LinkedHashSet<>();
 
-        if (a != null) {
-            Collections.addAll(set, StringUtils.removeStart(a, separator).split(separator));
-        }
-        if (b != null) {
-            Collections.addAll(set, StringUtils.removeStart(b, separator).split(separator));
-        }
+        Collections.addAll(set, p.split(StringUtils.removeStart(a, p.pattern())));
+        Collections.addAll(set, p.split(StringUtils.removeStart(b, p.pattern())));
 
-        return StringUtils.join(set, separator);
+        return StringUtils.join(set, p.toString());
     }
 
     public String getSeparator() {
@@ -57,6 +56,7 @@ public class StringDeduplicateConcat extends KorypheBinaryOperator<String> {
 
     public void setSeparator(final String separator) {
         this.separator = separator;
+        p = Pattern.compile(separator);
     }
 
     @Override
