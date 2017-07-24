@@ -44,10 +44,10 @@ public class StringDeduplicateConcat extends KorypheBinaryOperator<String> {
     protected String _apply(final String a, final String b) {
         final Set<String> set = new LinkedHashSet<>();
 
-        Collections.addAll(set, p.split(StringUtils.removeStart(a, p.pattern())));
-        Collections.addAll(set, p.split(StringUtils.removeStart(b, p.pattern())));
+        Collections.addAll(set, p.split(StringUtils.removeStart(a, separator)));
+        Collections.addAll(set, p.split(StringUtils.removeStart(b, separator)));
 
-        return StringUtils.join(set, p.toString());
+        return StringUtils.join(set, separator);
     }
 
     public String getSeparator() {
