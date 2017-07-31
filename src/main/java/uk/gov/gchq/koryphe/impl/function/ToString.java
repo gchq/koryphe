@@ -13,18 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package uk.gov.gchq.koryphe.impl.function;
 
-package uk.gov.gchq.koryphe.impl.binaryoperator;
+import uk.gov.gchq.koryphe.function.KorypheFunction;
+import java.util.Arrays;
 
-import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
-
-import java.util.Set;
-
-public class SetMerge<V> extends KorypheBinaryOperator<Set<V>> {
+/**
+ * A <code>ToString</code> is a {@link java.util.function.Function} that takes in
+ * an object (null or otherwise), and calls toString on it.
+ */
+public class ToString extends KorypheFunction {
 
     @Override
-    protected Set<V> _apply(final Set<V> a, final Set<V> b) {
-        a.addAll(b);
-        return a;
+    public String apply(final Object o) {
+        if (null == o) {
+            return null;
+        }
+        if (o instanceof Object[]) {
+            return Arrays.toString((Object[]) o);
+        }
+        return String.valueOf(o);
     }
 }
