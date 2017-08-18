@@ -20,7 +20,6 @@ import uk.gov.gchq.koryphe.example.annotation.Example;
 import uk.gov.gchq.koryphe.tuple.MapTuple;
 import uk.gov.gchq.koryphe.tuple.Tuple;
 
-import java.lang.annotation.Annotation;
 import java.util.stream.Stream;
 
 public abstract class KorypheExample<I, O> {
@@ -46,15 +45,15 @@ public abstract class KorypheExample<I, O> {
         return null;
     }
 
-    public void printInput(I input) {
+    public void printInput(final I input) {
         printValue(input);
     }
 
-    public void printOutput(O output) {
+    public void printOutput(final O output) {
         printValue(output);
     }
 
-    public void printValue(Object value) {
+    public void printValue(final Object value) {
         if (value instanceof Tuple) {
             printTuple((Tuple) value);
         } else {
@@ -62,11 +61,11 @@ public abstract class KorypheExample<I, O> {
         }
     }
 
-    protected void printTuple(Tuple tuple) {
+    protected void printTuple(final Tuple tuple) {
         System.out.print("{");
         boolean first = true;
-        for (Object value : tuple) {
-            if (! first) {
+        for (final Object value : tuple) {
+            if (!first) {
                 System.out.print(",");
             } else {
                 first = false;
@@ -76,7 +75,7 @@ public abstract class KorypheExample<I, O> {
         System.out.println("}");
     }
 
-    protected Tuple<String> createMapTuple(Object valueA, Object valueB, Object valueC) {
+    protected Tuple<String> createMapTuple(final Object valueA, final Object valueB, final Object valueC) {
         Tuple<String> values = new MapTuple<>();
         values.put("A", valueA);
         values.put("B", valueB);

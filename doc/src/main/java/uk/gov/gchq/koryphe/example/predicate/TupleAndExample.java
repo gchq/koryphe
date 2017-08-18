@@ -18,9 +18,9 @@ package uk.gov.gchq.koryphe.example.predicate;
 
 import uk.gov.gchq.koryphe.example.KoryphePredicateExample;
 import uk.gov.gchq.koryphe.example.annotation.Example;
+import uk.gov.gchq.koryphe.impl.predicate.And;
 import uk.gov.gchq.koryphe.impl.predicate.IsLessThan;
 import uk.gov.gchq.koryphe.impl.predicate.IsMoreThan;
-import uk.gov.gchq.koryphe.impl.predicate.And;
 import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.tuple.predicate.TupleAdaptedPredicate;
 

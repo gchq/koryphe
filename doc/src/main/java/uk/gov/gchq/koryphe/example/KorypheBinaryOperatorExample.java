@@ -34,7 +34,9 @@ public abstract class KorypheBinaryOperatorExample<T> extends KorypheExample<T, 
         System.out.println();
         System.out.println("Binary Operator output: ");
         Optional<T> result = getInput().reduce(getBinaryOperator());
-        if (result.isPresent()) printOutput(result.get());
+        if (result.isPresent()) {
+            printOutput(result.get());
+        }
         System.out.println();
     }
 }

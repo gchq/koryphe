@@ -23,7 +23,9 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.io.IOException;
 
-public class JsonSerialiser {
+public final class JsonSerialiser {
+    private JsonSerialiser() { }
+
     private static final ObjectMapper MAPPER = createObjectMapper();
 
     private static ObjectMapper createObjectMapper() {
@@ -34,15 +36,15 @@ public class JsonSerialiser {
         return mapper;
     }
 
-    public static String serialise(Object object) throws IOException {
+    public static String serialise(final Object object) throws IOException {
         return MAPPER.writeValueAsString(object);
     }
 
-    public static <T> T deserialise(String json, Class<T> type) throws IOException {
+    public static <T> T deserialise(final String json, final Class<T> type) throws IOException {
         return MAPPER.readValue(json, type);
     }
 
-    public static <T> T deserialise(String json, TypeReference<T> typeReference) throws IOException {
+    public static <T> T deserialise(final String json, final TypeReference<T> typeReference) throws IOException {
         return MAPPER.readValue(json, typeReference);
     }
 }
