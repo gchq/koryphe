@@ -22,7 +22,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
 
 /**
- * An <code>StringConcat</code> is a {@link KorypheBinaryOperator} that takes in
+ * A <code>StringConcat</code> is a {@link KorypheBinaryOperator} that takes in
  * {@link String}s and concatenates them together. The default separator is a comma, you can set a custom
  * separator using setSeparator(String).
  */

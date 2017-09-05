@@ -20,7 +20,7 @@ import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
 import java.util.Collection;
 
 /**
- * An <code>CollectionConcat</code> is a {@link KorypheBinaryOperator} that concatenates
+ * A <code>CollectionConcat</code> is a {@link KorypheBinaryOperator} that concatenates
  * {@link java.util.Collection}s together.
  */
 public class CollectionConcat<T> extends KorypheBinaryOperator<Collection<T>> {
