@@ -4,7 +4,7 @@
 
     <groupId>uk.gov.gchq.koryphe</groupId>
     <artifactId>koryphe</artifactId>
-    <version>0.1.4</version>
+    <version>0.1.5-SNAPSHOT</version>
 
     <name>${project.groupId}:${project.artifactId}</name>
     <description>An extensible functions library</description>
