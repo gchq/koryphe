@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 
 
 /**
- * An <code>StringDeduplicateConcat</code> is a {@link KorypheBinaryOperator} that takes in
+ * A <code>StringDeduplicateConcat</code> is a {@link KorypheBinaryOperator} that takes in
  * {@link String}s, potentially with separators, and concatenates them together, omitting
  * any duplicate substrings.
  * The default separator is a comma, you can set a custom separator

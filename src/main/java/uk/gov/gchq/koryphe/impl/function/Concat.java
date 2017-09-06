@@ -22,7 +22,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import uk.gov.gchq.koryphe.tuple.function.KorypheFunction2;
 
 /**
- * An <code>Concat</code> is a {@link java.util.function.Function} that takes in
+ * A <code>Concat</code> is a {@link java.util.function.Function} that takes in
  * two objects and calls toString on them and concatenates them together. The default separator is a comma,
  * you can set a custom separator using setSeparator(String).
  */

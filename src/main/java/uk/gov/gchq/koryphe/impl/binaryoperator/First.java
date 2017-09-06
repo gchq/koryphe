@@ -19,7 +19,7 @@ package uk.gov.gchq.koryphe.impl.binaryoperator;
 import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
 
 /**
- * An <code>First</code> is a {@link KorypheBinaryOperator} that assumes the
+ * A <code>First</code> is a {@link KorypheBinaryOperator} that assumes the
  * value will never change and just returns the first non null value it gets.
  */
 public class First extends KorypheBinaryOperator<Object> {
