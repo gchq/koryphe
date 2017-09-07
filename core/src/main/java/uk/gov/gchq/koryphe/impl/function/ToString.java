@@ -13,18 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package uk.gov.gchq.koryphe.impl.function;
 
-package uk.gov.gchq.koryphe.impl.binaryoperator;
-
-import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
+import uk.gov.gchq.koryphe.function.KorypheFunction;
+import java.util.Arrays;
 
 /**
- * A <code>First</code> is a {@link KorypheBinaryOperator} that assumes the
- * value will never change and just returns the first non null value it gets.
+ * A <code>ToString</code> is a {@link java.util.function.Function} that takes in
+ * an object (null or otherwise), and calls toString on it.
  */
-public class First extends KorypheBinaryOperator<Object> {
+public class ToString extends KorypheFunction {
+
     @Override
-    protected Object _apply(final Object a, final Object b) {
-        return a;
+    public String apply(final Object o) {
+        if (null == o) {
+            return null;
+        }
+        if (o instanceof Object[]) {
+            return Arrays.toString((Object[]) o);
+        }
+        return String.valueOf(o);
     }
 }

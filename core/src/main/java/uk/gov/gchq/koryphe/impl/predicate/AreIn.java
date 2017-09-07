@@ -62,6 +62,7 @@ public class AreIn extends KoryphePredicate<Collection<?>> {
         return null != allowedValues ? allowedValues.toArray() : new Object[0];
     }
 
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
     @JsonProperty("values")
     public void setAllowedValues(final Object[] allowedValuesArray) {
         if (null != allowedValuesArray) {

@@ -17,7 +17,6 @@
 package uk.gov.gchq.koryphe.binaryoperator;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BinaryOperator;
 
@@ -29,7 +28,7 @@ import java.util.function.BinaryOperator;
  */
 public class BinaryOperatorMap<K, T> extends KorypheBinaryOperator<Map<K, T>> {
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
-    private BinaryOperator<T> binaryOperator;
+    private BinaryOperator<? super T> binaryOperator;
 
     /**
      * Default - for serialisation.
@@ -37,15 +36,15 @@ public class BinaryOperatorMap<K, T> extends KorypheBinaryOperator<Map<K, T>> {
     public BinaryOperatorMap() {
     }
 
-    public BinaryOperatorMap(final BinaryOperator<T> binaryOperator) {
+    public BinaryOperatorMap(final BinaryOperator<? super T> binaryOperator) {
         setBinaryOperator(binaryOperator);
     }
 
-    public void setBinaryOperator(final BinaryOperator<T> binaryOperator) {
+    public void setBinaryOperator(final BinaryOperator<? super T> binaryOperator) {
         this.binaryOperator = binaryOperator;
     }
 
-    public BinaryOperator<T> getBinaryOperator() {
+    public BinaryOperator<? super T> getBinaryOperator() {
         return binaryOperator;
     }
 
@@ -59,15 +58,10 @@ public class BinaryOperatorMap<K, T> extends KorypheBinaryOperator<Map<K, T>> {
      */
     @Override
     public Map<K, T> _apply(final Map<K, T> state, final Map<K, T> input) {
-        if (input == null) {
-            return state;
-        } else {
-            final Map<K, T> output = state == null ? new HashMap<>() : state;
-            for (final Map.Entry<K, T> entry : input.entrySet()) {
-                T currentState = output.get(entry.getKey());
-                output.put(entry.getKey(), binaryOperator.apply(entry.getValue(), currentState));
-            }
-            return output;
+        for (final Map.Entry<K, T> entry : input.entrySet()) {
+            final T newValue = (T) binaryOperator.apply(state.get(entry.getKey()), entry.getValue());
+            state.put(entry.getKey(), newValue);
         }
+        return state;
     }
 }

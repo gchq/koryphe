@@ -16,15 +16,24 @@
 
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
 
 /**
- * A <code>First</code> is a {@link KorypheBinaryOperator} that assumes the
- * value will never change and just returns the first non null value it gets.
+ * An <code>Or</code> is a {@link KorypheBinaryOperator}
+ * which takes two {@link Boolean}s and returns the result of applying
+ * the logical OR operation on the inputs.
  */
-public class First extends KorypheBinaryOperator<Object> {
+public class Or extends KorypheBinaryOperator<Boolean> {
+
     @Override
-    protected Object _apply(final Object a, final Object b) {
-        return a;
+    protected Boolean _apply(final Boolean a, final Boolean b) {
+        return a || b;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .toString();
     }
 }

@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 import uk.gov.gchq.koryphe.ValidationResult;
 
 /**
- * An <code>Min</code> is a {@link java.util.function.BinaryOperator} that takes in
+ * A <code>Sum</code> is a {@link java.util.function.BinaryOperator} that takes in
  * {@link Number}s of the same type and calculates the sum.
  * If you know the type of number that will be used then this can be set by calling setMode(NumberType),
  * otherwise it will be automatically set for you using the class of the first number passed in.

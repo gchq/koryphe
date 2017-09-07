@@ -21,6 +21,8 @@ import uk.gov.gchq.koryphe.ValidationResult;
 import uk.gov.gchq.koryphe.composite.Composite;
 import uk.gov.gchq.koryphe.signature.InputValidator;
 import uk.gov.gchq.koryphe.signature.Signature;
+import uk.gov.gchq.koryphe.tuple.Tuple;
+import uk.gov.gchq.koryphe.tuple.predicate.TupleAdaptedPredicate;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -57,8 +59,19 @@ public class PredicateComposite<I, C extends Predicate<I>> extends Composite<C> 
     @Override
     public boolean test(final I input) {
         for (final C predicate : components) {
-            if (!predicate.test(input)) {
-                return false;
+            try {
+                if (!predicate.test(input)) {
+                    return false;
+                }
+            } catch (final ClassCastException e) {
+                // This may occur if the predicate was given a tuple1 and the tuple1 was automatically unpacked.
+                if (predicate instanceof TupleAdaptedPredicate && !(input instanceof Tuple)) {
+                    if (!((TupleAdaptedPredicate) predicate).getPredicate().test(input)) {
+                        return false;
+                    }
+                } else {
+                    throw e;
+                }
             }
         }
         return true;

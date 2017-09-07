@@ -18,9 +18,11 @@ package uk.gov.gchq.koryphe.impl.predicate;
 
 import org.junit.Test;
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
+import uk.gov.gchq.koryphe.util.CustomObj;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -57,7 +59,8 @@ public class IsEqualTest extends PredicateTest {
     @Test
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
-        final IsEqual filter = new IsEqual("test");
+        final CustomObj controlValue = new CustomObj();
+        final IsEqual filter = new IsEqual(controlValue);
 
         // When
         final String json = JsonSerialiser.serialise(filter);
@@ -65,7 +68,7 @@ public class IsEqualTest extends PredicateTest {
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
                 "  \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.IsEqual\",%n" +
-                "  \"value\" : \"test\"%n" +
+                "  \"value\" : {\"uk.gov.gchq.koryphe.util.CustomObj\":{\"value\":\"1\"}}%n" +
                 "}"), json);
 
         // When 2
@@ -73,6 +76,7 @@ public class IsEqualTest extends PredicateTest {
 
         // Then 2
         assertNotNull(deserialisedFilter);
+        assertEquals(controlValue, deserialisedFilter.getControlValue());
     }
 
     @Override

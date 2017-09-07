@@ -20,7 +20,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
 
 /**
- * An <code>NumericAggregateFunction</code> is a {@link KorypheBinaryOperator} that takes in
+ * A <code>NumericAggregateFunction</code> is a {@link KorypheBinaryOperator} that takes in
  * {@link Number}s of the same type and processes the number in some way. To implement this class just
  * implement the init methods and aggregate methods for the different number types.
  * If you know the type of number that will be used then this can be set by calling setMode(NumberType),

@@ -19,7 +19,7 @@ package uk.gov.gchq.koryphe.impl.binaryoperator;
 import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
 
 /**
- * An <code>Max</code> is a {@link KorypheBinaryOperator} that takes in
+ * A <code>Max</code> is a {@link KorypheBinaryOperator} that takes in
  * {@link Comparable}s and calculates the maximum comparable. It assumes that all the input comparables
  * are compatible and can be compared against each other.
  */

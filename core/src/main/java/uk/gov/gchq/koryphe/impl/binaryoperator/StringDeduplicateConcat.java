@@ -13,37 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package uk.gov.gchq.koryphe.impl.binaryoperator;
 
-package uk.gov.gchq.koryphe.impl.function;
-
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import uk.gov.gchq.koryphe.tuple.function.KorypheFunction2;
+import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
+
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.regex.Pattern;
+
 
 /**
- * A <code>Concat</code> is a {@link java.util.function.Function} that takes in
- * two objects and calls toString on them and concatenates them together. The default separator is a comma,
- * you can set a custom separator using setSeparator(String).
+ * A <code>StringDeduplicateConcat</code> is a {@link KorypheBinaryOperator} that takes in
+ * {@link String}s, potentially with separators, and concatenates them together, omitting
+ * any duplicate substrings.
+ * The default separator is a comma, you can set a custom separator
+ * using setSeparator(String).
  */
-public class Concat extends KorypheFunction2<Object, Object, String> {
+public class StringDeduplicateConcat extends KorypheBinaryOperator<String> {
+
     private static final String DEFAULT_SEPARATOR = ",";
     private String separator = DEFAULT_SEPARATOR;
+    private Pattern p = Pattern.compile(DEFAULT_SEPARATOR);
 
     @Override
-    public String apply(final Object input1, final Object input2) {
-        if (null == input1) {
-            if (null == input2) {
-                return null;
-            }
-            return String.valueOf(input2);
-        }
+    protected String _apply(final String a, final String b) {
+        final Set<String> set = new LinkedHashSet<>();
 
-        if (null == input2) {
-            return String.valueOf(input1);
-        }
+        Collections.addAll(set, p.split(StringUtils.removeStart(a, separator)));
+        Collections.addAll(set, p.split(StringUtils.removeStart(b, separator)));
 
-        return input1 + separator + input2;
+        return StringUtils.join(set, separator);
     }
 
     public String getSeparator() {
@@ -52,6 +56,7 @@ public class Concat extends KorypheFunction2<Object, Object, String> {
 
     public void setSeparator(final String separator) {
         this.separator = separator;
+        p = Pattern.compile(separator);
     }
 
     @Override
@@ -60,14 +65,13 @@ public class Concat extends KorypheFunction2<Object, Object, String> {
             return true;
         }
 
-        if (obj == null || getClass() != obj.getClass()) {
+        if (null == obj || !getClass().equals(obj.getClass())) {
             return false;
         }
 
-        final Concat concat = (Concat) obj;
-
+        final StringDeduplicateConcat that = (StringDeduplicateConcat) obj;
         return new EqualsBuilder()
-                .append(separator, concat.separator)
+                .append(separator, that.separator)
                 .isEquals();
     }
 
