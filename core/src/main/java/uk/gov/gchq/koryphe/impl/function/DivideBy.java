@@ -19,6 +19,13 @@ package uk.gov.gchq.koryphe.impl.function;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 import uk.gov.gchq.koryphe.tuple.n.Tuple2;
 
+/**
+ * A <code>DivideBy</code> is a {@link java.util.function.Function} that takes in
+ * an {@link Integer} and returns the result of dividing this integer by a pre-configured
+ * value.
+ *
+ * The resulting object is a {@link Tuple2} containing the quotient and remainder.
+ */
 public class DivideBy extends KorypheFunction<Integer, Tuple2<Integer, Integer>> {
     private int by = 1;
 

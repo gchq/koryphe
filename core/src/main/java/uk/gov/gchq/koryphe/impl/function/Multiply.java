@@ -18,6 +18,10 @@ package uk.gov.gchq.koryphe.impl.function;
 
 import uk.gov.gchq.koryphe.tuple.function.KorypheFunction2;
 
+/**
+ * A <code>Multiply</code> is a {@link java.util.function.Function} that takes in
+ * two {@link Integer}s and returns the result of multiplying the first by the second.
+ */
 public class Multiply extends KorypheFunction2<Integer, Integer, Integer> {
     @Override
     public Integer apply(final Integer input1, final Integer input2) {

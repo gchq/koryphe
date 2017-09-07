@@ -19,6 +19,12 @@ package uk.gov.gchq.koryphe.impl.function;
 import uk.gov.gchq.koryphe.tuple.function.KorypheFunction2;
 import uk.gov.gchq.koryphe.tuple.n.Tuple2;
 
+/**
+ * A <code>Divide</code> is a {@link java.util.function.Function} that takes in
+ * two {@link Integer}s and returns the result of dividing the first by the second.
+ *
+ * The resulting object is a {@link Tuple2} containing the quotient and remainder.
+ */
 public class Divide extends KorypheFunction2<Integer, Integer, Tuple2<Integer, Integer>> {
     @Override
     public Tuple2<Integer, Integer> apply(final Integer input1, final Integer input2) {

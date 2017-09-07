@@ -18,6 +18,11 @@ package uk.gov.gchq.koryphe.impl.function;
 
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
+/**
+ * A <code>MultiplyBy</code> is a {@link java.util.function.Function} that takes in
+ * an {@link Integer} and returns the result of multiplying this integer by a pre-configured
+ * value.
+ */
 public class MultiplyBy extends KorypheFunction<Integer, Integer> {
     private int by = 1;
 
