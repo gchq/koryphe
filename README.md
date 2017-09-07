@@ -12,6 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
+<img src="logos/koryphe_logo_text.png" width="300">
+
 # Koryphe
 
 Koryphe is an extensible functions library for filtering, aggregating and transforming data based on the Java Function API. It provides:
