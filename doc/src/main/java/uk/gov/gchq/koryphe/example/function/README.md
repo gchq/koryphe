@@ -18,7 +18,7 @@ limitations under the License.
 
 In it's simplest form, Koryphe works the same as the Java Function API - it shows a single function being applied to a single input.
 
-<img src="simpleSingleInputSingleOutputFunction.png" width="600">
+<img src="simpleSingleInSingleOutFunction.png" width="600">
 
 [MultiplyByExample.java](MultiplyByExample.java) shows how to create one of these functions using the Java API. Executing it produces the following output:
 
@@ -46,7 +46,7 @@ Each input has been multiplied by 2 to produce the stream of output values.
 
 This example shows a Koryphe function that has more than one input value. To do this, we wrap inputs in a tuple.
 
-<img src="simpleMultiInputSingleOutputFunction.png" width="600">
+<img src="simpleMultiInSingleOutFunction.png" width="600">
 
 [MultiplyExample.java](MultiplyExample.java) shows how to create one of these functions using the Java API. Executing it produces the following output:
 
@@ -73,7 +73,7 @@ The function has been used to multiply the 2 input values together, producing a 
 
 In a similar way to the previous example, this example shows how functions can return multiple values by wrapping them in a tuple.
 
-<img src="simpleSingleInputMultiOutputFunction.png" width="600">
+<img src="simpleSingleInMultiOutFunction.png" width="600">
 
 [DivideByExample.java](DivideByExample.java) shows how to create one of these functions using the Java API. Executing it produces the following output:
 
@@ -101,7 +101,7 @@ The function has divided each input by 3, outputting the result of the division 
 
 Bringing the previous 2 examples together, here we show a function with more than one input and output.
 
-<img src="simpleMultiInputMultiOutputFunction.png" width="600">
+<img src="simpleMultiInMultiOutFunction.png" width="600">
 
 [DivideExample.java](DivideExample.java) shows how to create one of these functions using the Java API. Executing it produces the following output:
 
