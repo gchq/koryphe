@@ -1,6 +1,7 @@
 package uk.gov.gchq.koryphe.function;
 
 import org.junit.Test;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;

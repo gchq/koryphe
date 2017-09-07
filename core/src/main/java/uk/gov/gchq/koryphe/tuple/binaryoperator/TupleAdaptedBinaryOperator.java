@@ -17,10 +17,12 @@
 package uk.gov.gchq.koryphe.tuple.binaryoperator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import uk.gov.gchq.koryphe.binaryoperator.AdaptedBinaryOperator;
 import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.tuple.TupleInputAdapter;
 import uk.gov.gchq.koryphe.tuple.TupleOutputAdapter;
+
 import java.util.function.BinaryOperator;
 
 /**
@@ -51,7 +53,7 @@ public class TupleAdaptedBinaryOperator<R, OT> extends AdaptedBinaryOperator<Tup
         return getInputAdapter().getSelection();
     }
 
-    public void setSelection(final R... selection) {
+    public void setSelection(final R[] selection) {
         getInputAdapter().setSelection(selection);
         getOutputAdapter().setProjection(selection);
     }

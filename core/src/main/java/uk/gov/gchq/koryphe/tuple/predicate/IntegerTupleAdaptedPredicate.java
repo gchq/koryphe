@@ -17,9 +17,11 @@
 package uk.gov.gchq.koryphe.tuple.predicate;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import uk.gov.gchq.koryphe.ValidationResult;
 import uk.gov.gchq.koryphe.signature.InputValidator;
 import uk.gov.gchq.koryphe.signature.Signature;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.function.Predicate;

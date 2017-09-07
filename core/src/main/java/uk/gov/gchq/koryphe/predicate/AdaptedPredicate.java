@@ -17,7 +17,9 @@
 package uk.gov.gchq.koryphe.predicate;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import uk.gov.gchq.koryphe.adapted.InputAdapted;
+
 import java.util.function.Function;
 import java.util.function.Predicate;
 

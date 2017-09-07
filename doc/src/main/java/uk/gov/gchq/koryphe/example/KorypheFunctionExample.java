@@ -29,10 +29,10 @@ public abstract class KorypheFunctionExample<I, O> extends KorypheExample<I, O> 
         System.out.println(JsonSerialiser.serialise(getFunction()));
         System.out.println();
         System.out.println("Function inputs: ");
-        getInput().forEach(i -> printInput(i));
+        getInput().forEach(this::printInput);
         System.out.println();
         System.out.println("Function outputs: ");
-        getInput().map(getFunction()).forEach(o -> printOutput(o));
+        getInput().map(getFunction()).forEach(this::printOutput);
         System.out.println();
     }
 }

@@ -17,8 +17,10 @@
 package uk.gov.gchq.koryphe.tuple.predicate;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import uk.gov.gchq.koryphe.predicate.PredicateComposite;
 import uk.gov.gchq.koryphe.tuple.Tuple;
+
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -45,7 +47,7 @@ public class TupleAdaptedPredicateComposite<R> extends PredicateComposite<Tuple<
             this.composite = composite;
         }
 
-        public SelectedBuilder<R> select(final R... selection) {
+        public SelectedBuilder<R> select(final R[] selection) {
             final TupleAdaptedPredicate<R, ?> current = new TupleAdaptedPredicate<>();
             current.setSelection(selection);
             return new SelectedBuilder<R>(composite, current);

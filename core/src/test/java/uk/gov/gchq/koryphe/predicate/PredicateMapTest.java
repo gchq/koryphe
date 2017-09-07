@@ -18,8 +18,10 @@ package uk.gov.gchq.koryphe.predicate;
 
 import org.junit.Before;
 import org.junit.Test;
+
 import uk.gov.gchq.koryphe.impl.predicate.IsA;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
+
 import java.io.IOException;
 import java.util.Date;
 import java.util.Map;

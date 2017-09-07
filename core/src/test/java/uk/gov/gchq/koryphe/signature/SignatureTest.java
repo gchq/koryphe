@@ -17,6 +17,7 @@
 package uk.gov.gchq.koryphe.signature;
 
 import org.junit.Test;
+
 import uk.gov.gchq.koryphe.ValidationResult;
 import uk.gov.gchq.koryphe.function.MockFunction;
 import uk.gov.gchq.koryphe.function.MockFunction2;
@@ -29,6 +30,7 @@ import uk.gov.gchq.koryphe.impl.predicate.Or;
 import uk.gov.gchq.koryphe.predicate.MockPredicate2False;
 import uk.gov.gchq.koryphe.predicate.MockPredicateFalse;
 import uk.gov.gchq.koryphe.predicate.MockPredicateTrue;
+
 import java.util.Collection;
 import java.util.function.Function;
 import java.util.function.Predicate;

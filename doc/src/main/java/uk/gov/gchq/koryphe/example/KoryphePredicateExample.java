@@ -29,10 +29,10 @@ public abstract class KoryphePredicateExample<I> extends KorypheExample<I, I> {
         System.out.println(JsonSerialiser.serialise(getPredicate()));
         System.out.println();
         System.out.println("Predicate inputs: ");
-        getInput().forEach(i -> printInput(i));
+        getInput().forEach(this::printInput);
         System.out.println();
         System.out.println("Predicate outputs: ");
-        getInput().filter(getPredicate()).forEach(o -> printOutput(o));
+        getInput().filter(getPredicate()).forEach(this::printOutput);
         System.out.println();
     }
 }

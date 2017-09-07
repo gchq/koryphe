@@ -29,8 +29,8 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 @Example(name = "Complex object single input, multiple output function",
-         description = "Applies an adapted single input, multiple output function to a field selected from a " +
-         "stream of input tuples, producing a stream of output tuples containing the result of the function.")
+        description = "Applies an adapted single input, multiple output function to a field selected from a " +
+                "stream of input tuples, producing a stream of output tuples containing the result of the function.")
 public class TupleDivideByExample extends KorypheFunctionExample<Tuple<String>, Tuple<String>> {
     @Override
     public Stream<Tuple<String>> getInput() {
@@ -45,8 +45,8 @@ public class TupleDivideByExample extends KorypheFunctionExample<Tuple<String>, 
     public Function<Tuple<String>, Tuple<String>> getFunction() {
         TupleAdaptedFunction<String, Integer, Tuple2<Integer, Integer>> tupleDivideBy = new TupleAdaptedFunction<>();
         tupleDivideBy.setFunction(new DivideBy(4));
-        tupleDivideBy.setSelection("A");
-        tupleDivideBy.setProjection("D", "E");
+        tupleDivideBy.setSelection(new String[]{"A"});
+        tupleDivideBy.setProjection(new String[]{"D", "E"});
         return tupleDivideBy;
     }
 }

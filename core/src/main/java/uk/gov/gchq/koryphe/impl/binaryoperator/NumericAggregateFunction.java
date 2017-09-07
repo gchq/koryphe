@@ -17,6 +17,7 @@
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
 
 /**

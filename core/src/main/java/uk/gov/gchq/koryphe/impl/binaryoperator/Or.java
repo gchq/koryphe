@@ -17,6 +17,7 @@
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
 
 /**

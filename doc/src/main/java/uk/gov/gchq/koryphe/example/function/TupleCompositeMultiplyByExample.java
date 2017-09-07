@@ -32,13 +32,13 @@ import java.util.stream.Stream;
  * <code>TupleAdaptedFunctionComposite</code> containing 2 <code>MultiplyBy</code> functions, one that creates
  * the field 'E' by multiplying the field 'A' by <code>2</code> and another that creates the field 'D' by
  * multiplying the field 'B' by <code>3</code>.
- *
+ * <p>
  * The input values <code>{{A:1, B:2, C:3}, {A:4, B:5, C:6}, {A:7, B:8, C:9}}</code> produces the result
  * <code>{{A:1, B:2, C:3, D:6, E:2}, {A:4, B:5, C:6, D:15, E:8}, {A:7, B:8, C:9, D:24, E:14}}</code>.
  */
 @Example(name = "Complex object composite function",
-         description = "Applies a composite of adapted functions to multiple fields in a stream of input tuples, " +
-                 "producing a stream of output tuples containing the results of the functions.")
+        description = "Applies a composite of adapted functions to multiple fields in a stream of input tuples, " +
+                "producing a stream of output tuples containing the results of the functions.")
 public class TupleCompositeMultiplyByExample extends KorypheFunctionExample<Tuple<String>, Tuple<String>> {
     @Override
     public Stream<Tuple<String>> getInput() {
@@ -52,8 +52,8 @@ public class TupleCompositeMultiplyByExample extends KorypheFunctionExample<Tupl
     @Override
     public Function<Tuple<String>, Tuple<String>> getFunction() {
         return new TupleAdaptedFunctionComposite.Builder<String>()
-                .select("A").execute(new MultiplyBy(2)).project("E")
-                .select("B").execute(new MultiplyBy(3)).project("D")
+                .select(new String[]{"A"}).execute(new MultiplyBy(2)).project(new String[]{"E"})
+                .select(new String[]{"B"}).execute(new MultiplyBy(3)).project(new String[]{"D"})
                 .build();
     }
 }

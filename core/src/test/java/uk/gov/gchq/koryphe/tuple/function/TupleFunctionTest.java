@@ -17,12 +17,14 @@
 package uk.gov.gchq.koryphe.tuple.function;
 
 import org.junit.Test;
+
 import uk.gov.gchq.koryphe.function.MockFunction;
 import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.tuple.TupleInputAdapter;
 import uk.gov.gchq.koryphe.tuple.TupleOutputAdapter;
 import uk.gov.gchq.koryphe.tuple.n.Tuple2;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
+
 import java.io.IOException;
 import java.util.function.Function;
 

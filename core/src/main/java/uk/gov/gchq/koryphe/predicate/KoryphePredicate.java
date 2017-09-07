@@ -18,6 +18,7 @@ package uk.gov.gchq.koryphe.predicate;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import java.util.function.Predicate;
 
 /**

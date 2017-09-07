@@ -18,7 +18,9 @@ package uk.gov.gchq.koryphe.tuple;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import uk.gov.gchq.koryphe.tuple.n.Tuple5;
+
 import java.util.Iterator;
 
 public class ReferenceArrayTuple<R> extends Tuple5 {

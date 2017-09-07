@@ -17,6 +17,7 @@
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
 import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
+
 import java.util.Collection;
 
 /**

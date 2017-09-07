@@ -30,19 +30,19 @@ import java.util.stream.Stream;
  * This example demonstrates a function that accepts more than one input value and returns a single result value.
  * It uses the <code>Multiply</code> function that accepts 2 <code>Integer</code> inputs, multiplying the first by the
  * second to produce the result.
- *
+ * <p>
  * The input values <code>{{1, 1}, {1, 2}, {2, 2}}</code> produces the output <code>{1, 2, 4}</code>.
  */
 @Example(name = "Multiple input, single output function",
-         description = "Applies a multiple input, single output function to a stream of multiple value inputs, " +
-         "producing a stream of single value outputs.")
+        description = "Applies a multiple input, single output function to a stream of multiple value inputs, " +
+                "producing a stream of single value outputs.")
 public class MultiplyExample extends KorypheFunctionExample<Tuple2<Integer, Integer>, Integer> {
     @Override
     public Stream<Tuple2<Integer, Integer>> getInput() {
         List<Tuple2<Integer, Integer>> inputTuples = Arrays.asList(
-                new Tuple2<Integer, Integer>(1, 1),
-                new Tuple2<Integer, Integer>(1, 2),
-                new Tuple2<Integer, Integer>(2, 2));
+                new Tuple2<>(1, 1),
+                new Tuple2<>(1, 2),
+                new Tuple2<>(2, 2));
         return inputTuples.stream();
     }
 

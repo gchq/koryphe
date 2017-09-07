@@ -1,8 +1,10 @@
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
 import org.junit.Test;
+
 import uk.gov.gchq.koryphe.binaryoperator.BinaryOperatorTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;

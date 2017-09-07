@@ -19,8 +19,10 @@ package uk.gov.gchq.koryphe.impl.predicate;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import uk.gov.gchq.koryphe.predicate.PredicateComposite;
 import uk.gov.gchq.koryphe.tuple.predicate.IntegerTupleAdaptedPredicate;
+
 import java.util.List;
 import java.util.function.Predicate;
 

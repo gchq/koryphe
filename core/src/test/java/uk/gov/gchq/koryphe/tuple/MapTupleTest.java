@@ -17,6 +17,7 @@
 package uk.gov.gchq.koryphe.tuple;
 
 import org.junit.Test;
+
 import java.util.HashMap;
 import java.util.Map;
 

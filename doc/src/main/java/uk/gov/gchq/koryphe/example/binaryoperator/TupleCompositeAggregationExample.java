@@ -45,9 +45,9 @@ public class TupleCompositeAggregationExample extends KorypheBinaryOperatorExamp
     @Override
     public BinaryOperator<Tuple<String>> getBinaryOperator() {
         return new TupleAdaptedBinaryOperatorComposite.Builder<String>()
-                .select("A").execute(new Product())
-                .select("B").execute(new Sum())
-                .select("C").execute(new Min())
+                .select(new String[]{"A"}).execute(new Product())
+                .select(new String[]{"B"}).execute(new Sum())
+                .select(new String[]{"C"}).execute(new Min())
                 .build();
     }
 }

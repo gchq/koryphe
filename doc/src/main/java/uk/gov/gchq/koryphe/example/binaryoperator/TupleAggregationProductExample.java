@@ -44,7 +44,7 @@ public class TupleAggregationProductExample extends KorypheBinaryOperatorExample
     public BinaryOperator<Tuple<String>> getBinaryOperator() {
         TupleAdaptedBinaryOperator<String, Number> binaryOperator = new TupleAdaptedBinaryOperator<>();
         binaryOperator.setBinaryOperator(new Product());
-        binaryOperator.setSelection("A");
+        binaryOperator.setSelection(new String[]{"A"});
         return binaryOperator;
     }
 }

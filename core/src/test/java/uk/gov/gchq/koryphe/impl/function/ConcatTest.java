@@ -17,8 +17,10 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import org.junit.Test;
+
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
+
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;

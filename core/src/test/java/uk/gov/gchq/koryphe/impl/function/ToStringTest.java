@@ -16,13 +16,16 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import org.junit.Test;
+
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.function.Function;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class ToStringTest extends FunctionTest {
 
@@ -42,7 +45,7 @@ public class ToStringTest extends FunctionTest {
     public void shouldHandleArray() {
         // Given
         final ToString ts = new ToString();
-        final String[] testArray = new String[] {"test", "string"};
+        final String[] testArray = new String[]{"test", "string"};
 
         // When
         String output = ts.apply(testArray);

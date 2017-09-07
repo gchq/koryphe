@@ -17,8 +17,10 @@
 package uk.gov.gchq.koryphe.tuple.function;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import uk.gov.gchq.koryphe.function.FunctionComposite;
 import uk.gov.gchq.koryphe.tuple.Tuple;
+
 import java.util.List;
 import java.util.function.Function;
 
@@ -46,7 +48,7 @@ public class TupleAdaptedFunctionComposite<R>
             this.transformer = transformer;
         }
 
-        public SelectedBuilder<R> select(final R... selection) {
+        public SelectedBuilder<R> select(final R[] selection) {
             final TupleAdaptedFunction<R, ?, ?> current = new TupleAdaptedFunction<>();
             current.setSelection(selection);
             return new SelectedBuilder<R>(transformer, current);
@@ -81,7 +83,7 @@ public class TupleAdaptedFunctionComposite<R>
             this.current = current;
         }
 
-        public Builder<R> project(final R... projection) {
+        public Builder<R> project(final R[] projection) {
             current.setProjection(projection);
             transformer.components.add(current);
             return new Builder<R>(transformer);

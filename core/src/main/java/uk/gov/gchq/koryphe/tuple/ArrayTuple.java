@@ -18,6 +18,7 @@ package uk.gov.gchq.koryphe.tuple;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import java.util.Arrays;
 import java.util.Iterator;
 

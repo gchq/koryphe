@@ -30,8 +30,8 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 @Example(name = "Complex object composite predicate - alternative",
-         description = "Applies a composite of adapted predicates to multiple fields in a stream of input tuples, " +
-                 "producing a stream of outputs containing those tuples that pass all of the predicate tests.")
+        description = "Applies a composite of adapted predicates to multiple fields in a stream of input tuples, " +
+                "producing a stream of outputs containing those tuples that pass all of the predicate tests.")
 public class TupleAndExample extends KoryphePredicateExample<Tuple<String>> {
     @Override
     public Stream<Tuple<String>> getInput() {
@@ -45,11 +45,11 @@ public class TupleAndExample extends KoryphePredicateExample<Tuple<String>> {
     @Override
     public Predicate<Tuple<String>> getPredicate() {
         TupleAdaptedPredicate<String, Comparable> tupleIsMoreThan = new TupleAdaptedPredicate<>();
-        tupleIsMoreThan.setSelection("A");
+        tupleIsMoreThan.setSelection(new String[]{"A"});
         tupleIsMoreThan.setPredicate(new IsMoreThan(2));
 
         TupleAdaptedPredicate<String, Comparable> tupleIsLessThan = new TupleAdaptedPredicate<>();
-        tupleIsLessThan.setSelection("C");
+        tupleIsLessThan.setSelection(new String[]{"C"});
         tupleIsLessThan.setPredicate(new IsLessThan(8));
 
         return new And<>(Arrays.asList(tupleIsMoreThan, tupleIsLessThan));

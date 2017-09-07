@@ -17,10 +17,12 @@
 package uk.gov.gchq.koryphe.tuple.function;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import uk.gov.gchq.koryphe.function.AdaptedFunction;
 import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.tuple.TupleInputAdapter;
 import uk.gov.gchq.koryphe.tuple.TupleOutputAdapter;
+
 import java.util.function.Function;
 
 /**
@@ -51,7 +53,7 @@ public class TupleAdaptedFunction<R, FI, FO> extends AdaptedFunction<Tuple<R>, F
         return getInputAdapter().getSelection();
     }
 
-    public void setSelection(final R... selection) {
+    public void setSelection(final R[] selection) {
         getInputAdapter().setSelection(selection);
     }
 
@@ -59,7 +61,7 @@ public class TupleAdaptedFunction<R, FI, FO> extends AdaptedFunction<Tuple<R>, F
         return getOutputAdapter().getProjection();
     }
 
-    public void setProjection(final R... fields) {
+    public void setProjection(final R[] fields) {
         getOutputAdapter().setProjection(fields);
     }
 

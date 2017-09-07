@@ -45,8 +45,8 @@ public class TupleDivideExample extends KorypheFunctionExample<Tuple<String>, Tu
     public Function<Tuple<String>, Tuple<String>> getFunction() {
         TupleAdaptedFunction<String, Tuple2<Integer, Integer>, Tuple2<Integer, Integer>> tupleDivide = new TupleAdaptedFunction<>();
         tupleDivide.setFunction(new Divide());
-        tupleDivide.setSelection("A", "B");
-        tupleDivide.setProjection("D", "E");
+        tupleDivide.setSelection(new String[]{"A", "B"});
+        tupleDivide.setProjection(new String[]{"D", "E"});
         return tupleDivide;
     }
 }

@@ -19,6 +19,7 @@ package uk.gov.gchq.koryphe.impl.function;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import uk.gov.gchq.koryphe.tuple.function.KorypheFunction2;
 
 /**

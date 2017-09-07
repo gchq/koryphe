@@ -18,6 +18,7 @@ package uk.gov.gchq.koryphe.signature;
 
 import uk.gov.gchq.koryphe.ValidationResult;
 import uk.gov.gchq.koryphe.tuple.n.Tuple1;
+
 import java.util.Arrays;
 
 /**

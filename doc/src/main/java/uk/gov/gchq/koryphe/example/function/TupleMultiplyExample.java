@@ -45,8 +45,8 @@ public class TupleMultiplyExample extends KorypheFunctionExample<Tuple<String>, 
     public Function<Tuple<String>, Tuple<String>> getFunction() {
         TupleAdaptedFunction<String, Tuple2<Integer, Integer>, Integer> tupleMultiplyBy = new TupleAdaptedFunction<>();
         tupleMultiplyBy.setFunction(new Multiply());
-        tupleMultiplyBy.setSelection("A", "B");
-        tupleMultiplyBy.setProjection("D");
+        tupleMultiplyBy.setSelection(new String[]{"A", "B"});
+        tupleMultiplyBy.setProjection(new String[]{"D"});
         return tupleMultiplyBy;
     }
 }

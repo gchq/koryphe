@@ -23,7 +23,9 @@ import com.google.common.collect.Sets;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;

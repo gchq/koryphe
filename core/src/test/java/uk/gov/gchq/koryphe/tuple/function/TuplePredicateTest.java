@@ -17,11 +17,13 @@
 package uk.gov.gchq.koryphe.tuple.function;
 
 import org.junit.Test;
+
 import uk.gov.gchq.koryphe.predicate.MockPredicateObject;
 import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.tuple.TupleInputAdapter;
 import uk.gov.gchq.koryphe.tuple.predicate.TupleAdaptedPredicate;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
+
 import java.io.IOException;
 import java.util.function.Function;
 import java.util.function.Predicate;

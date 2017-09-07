@@ -17,9 +17,11 @@
 package uk.gov.gchq.koryphe.tuple.predicate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import uk.gov.gchq.koryphe.predicate.AdaptedPredicate;
 import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.tuple.TupleInputAdapter;
+
 import java.util.function.Predicate;
 
 /**
@@ -48,7 +50,7 @@ public class TupleAdaptedPredicate<R, PI> extends AdaptedPredicate<Tuple<R>, PI>
         return getInputAdapter().getSelection();
     }
 
-    public void setSelection(final R... selection) {
+    public void setSelection(final R[] selection) {
         getInputAdapter().setSelection(selection);
     }
 

@@ -17,7 +17,9 @@
 package uk.gov.gchq.koryphe.binaryoperator;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import uk.gov.gchq.koryphe.composite.Composite;
+
 import java.util.List;
 import java.util.function.BinaryOperator;
 
