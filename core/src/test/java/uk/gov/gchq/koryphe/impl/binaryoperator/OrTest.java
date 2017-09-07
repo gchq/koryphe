@@ -19,12 +19,11 @@ package uk.gov.gchq.koryphe.impl.binaryoperator;
 import org.junit.Test;
 import uk.gov.gchq.koryphe.binaryoperator.BinaryOperatorTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
+
 import java.io.IOException;
 import java.util.function.BinaryOperator;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class OrTest extends BinaryOperatorTest {
 

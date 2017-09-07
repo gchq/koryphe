@@ -16,6 +16,7 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import uk.gov.gchq.koryphe.function.KorypheFunction;
+
 import java.util.Arrays;
 
 /**
