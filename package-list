@@ -2,6 +2,12 @@ uk.gov.gchq.koryphe
 uk.gov.gchq.koryphe.adapted
 uk.gov.gchq.koryphe.binaryoperator
 uk.gov.gchq.koryphe.composite
+uk.gov.gchq.koryphe.example
+uk.gov.gchq.koryphe.example.annotation
+uk.gov.gchq.koryphe.example.binaryoperator
+uk.gov.gchq.koryphe.example.function
+uk.gov.gchq.koryphe.example.predicate
+uk.gov.gchq.koryphe.example.util
 uk.gov.gchq.koryphe.function
 uk.gov.gchq.koryphe.impl.binaryoperator
 uk.gov.gchq.koryphe.impl.function
