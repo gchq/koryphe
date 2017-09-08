@@ -17,6 +17,8 @@
 package uk.gov.gchq.koryphe.tuple;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.tuple.n.Tuple5;
@@ -62,6 +64,32 @@ public class ReferenceArrayTuple<R> extends Tuple5 {
     @Override
     public Iterator<Object> iterator() {
         return values().iterator();
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        final ReferenceArrayTuple concat = (ReferenceArrayTuple) obj;
+
+        return new EqualsBuilder()
+                .append(fields, concat.fields)
+                .append(tuple, concat.tuple)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(13, 31)
+                .append(fields)
+                .append(tuple)
+                .toHashCode();
     }
 
     @Override

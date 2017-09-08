@@ -17,6 +17,8 @@
 package uk.gov.gchq.koryphe.tuple;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Arrays;
@@ -82,6 +84,30 @@ public class ArrayTuple implements Tuple<Integer> {
     @Override
     public Iterator<Object> iterator() {
         return values().iterator();
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        final ArrayTuple concat = (ArrayTuple) obj;
+
+        return new EqualsBuilder()
+                .append(values, concat.values)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(11, 31)
+                .append(values)
+                .toHashCode();
     }
 
     @Override
