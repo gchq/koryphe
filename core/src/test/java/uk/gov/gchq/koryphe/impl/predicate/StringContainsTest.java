@@ -77,6 +77,19 @@ public class StringContainsTest extends PredicateTest {
         assertFalse(accepted);
     }
 
+    @Test
+    public void shouldMatchWhenIgnoreCaseSet() {
+        // Given
+        final StringContains stringContains = new StringContains(VALUE1);
+        stringContains.setIgnoreCase(true);
+
+        // When
+        boolean accepted = stringContains.test("stringcontains");
+
+        // Then
+        assertTrue(accepted);
+    }
+
     @Override
     @Test
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
@@ -88,7 +101,8 @@ public class StringContainsTest extends PredicateTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" + "  \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.StringContains\",%n" +
-                                                          "  \"value\" : \"This is a test string, used for the StringContains test\"%n" +
+                                                          "  \"value\" : \"This is a test string, used for the StringContains test\",%n" +
+                                                          "  \"ignoreCase\" : false%n" +
                                                           "}"), json);
 
         // When 2

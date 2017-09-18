@@ -20,16 +20,29 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
+import java.util.function.Predicate;
 
+/**
+ * A <code>StringContains</code> is a {@link Predicate} that checks whether a {@link String}
+ * contains a provided {@link String}.
+ * The {@link Predicate} is case-sensitive by default, this can be changed with
+ * <code>setIgnoreCase(true)</code>.
+ */
 public class StringContains extends KoryphePredicate<String> {
     private String value;
+    private boolean ignoreCase;
 
     public StringContains() {
         // Required for serialisation
     }
 
     public StringContains(final String value) {
+        this(value, false);
+    }
+
+    public StringContains(final String value, final boolean ignoreCase) {
         this.value = value;
+        this.ignoreCase = ignoreCase;
     }
 
     public String getValue() {
@@ -40,9 +53,23 @@ public class StringContains extends KoryphePredicate<String> {
         this.value = value;
     }
 
+    public boolean getIgnoreCase() {
+        return ignoreCase;
+    }
+
+    public void setIgnoreCase(final boolean ignoreCase) {
+        this.ignoreCase = ignoreCase;
+    }
+
     @Override
     public boolean test(final String input) {
-        return null != input && value.contains(input);
+        if (null == input) {
+            return false;
+        }
+        if (ignoreCase) {
+            return value.toLowerCase().contains(input.toLowerCase());
+        }
+        return value.contains(input);
     }
 
     @Override
@@ -59,6 +86,7 @@ public class StringContains extends KoryphePredicate<String> {
 
         return new EqualsBuilder()
                 .append(value, that.value)
+                .append(ignoreCase, that.ignoreCase)
                 .isEquals();
     }
 
@@ -66,6 +94,7 @@ public class StringContains extends KoryphePredicate<String> {
     public int hashCode() {
         return new HashCodeBuilder(19, 53)
                 .append(value)
+                .append(ignoreCase)
                 .toHashCode();
     }
 
@@ -73,6 +102,7 @@ public class StringContains extends KoryphePredicate<String> {
     public String toString() {
         return new ToStringBuilder(this)
                 .append("value", value)
+                .append("ignoreCase", ignoreCase)
                 .toString();
     }
 }
