@@ -20,12 +20,13 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
-import java.util.function.Predicate;
+
+import java.util.Locale;
 
 /**
- * A <code>StringContains</code> is a {@link Predicate} that checks whether a {@link String}
+ * A <code>StringContains</code> is a {@link java.util.function.Predicate} that checks whether a {@link String}
  * contains a provided {@link String}.
- * The {@link Predicate} is case-sensitive by default, this can be changed with
+ * The {@link java.util.function.Predicate} is case-sensitive by default, this can be changed with
  * <code>setIgnoreCase(true)</code>.
  */
 public class StringContains extends KoryphePredicate<String> {
@@ -67,7 +68,7 @@ public class StringContains extends KoryphePredicate<String> {
             return false;
         }
         if (ignoreCase) {
-            return value.toLowerCase().contains(input.toLowerCase());
+            return value.toLowerCase(Locale.ENGLISH).contains(input.toLowerCase(Locale.ENGLISH));
         }
         return value.contains(input);
     }
