@@ -24,8 +24,8 @@ import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 import java.util.Locale;
 
 /**
- * A <code>StringContains</code> is a {@link java.util.function.Predicate} that checks whether a {@link String}
- * contains a provided {@link String}.
+ * A <code>StringContains</code> is a {@link java.util.function.Predicate} that checks whether a provided {@link String}
+ * contains some {@link String} value.
  * The {@link java.util.function.Predicate} is case-sensitive by default, this can be changed with
  * <code>setIgnoreCase(true)</code>.
  */
@@ -64,13 +64,13 @@ public class StringContains extends KoryphePredicate<String> {
 
     @Override
     public boolean test(final String input) {
-        if (null == input) {
+        if (null == input || null == value) {
             return false;
         }
         if (ignoreCase) {
-            return value.toLowerCase(Locale.ENGLISH).contains(input.toLowerCase(Locale.ENGLISH));
+            return input.toLowerCase(Locale.ENGLISH).contains(value.toLowerCase(Locale.ENGLISH));
         }
-        return value.contains(input);
+        return input.contains(value);
     }
 
     @Override
