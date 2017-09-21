@@ -15,13 +15,12 @@
  */
 package uk.gov.gchq.koryphe.impl.predicate;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
-
-import java.util.Locale;
 
 /**
  * A <code>StringContains</code> is a {@link java.util.function.Predicate} that checks whether a provided {@link String}
@@ -68,7 +67,7 @@ public class StringContains extends KoryphePredicate<String> {
             return false;
         }
         if (ignoreCase) {
-            return input.toLowerCase(Locale.ENGLISH).contains(value.toLowerCase(Locale.ENGLISH));
+            return StringUtils.containsIgnoreCase(input, value);
         }
         return input.contains(value);
     }
