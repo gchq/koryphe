@@ -23,6 +23,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -67,11 +68,11 @@ public class NthItemTest extends FunctionTest {
         final NthItem<Integer> function = new NthItem<>(2);
 
         // When
-        final Integer result = function.apply(Arrays.asList(1, 2, 3, 4, 5));
+        final Stream<Integer> result = function.apply(Arrays.asList(1, 2, 3, 4, 5));
 
         // Then
         assertNotNull(result);
-        assertEquals(new Integer(3), result);
+        assertEquals(Stream.of(3), result);
     }
 
     @Test
@@ -80,10 +81,10 @@ public class NthItemTest extends FunctionTest {
         final NthItem<String> function = new NthItem<>(1);
 
         // When
-        final String result = function.apply(Arrays.asList("these", "are", "test", "strings"));
+        final Stream<String> result = function.apply(Arrays.asList("these", "are", "test", "strings"));
 
         // Then
         assertNotNull(result);
-        assertEquals("are", result);
+        assertEquals(Stream.of("are"), result);
     }
 }

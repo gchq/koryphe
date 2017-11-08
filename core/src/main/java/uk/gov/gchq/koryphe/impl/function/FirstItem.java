@@ -20,21 +20,23 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
+import java.util.stream.Stream;
+
 /**
  * A {@code FirstItem} is a {@link KorypheFunction} that returns the first item from a provided
  * {@link Iterable} of items of type T
  *
  * @param <T> the type of objects in the iterable
  */
-public class FirstItem<T> extends KorypheFunction<Iterable<T>, T> {
+public class FirstItem<T> extends KorypheFunction<Iterable<T>, Stream<T>> {
     @Override
     @SuppressFBWarnings(value = "DE_MIGHT_IGNORE", justification = "Any exceptions are to be ignored")
-    public T apply(final Iterable<T> input) {
+    public Stream<T> apply(final Iterable<T> input) {
         if (null == input) {
             throw new IllegalArgumentException("Input cannot be null");
         }
         try {
-            return Iterables.getFirst(input, null);
+            return Stream.of(Iterables.getFirst(input, null));
         } finally {
             if (input instanceof AutoCloseable) {
                 try {

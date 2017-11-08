@@ -23,9 +23,9 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-public class LastItemExample extends KorypheFunctionExample<Iterable<Integer>, Integer> {
+public class LastItemExample extends KorypheFunctionExample<Iterable<Integer>, Stream<Integer>> {
     @Override
-    public Function<Iterable<Integer>, Integer> getFunction() {
+    public Function<Iterable<Integer>, Stream<Integer>> getFunction() {
         return new LastItem<>();
     }
 
