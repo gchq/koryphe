@@ -20,15 +20,13 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
-import java.util.stream.Stream;
-
 /**
  * A {@code NthItem} is a {@link KorypheFunction} that returns an item based on user selection,
  * from an {@link Iterable} of items of type T
  *
  * @param <T> the type of objects in the iterable
  */
-public class NthItem<T> extends KorypheFunction<Iterable<T>, Stream<T>> {
+public class NthItem<T> extends KorypheFunction<Iterable<T>, T> {
 
     private int selection;
 
@@ -42,12 +40,12 @@ public class NthItem<T> extends KorypheFunction<Iterable<T>, Stream<T>> {
 
     @Override
     @SuppressFBWarnings(value = "DE_MIGHT_IGNORE", justification = "Any exceptions are to be ignored")
-    public Stream<T> apply(final Iterable<T> input) {
+    public T apply(final Iterable<T> input) {
         if (null == input) {
             throw new IllegalArgumentException("Input cannot be null");
         }
         try {
-            return Stream.of(Iterables.get(input, selection));
+            return Iterables.get(input, selection);
         } finally {
             if (input instanceof AutoCloseable) {
                 try {
