@@ -26,10 +26,10 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
  *
  * @param <T> the type of objects in the iterable
  */
-public class FirstItem<T> extends KorypheFunction<Iterable<T>, T> {
+public class FirstItem<T> extends KorypheFunction<Iterable<? extends T>, T> {
     @Override
     @SuppressFBWarnings(value = "DE_MIGHT_IGNORE", justification = "Any exceptions are to be ignored")
-    public T apply(final Iterable<T> input) {
+    public T apply(final Iterable<? extends T> input) {
         if (null == input) {
             throw new IllegalArgumentException("Input cannot be null");
         }
