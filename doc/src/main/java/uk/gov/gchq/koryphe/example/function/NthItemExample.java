@@ -23,19 +23,19 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-public class NthItemExample extends KorypheFunctionExample<Iterable<? extends Integer>, Integer> {
+public class NthItemExample extends KorypheFunctionExample<Iterable<Integer>, Integer> {
     @Override
-    public Function<Iterable<? extends Integer>, Integer> getFunction() {
+    public Function<Iterable<Integer>, Integer> getFunction() {
         return new NthItem<>();
     }
 
     @Override
-    public Stream<Iterable<? extends Integer>> getInput() {
+    public Stream<Iterable<Integer>> getInput() {
         final List<Integer> first = Arrays.asList(3, 1, 4, 1);
         final List<Integer> second = Arrays.asList(5, 9, 2, 6);
         final List<Integer> third = Arrays.asList(5, 3, 5, 8);
 
-        final List<Iterable<? extends Integer>> input = Arrays.asList(first, second, third);
+        final List<Iterable<Integer>> input = Arrays.asList(first, second, third);
 
         return input.stream();
     }
