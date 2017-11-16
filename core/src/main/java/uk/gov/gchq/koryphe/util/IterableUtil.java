@@ -18,6 +18,10 @@ package uk.gov.gchq.koryphe.util;
 import java.util.Iterator;
 import java.util.function.Function;
 
+/**
+ * An {@code IterableUtil} is a utility class for lazily applying a {@link Function}
+ * to each element of an {@link Iterable}
+ */
 public abstract class IterableUtil {
     public static <I_ITEM, O_ITEM> Iterable<O_ITEM> applyFunction(final Iterable<I_ITEM> input, final Function<I_ITEM, O_ITEM> function) {
         return () -> new Iterator<O_ITEM>() {

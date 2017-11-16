@@ -19,6 +19,11 @@ import com.google.common.collect.Iterables;
 
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
+/**
+ * An {@code IterableConcat} is a {@link KorypheFunction} which flattens an
+ * {@link Iterable} of {@link Iterable}s by concatenating them.
+ * @param <I_ITEM>  the type of objects in the innermost iterable
+ */
 public class IterableConcat<I_ITEM> extends KorypheFunction<Iterable<Iterable<I_ITEM>>, Iterable<I_ITEM>> {
     @Override
     public Iterable<I_ITEM> apply(final Iterable<Iterable<I_ITEM>> items) {
