@@ -16,24 +16,35 @@
 package uk.gov.gchq.koryphe.example.function;
 
 import uk.gov.gchq.koryphe.example.KorypheFunctionExample;
-import uk.gov.gchq.koryphe.impl.function.NthItem;
+import uk.gov.gchq.koryphe.impl.function.ExtractValues;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-public class NthItemExample extends KorypheFunctionExample<Iterable<Integer>, Integer> {
+public class ExtractValuesExample extends KorypheFunctionExample<Map<String, Integer>, Iterable<Integer>> {
     @Override
-    public Function<Iterable<Integer>, Integer> getFunction() {
-        return new NthItem<>();
+    public Function<Map<String, Integer>, Iterable<Integer>> getFunction() {
+        return new ExtractValues<>();
     }
 
     @Override
-    public Stream<Iterable<Integer>> getInput() {
-        final List<Integer> first = Arrays.asList(3, 1, 4, 1);
-        final List<Integer> second = Arrays.asList(5, 9, 2, 6);
-        final List<Integer> third = Arrays.asList(5, 3, 5, 8);
+    public Stream<Map<String, Integer>> getInput() {
+        final Map<String, Integer> first = new HashMap<>();
+        first.put("one", 1);
+        first.put("two", 2);
+        first.put("three", 3);
+
+        final Map<String, Integer> second = new HashMap<>();
+        second.put("four", 4);
+        second.put("five", 5);
+        second.put("six", 6);
+
+        final Map<String, Integer> third = new HashMap<>();
+        third.put("seven", 7);
+        third.put("eight", 8);
+        third.put("nine", 9);
 
         return Stream.of(first, second, third);
     }

@@ -35,8 +35,6 @@ public class FirstItemExample extends KorypheFunctionExample<Iterable<Integer>, 
         final List<Integer> second = Arrays.asList(11, 13, 17, 19);
         final List<Integer> third = Arrays.asList(23, 29, 31, 37);
 
-        final List<Iterable<Integer>> input = Arrays.asList(first, second, third);
-
-        return input.stream();
+        return Stream.of(first, second, third);
     }
 }

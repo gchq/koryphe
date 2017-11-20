@@ -35,8 +35,6 @@ public class IterableFunctionExample extends KorypheFunctionExample<Iterable<Int
         final List<Integer> ab = Arrays.asList(7, 11, 13);
         final List<Integer> ac = Arrays.asList(17, 19, 23);
 
-        final List<Iterable<Integer>> input = Arrays.asList(aa, ab, ac);
-
-        return input.stream();
+        return Stream.of(aa, ab, ac);
     }
 }

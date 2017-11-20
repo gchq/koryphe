@@ -43,8 +43,6 @@ public class IterableConcatExample extends KorypheFunctionExample<Iterable<Itera
 
         final List<Iterable<Integer>> inputB = Arrays.asList(ba, bb, bc);
 
-        final List<Iterable<Iterable<Integer>>> input = Arrays.asList(inputA, inputB);
-
-        return input.stream();
+        return Stream.of(inputA, inputB);
     }
 }
