@@ -19,6 +19,13 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
 
 import java.util.Map;
 
+/**
+ * An {@link ExtractKeys} is a {@link KorypheFunction} which extracts the {@link java.util.Set} of keys
+ * of a provided input {@link Map}
+ *
+ * @param <K> the key type
+ * @param <V> the value type
+ */
 public class ExtractKeys<K, V> extends KorypheFunction<Map<K, V>, Iterable<K>> {
     @Override
     public Iterable<K> apply(final Map<K, V> map) {

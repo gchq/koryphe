@@ -20,6 +20,10 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
+/**
+ * A {@code IsEmpty} is a {@link KorypheFunction} which returns a boolean based
+ * on whether or not the input {@link Iterable} is empty.
+ */
 public class IsEmpty extends KorypheFunction<Iterable, Boolean> {
     @Override
     @SuppressFBWarnings(value = "DE_MIGHT_IGNORE", justification = "Any exceptions are to be ignored")

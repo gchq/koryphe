@@ -20,6 +20,10 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
+/**
+ * A {@code Size} is a {@link KorypheFunction} which returns the size of a provided
+ * {@link Iterable}.
+ */
 public class Size extends KorypheFunction<Iterable, Integer> {
     @Override
     @SuppressFBWarnings(value = "DE_MIGHT_IGNORE", justification = "Any exceptions are to be ignored")
