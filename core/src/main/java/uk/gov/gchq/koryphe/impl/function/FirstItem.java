@@ -19,6 +19,7 @@ import com.google.common.collect.Iterables;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import uk.gov.gchq.koryphe.function.KorypheFunction;
+import uk.gov.gchq.koryphe.util.CloseableUtil;
 
 /**
  * A {@code FirstItem} is a {@link KorypheFunction} that returns the first item from a provided
@@ -36,13 +37,7 @@ public class FirstItem<T> extends KorypheFunction<Iterable<T>, T> {
         try {
             return Iterables.getFirst(input, null);
         } finally {
-            if (input instanceof AutoCloseable) {
-                try {
-                    ((AutoCloseable) input).close();
-                } catch (final Exception e) {
-                    // Ignore exception
-                }
-            }
+            CloseableUtil.close(input);
         }
     }
 }

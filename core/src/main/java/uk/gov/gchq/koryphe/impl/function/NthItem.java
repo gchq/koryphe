@@ -19,6 +19,7 @@ import com.google.common.collect.Iterables;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import uk.gov.gchq.koryphe.function.KorypheFunction;
+import uk.gov.gchq.koryphe.util.CloseableUtil;
 
 /**
  * A {@code NthItem} is a {@link KorypheFunction} that returns an item based on user selection,
@@ -47,13 +48,7 @@ public class NthItem<T> extends KorypheFunction<Iterable<T>, T> {
         try {
             return Iterables.get(input, selection);
         } finally {
-            if (input instanceof AutoCloseable) {
-                try {
-                    ((AutoCloseable) input).close();
-                } catch (final Exception e) {
-                    // Ignore exception
-                }
-            }
+            CloseableUtil.close(input);
         }
     }
 

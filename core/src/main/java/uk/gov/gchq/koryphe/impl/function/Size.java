@@ -19,6 +19,7 @@ import com.google.common.collect.Iterables;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import uk.gov.gchq.koryphe.function.KorypheFunction;
+import uk.gov.gchq.koryphe.util.CloseableUtil;
 
 /**
  * A {@code Size} is a {@link KorypheFunction} which returns the size of a provided
@@ -34,13 +35,7 @@ public class Size extends KorypheFunction<Iterable, Integer> {
         try {
             return Iterables.size(input);
         } finally {
-            if (input instanceof AutoCloseable) {
-                try {
-                    ((AutoCloseable) input).close();
-                } catch (final Exception e) {
-                    // ignore exception
-                }
-            }
+            CloseableUtil.close(input);
         }
     }
 }
