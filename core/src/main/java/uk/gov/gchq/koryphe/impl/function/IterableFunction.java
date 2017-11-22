@@ -29,32 +29,34 @@ import java.util.function.Function;
  * An {@code IterableFunction} is a {@link KorypheFunction} which lazily applies a
  * supplied {@link Function} to each object in the input {@link Iterable}, returning
  * an output {@link Iterable}.
- * @param <I_ITEM>  the type of objects in the input iterable
- * @param <O_ITEM>  the type of objects in the output iterable
+ *
+ * @param <I_ITEM> the type of objects in the input iterable
+ * @param <O_ITEM> the type of objects in the output iterable
  */
 public class IterableFunction<I_ITEM, O_ITEM> extends KorypheFunction<Iterable<I_ITEM>, Iterable<O_ITEM>> {
-    private Function<I_ITEM, O_ITEM> delegateFunction;
+    private Function<I_ITEM, O_ITEM> function;
 
     public IterableFunction() {
         // empty
     }
 
-    public IterableFunction(final Function<I_ITEM, O_ITEM> delegateFunction) {
-        this.delegateFunction = delegateFunction;
-    }
-
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
-    public Function<I_ITEM, O_ITEM> getDelegateFunction() {
-        return delegateFunction;
-    }
-
-    public void setDelegateFunction(final Function<I_ITEM, O_ITEM> func) {
-        this.delegateFunction = func;
+    public IterableFunction(final Function<I_ITEM, O_ITEM> function) {
+        this.function = function;
     }
 
     @Override
     public Iterable<O_ITEM> apply(final Iterable<I_ITEM> items) {
-        return IterableUtil.applyFunction(items, delegateFunction);
+        return IterableUtil.map(items, function);
+    }
+
+
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    public Function<I_ITEM, O_ITEM> getFunction() {
+        return function;
+    }
+
+    public void setFunction(final Function<I_ITEM, O_ITEM> func) {
+        this.function = func;
     }
 
     @Override
@@ -70,21 +72,21 @@ public class IterableFunction<I_ITEM, O_ITEM> extends KorypheFunction<Iterable<I
         final IterableFunction func = (IterableFunction) obj;
 
         return new EqualsBuilder()
-                .append(delegateFunction, func.delegateFunction)
+                .append(function, func.function)
                 .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(19, 71)
-                .append(delegateFunction)
+                .append(function)
                 .build();
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("delegateFunction", delegateFunction)
+                .append("function", function)
                 .toString();
     }
 }

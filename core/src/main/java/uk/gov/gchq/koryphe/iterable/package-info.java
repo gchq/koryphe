@@ -13,20 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.gov.gchq.koryphe.impl.function;
-
-import uk.gov.gchq.koryphe.function.KorypheFunction;
-import uk.gov.gchq.koryphe.util.IterableUtil;
 
 /**
- * An {@code IterableConcat} is a {@link KorypheFunction} which flattens an
- * {@link Iterable} of {@link Iterable}s by concatenating them.
- *
- * @param <I_ITEM> the type of objects in the innermost iterable
+ * Gaffer-specific {@link java.lang.Iterable}s and {@link java.util.Iterator}s used when retrieving
+ * and manipulating data from stores.
  */
-public class IterableConcat<I_ITEM> extends KorypheFunction<Iterable<Iterable<I_ITEM>>, Iterable<I_ITEM>> {
-    @Override
-    public Iterable<I_ITEM> apply(final Iterable<Iterable<I_ITEM>> items) {
-        return IterableUtil.concat(items);
-    }
-}
+package uk.gov.gchq.koryphe.iterable;

@@ -50,7 +50,7 @@ public class IterableFunctionTest extends FunctionTest {
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
                 "   \"class\" : \"uk.gov.gchq.koryphe.impl.function.IterableFunction\",%n" +
-                "   \"delegateFunction\" : {%n" +
+                "   \"function\" : {%n" +
                 "      \"class\" : \"uk.gov.gchq.koryphe.impl.function.FirstItem\"%n" +
                 "   }%n" +
                 "}"), json);
