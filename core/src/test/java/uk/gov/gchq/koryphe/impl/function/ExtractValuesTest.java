@@ -15,6 +15,7 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import org.junit.Test;
 
@@ -76,6 +77,18 @@ public class ExtractValuesTest extends FunctionTest {
 
         // Then
         assertThat(results, containsInAnyOrder(1, 2, 3));
+    }
+
+    @Test
+    public void shouldReturnEmptySetForEmptyMap() {
+        // Given
+        final ExtractValues<String, Integer> function = new ExtractValues<>();
+
+        // When
+        final Iterable<Integer> results = function.apply(new HashMap<>());
+
+        // Then
+        assertTrue(Iterables.isEmpty(results));
     }
 
     @Test

@@ -15,6 +15,7 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import org.junit.Test;
 
@@ -75,6 +76,18 @@ public class ExtractKeysTest extends FunctionTest {
 
         // Then
         assertEquals(Sets.newHashSet("first", "second", "third"), results);
+    }
+
+    @Test
+    public void shouldReturnEmptySetForEmptyMap() {
+        // Given
+        final ExtractKeys<String, String> function = new ExtractKeys<>();
+
+        // When
+        final Iterable<String> results = function.apply(new HashMap<>());
+
+        // Then
+        assertTrue(Iterables.isEmpty(results));
     }
 
     @Test

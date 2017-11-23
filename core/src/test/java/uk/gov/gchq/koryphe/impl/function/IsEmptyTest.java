@@ -87,6 +87,19 @@ public class IsEmptyTest extends FunctionTest {
     }
 
     @Test
+    public void shouldReturnFalseForNullElements() {
+        // Given
+        final IsEmpty function = new IsEmpty();
+        final Iterable input = Arrays.asList(null, null);
+
+        // When
+        final Boolean result = function.apply(input);
+
+        // Then
+        assertFalse(result);
+    }
+
+    @Test
     public void shouldThrowExceptionForNullInput() {
         // Given
         final IsEmpty function = new IsEmpty();

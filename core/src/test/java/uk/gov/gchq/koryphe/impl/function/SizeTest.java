@@ -67,6 +67,31 @@ public class SizeTest extends FunctionTest
     }
 
     @Test
+    public void shouldHandleIterableWithNullElement() {
+        // Given
+        final Size function = new Size();
+        final Iterable<Integer> input = Arrays.asList(1, 2, null, 4, 5);
+
+        // When
+        final Integer result = function.apply(input);
+
+        // Then
+        assertEquals(new Integer(5), result);
+    }
+
+    @Test
+    public void shouldHandleIterableOfAllNullElements() {
+        // Given
+        final Size function = new Size();
+        final Iterable<Object> input = Arrays.asList(null, null, null);
+
+        // When
+        final Integer result = function.apply(input);
+
+        // Then
+        assertEquals(new Integer(3), result);
+    }
+    @Test
     public void shouldThrowExceptionForNullInput() {
         // Given
         final Size function = new Size();

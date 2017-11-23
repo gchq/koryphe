@@ -15,6 +15,7 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 
@@ -22,11 +23,15 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class IterableFunctionTest extends FunctionTest {
     @Override
@@ -42,7 +47,7 @@ public class IterableFunctionTest extends FunctionTest {
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
-        final IterableFunction function = new IterableFunction(new FirstItem());
+        final IterableFunction<Iterable<Integer>, Integer> function = new IterableFunction<>(new FirstItem<>());
 
         // When
         final String json = JsonSerialiser.serialise(function);
@@ -73,5 +78,18 @@ public class IterableFunctionTest extends FunctionTest {
         // Then
         assertNotNull(result);
         assertEquals(Arrays.asList("1", "2", "3", "4"), Lists.newArrayList(result));
+    }
+
+    @Test
+    public void shouldReturnEmptyIterableForEmptyInput() {
+        // Given
+        final IterableFunction<Iterable<Integer>, Integer> function = new IterableFunction<>(new FirstItem<>());
+
+        // When
+        final Iterable<Integer> result = function.apply(new ArrayList<>());
+
+        // Then
+        assertNotNull(result);
+        assertTrue(Iterables.isEmpty(result));
     }
 }

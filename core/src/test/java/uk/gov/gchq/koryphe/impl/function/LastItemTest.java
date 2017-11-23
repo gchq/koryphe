@@ -26,6 +26,8 @@ import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class LastItemTest extends FunctionTest {
     @Override
@@ -82,5 +84,30 @@ public class LastItemTest extends FunctionTest {
         // Then
         assertNotNull(result);
         assertEquals("strings", result);
+    }
+
+    @Test
+    public void shouldReturnNullForNullElement() {
+        // Given
+        final LastItem<Integer> function = new LastItem<>();
+
+        // When
+        final Integer result = function.apply(Arrays.asList(1, 2, null));
+
+        // Then
+        assertNull(result);
+    }
+
+    @Test
+    public void shouldThrowExceptionForNullInput() {
+        // Given
+        final LastItem<Integer> function = new LastItem<>();
+
+        // When / Then
+        try {
+            function.apply(null);
+        } catch (final IllegalArgumentException e) {
+            assertTrue(e.getMessage().contains("Input cannot be null"));
+        }
     }
 }

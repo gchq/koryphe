@@ -15,6 +15,7 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 
@@ -22,11 +23,14 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class IterableConcatTest extends FunctionTest {
     @Override
@@ -72,5 +76,50 @@ public class IterableConcatTest extends FunctionTest {
         // Then
         assertNotNull(result);
         assertEquals(Arrays.asList(1, 2, 3, 4, 5, 6), Lists.newArrayList(result));
+    }
+
+    @Test
+    public void shouldHandleNullInputIterable() {
+        // Given
+        final IterableConcat<Integer> function = new IterableConcat<>();
+        final Iterable<Iterable<Integer>> input = null;
+
+        // When / Then
+        try {
+            function.apply(input);
+            fail("Exception expected");
+        } catch (final IllegalArgumentException e) {
+            assertTrue(e.getMessage().contains("iterables are required"));
+        }
+    }
+
+    @Test
+    public void shouldReturnEmptyIterableForEmptyInput() {
+        // Given
+        final IterableConcat<Integer> function = new IterableConcat<>();
+        final Iterable<Iterable<Integer>> input = new ArrayList<>();
+
+        // When
+        final Iterable<Integer> results = function.apply(input);
+
+        // Then
+        assertTrue(Iterables.isEmpty(results));
+    }
+
+    @Test
+    public void shouldHandleNullElementsOfInnerIterable() {
+        // Given
+        final IterableConcat<Integer> function = new IterableConcat<>();
+        final Iterable<Iterable<Integer>> input = Arrays.asList(
+                Arrays.asList(1, 2, null, 4),
+                Arrays.asList(5, null, 7));
+
+        // When
+        final Iterable<Integer> results = function.apply(input);
+
+        // Then
+        assertEquals(
+                Arrays.asList(1, 2, null, 4, 5, null, 7),
+                Lists.newArrayList(results));
     }
 }
