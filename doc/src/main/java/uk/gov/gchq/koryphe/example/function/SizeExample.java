@@ -16,24 +16,25 @@
 package uk.gov.gchq.koryphe.example.function;
 
 import uk.gov.gchq.koryphe.example.KorypheFunctionExample;
-import uk.gov.gchq.koryphe.impl.function.NthItem;
+import uk.gov.gchq.koryphe.impl.function.Size;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-public class NthItemExample extends KorypheFunctionExample<Iterable<Integer>, Integer> {
+public class SizeExample extends KorypheFunctionExample<Iterable, Integer> {
     @Override
-    public Function<Iterable<Integer>, Integer> getFunction() {
-        return new NthItem<>();
+    public Function<Iterable, Integer> getFunction() {
+        return new Size();
     }
 
     @Override
-    public Stream<Iterable<Integer>> getInput() {
-        final List<Integer> first = Arrays.asList(3, 1, 4, 1);
-        final List<Integer> second = Arrays.asList(5, 9, 2, 6);
-        final List<Integer> third = Arrays.asList(5, 3, 5, 8);
+    public Stream<Iterable> getInput() {
+        final List<Integer> first = Arrays.asList(1, 2, 3);
+        final List<String> second = Arrays.asList("test", "ArrayList", "with", "strings");
+        final List<Integer> third = new ArrayList<>();
 
         return Stream.of(first, second, third);
     }

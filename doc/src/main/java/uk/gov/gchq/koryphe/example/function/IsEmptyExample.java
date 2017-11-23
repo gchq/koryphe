@@ -16,24 +16,25 @@
 package uk.gov.gchq.koryphe.example.function;
 
 import uk.gov.gchq.koryphe.example.KorypheFunctionExample;
-import uk.gov.gchq.koryphe.impl.function.NthItem;
+import uk.gov.gchq.koryphe.impl.function.IsEmpty;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-public class NthItemExample extends KorypheFunctionExample<Iterable<Integer>, Integer> {
+public class IsEmptyExample extends KorypheFunctionExample<Iterable, Boolean> {
     @Override
-    public Function<Iterable<Integer>, Integer> getFunction() {
-        return new NthItem<>();
+    public Function<Iterable, Boolean> getFunction() {
+        return new IsEmpty();
     }
 
     @Override
-    public Stream<Iterable<Integer>> getInput() {
-        final List<Integer> first = Arrays.asList(3, 1, 4, 1);
-        final List<Integer> second = Arrays.asList(5, 9, 2, 6);
-        final List<Integer> third = Arrays.asList(5, 3, 5, 8);
+    public Stream<Iterable> getInput() {
+        final List<Integer> first = new ArrayList<>();
+        final List<String> second = Arrays.asList("this", "is", "for", "the", "IsEmpty", "test");
+        final List<Integer> third = Arrays.asList(1, 2, 3);
 
         return Stream.of(first, second, third);
     }

@@ -25,89 +25,81 @@ import java.util.Arrays;
 import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
-public class FirstItemTest extends FunctionTest {
+public class SizeTest extends FunctionTest
+{
     @Override
     protected Function getInstance() {
-        return new FirstItem();
+        return new Size();
     }
 
     @Override
     protected Class<? extends Function> getFunctionClass() {
-        return FirstItem.class;
+        return Size.class;
     }
 
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
-        final FirstItem function = new FirstItem();
+        final Size function = new Size();
 
         // When
         final String json = JsonSerialiser.serialise(function);
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.function.FirstItem\"%n" +
+                "   \"class\" : \"uk.gov.gchq.koryphe.impl.function.Size\"%n" +
                 "}"), json);
-
-        // When 2
-        final FirstItem deserialised = JsonSerialiser.deserialise(json, FirstItem.class);
-
-        // Then 2
-        assertNotNull(deserialised);
     }
 
     @Test
-    public void shouldReturnCorrectValueWithInteger() {
+    public void shouldReturnSizeForGivenIterable() {
         // Given
-        final FirstItem<Integer> function = new FirstItem<>();
+        final Size function = new Size();
+        final Iterable input = Arrays.asList(1, 2, 3, 4, 5);
 
         // When
-        final Integer result = function.apply(Arrays.asList(1, 2, 3, 4));
+        final Integer result = function.apply(input);
 
         // Then
-        assertNotNull(result);
-        assertEquals(new Integer(1), result);
+        assertEquals(new Integer(5), result);
     }
 
     @Test
-    public void shouldReturnCorrectValueWithString() {
+    public void shouldHandleIterableWithNullElement() {
         // Given
-        final FirstItem<String> function = new FirstItem<>();
+        final Size function = new Size();
+        final Iterable<Integer> input = Arrays.asList(1, 2, null, 4, 5);
 
         // When
-        final String result = function.apply(Arrays.asList("these", "are", "test", "strings"));
+        final Integer result = function.apply(input);
 
         // Then
-        assertNotNull(result);
-        assertEquals("these", result);
+        assertEquals(new Integer(5), result);
     }
 
     @Test
-    public void shouldReturnNullForNullElement() {
+    public void shouldHandleIterableOfAllNullElements() {
         // Given
-        final FirstItem<String> function = new FirstItem<>();
+        final Size function = new Size();
+        final Iterable<Object> input = Arrays.asList(null, null, null);
 
         // When
-        final String result = function.apply(Arrays.asList(null, "two", "three"));
+        final Integer result = function.apply(input);
 
         // Then
-        assertNull(result);
+        assertEquals(new Integer(3), result);
     }
-
     @Test
-    public void shouldThrowErrorForNullInput() {
+    public void shouldThrowExceptionForNullInput() {
         // Given
-        final FirstItem<String> function = new FirstItem<>();
+        final Size function = new Size();
+        final Iterable input = null;
 
         // When / Then
         try {
-            function.apply(null);
-            fail("Exception expected");
+            function.apply(input);
         } catch (final IllegalArgumentException e) {
             assertTrue(e.getMessage().contains("Input cannot be null"));
         }

@@ -22,20 +22,18 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
 import uk.gov.gchq.koryphe.util.CloseableUtil;
 
 /**
- * A {@code FirstItem} is a {@link KorypheFunction} that returns the first item from a provided
- * {@link Iterable} of items of type T
- *
- * @param <T> the type of objects in the iterable
+ * A {@code IsEmpty} is a {@link KorypheFunction} which returns a boolean based
+ * on whether or not the input {@link Iterable} is empty.
  */
-public class FirstItem<T> extends KorypheFunction<Iterable<T>, T> {
+public class IsEmpty extends KorypheFunction<Iterable, Boolean> {
     @Override
     @SuppressFBWarnings(value = "DE_MIGHT_IGNORE", justification = "Any exceptions are to be ignored")
-    public T apply(final Iterable<T> input) {
+    public Boolean apply(final Iterable input) {
         if (null == input) {
             throw new IllegalArgumentException("Input cannot be null");
         }
         try {
-            return Iterables.getFirst(input, null);
+            return Iterables.isEmpty(input);
         } finally {
             CloseableUtil.close(input);
         }

@@ -15,29 +15,23 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
-import com.google.common.collect.Iterables;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 import uk.gov.gchq.koryphe.function.KorypheFunction;
-import uk.gov.gchq.koryphe.util.CloseableUtil;
+
+import java.util.Map;
 
 /**
- * A {@code FirstItem} is a {@link KorypheFunction} that returns the first item from a provided
- * {@link Iterable} of items of type T
+ * An {@link ExtractValues} is a {@link KorypheFunction} which extracts the {@link java.util.Set} of values
+ * of a provided input {@link Map}
  *
- * @param <T> the type of objects in the iterable
+ * @param <K> the key type
+ * @param <V> the value type
  */
-public class FirstItem<T> extends KorypheFunction<Iterable<T>, T> {
+public class ExtractValues<K, V> extends KorypheFunction<Map<K, V>, Iterable<V>> {
     @Override
-    @SuppressFBWarnings(value = "DE_MIGHT_IGNORE", justification = "Any exceptions are to be ignored")
-    public T apply(final Iterable<T> input) {
-        if (null == input) {
+    public Iterable<V> apply(final Map<K, V> map) {
+        if (null == map) {
             throw new IllegalArgumentException("Input cannot be null");
         }
-        try {
-            return Iterables.getFirst(input, null);
-        } finally {
-            CloseableUtil.close(input);
-        }
+        return map.values();
     }
 }
