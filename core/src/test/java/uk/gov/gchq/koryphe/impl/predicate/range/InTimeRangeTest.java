@@ -16,7 +16,7 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
-public class InTimeRangeTest extends InRangeWithTimeOffsetsTest<Long> {
+public class InTimeRangeTest extends InRangeTimeBasedTest<Long> {
     @Override
     protected InTimeRange.Builder createBuilderWithTimeOffsets() {
         return new InTimeRange.Builder();

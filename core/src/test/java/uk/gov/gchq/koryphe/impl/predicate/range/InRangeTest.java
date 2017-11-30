@@ -217,7 +217,7 @@ public class InRangeTest<T extends Comparable<T>> extends PredicateTest {
         return (Class<T>) Long.class;
     }
 
-    protected InRangeDual.BaseBuilder<?, ? extends InRange<T>, T> createBuilder() {
+    protected InRange.BaseBuilder<?, ? extends InRange<T>, T> createBuilder() {
         return new InRange.Builder<>();
     }
 

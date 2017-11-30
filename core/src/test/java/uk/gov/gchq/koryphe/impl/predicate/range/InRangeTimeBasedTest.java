@@ -16,24 +16,27 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
 
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static uk.gov.gchq.koryphe.impl.predicate.range.InRangeDualWithTimeOffsets.DAYS_TO_MILLISECONDS;
-import static uk.gov.gchq.koryphe.impl.predicate.range.InRangeDualWithTimeOffsets.HOURS_TO_MILLISECONDS;
+import static uk.gov.gchq.koryphe.impl.predicate.range.InRangeDualTimeBased.DAYS_TO_MILLISECONDS;
+import static uk.gov.gchq.koryphe.impl.predicate.range.InRangeDualTimeBased.HOURS_TO_MILLISECONDS;
 
-public abstract class InRangeWithTimeOffsetsTest<T extends Comparable<T>> extends InRangeTest<T> {
+public abstract class InRangeTimeBasedTest<T extends Comparable<T>> extends InRangeTest<T> {
     @Test
     public void shouldAcceptValuesInRangeDayOffset() throws IOException {
         // Given
-        final InRangeWithTimeOffsets<T> filter = createBuilderWithTimeOffsets()
+        final InRangeTimeBased<T> filter = createBuilderWithTimeOffsets()
                 .startOffsetInDays(7)
                 .endOffsetInDays(2)
                 .build();
@@ -61,7 +64,7 @@ public abstract class InRangeWithTimeOffsetsTest<T extends Comparable<T>> extend
         // Given
         final long start = System.currentTimeMillis() - 100 * DAYS_TO_MILLISECONDS;
         final long end = System.currentTimeMillis() - 60 * DAYS_TO_MILLISECONDS;
-        final InRangeWithTimeOffsets<T> filter = createBuilderWithTimeOffsets()
+        final InRangeTimeBased<T> filter = createBuilderWithTimeOffsets()
                 .start(convert(start))
                 .startOffsetInDays(7)
                 .end(convert(end))
@@ -88,7 +91,7 @@ public abstract class InRangeWithTimeOffsetsTest<T extends Comparable<T>> extend
     @Test
     public void shouldAcceptValuesInRangeHourOffset() throws IOException {
         // Given
-        final InRangeWithTimeOffsets<T> filter = createBuilderWithTimeOffsets()
+        final InRangeTimeBased<T> filter = createBuilderWithTimeOffsets()
                 .startOffsetInHours(100L)
                 .endOffsetInHours(10L)
                 .build();
@@ -113,7 +116,7 @@ public abstract class InRangeWithTimeOffsetsTest<T extends Comparable<T>> extend
     @Test
     public void shouldAcceptValuesInRangeOffset() throws IOException {
         // Given
-        final InRangeWithTimeOffsets<T> filter = createBuilderWithTimeOffsets()
+        final InRangeTimeBased<T> filter = createBuilderWithTimeOffsets()
                 .startOffsetInMillis(100000L)
                 .endOffsetInMillis(10000L)
                 .build();
@@ -138,7 +141,7 @@ public abstract class InRangeWithTimeOffsetsTest<T extends Comparable<T>> extend
     @Test
     public void shouldAcceptValuesInRangeHoursAndDaysOffset() throws IOException {
         // Given
-        final InRangeWithTimeOffsets<T> filter = createBuilderWithTimeOffsets()
+        final InRangeTimeBased<T> filter = createBuilderWithTimeOffsets()
                 .startOffsetInDays(1)
                 .endOffsetInHours(4L)
                 .build();
@@ -157,7 +160,7 @@ public abstract class InRangeWithTimeOffsetsTest<T extends Comparable<T>> extend
     @Test
     public void shouldAcceptValuesInRangeDayOffsetLowerUnbounded() throws IOException {
         // Given
-        final InRangeWithTimeOffsets<T> filter = createBuilderWithTimeOffsets()
+        final InRangeTimeBased<T> filter = createBuilderWithTimeOffsets()
                 .endOffsetInDays(2)
                 .build();
 
@@ -175,7 +178,7 @@ public abstract class InRangeWithTimeOffsetsTest<T extends Comparable<T>> extend
     @Test
     public void shouldAcceptValuesInRangeDayOffsetUpperUnbounded() throws IOException {
         // Given
-        final InRangeWithTimeOffsets<T> filter = createBuilderWithTimeOffsets()
+        final InRangeTimeBased<T> filter = createBuilderWithTimeOffsets()
                 .startOffsetInDays(7)
                 .build();
 
@@ -194,7 +197,7 @@ public abstract class InRangeWithTimeOffsetsTest<T extends Comparable<T>> extend
     @Test
     public void shouldConstructFromOffsetMillis() throws IOException {
         // When
-        final InRangeWithTimeOffsets<T> filter = createBuilderWithTimeOffsets()
+        final InRangeTimeBased<T> filter = createBuilderWithTimeOffsets()
                 .startOffsetInMillis(10000L)
                 .endOffsetInMillis(1000L)
                 .build();
@@ -209,7 +212,7 @@ public abstract class InRangeWithTimeOffsetsTest<T extends Comparable<T>> extend
     @Test
     public void shouldConstructFromOffsetHours() throws IOException {
         // When
-        final InRangeWithTimeOffsets<T> filter = createBuilderWithTimeOffsets()
+        final InRangeTimeBased<T> filter = createBuilderWithTimeOffsets()
                 .startOffsetInHours(1000L)
                 .endOffsetInHours(100L)
                 .build();
@@ -225,7 +228,7 @@ public abstract class InRangeWithTimeOffsetsTest<T extends Comparable<T>> extend
     @Test
     public void shouldConstructFromOffsetDays() throws IOException {
         // When
-        final InRangeWithTimeOffsets<T> filter = createBuilderWithTimeOffsets()
+        final InRangeTimeBased<T> filter = createBuilderWithTimeOffsets()
                 .startOffsetInDays(7)
                 .endOffsetInDays(2)
                 .build();
@@ -240,7 +243,7 @@ public abstract class InRangeWithTimeOffsetsTest<T extends Comparable<T>> extend
     @Test
     public void shouldJsonSerialiseAndDeserialiseWithOffsets() throws IOException {
         // Given
-        final InRangeWithTimeOffsets<T> filter = createBuilderWithTimeOffsets()
+        final InRangeTimeBased<T> filter = createBuilderWithTimeOffsets()
                 .startOffsetInDays(7)
                 .endOffsetInDays(0)
                 .build();
@@ -256,7 +259,7 @@ public abstract class InRangeWithTimeOffsetsTest<T extends Comparable<T>> extend
                 "}"), json);
 
         // When 2
-        final InRangeWithTimeOffsets<T> deserialisedFilter = (InRangeWithTimeOffsets<T>) deserialise(json);
+        final InRangeTimeBased<T> deserialisedFilter = (InRangeTimeBased<T>) deserialise(json);
 
         // Then 2
         assertNotNull(deserialisedFilter);
@@ -276,7 +279,7 @@ public abstract class InRangeWithTimeOffsetsTest<T extends Comparable<T>> extend
                 "}");
 
         // When
-        final InRangeWithTimeOffsets<T> deserialisedFilter = (InRangeWithTimeOffsets<T>) deserialise(json);
+        final InRangeTimeBased<T> deserialisedFilter = (InRangeTimeBased<T>) deserialise(json);
 
         // Then 2
         assertNotNull(deserialisedFilter);
@@ -296,7 +299,7 @@ public abstract class InRangeWithTimeOffsetsTest<T extends Comparable<T>> extend
                 "}");
 
         // When
-        final InRangeWithTimeOffsets<T> deserialisedFilter = (InRangeWithTimeOffsets<T>) deserialise(json);
+        final InRangeTimeBased<T> deserialisedFilter = (InRangeTimeBased<T>) deserialise(json);
 
         // Then 2
         assertNotNull(deserialisedFilter);
@@ -316,7 +319,7 @@ public abstract class InRangeWithTimeOffsetsTest<T extends Comparable<T>> extend
                 "}");
 
         // When
-        final InRangeWithTimeOffsets<T> deserialisedFilter = (InRangeWithTimeOffsets<T>) deserialise(json);
+        final InRangeTimeBased<T> deserialisedFilter = (InRangeTimeBased<T>) deserialise(json);
 
         // Then 2
         assertNotNull(deserialisedFilter);
@@ -324,6 +327,60 @@ public abstract class InRangeWithTimeOffsetsTest<T extends Comparable<T>> extend
         assertEquals(2, (int) deserialisedFilter.getEndOffsetInDays());
         assertEquals(7 * DAYS_TO_MILLISECONDS, (long) deserialisedFilter.getStartOffset());
         assertEquals(2 * DAYS_TO_MILLISECONDS, (long) deserialisedFilter.getEndOffset());
+    }
+
+
+    @Test
+    public void shouldDeserialiseWithDateStrings() throws IOException, ParseException {
+        // Given
+        final String startDateString = "2017-01-02 00:30:45";
+        final String endDateString = "2016-02-03 00:45:30";
+        final String json = String.format("{%n" +
+                "  \"class\" : \"" + getPredicateClass().getName() + "\",%n" +
+                "  \"startDateString\" : \"" + startDateString + "\",%n" +
+                "  \"endDateString\" : \"" + endDateString + "\"%n" +
+                "}");
+
+        // When
+        final InRangeTimeBased<T> deserialisedFilter = (InRangeTimeBased<T>) deserialise(json);
+
+        // Then 2
+        assertNotNull(deserialisedFilter);
+        assertEquals(convert(DateUtils.parseDate(startDateString, Locale.getDefault(), "yyyy-MM-dd HH:mm:ss").getTime()), deserialisedFilter.getStart());
+        assertEquals(convert(DateUtils.parseDate(endDateString, Locale.getDefault(), "yyyy-MM-dd HH:mm:ss").getTime()), deserialisedFilter.getEnd());
+        assertEquals(startDateString, deserialisedFilter.getStartDateString());
+        assertEquals(endDateString, deserialisedFilter.getEndDateString());
+    }
+
+    @Test
+    public void shouldJsonSerialiseAndDeserialiseWithDateStrings() throws IOException, ParseException {
+        // Given
+        final String startDateString = "2017-01-02 00:30:45";
+        final String endDateString = "2016-02-03 00:45:30";
+        final InRangeTimeBased<T> filter = createBuilderWithTimeOffsets()
+                .startDateString(startDateString)
+                .endDateString(endDateString)
+                .build();
+
+        // When
+        final String json = JsonSerialiser.serialise(filter);
+
+        // Then
+        JsonSerialiser.assertEquals(String.format("{%n" +
+                "  \"class\" : \"" + getPredicateClass().getName() + "\",%n" +
+                "  \"startDateString\" : \"" + startDateString + "\",%n" +
+                "  \"endDateString\" : \"" + endDateString + "\"%n" +
+                "}"), json);
+
+        // When 2
+        final InRangeTimeBased<T> deserialisedFilter = (InRangeTimeBased<T>) deserialise(json);
+
+        // Then 2
+        assertNotNull(deserialisedFilter);
+        assertEquals(convert(DateUtils.parseDate(startDateString, Locale.getDefault(), "yyyy-MM-dd HH:mm:ss").getTime()), deserialisedFilter.getStart());
+        assertEquals(convert(DateUtils.parseDate(endDateString, Locale.getDefault(), "yyyy-MM-dd HH:mm:ss").getTime()), deserialisedFilter.getEnd());
+        assertEquals(startDateString, deserialisedFilter.getStartDateString());
+        assertEquals(endDateString, deserialisedFilter.getEndDateString());
     }
 
     @Override
@@ -338,10 +395,10 @@ public abstract class InRangeWithTimeOffsetsTest<T extends Comparable<T>> extend
         return null != unconvert ? unconvert.toString() : null;
     }
 
-    protected abstract InRangeWithTimeOffsets.BaseBuilder<?, ? extends InRangeWithTimeOffsets<T>, T> createBuilderWithTimeOffsets();
+    protected abstract InRangeTimeBased.BaseBuilder<?, ? extends InRangeTimeBased<T>, T> createBuilderWithTimeOffsets();
 
     @Override
-    protected InRangeWithTimeOffsets.BaseBuilder createBuilder() {
+    protected InRangeTimeBased.BaseBuilder createBuilder() {
         return createBuilderWithTimeOffsets();
     }
 

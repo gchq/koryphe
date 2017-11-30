@@ -24,14 +24,14 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static uk.gov.gchq.koryphe.impl.predicate.range.InRangeDualWithTimeOffsets.DAYS_TO_MILLISECONDS;
-import static uk.gov.gchq.koryphe.impl.predicate.range.InRangeDualWithTimeOffsets.HOURS_TO_MILLISECONDS;
+import static uk.gov.gchq.koryphe.impl.predicate.range.InRangeDualTimeBased.DAYS_TO_MILLISECONDS;
+import static uk.gov.gchq.koryphe.impl.predicate.range.InRangeDualTimeBased.HOURS_TO_MILLISECONDS;
 
-public abstract class InRangeDualWithTimeOffsetsTest<T extends Comparable<T>> extends InRangeDualTest<T> {
+public abstract class InRangeDualTimeBasedTest<T extends Comparable<T>> extends InRangeDualTest<T> {
     @Test
     public void shouldConstructFromOffsetMillis() throws IOException {
         // When
-        final InRangeDualWithTimeOffsets<T> filter = createBuilderWithTimeOffsets()
+        final InRangeDualTimeBased<T> filter = createBuilderWithTimeOffsets()
                 .startOffsetInMillis(10000L)
                 .endOffsetInMillis(1000L)
                 .build();
@@ -46,7 +46,7 @@ public abstract class InRangeDualWithTimeOffsetsTest<T extends Comparable<T>> ex
     @Test
     public void shouldConstructFromOffsetHours() throws IOException {
         // When
-        final InRangeDualWithTimeOffsets<T> filter = createBuilderWithTimeOffsets()
+        final InRangeDualTimeBased<T> filter = createBuilderWithTimeOffsets()
                 .startOffsetInHours(1000L)
                 .endOffsetInHours(100L)
                 .build();
@@ -62,7 +62,7 @@ public abstract class InRangeDualWithTimeOffsetsTest<T extends Comparable<T>> ex
     @Test
     public void shouldConstructFromOffsetDays() throws IOException {
         // When
-        final InRangeDualWithTimeOffsets<T> filter = createBuilderWithTimeOffsets()
+        final InRangeDualTimeBased<T> filter = createBuilderWithTimeOffsets()
                 .startOffsetInDays(7)
                 .endOffsetInDays(2)
                 .build();
@@ -77,7 +77,7 @@ public abstract class InRangeDualWithTimeOffsetsTest<T extends Comparable<T>> ex
     @Test
     public void shouldJsonSerialiseAndDeserialiseWithOffsets() throws IOException {
         // Given
-        final InRangeDualWithTimeOffsets<T> filter = createBuilderWithTimeOffsets()
+        final InRangeDualTimeBased<T> filter = createBuilderWithTimeOffsets()
                 .startOffsetInDays(7)
                 .endOffsetInDays(0)
                 .build();
@@ -95,7 +95,7 @@ public abstract class InRangeDualWithTimeOffsetsTest<T extends Comparable<T>> ex
                 "}"), json);
 
         // When 2
-        final InRangeDualWithTimeOffsets<T> deserialisedFilter = (InRangeDualWithTimeOffsets<T>) deserialise(json);
+        final InRangeDualTimeBased<T> deserialisedFilter = (InRangeDualTimeBased<T>) deserialise(json);
 
         // Then 2
         assertNotNull(deserialisedFilter);
@@ -115,10 +115,10 @@ public abstract class InRangeDualWithTimeOffsetsTest<T extends Comparable<T>> ex
         return null != unconvert ? unconvert.toString() : null;
     }
 
-    protected abstract InRangeDualWithTimeOffsets.BaseBuilder<?, ? extends InRangeDualWithTimeOffsets<T>, T> createBuilderWithTimeOffsets();
+    protected abstract InRangeDualTimeBased.BaseBuilder<?, ? extends InRangeDualTimeBased<T>, T> createBuilderWithTimeOffsets();
 
     @Override
-    protected InRangeDualWithTimeOffsets.BaseBuilder<?, ? extends InRangeDualWithTimeOffsets<T>, T> createBuilder() {
+    protected InRangeDualTimeBased.BaseBuilder<?, ? extends InRangeDualTimeBased<T>, T> createBuilder() {
         return createBuilderWithTimeOffsets();
     }
 

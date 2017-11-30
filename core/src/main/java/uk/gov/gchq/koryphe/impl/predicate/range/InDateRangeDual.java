@@ -38,30 +38,25 @@ import java.util.Date;
  * Similarly with the end range bound, this can be set using end, endOffsetInMillis,
  * endOffsetInHours or endOffsetInDays.
  * </p>
+ * <p>
+ * You can also configure the start and end times using startString and endString. These strings should be in one of the following formats:
+ * </p>
+ * <ul>
+ * <li>yyyy</li>
+ * <li>yyyy-MM</li>
+ * <li>yyyy-MM-dd</li>
+ * <li>yyyy-MM-dd-HH</li>
+ * <li>yyyy-MM-dd-HH:mm</li>
+ * <li>yyyy-MM-dd-HH:mm:ss</li>
+ * </ul>
  *
  * @see InRange
  * @see Builder
  */
 @JsonDeserialize(builder = InDateRangeDual.Builder.class)
-public class InDateRangeDual extends InRangeDualWithTimeOffsets<Date> {
-    public InDateRangeDual(final Date start,
-                           final Long startOffsetInMillis,
-                           final Long startOffsetInHours,
-                           final Integer startOffsetInDays,
-                           final Date end,
-                           final Long endOffsetInMillis,
-                           final Long endOffsetInHours,
-                           final Integer endOffsetInDays,
-                           final Boolean startInclusive,
-                           final Boolean endInclusive) {
-        super(
-                start, startOffsetInMillis, startOffsetInHours, startOffsetInDays,
-                end, endOffsetInMillis, endOffsetInHours, endOffsetInDays,
-                startInclusive,
-                endInclusive,
-                Date::new,
-                Date::getTime
-        );
+public class InDateRangeDual extends InRangeDualTimeBased<Date> {
+    public InDateRangeDual() {
+        super(Date::new, Date::getTime);
     }
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
@@ -77,24 +72,8 @@ public class InDateRangeDual extends InRangeDualWithTimeOffsets<Date> {
     }
 
     public static class Builder extends BaseBuilder<Builder, InDateRangeDual, Date> {
-        @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
-        @Override
-        public Builder start(final Date start) {
-            return super.start(start);
-        }
-
-        @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
-        @Override
-        public Builder end(final Date end) {
-            return super.end(end);
-        }
-
-        public InDateRangeDual build() {
-            return new InDateRangeDual(
-                    start, startOffsetInMillis, startOffsetInHours, startOffsetInDays,
-                    end, endOffsetInMillis, endOffsetInHours, endOffsetInDays,
-                    startInclusive, endInclusive
-            );
+        public Builder() {
+            super(new InDateRangeDual());
         }
     }
 }

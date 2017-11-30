@@ -18,7 +18,7 @@ package uk.gov.gchq.koryphe.impl.predicate.range;
 
 import java.util.Date;
 
-public class InDateRangeTest extends InRangeWithTimeOffsetsTest<Date> {
+public class InDateRangeTest extends InRangeTimeBasedTest<Date> {
 
     @Override
     protected Date convert(final Long value) {

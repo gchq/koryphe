@@ -18,6 +18,7 @@ package uk.gov.gchq.koryphe.impl.predicate.range;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -50,9 +51,8 @@ import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 public class InRange<T extends Comparable<T>> extends KoryphePredicate<T> {
     private final InRangeDual<T> predicate;
 
-    public InRange(final T start, final T end,
-                   final Boolean startInclusive, final Boolean endInclusive) {
-        predicate = new InRangeDual<>(start, end, startInclusive, endInclusive);
+    public InRange() {
+        predicate = new InRangeDual<>();
     }
 
     protected InRange(final InRangeDual<T> predicate) {
@@ -120,7 +120,56 @@ public class InRange<T extends Comparable<T>> extends KoryphePredicate<T> {
                 .toString();
     }
 
-    public static class Builder<T extends Comparable<T>> extends InRangeDual.BaseBuilder<Builder<T>, InRange<T>, T> {
+    @JsonPOJOBuilder(buildMethodName = "build", withPrefix = "")
+    public abstract static class BaseBuilder<B extends BaseBuilder<B, R, T>, R extends InRange<T>, T extends Comparable<T>> {
+        protected final InRange<T> predicate;
+
+        public BaseBuilder(final R predicate) {
+            this.predicate = predicate;
+        }
+
+        public B start(final T start) {
+            predicate.getPredicate().setStart(start);
+            return getSelf();
+        }
+
+        public B end(final T end) {
+            predicate.getPredicate().setEnd(end);
+            return getSelf();
+        }
+
+        public B startInclusive(final boolean startInclusive) {
+            predicate.getPredicate().setStartInclusive(startInclusive);
+            return getSelf();
+        }
+
+        public B endInclusive(final boolean endInclusive) {
+            predicate.getPredicate().setEndInclusive(endInclusive);
+            return getSelf();
+        }
+
+        public R build() {
+            if (null != predicate.getStart() && null != predicate.getEnd()
+                    && !predicate.getStart().getClass().equals(predicate.getEnd().getClass())) {
+                throw new IllegalArgumentException("start and end should be instances of the same class");
+            }
+            return (R) predicate;
+        }
+
+        protected B getSelf() {
+            return (B) this;
+        }
+
+        protected R getPredicate() {
+            return (R) predicate;
+        }
+    }
+
+    public static class Builder<T extends Comparable<T>> extends BaseBuilder<Builder<T>, InRange<T>, T> {
+        public Builder() {
+            super(new InRange<>());
+        }
+
         @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
         @Override
         public Builder<T> start(final T start) {
@@ -131,11 +180,6 @@ public class InRange<T extends Comparable<T>> extends KoryphePredicate<T> {
         @Override
         public Builder<T> end(final T end) {
             return super.end(end);
-        }
-
-        @Override
-        public InRange<T> build() {
-            return new InRange<>(start, end, startInclusive, endInclusive);
         }
     }
 }

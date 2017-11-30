@@ -36,28 +36,25 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
  * Similarly with the end range bound, this can be set using end, endOffsetInMillis,
  * endOffsetInHours or endOffsetInDays.
  * </p>
+ * <p>
+ * You can also configure the start and end times using startString and endString. These strings should be in one of the following formats:
+ * </p>
+ * <ul>
+ * <li>yyyy</li>
+ * <li>yyyy-MM</li>
+ * <li>yyyy-MM-dd</li>
+ * <li>yyyy-MM-dd-HH</li>
+ * <li>yyyy-MM-dd-HH:mm</li>
+ * <li>yyyy-MM-dd-HH:mm:ss</li>
+ * </ul>
  *
  * @see InRange
  * @see Builder
  */
 @JsonDeserialize(builder = InTimeRange.Builder.class)
-public class InTimeRange extends InRangeWithTimeOffsets<Long> {
-    public InTimeRange(final Long start,
-                       final Long startOffsetInMillis,
-                       final Long startOffsetInHours,
-                       final Integer startOffsetInDays,
-                       final Long end,
-                       final Long endOffsetInMillis,
-                       final Long endOffsetInHours,
-                       final Integer endOffsetInDays,
-                       final Boolean startInclusive,
-                       final Boolean endInclusive) {
-        super(new InTimeRangeDual(
-                start, startOffsetInMillis, startOffsetInHours, startOffsetInDays,
-                end, endOffsetInMillis, endOffsetInHours, endOffsetInDays,
-                startInclusive,
-                endInclusive
-        ));
+public class InTimeRange extends InRangeTimeBased<Long> {
+    protected InTimeRange() {
+        super(new InTimeRangeDual());
     }
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
@@ -73,12 +70,8 @@ public class InTimeRange extends InRangeWithTimeOffsets<Long> {
     }
 
     public static class Builder extends BaseBuilder<Builder, InTimeRange, Long> {
-        public InTimeRange build() {
-            return new InTimeRange(
-                    start, startOffsetInMillis, startOffsetInHours, startOffsetInDays,
-                    end, endOffsetInMillis, endOffsetInHours, endOffsetInDays,
-                    startInclusive, endInclusive
-            );
+        public Builder() {
+            super(new InTimeRange());
         }
     }
 }

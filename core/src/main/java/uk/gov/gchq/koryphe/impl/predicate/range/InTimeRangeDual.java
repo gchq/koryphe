@@ -16,7 +16,6 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
@@ -37,31 +36,23 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
  * Similarly with the end range bound, this can be set using end, endOffsetInMillis,
  * endOffsetInHours or endOffsetInDays.
  * </p>
+ * <p>
+ * You can also configure the start and end times using startString and endString. These strings should be in one of the following formats:
+ * </p>
+ * <ul>
+ * <li>yyyy</li>
+ * <li>yyyy-MM</li>
+ * <li>yyyy-MM-dd</li>
+ * <li>yyyy-MM-dd-HH</li>
+ * <li>yyyy-MM-dd-HH:mm</li>
+ * <li>yyyy-MM-dd-HH:mm:ss</li>
+ * </ul>
  *
  * @see InRange
  * @see Builder
  */
 @JsonDeserialize(builder = InTimeRangeDual.Builder.class)
-public class InTimeRangeDual extends InRangeDualWithTimeOffsets<Long> {
-    @JsonCreator
-    public InTimeRangeDual(final Long start,
-                           final Long startOffsetInMillis,
-                           final Long startOffsetInHours,
-                           final Integer startOffsetInDays,
-                           final Long end,
-                           final Long endOffsetInMillis,
-                           final Long endOffsetInHours,
-                           final Integer endOffsetInDays,
-                           final Boolean startInclusive,
-                           final Boolean endInclusive) {
-        super(
-                start, startOffsetInMillis, startOffsetInHours, startOffsetInDays,
-                end, endOffsetInMillis, endOffsetInHours, endOffsetInDays,
-                startInclusive,
-                endInclusive
-        );
-    }
-
+public class InTimeRangeDual extends InRangeDualTimeBased<Long> {
     @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
     @Override
     public Long getStart() {
@@ -75,12 +66,8 @@ public class InTimeRangeDual extends InRangeDualWithTimeOffsets<Long> {
     }
 
     public static class Builder extends BaseBuilder<Builder, InTimeRangeDual, Long> {
-        public InTimeRangeDual build() {
-            return new InTimeRangeDual(
-                    start, startOffsetInMillis, startOffsetInHours, startOffsetInDays,
-                    end, endOffsetInMillis, endOffsetInHours, endOffsetInDays,
-                    startInclusive, endInclusive
-            );
+        public Builder() {
+            super(new InTimeRangeDual());
         }
     }
 }
