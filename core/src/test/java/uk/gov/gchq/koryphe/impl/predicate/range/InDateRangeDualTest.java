@@ -31,7 +31,7 @@ public class InDateRangeDualTest extends InRangeDualWithTimeOffsetsTest<Date> {
 
     @Override
     protected Long unconvert(final Date value) {
-        return value.getTime();
+        return null == value ? null : value.getTime();
     }
 
     @Override

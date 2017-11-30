@@ -16,8 +16,8 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.Date;
 
@@ -42,31 +42,57 @@ import java.util.Date;
  * @see InRange
  * @see Builder
  */
+@JsonDeserialize(builder = InDateRange.Builder.class)
 public class InDateRange extends InRangeWithTimeOffsets<Date> {
-    @JsonCreator
-    public InDateRange(@JsonProperty("start") final Date start,
-                       @JsonProperty("startOffsetInMillis") final Long startOffsetInMillis,
-                       @JsonProperty("startOffsetInHours") final Long startOffsetInHours,
-                       @JsonProperty("startOffsetInDays") final Integer startOffsetInDays,
-                       @JsonProperty("end") final Date end,
-                       @JsonProperty("endOffsetInMillis") final Long endOffsetInMillis,
-                       @JsonProperty("endOffsetInHours") final Long endOffsetInHours,
-                       @JsonProperty("endOffsetInDays") final Integer endOffsetInDays,
-                       @JsonProperty("startInclusive") final Boolean startInclusive,
-                       @JsonProperty("endInclusive") final Boolean endInclusive) {
-        super(
+    public InDateRange(final Date start,
+                       final Long startOffsetInMillis,
+                       final Long startOffsetInHours,
+                       final Integer startOffsetInDays,
+                       final Date end,
+                       final Long endOffsetInMillis,
+                       final Long endOffsetInHours,
+                       final Integer endOffsetInDays,
+                       final Boolean startInclusive,
+                       final Boolean endInclusive) {
+        super(new InDateRangeDual(
                 start, startOffsetInMillis, startOffsetInHours, startOffsetInDays,
-                end,
-                endOffsetInMillis, endOffsetInHours, endOffsetInDays,
+                end, endOffsetInMillis, endOffsetInHours, endOffsetInDays,
                 startInclusive,
-                endInclusive,
-                Date::new
-        );
+                endInclusive
+        ));
+    }
+
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
+    @Override
+    public Date getStart() {
+        return super.getStart();
+    }
+
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
+    @Override
+    public Date getEnd() {
+        return super.getEnd();
     }
 
     public static class Builder extends BaseBuilder<Builder, InDateRange, Date> {
+        @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
+        @Override
+        public Builder start(final Date start) {
+            return super.start(start);
+        }
+
+        @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
+        @Override
+        public Builder end(final Date end) {
+            return super.end(end);
+        }
+
         public InDateRange build() {
-            return new InDateRange(start, startOffsetInMillis, startOffsetInHours, startOffsetInDays, end, endOffsetInMillis, endOffsetInHours, endOffsetInDays, startInclusive, endInclusive);
+            return new InDateRange(
+                    start, startOffsetInMillis, startOffsetInHours, startOffsetInDays,
+                    end, endOffsetInMillis, endOffsetInHours, endOffsetInDays,
+                    startInclusive, endInclusive
+            );
         }
     }
 }

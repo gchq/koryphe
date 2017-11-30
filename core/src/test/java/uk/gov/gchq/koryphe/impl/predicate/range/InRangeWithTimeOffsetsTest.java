@@ -21,17 +21,178 @@ import org.junit.Test;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static uk.gov.gchq.koryphe.impl.predicate.range.InRangeDualWithTimeOffsets.DAYS_TO_MILLISECONDS;
+import static uk.gov.gchq.koryphe.impl.predicate.range.InRangeDualWithTimeOffsets.HOURS_TO_MILLISECONDS;
 
 public abstract class InRangeWithTimeOffsetsTest<T extends Comparable<T>> extends InRangeTest<T> {
     @Test
-    public void shouldConstructFromOffsetMillis() throws IOException {
+    public void shouldAcceptValuesInRangeDayOffset() throws IOException {
         // Given
-        final long initialTime = System.currentTimeMillis();
+        final InRangeWithTimeOffsets<T> filter = createBuilderWithTimeOffsets()
+                .startOffsetInDays(7)
+                .endOffsetInDays(2)
+                .build();
 
+        final long now = System.currentTimeMillis();
+        final List<Long> validValues = Arrays.asList(
+                now - 7 * DAYS_TO_MILLISECONDS + 5000,
+                now - 3 * DAYS_TO_MILLISECONDS,
+                now - 2 * DAYS_TO_MILLISECONDS
+        );
+
+        final List<Long> invalidValues = Arrays.asList(
+                now - 8 * DAYS_TO_MILLISECONDS + 5000,
+                now - DAYS_TO_MILLISECONDS,
+                now
+        );
+
+        // When / Then
+        testValues(true, validValues, filter);
+        testValues(false, invalidValues, filter);
+    }
+
+    @Test
+    public void shouldAcceptValuesInRangeDayOffsetFromStart() throws IOException {
+        // Given
+        final long start = System.currentTimeMillis() - 100 * DAYS_TO_MILLISECONDS;
+        final long end = System.currentTimeMillis() - 60 * DAYS_TO_MILLISECONDS;
+        final InRangeWithTimeOffsets<T> filter = createBuilderWithTimeOffsets()
+                .start(convert(start))
+                .startOffsetInDays(7)
+                .end(convert(end))
+                .endOffsetInDays(2)
+                .build();
+
+        final List<Long> validValues = Arrays.asList(
+                start - 7 * DAYS_TO_MILLISECONDS,
+                end - 3 * DAYS_TO_MILLISECONDS,
+                end - 2 * DAYS_TO_MILLISECONDS
+        );
+
+        final List<Long> invalidValues = Arrays.asList(
+                start - 7 * DAYS_TO_MILLISECONDS - 1,
+                end - 2 * DAYS_TO_MILLISECONDS + 1,
+                end
+        );
+
+        // When / Then
+        testValues(true, validValues, filter);
+        testValues(false, invalidValues, filter);
+    }
+
+    @Test
+    public void shouldAcceptValuesInRangeHourOffset() throws IOException {
+        // Given
+        final InRangeWithTimeOffsets<T> filter = createBuilderWithTimeOffsets()
+                .startOffsetInHours(100L)
+                .endOffsetInHours(10L)
+                .build();
+
+        final long now = System.currentTimeMillis();
+        final List<Long> validValues = Arrays.asList(
+                now - 100 * HOURS_TO_MILLISECONDS + 5000,
+                now - 50 * HOURS_TO_MILLISECONDS,
+                now - 10 * HOURS_TO_MILLISECONDS
+        );
+        final List<Long> invalidValues = Arrays.asList(
+                now - 110 * HOURS_TO_MILLISECONDS + 5000,
+                now - 5 * HOURS_TO_MILLISECONDS,
+                now
+        );
+
+        // When / Then
+        testValues(true, validValues, filter);
+        testValues(false, invalidValues, filter);
+    }
+
+    @Test
+    public void shouldAcceptValuesInRangeOffset() throws IOException {
+        // Given
+        final InRangeWithTimeOffsets<T> filter = createBuilderWithTimeOffsets()
+                .startOffsetInMillis(100000L)
+                .endOffsetInMillis(10000L)
+                .build();
+
+        final long now = System.currentTimeMillis();
+        final List<Long> validValues = Arrays.asList(
+                now - 100000L + 5000,
+                now - 50000L,
+                now - 10000L
+        );
+        final List<Long> invalidValues = Arrays.asList(
+                now - 110000L + 5000,
+                now - 100L,
+                now
+        );
+
+        // When / Then
+        testValues(true, validValues, filter);
+        testValues(false, invalidValues, filter);
+    }
+
+    @Test
+    public void shouldAcceptValuesInRangeHoursAndDaysOffset() throws IOException {
+        // Given
+        final InRangeWithTimeOffsets<T> filter = createBuilderWithTimeOffsets()
+                .startOffsetInDays(1)
+                .endOffsetInHours(4L)
+                .build();
+
+        final long now = System.currentTimeMillis();
+        final List<Long> values = Arrays.asList(
+                now - DAYS_TO_MILLISECONDS + 5000,
+                now - 10 * HOURS_TO_MILLISECONDS,
+                now - 4 * HOURS_TO_MILLISECONDS
+        );
+
+        // When / Then
+        testValues(true, values, filter);
+    }
+
+    @Test
+    public void shouldAcceptValuesInRangeDayOffsetLowerUnbounded() throws IOException {
+        // Given
+        final InRangeWithTimeOffsets<T> filter = createBuilderWithTimeOffsets()
+                .endOffsetInDays(2)
+                .build();
+
+        final long now = System.currentTimeMillis();
+        final List<Long> values = Arrays.asList(
+                now - 10 * DAYS_TO_MILLISECONDS + 5000,
+                now - 3 * DAYS_TO_MILLISECONDS,
+                now - 2 * DAYS_TO_MILLISECONDS
+        );
+
+        // When / Then
+        testValues(true, values, filter);
+    }
+
+    @Test
+    public void shouldAcceptValuesInRangeDayOffsetUpperUnbounded() throws IOException {
+        // Given
+        final InRangeWithTimeOffsets<T> filter = createBuilderWithTimeOffsets()
+                .startOffsetInDays(7)
+                .build();
+
+        final long now = System.currentTimeMillis();
+        final List<Long> values = Arrays.asList(
+                now - 7 * DAYS_TO_MILLISECONDS + 5000,
+                now - 3 * DAYS_TO_MILLISECONDS,
+                now,
+                now + 1000
+        );
+
+        // When / Then
+        testValues(true, values, filter);
+    }
+
+    @Test
+    public void shouldConstructFromOffsetMillis() throws IOException {
         // When
         final InRangeWithTimeOffsets<T> filter = createBuilderWithTimeOffsets()
                 .startOffsetInMillis(10000L)
@@ -39,14 +200,14 @@ public abstract class InRangeWithTimeOffsetsTest<T extends Comparable<T>> extend
                 .build();
 
         // Then
-        assertOffset(filter, 10000L, 1000L, initialTime);
+        assertEquals(10000L, (long) filter.getStartOffsetInMillis());
+        assertEquals(1000L, (long) filter.getEndOffsetInMillis());
+        assertEquals(10000L, (long) filter.getStartOffset());
+        assertEquals(1000L, (long) filter.getEndOffset());
     }
 
     @Test
     public void shouldConstructFromOffsetHours() throws IOException {
-        // Given
-        final long initialTime = System.currentTimeMillis();
-
         // When
         final InRangeWithTimeOffsets<T> filter = createBuilderWithTimeOffsets()
                 .startOffsetInHours(1000L)
@@ -54,15 +215,15 @@ public abstract class InRangeWithTimeOffsetsTest<T extends Comparable<T>> extend
                 .build();
 
         // Then
-        assertOffset(filter, InTimeRange.HOURS_TO_MILLISECONDS * 1000L, InTimeRange.HOURS_TO_MILLISECONDS * 100L, initialTime);
+        assertEquals(1000L, (long) filter.getStartOffsetInHours());
+        assertEquals(100L, (long) filter.getEndOffsetInHours());
+        assertEquals(1000L * HOURS_TO_MILLISECONDS, (long) filter.getStartOffset());
+        assertEquals(100L * HOURS_TO_MILLISECONDS, (long) filter.getEndOffset());
     }
 
 
     @Test
     public void shouldConstructFromOffsetDays() throws IOException {
-        // Given
-        final long initialTime = System.currentTimeMillis();
-
         // When
         final InRangeWithTimeOffsets<T> filter = createBuilderWithTimeOffsets()
                 .startOffsetInDays(7)
@@ -70,7 +231,10 @@ public abstract class InRangeWithTimeOffsetsTest<T extends Comparable<T>> extend
                 .build();
 
         // Then
-        assertOffset(filter, InTimeRange.DAYS_TO_MILLISECONDS * 7, InTimeRange.DAYS_TO_MILLISECONDS * 2, initialTime);
+        assertEquals(7, (int) filter.getStartOffsetInDays());
+        assertEquals(2, (int) filter.getEndOffsetInDays());
+        assertEquals(7 * DAYS_TO_MILLISECONDS, (long) filter.getStartOffset());
+        assertEquals(2 * DAYS_TO_MILLISECONDS, (long) filter.getEndOffset());
     }
 
     @Test
@@ -80,8 +244,6 @@ public abstract class InRangeWithTimeOffsetsTest<T extends Comparable<T>> extend
                 .startOffsetInDays(7)
                 .endOffsetInDays(0)
                 .build();
-        final T startValue = filter.getStart();
-        final T endValue = filter.getEnd();
 
         // When
         final String json = JsonSerialiser.serialise(filter);
@@ -89,8 +251,8 @@ public abstract class InRangeWithTimeOffsetsTest<T extends Comparable<T>> extend
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
                 "  \"class\" : \"" + getPredicateClass().getName() + "\",%n" +
-                "  \"start\" : " + getStartJson(startValue) + ",%n" +
-                "  \"end\" : " + getEndJson(endValue) + "%n" +
+                "  \"startOffsetInDays\" : 7,%n" +
+                "  \"endOffsetInDays\" : 0%n" +
                 "}"), json);
 
         // When 2
@@ -98,14 +260,15 @@ public abstract class InRangeWithTimeOffsetsTest<T extends Comparable<T>> extend
 
         // Then 2
         assertNotNull(deserialisedFilter);
-        assertEquals(startValue, deserialisedFilter.getStart());
-        assertEquals(endValue, deserialisedFilter.getEnd());
+        assertEquals(7, (int) deserialisedFilter.getStartOffsetInDays());
+        assertEquals(0, (int) deserialisedFilter.getEndOffsetInDays());
+        assertEquals(DAYS_TO_MILLISECONDS * 7, (long) deserialisedFilter.getStartOffset());
+        assertEquals(0, (long) deserialisedFilter.getEndOffset());
     }
 
     @Test
     public void shouldDeserialiseWithOffsetsInMillis() throws IOException {
         // Given
-        final long initialTime = System.currentTimeMillis();
         final String json = String.format("{%n" +
                 "  \"class\" : \"" + getPredicateClass().getName() + "\",%n" +
                 "  \"startOffsetInMillis\" : " + 10000 + ",%n" +
@@ -117,13 +280,15 @@ public abstract class InRangeWithTimeOffsetsTest<T extends Comparable<T>> extend
 
         // Then 2
         assertNotNull(deserialisedFilter);
-        assertOffset(deserialisedFilter, 10000, 1000, initialTime);
+        assertEquals(10000L, (long) deserialisedFilter.getStartOffsetInMillis());
+        assertEquals(1000L, (long) deserialisedFilter.getEndOffsetInMillis());
+        assertEquals(10000L, (long) deserialisedFilter.getStartOffset());
+        assertEquals(1000L, (long) deserialisedFilter.getEndOffset());
     }
 
     @Test
     public void shouldDeserialiseWithOffsetsInHours() throws IOException {
         // Given
-        final long initialTime = System.currentTimeMillis();
         final String json = String.format("{%n" +
                 "  \"class\" : \"" + getPredicateClass().getName() + "\",%n" +
                 "  \"startOffsetInHours\" : " + 1000 + ",%n" +
@@ -135,13 +300,15 @@ public abstract class InRangeWithTimeOffsetsTest<T extends Comparable<T>> extend
 
         // Then 2
         assertNotNull(deserialisedFilter);
-        assertOffset(deserialisedFilter, InTimeRange.HOURS_TO_MILLISECONDS * 1000, InTimeRange.HOURS_TO_MILLISECONDS * 100, initialTime);
+        assertEquals(1000L, (long) deserialisedFilter.getStartOffsetInHours());
+        assertEquals(100L, (long) deserialisedFilter.getEndOffsetInHours());
+        assertEquals(1000 * HOURS_TO_MILLISECONDS, (long) deserialisedFilter.getStartOffset());
+        assertEquals(100 * HOURS_TO_MILLISECONDS, (long) deserialisedFilter.getEndOffset());
     }
 
     @Test
     public void shouldDeserialiseWithOffsetsInDays() throws IOException {
         // Given
-        final long initialTime = System.currentTimeMillis();
         final String json = String.format("{%n" +
                 "  \"class\" : \"" + getPredicateClass().getName() + "\",%n" +
                 "  \"startOffsetInDays\" : " + 7 + ",%n" +
@@ -153,33 +320,29 @@ public abstract class InRangeWithTimeOffsetsTest<T extends Comparable<T>> extend
 
         // Then 2
         assertNotNull(deserialisedFilter);
-        assertOffset(deserialisedFilter, InTimeRange.DAYS_TO_MILLISECONDS * 7, InTimeRange.DAYS_TO_MILLISECONDS * 2, initialTime);
+        assertEquals(7, (int) deserialisedFilter.getStartOffsetInDays());
+        assertEquals(2, (int) deserialisedFilter.getEndOffsetInDays());
+        assertEquals(7 * DAYS_TO_MILLISECONDS, (long) deserialisedFilter.getStartOffset());
+        assertEquals(2 * DAYS_TO_MILLISECONDS, (long) deserialisedFilter.getEndOffset());
     }
 
     @Override
     protected String getStartJson(final T value) {
-        return unconvert(value).toString();
+        final Long unconvert = unconvert(value);
+        return null != unconvert ? unconvert.toString() : null;
     }
 
     @Override
     protected String getEndJson(final T value) {
-        return unconvert(value).toString();
+        final Long unconvert = unconvert(value);
+        return null != unconvert ? unconvert.toString() : null;
     }
 
     protected abstract InRangeWithTimeOffsets.BaseBuilder<?, ? extends InRangeWithTimeOffsets<T>, T> createBuilderWithTimeOffsets();
 
     @Override
-    protected InRangeWithTimeOffsets.BaseBuilder<?, ? extends InRangeWithTimeOffsets<T>, T> createBuilder() {
+    protected InRangeWithTimeOffsets.BaseBuilder createBuilder() {
         return createBuilderWithTimeOffsets();
-    }
-
-    protected void assertOffset(final InRangeWithTimeOffsets<T> filter, final long startOffset, final long endOffset, final long initialTime) {
-        // Check the offset is approximately correct - we don't know the exact time that was used.
-        final long currentTime = System.currentTimeMillis();
-        final long startOffsetNow = currentTime - unconvert(filter.getStart());
-        assertTrue("startOffsetNow was " + startOffsetNow, startOffsetNow >= startOffset && startOffsetNow <= (startOffset + (currentTime - initialTime)));
-        final long endOffsetNow = currentTime - unconvert(filter.getEnd());
-        assertTrue("endOffsetNow was " + endOffsetNow, endOffsetNow >= endOffset && endOffsetNow <= (endOffset + (currentTime - initialTime)));
     }
 
     protected Long unconvert(final T value) {

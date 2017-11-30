@@ -16,9 +16,8 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -47,15 +46,17 @@ import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
  *
  * @see Builder
  */
+@JsonDeserialize(builder = InRange.Builder.class)
 public class InRange<T extends Comparable<T>> extends KoryphePredicate<T> {
     private final InRangeDual<T> predicate;
 
-    @JsonCreator
-    public InRange(@JsonProperty("start") @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT) final T start,
-                   @JsonProperty("end") @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT) final T end,
-                   @JsonProperty("startInclusive") final Boolean startInclusive,
-                   @JsonProperty("endInclusive") final Boolean endInclusive) {
+    public InRange(final T start, final T end,
+                   final Boolean startInclusive, final Boolean endInclusive) {
         predicate = new InRangeDual<>(start, end, startInclusive, endInclusive);
+    }
+
+    protected InRange(final InRangeDual<T> predicate) {
+        this.predicate = predicate;
     }
 
     @Override
@@ -63,10 +64,12 @@ public class InRange<T extends Comparable<T>> extends KoryphePredicate<T> {
         return predicate.test(value, value);
     }
 
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
     public T getStart() {
         return predicate.getStart();
     }
 
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
     public T getEnd() {
         return predicate.getEnd();
     }
@@ -77,6 +80,10 @@ public class InRange<T extends Comparable<T>> extends KoryphePredicate<T> {
 
     public Boolean isEndInclusive() {
         return predicate.isEndInclusive();
+    }
+
+    protected InRangeDual<T> getPredicate() {
+        return predicate;
     }
 
     @Override
@@ -114,6 +121,18 @@ public class InRange<T extends Comparable<T>> extends KoryphePredicate<T> {
     }
 
     public static class Builder<T extends Comparable<T>> extends InRangeDual.BaseBuilder<Builder<T>, InRange<T>, T> {
+        @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
+        @Override
+        public Builder<T> start(final T start) {
+            return super.start(start);
+        }
+
+        @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
+        @Override
+        public Builder<T> end(final T end) {
+            return super.end(end);
+        }
+
         @Override
         public InRange<T> build() {
             return new InRange<>(start, end, startInclusive, endInclusive);
