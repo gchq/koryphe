@@ -32,11 +32,11 @@ public final class DateUtil {
 
     static {
         FORMATS.put(Pattern.compile("^\\d{4}$"), "yyyy");
-        FORMATS.put(Pattern.compile("^\\d{4}\\d{2}$"), "yyyyMM");
-        FORMATS.put(Pattern.compile("^\\d{4}\\d{2}\\d{2}$"), "yyyyMMdd");
-        FORMATS.put(Pattern.compile("^\\d{4}\\d{2}\\d{2}\\d{2}$"), "yyyyMMddHH");
-        FORMATS.put(Pattern.compile("^\\d{4}\\d{2}\\d{2}\\d{2}\\d{2}$"), "yyyyMMddHHmm");
-        FORMATS.put(Pattern.compile("^\\d{4}\\d{2}\\d{2}\\d{2}\\d{2}\\d{2}$"), "yyyyMMddHHmmss");
+        FORMATS.put(Pattern.compile("^\\d{6}$"), "yyyyMM");
+        FORMATS.put(Pattern.compile("^\\d{8}$"), "yyyyMMdd");
+        FORMATS.put(Pattern.compile("^\\d{10}$"), "yyyyMMddHH");
+        FORMATS.put(Pattern.compile("^\\d{12}$"), "yyyyMMddHHmm");
+        FORMATS.put(Pattern.compile("^\\d{14}$"), "yyyyMMddHHmmss");
     }
 
     private static final Pattern CHARS_TO_STRIP = Pattern.compile("[/_.:\\-| ]");
