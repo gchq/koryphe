@@ -49,7 +49,21 @@ public final class DateUtil {
     }
 
     /**
+     * <p>
      * Parse the provided date.
+     * </p>
+     * <p>
+     * The date string can be in any of the following formats.
+     * You can also use a space, '-', '/', '_', ':', '|', or '.' to separate the parts.
+     * </p>
+     * <ul>
+     * <li>yyyy</li>
+     * <li>yyyyMM</li>
+     * <li>yyyyMMdd</li>
+     * <li>yyyyMMddHH</li>
+     * <li>yyyyMMddHHmm</li>
+     * <li>yyyyMMddHHmmss</li>
+     * </ul>
      *
      * @param dateString The date string to parse
      * @return parsed date

@@ -42,12 +42,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * </p>
  * <ul>
  * <li>yyyy</li>
- * <li>yyyy-MM</li>
- * <li>yyyy-MM-dd</li>
- * <li>yyyy-MM-dd-HH</li>
- * <li>yyyy-MM-dd-HH:mm</li>
- * <li>yyyy-MM-dd-HH:mm:ss</li>
+ * <li>yyyyMM</li>
+ * <li>yyyyMMdd</li>
+ * <li>yyyyMMddHH</li>
+ * <li>yyyyMMddHHmm</li>
+ * <li>yyyyMMddHHmmss</li>
  * </ul>
+ * You can also use a space, '-', '/', '_', ':', '|', or '.' to separate the parts.
  *
  * @see InRange
  */
