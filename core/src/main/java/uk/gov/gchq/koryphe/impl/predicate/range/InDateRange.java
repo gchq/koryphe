@@ -30,9 +30,9 @@ import java.util.Date;
  * <p>
  * So you can set the start range bound using
  * the start value as normal, or using startOffsetInMillis, startOffsetInHours
- * or startOffsetInDays. At the point of this class being instantiated the
+ * or startOffsetInDays. At the point when test is called on the class the
  * current system time is used to calculate the start value based on:
- * System.currentTimeMillis() - offset.
+ * System.currentTimeMillis() + offset.
  * </p>
  * <p>
  * Similarly with the end range bound, this can be set using end, endOffsetInMillis,

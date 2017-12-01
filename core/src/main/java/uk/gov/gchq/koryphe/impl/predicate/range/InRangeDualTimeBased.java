@@ -34,9 +34,9 @@ import java.util.function.Function;
  * <p>
  * So you can set the start range bound using
  * the start value as normal, or using startOffsetInMillis, startOffsetInHours
- * or startOffsetInDays. At the point of this class being instantiated the
+ * or startOffsetInDays. At the point when test is called on the class the
  * current system time is used to calculate the start value based on:
- * System.currentTimeMillis() - offset.
+ * System.currentTimeMillis() + offset.
  * </p>
  * <p>
  * Similarly with the end range bound, this can be set using end, endOffsetInMillis,
@@ -72,8 +72,8 @@ public abstract class InRangeDualTimeBased<T extends Comparable<T>> extends InRa
     private final Function<T, Long> toLong;
     private Long startOffset;
     private Long endOffset;
-    private String startDateString;
-    private String endDateString;
+    private String startString;
+    private String endString;
 
     protected InRangeDualTimeBased() {
         this(t -> (T) t, l -> (Long) l);
@@ -120,7 +120,7 @@ public abstract class InRangeDualTimeBased<T extends Comparable<T>> extends InRa
         }
 
         final long base = null != value ? toLong.apply(value) : System.currentTimeMillis();
-        return toT.apply(base - offset);
+        return toT.apply(base + offset);
     }
 
     @Override
@@ -207,17 +207,17 @@ public abstract class InRangeDualTimeBased<T extends Comparable<T>> extends InRa
         return endOffsetInDays;
     }
 
-    public String getStartDateString() {
-        return startDateString;
+    public String getStartString() {
+        return startString;
     }
 
-    public String getEndDateString() {
-        return endDateString;
+    public String getEndString() {
+        return endString;
     }
 
     @JsonGetter("start")
     T getStartForJson() {
-        if (null == startDateString) {
+        if (null == startString) {
             return super.getStart();
         }
 
@@ -226,7 +226,7 @@ public abstract class InRangeDualTimeBased<T extends Comparable<T>> extends InRa
 
     @JsonGetter("end")
     T getEndForJson() {
-        if (null == endDateString) {
+        if (null == endString) {
             return super.getEnd();
         }
 
@@ -241,9 +241,9 @@ public abstract class InRangeDualTimeBased<T extends Comparable<T>> extends InRa
         return endOffset;
     }
 
-    protected void setStartDateString(final String startDateString) {
-        this.startDateString = startDateString;
-        setStart(toT.apply(DateUtil.parse(startDateString).getTime()));
+    protected void setStartString(final String startString) {
+        this.startString = startString;
+        setStart(toT.apply(DateUtil.parse(startString).getTime()));
     }
 
     protected void setStartOffsetInMillis(final Long startOffsetInMillis) {
@@ -258,9 +258,9 @@ public abstract class InRangeDualTimeBased<T extends Comparable<T>> extends InRa
         this.startOffsetInDays = startOffsetInDays;
     }
 
-    protected void setEndDateString(final String endDateString) {
-        this.endDateString = endDateString;
-        setEnd(toT.apply(DateUtil.parse(endDateString).getTime()));
+    protected void setEndString(final String endString) {
+        this.endString = endString;
+        setEnd(toT.apply(DateUtil.parse(endString).getTime()));
     }
 
     protected void setEndOffsetInMillis(final Long endOffsetInMillis) {
@@ -285,8 +285,8 @@ public abstract class InRangeDualTimeBased<T extends Comparable<T>> extends InRa
             super(predicate);
         }
 
-        public B startDateString(final String startDateString) {
-            getPredicate().setStartDateString(startDateString);
+        public B startString(final String startString) {
+            getPredicate().setStartString(startString);
             return getSelf();
         }
 
@@ -305,8 +305,8 @@ public abstract class InRangeDualTimeBased<T extends Comparable<T>> extends InRa
             return getSelf();
         }
 
-        public B endDateString(final String endDateString) {
-            getPredicate().setEndDateString(endDateString);
+        public B endString(final String endString) {
+            getPredicate().setEndString(endString);
             return getSelf();
         }
 

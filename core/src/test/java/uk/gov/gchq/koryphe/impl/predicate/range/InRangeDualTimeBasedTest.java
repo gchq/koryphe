@@ -57,8 +57,7 @@ public abstract class InRangeDualTimeBasedTest<T extends Comparable<T>> extends 
         assertEquals(1000L * HOURS_TO_MILLISECONDS, (long) filter.getStartOffset());
         assertEquals(100L * HOURS_TO_MILLISECONDS, (long) filter.getEndOffset());
     }
-
-
+    
     @Test
     public void shouldConstructFromOffsetDays() throws IOException {
         // When

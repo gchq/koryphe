@@ -29,9 +29,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * <p>
  * So you can set the start range bound using
  * the start value as normal, or using startOffsetInMillis, startOffsetInHours
- * or startOffsetInDays. At the point of this class being instantiated the
+ * or startOffsetInDays. At the point when test is called on the class the
  * current system time is used to calculate the start value based on:
- * System.currentTimeMillis() - offset.
+ * System.currentTimeMillis() + offset.
  * </p>
  * <p>
  * Similarly with the end range bound, this can be set using end, endOffsetInMillis,
@@ -81,12 +81,12 @@ public abstract class InRangeTimeBased<T extends Comparable<T>> extends InRange<
         return getPredicate().getEndOffsetInDays();
     }
 
-    public String getStartDateString() {
-        return getPredicate().getStartDateString();
+    public String getStartString() {
+        return getPredicate().getStartString();
     }
 
-    public String getEndDateString() {
-        return getPredicate().getEndDateString();
+    public String getEndString() {
+        return getPredicate().getEndString();
     }
 
     @JsonGetter("start")
@@ -130,8 +130,8 @@ public abstract class InRangeTimeBased<T extends Comparable<T>> extends InRange<
             super(predicate);
         }
 
-        public B startDateString(final String startDateString) {
-            getPredicate().getPredicate().setStartDateString(startDateString);
+        public B startString(final String startString) {
+            getPredicate().getPredicate().setStartString(startString);
             return getSelf();
         }
 
@@ -150,8 +150,8 @@ public abstract class InRangeTimeBased<T extends Comparable<T>> extends InRange<
             return getSelf();
         }
 
-        public B endDateString(final String endDateString) {
-            getPredicate().getPredicate().setEndDateString(endDateString);
+        public B endString(final String endString) {
+            getPredicate().getPredicate().setEndString(endString);
             return getSelf();
         }
 
