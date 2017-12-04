@@ -26,7 +26,7 @@ import uk.gov.gchq.koryphe.util.TimeUnit;
 
 /**
  * <p>
- * An <code>InRange</code> is a {@link java.util.function.Predicate}
+ * An <code>AbstractInTimeRange</code> is a {@link java.util.function.Predicate}
  * that tests if a {@link Comparable} is within a provided range [start, end].
  * By default the range is inclusive, you can toggle this using the startInclusive
  * and endInclusive booleans.
@@ -66,8 +66,6 @@ import uk.gov.gchq.koryphe.util.TimeUnit;
  * <li>yyyy/MM/dd HH:mm:ss</li>
  * </ul>
  * You can use a space, '-', '/', '_', ':', '|', or '.' to separate the parts.
- *
- * @see InRange
  */
 public abstract class AbstractInTimeRange<T extends Comparable<T>> extends KoryphePredicate<T> {
     private final AbstractInTimeRangeDual<T> predicate;
