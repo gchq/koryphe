@@ -24,6 +24,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.tuple.predicate.KoryphePredicate2;
+import uk.gov.gchq.koryphe.util.RangeUtil;
 
 /**
  * <p>
@@ -58,41 +59,19 @@ public class InRangeDual<T extends Comparable<T>> extends KoryphePredicate2<Comp
     private Boolean startInclusive;
     private Boolean endInclusive;
 
-    protected InRangeDual() {
+    InRangeDual() {
+    }
+
+    public void initialise() {
+        if (null != getStart() && null != getEnd()
+                && !getStart().getClass().equals(getEnd().getClass())) {
+            throw new IllegalArgumentException("start and end should be instances of the same class");
+        }
     }
 
     @Override
     public boolean test(final Comparable<T> startValue, final Comparable<T> endValue) {
-        if (null == startValue || null == endValue) {
-            return false;
-        }
-
-        return testAgainstRange(startValue, endValue, start, end);
-    }
-
-    protected boolean testAgainstRange(final Comparable<T> startValue, final Comparable<T> endValue,
-                                       final T rangeStart, final T startEnd) {
-        boolean startInRange;
-        if (null == rangeStart) {
-            startInRange = true;
-        } else if (null == startInclusive || startInclusive) {
-            startInRange = startValue.compareTo(rangeStart) >= 0;
-        } else {
-            startInRange = startValue.compareTo(rangeStart) > 0;
-        }
-        if (!startInRange) {
-            return false;
-        }
-
-        boolean endInRange;
-        if (null == startEnd) {
-            endInRange = true;
-        } else if (null == endInclusive || endInclusive) {
-            endInRange = endValue.compareTo(startEnd) <= 0;
-        } else {
-            endInRange = endValue.compareTo(startEnd) < 0;
-        }
-        return endInRange;
+        return RangeUtil.inRange(startValue, endValue, start, end, startInclusive, endInclusive);
     }
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
@@ -169,7 +148,7 @@ public class InRangeDual<T extends Comparable<T>> extends KoryphePredicate2<Comp
                 .toString();
     }
 
-    @JsonPOJOBuilder(buildMethodName = "build", withPrefix = "")
+    @JsonPOJOBuilder(withPrefix = "")
     public abstract static class BaseBuilder<B extends BaseBuilder<B, R, T>, R extends InRangeDual<T>, T extends Comparable<T>> {
         protected final InRangeDual<T> predicate;
 
@@ -198,10 +177,7 @@ public class InRangeDual<T extends Comparable<T>> extends KoryphePredicate2<Comp
         }
 
         public R build() {
-            if (null != predicate.getStart() && null != predicate.getEnd()
-                    && !predicate.getStart().getClass().equals(predicate.getEnd().getClass())) {
-                throw new IllegalArgumentException("start and end should be instances of the same class");
-            }
+            predicate.initialise();
             return (R) predicate;
         }
 

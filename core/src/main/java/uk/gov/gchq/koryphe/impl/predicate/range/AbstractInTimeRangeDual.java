@@ -1,0 +1,296 @@
+/*
+ * Copyright 2017 Crown Copyright
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package uk.gov.gchq.koryphe.impl.predicate.range;
+
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import uk.gov.gchq.koryphe.tuple.predicate.KoryphePredicate2;
+import uk.gov.gchq.koryphe.util.DateUtil;
+import uk.gov.gchq.koryphe.util.RangeUtil;
+import uk.gov.gchq.koryphe.util.TimeUnit;
+
+import java.util.function.Function;
+
+/**
+ * <p>
+ * An <code>AbstractInTimeRangeDual</code> is a {@link java.util.function.Predicate}
+ * that tests if a start {@link Comparable} and end {@link Comparable} is
+ * within a provided range [start, end]. Specifically the start {@link Comparable}
+ * has to be greater than the start bound and the end {@link Comparable} has to
+ * be less than the end bound.
+ * By default the range is inclusive, you can toggle this using the startInclusive
+ * and endInclusive booleans.
+ * </p>
+ * <p>
+ * If the start is not set then this will be treated as unbounded.
+ * Similarly with the end.
+ * </p>
+ * <p>
+ * If the test value is null then the predicate will return false.
+ * </p>
+ * <p>
+ * This range predicate takes 2 values to test, if you want to test
+ * a single value lies within a range then you can use the
+ * {@link AbstractInTimeRange} predicate.
+ * </p>
+ * <p>
+ * The range can also be configured using time offsets
+ * from the current system time or a provided start/end time.
+ * You can set the start and end offsets using startOffset and endOffset.
+ * By default the offset is measured in Days, this can be changed to
+ * DAY, HOUR, MINUTE, SECOND and MILLISECOND using the offsetUnit field.
+ * <p>
+ * At the point when test is called on the class the
+ * current system time is used to calculate the start and end values based on:
+ * System.currentTimeMillis() + offset.
+ * </p>
+ * <p>
+ * You can configure the start and end time strings using one of the following formats:
+ * </p>
+ * <ul>
+ * <li>timestamp in milliseconds</li>
+ * <li>yyyy/MM</li>
+ * <li>yyyy/MM/dd</li>
+ * <li>yyyy/MM/dd HH</li>
+ * <li>yyyy/MM/dd HH:mm</li>
+ * <li>yyyy/MM/dd HH:mm:ss</li>
+ * </ul>
+ * You can use a space, '-', '/', '_', ':', '|', or '.' to separate the parts.
+ */
+public abstract class AbstractInTimeRangeDual<T extends Comparable<T>> extends KoryphePredicate2<Comparable<T>, Comparable<T>> {
+    private String start;
+    private Long startOffset;
+    private Boolean startInclusive;
+
+    private String end;
+    private Long endOffset;
+    private Boolean endInclusive;
+
+    private TimeUnit offsetUnit;
+
+    private Long startInMillis;
+    private Long startOffsetInMillis;
+    private Long endInMillis;
+    private Long endOffsetInMillis;
+
+    private final Function<Long, T> toT;
+
+    protected AbstractInTimeRangeDual() {
+        this(t -> (T) t);
+    }
+
+    protected AbstractInTimeRangeDual(final Function<Long, T> toT) {
+        this.toT = toT;
+    }
+
+    public void initialise() {
+        this.startInMillis = DateUtil.parseTime(start);
+        this.endInMillis = DateUtil.parseTime(end);
+        this.startOffsetInMillis = TimeUnit.asMilliSeconds(offsetUnit, startOffset);
+        this.endOffsetInMillis = TimeUnit.asMilliSeconds(offsetUnit, endOffset);
+    }
+
+    @Override
+    public boolean test(final Comparable<T> startValue, final Comparable<T> endValue) {
+        return RangeUtil.inRange(
+                startValue,
+                endValue,
+                getValueFromOffset(startInMillis, startOffsetInMillis),
+                getValueFromOffset(endInMillis, endOffsetInMillis),
+                startInclusive,
+                endInclusive
+        );
+    }
+
+    private T getValueFromOffset(final Long value, final Long offset) {
+        if (null == offset) {
+            return null != value ? toT.apply(value) : null;
+        }
+
+        final long base = null != value ? value : System.currentTimeMillis();
+        return toT.apply(base + offset);
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (null == obj || !getClass().equals(obj.getClass())) {
+            return false;
+        }
+
+        final AbstractInTimeRangeDual otherPredicate = (AbstractInTimeRangeDual) obj;
+        return new EqualsBuilder()
+                .append(start, otherPredicate.start)
+                .append(startOffset, otherPredicate.startOffset)
+                .append(startInclusive, otherPredicate.startInclusive)
+                .append(end, otherPredicate.end)
+                .append(endOffset, otherPredicate.endOffset)
+                .append(endInclusive, otherPredicate.endInclusive)
+                .append(offsetUnit, otherPredicate.offsetUnit)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 31)
+                .appendSuper(super.hashCode())
+                .append(start)
+                .append(startOffset)
+                .append(startInclusive)
+                .append(end)
+                .append(endOffset)
+                .append(endInclusive)
+                .append(offsetUnit)
+                .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .appendSuper(super.toString())
+                .append("start", start)
+                .append("startOffset", startOffset)
+                .append("startInclusive", startInclusive)
+                .append("end", end)
+                .append("endOffset", endOffset)
+                .append("endInclusive", endInclusive)
+                .append("offsetUnit", offsetUnit)
+                .toString();
+    }
+
+    public Long getStartOffset() {
+        return startOffset;
+    }
+
+    public String getStart() {
+        return start;
+    }
+
+    public Boolean isStartInclusive() {
+        return startInclusive;
+    }
+
+    public String getEnd() {
+        return end;
+    }
+
+    public Long getEndOffset() {
+        return endOffset;
+    }
+
+    public Boolean isEndInclusive() {
+        return endInclusive;
+    }
+
+    public TimeUnit getOffsetUnit() {
+        return offsetUnit;
+    }
+
+    protected void setStart(final String start) {
+        this.start = start;
+    }
+
+    protected void setStartOffset(final Long startOffset) {
+        this.startOffset = startOffset;
+    }
+
+    protected void setStartInclusive(final Boolean startInclusive) {
+        this.startInclusive = startInclusive;
+    }
+
+    protected void setEnd(final String end) {
+        this.end = end;
+    }
+
+    protected void setEndOffset(final Long endOffset) {
+        this.endOffset = endOffset;
+    }
+
+    protected void setEndInclusive(final Boolean endInclusive) {
+        this.endInclusive = endInclusive;
+    }
+
+    protected void setOffsetUnit(final TimeUnit offsetUnit) {
+        this.offsetUnit = offsetUnit;
+    }
+
+    @JsonPOJOBuilder(withPrefix = "")
+    public abstract static class BaseBuilder<
+            B extends BaseBuilder<B, R, T>,
+            R extends AbstractInTimeRangeDual<T>,
+            T extends Comparable<T>> {
+        protected final AbstractInTimeRangeDual<T> predicate;
+
+        public BaseBuilder(final R predicate) {
+            this.predicate = predicate;
+        }
+
+        public B start(final String start) {
+            predicate.setStart(start);
+            return getSelf();
+        }
+
+        public B startOffset(final Long startOffset) {
+            getPredicate().setStartOffset(startOffset);
+            return getSelf();
+        }
+
+        public B startInclusive(final boolean startInclusive) {
+            predicate.setStartInclusive(startInclusive);
+            return getSelf();
+        }
+
+        public B end(final String end) {
+            predicate.setEnd(end);
+            return getSelf();
+        }
+
+        public B endOffset(final Long endOffset) {
+            getPredicate().setEndOffset(endOffset);
+            return getSelf();
+        }
+
+        public B endInclusive(final boolean endInclusive) {
+            predicate.setEndInclusive(endInclusive);
+            return getSelf();
+        }
+
+        public B offsetUnit(final TimeUnit timeUnit) {
+            getPredicate().setOffsetUnit(timeUnit);
+            return getSelf();
+        }
+
+        public R build() {
+            predicate.initialise();
+            return (R) predicate;
+        }
+
+        protected B getSelf() {
+            return (B) this;
+        }
+
+        protected R getPredicate() {
+            return (R) predicate;
+        }
+    }
+}

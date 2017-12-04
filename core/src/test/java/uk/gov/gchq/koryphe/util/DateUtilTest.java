@@ -29,9 +29,20 @@ import static org.junit.Assert.fail;
 
 public class DateUtilTest {
     @Test
+    public void shouldParseTimestampInMilliseconds() throws IOException, ParseException {
+        // Given
+        final long timestamp = System.currentTimeMillis();
+
+        // When
+        final Long result = DateUtil.parseTime(Long.toString(timestamp));
+
+        // Then
+        assertEquals(timestamp, (long) result);
+    }
+
+    @Test
     public void shouldParseDates() throws IOException, ParseException {
         // When / Then
-        assertDate("2017", "2017", "yyyy");
         assertDate("2017-01", "2017-01", "yyyy-MM");
         assertDate("2017-01", "2017 01", "yyyy-MM");
         assertDate("2017-01", "2017/01", "yyyy-MM");
@@ -46,21 +57,20 @@ public class DateUtilTest {
         assertDate("2017-01-02 01:02", "2017/01/02 01 02", "yyyy-MM-dd HH:mm");
         assertDate("2017-01-02 01:02:30", "2017/01/02 01:02:30", "yyyy-MM-dd HH:mm:ss");
         assertDate("2017-01-02 01:02:30", "2017-01-02-01:02:30", "yyyy-MM-dd HH:mm:ss");
-        assertDate("2017-01-02 01:02:30", "20170102010230", "yyyy-MM-dd HH:mm:ss");
     }
 
     @Test
     public void shouldNotParseInvalidDate() throws IOException, ParseException {
         // When / Then
         try {
-            DateUtil.parse("20171");
+            DateUtil.parse("2017/1");
             fail("Exception expected");
         } catch (final IllegalArgumentException e) {
-            assertTrue(e.getMessage(), e.getMessage().contains("The provided date string 20171 could not be parsed"));
+            assertTrue(e.getMessage(), e.getMessage().contains("The provided date string 2017/1 could not be parsed"));
         }
     }
 
     private void assertDate(final String expected, final String testDate, final String format) throws ParseException {
-        assertEquals(DateUtils.parseDate(expected, Locale.getDefault(), format), DateUtil.parse(testDate));
+        assertEquals("Failed to parse date: " + testDate, DateUtils.parseDate(expected, Locale.getDefault(), format), DateUtil.parse(testDate));
     }
 }

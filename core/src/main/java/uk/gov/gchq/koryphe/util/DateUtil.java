@@ -28,10 +28,15 @@ import java.util.regex.Pattern;
  * A utility class for Dates.
  */
 public final class DateUtil {
+    public static final long SECONDS_TO_MILLISECONDS = 1000L;
+    public static final long MINUTES_TO_MILLISECONDS = 60L * SECONDS_TO_MILLISECONDS;
+    public static final long HOURS_TO_MILLISECONDS = 60L * MINUTES_TO_MILLISECONDS;
+    public static final long DAYS_TO_MILLISECONDS = 24L * HOURS_TO_MILLISECONDS;
+
+    private static final Pattern TIMESTAMP_MILLISECONDS = Pattern.compile("^\\d*$");
     private static final Map<Pattern, String> FORMATS = new LinkedHashMap<>();
 
     static {
-        FORMATS.put(Pattern.compile("^\\d{4}$"), "yyyy");
         FORMATS.put(Pattern.compile("^\\d{6}$"), "yyyyMM");
         FORMATS.put(Pattern.compile("^\\d{8}$"), "yyyyMMdd");
         FORMATS.put(Pattern.compile("^\\d{10}$"), "yyyyMMddHH");
@@ -41,9 +46,9 @@ public final class DateUtil {
 
     private static final Pattern CHARS_TO_STRIP = Pattern.compile("[/_.:\\-| ]");
     private static final String ERROR_MSG = "The provided date string %s could not be parsed. " +
-            "Please use one of the following formats: "
-            + FORMATS.values().toString()
-            + ". You can also use a space, '-', '/', '_', ':', '|', or '.' to separate the parts.";
+            "Please use a timestamp in milliseconds or one of the following formats: "
+            + "[yyyy/MM, yyyy/MM/dd, yyyy/MM/dd HH, yyyy/MM/dd HH:mm, yyyy/MM/dd HH:mm:ss]"
+            + ". You can use a space, '-', '/', '_', ':', '|', or '.' to separate the parts.";
 
     private DateUtil() {
     }
@@ -52,23 +57,33 @@ public final class DateUtil {
      * <p>
      * Parse the provided date.
      * </p>
-     * <p>
-     * The date string can be in any of the following formats.
-     * You can also use a space, '-', '/', '_', ':', '|', or '.' to separate the parts.
-     * </p>
+     * The date string can be in any of the following formats:
      * <ul>
-     * <li>yyyy</li>
-     * <li>yyyyMM</li>
-     * <li>yyyyMMdd</li>
-     * <li>yyyyMMddHH</li>
-     * <li>yyyyMMddHHmm</li>
-     * <li>yyyyMMddHHmmss</li>
+     * <li>timestamp in milliseconds</li>
+     * <li>yyyy/MM</li>
+     * <li>yyyy/MM/dd</li>
+     * <li>yyyy/MM/dd HH</li>
+     * <li>yyyy/MM/dd HH:mm</li>
+     * <li>yyyy/MM/dd HH:mm:ss</li>
      * </ul>
+     * You can use a space, '-', '/', '_', ':', '|', or '.' to separate the parts.
      *
      * @param dateString The date string to parse
      * @return parsed date
      */
     public static Date parse(final String dateString) {
+        if (null == dateString) {
+            return null;
+        }
+
+        if (TIMESTAMP_MILLISECONDS.matcher(dateString).matches()) {
+            try {
+                return new Date(Long.parseLong(dateString));
+            } catch (final NumberFormatException e) {
+                throw new IllegalArgumentException(String.format(ERROR_MSG, dateString), e);
+            }
+        }
+
         final String formatedDateString = CHARS_TO_STRIP.matcher(dateString).replaceAll("");
 
         for (final Map.Entry<Pattern, String> entry : FORMATS.entrySet()) {
@@ -81,5 +96,28 @@ public final class DateUtil {
             }
         }
         throw new IllegalArgumentException(String.format(ERROR_MSG, dateString));
+    }
+
+    /**
+     * <p>
+     * Parse the provided date and returns the time in milliseconds.
+     * </p>
+     * The date string can be in any of the following formats:
+     * <ul>
+     * <li>timestamp in milliseconds</li>
+     * <li>yyyy/MM</li>
+     * <li>yyyy/MM/dd</li>
+     * <li>yyyy/MM/dd HH</li>
+     * <li>yyyy/MM/dd HH:mm</li>
+     * <li>yyyy/MM/dd HH:mm:ss</li>
+     * </ul>
+     * You can use a space, '-', '/', '_', ':', '|', or '.' to separate the parts.
+     *
+     * @param dateString The date string to parse
+     * @return parsed date
+     */
+    public static Long parseTime(final String dateString) {
+        final Date date = parse(dateString);
+        return null != date ? date.getTime() : null;
     }
 }

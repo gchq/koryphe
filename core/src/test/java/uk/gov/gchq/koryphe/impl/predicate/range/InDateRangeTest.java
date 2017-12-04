@@ -18,25 +18,14 @@ package uk.gov.gchq.koryphe.impl.predicate.range;
 
 import java.util.Date;
 
-public class InDateRangeTest extends InRangeTimeBasedTest<Date> {
-
+public class InDateRangeTest extends AbstractInTimeRangeTest<Date> {
     @Override
     protected Date convert(final Long value) {
         return null != value ? new Date(value) : null;
     }
 
     @Override
-    protected InDateRange.Builder createBuilderWithTimeOffsets() {
+    protected InDateRange.Builder createBuilder() {
         return new InDateRange.Builder();
-    }
-
-    @Override
-    protected Long unconvert(final Date value) {
-        return null == value ? null : value.getTime();
-    }
-
-    @Override
-    protected Class<Date> getTClass() {
-        return Date.class;
     }
 }

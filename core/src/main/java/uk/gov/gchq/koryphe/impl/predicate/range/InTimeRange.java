@@ -16,58 +16,57 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * <p>
- * A <code>InTimeRange</code> is a {@link InRange}
- * {@link java.util.function.Predicate} that is applied to Long values.
- * The range can be configured using time offsets from the current system time.
+ * An <code>InTimeRange</code> is a {@link java.util.function.Predicate}
+ * that tests if a {@link Comparable} is within a provided range [start, end].
+ * By default the range is inclusive, you can toggle this using the startInclusive
+ * and endInclusive booleans.
  * </p>
  * <p>
- * So you can set the start range bound using
- * the start value as normal, or using startOffsetInMillis, startOffsetInHours
- * or startOffsetInDays. At the point when test is called on the class the
- * current system time is used to calculate the start value based on:
+ * If the start is not set then this will be treated as unbounded.
+ * Similarly with the end.
+ * </p>
+ * <p>
+ * If the test value is null then the predicate will return false.
+ * </p>
+ * <p>
+ * This range predicate takes a single value to test, if you want to test
+ * a startValue and endValue lies within a range then you can use the
+ * {@link InTimeRangeDual} predicate.
+ * </p>
+ * <p>
+ * The range can also be configured using time offsets
+ * from the current system time or a provided start/end time.
+ * You can set the start and end offsets using startOffset and endOffset.
+ * By default the offset is measured in Days, this can be changed to
+ * DAY, HOUR, MINUTE, SECOND and MILLISECOND using the offsetUnit field.
+ * <p>
+ * At the point when test is called on the class the
+ * current system time is used to calculate the start and end values based on:
  * System.currentTimeMillis() + offset.
  * </p>
  * <p>
- * Similarly with the end range bound, this can be set using end, endOffsetInMillis,
- * endOffsetInHours or endOffsetInDays.
- * </p>
- * <p>
- * You can also configure the start and end times using startString and endString. These strings should be in one of the following formats:
+ * You can configure the start and end time strings using one of the following formats:
  * </p>
  * <ul>
- * <li>yyyy</li>
- * <li>yyyyMM</li>
- * <li>yyyyMMdd</li>
- * <li>yyyyMMddHH</li>
- * <li>yyyyMMddHHmm</li>
- * <li>yyyyMMddHHmmss</li>
+ * <li>timestamp in milliseconds</li>
+ * <li>yyyy/MM</li>
+ * <li>yyyy/MM/dd</li>
+ * <li>yyyy/MM/dd HH</li>
+ * <li>yyyy/MM/dd HH:mm</li>
+ * <li>yyyy/MM/dd HH:mm:ss</li>
  * </ul>
- * You can also use a space, '-', '/', '_', ':', '|', or '.' to separate the parts.
+ * You can use a space, '-', '/', '_', ':', '|', or '.' to separate the parts.
  *
- * @see InRange
  * @see Builder
  */
 @JsonDeserialize(builder = InTimeRange.Builder.class)
-public class InTimeRange extends InRangeTimeBased<Long> {
+public class InTimeRange extends AbstractInTimeRange<Long> {
     protected InTimeRange() {
         super(new InTimeRangeDual());
-    }
-
-    @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
-    @Override
-    public Long getStart() {
-        return super.getStart();
-    }
-
-    @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
-    @Override
-    public Long getEnd() {
-        return super.getEnd();
     }
 
     public static class Builder extends BaseBuilder<Builder, InTimeRange, Long> {
