@@ -16,54 +16,62 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * <p>
- * A <code>InTimeRange</code> is a {@link InRange}
- * {@link java.util.function.Predicate} that is applied to Long values.
- * The range can be configured using time offsets from the current system time.
+ * An <code>InTimeRange</code> is a {@link java.util.function.Predicate}
+ * that tests if a {@link Comparable} is within a provided range [start, end].
+ * By default the range is inclusive, you can toggle this using the startInclusive
+ * and endInclusive booleans.
  * </p>
  * <p>
- * So you can set the start range bound using
- * the start value as normal, or using startOffsetInMillis, startOffsetInHours
- * or startOffsetInDays. At the point of this class being instantiated the
- * current system time is used to calculate the start value based on:
- * System.currentTimeMillis() - offset.
+ * If the start is not set then this will be treated as unbounded.
+ * Similarly with the end.
  * </p>
  * <p>
- * Similarly with the end range bound, this can be set using end, endOffsetInMillis,
- * endOffsetInHours or endOffsetInDays.
+ * If the test value is null then the predicate will return false.
  * </p>
+ * <p>
+ * This range predicate takes a single value to test, if you want to test
+ * a startValue and endValue lies within a range then you can use the
+ * {@link InTimeRangeDual} predicate.
+ * </p>
+ * <p>
+ * The range can also be configured using time offsets
+ * from the current system time or a provided start/end time.
+ * You can set the start and end offsets using startOffset and endOffset.
+ * By default the offset is measured in Days, this can be changed to
+ * DAY, HOUR, MINUTE, SECOND and MILLISECOND using the offsetUnit field.
+ * <p>
+ * At the point when test is called on the class the
+ * current system time is used to calculate the start and end values based on:
+ * System.currentTimeMillis() + offset.
+ * </p>
+ * <p>
+ * You can configure the start and end time strings using one of the following formats:
+ * </p>
+ * <ul>
+ * <li>timestamp in milliseconds</li>
+ * <li>yyyy/MM</li>
+ * <li>yyyy/MM/dd</li>
+ * <li>yyyy/MM/dd HH</li>
+ * <li>yyyy/MM/dd HH:mm</li>
+ * <li>yyyy/MM/dd HH:mm:ss</li>
+ * </ul>
+ * You can use a space, '-', '/', '_', ':', '|', or '.' to separate the parts.
  *
- * @see InRange
  * @see Builder
  */
-public class InTimeRange extends InRangeWithTimeOffsets<Long> {
-    @JsonCreator
-    public InTimeRange(@JsonProperty("start") final Long start,
-                       @JsonProperty("startOffsetInMillis") final Long startOffsetInMillis,
-                       @JsonProperty("startOffsetInHours") final Long startOffsetInHours,
-                       @JsonProperty("startOffsetInDays") final Integer startOffsetInDays,
-                       @JsonProperty("end") final Long end,
-                       @JsonProperty("endOffsetInMillis") final Long endOffsetInMillis,
-                       @JsonProperty("endOffsetInHours") final Long endOffsetInHours,
-                       @JsonProperty("endOffsetInDays") final Integer endOffsetInDays,
-                       @JsonProperty("startInclusive") final Boolean startInclusive,
-                       @JsonProperty("endInclusive") final Boolean endInclusive) {
-        super(
-                start, startOffsetInMillis, startOffsetInHours, startOffsetInDays,
-                end,
-                endOffsetInMillis, endOffsetInHours, endOffsetInDays,
-                startInclusive,
-                endInclusive
-        );
+@JsonDeserialize(builder = InTimeRange.Builder.class)
+public class InTimeRange extends AbstractInTimeRange<Long> {
+    protected InTimeRange() {
+        super(new InTimeRangeDual());
     }
 
     public static class Builder extends BaseBuilder<Builder, InTimeRange, Long> {
-        public InTimeRange build() {
-            return new InTimeRange(start, startOffsetInMillis, startOffsetInHours, startOffsetInDays, end, endOffsetInMillis, endOffsetInHours, endOffsetInDays, startInclusive, endInclusive);
+        public Builder() {
+            super(new InTimeRange());
         }
     }
 }
