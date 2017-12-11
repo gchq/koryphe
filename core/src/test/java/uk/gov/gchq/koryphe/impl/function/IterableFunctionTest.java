@@ -20,6 +20,7 @@ import com.google.common.collect.Lists;
 import org.junit.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
+import uk.gov.gchq.koryphe.util.IterableUtil;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Function;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -91,5 +93,34 @@ public class IterableFunctionTest extends FunctionTest {
         // Then
         assertNotNull(result);
         assertTrue(Iterables.isEmpty(result));
+    }
+
+    @Test
+    public void shouldPopulateFunctionFromBuilder() {
+        // Given
+        final IterableFunction<Integer, String> function = new IterableFunction.Builder<Integer>()
+                .first(Object::toString)
+                .then(Integer::valueOf)
+                .then(Object::toString)
+                .build();
+
+        // Then
+        assertEquals(3, function.getFunctions().size());
+    }
+
+    @Test
+    public void shouldApplyMultipleFunctions() {
+        // Given
+        final IterableFunction<Integer, Integer> function = new IterableFunction.Builder<Integer>()
+                .first(Object::toString)
+                .then(Integer::valueOf)
+                .build();
+
+        // When
+        final Iterable<Integer> result = function.apply(Arrays.asList(1, 2, 3, 4));
+
+        // Then
+        assertEquals(4, Iterables.size(result));
+        assertEquals(Arrays.asList(1, 2, 3, 4), Lists.newArrayList(result));
     }
 }
