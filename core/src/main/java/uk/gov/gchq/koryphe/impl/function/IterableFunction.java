@@ -96,4 +96,29 @@ public class IterableFunction<I_ITEM, O_ITEM> extends KorypheFunction<Iterable<I
                 .append("functions", functions)
                 .toString();
     }
+
+    public static final class Builder<I_ITEM> {
+        private final List<Function> functions = new ArrayList<>();
+
+        public <O_ITEM> OutputBuilder<I_ITEM, O_ITEM> first(final Function<I_ITEM, O_ITEM> function) {
+            return new OutputBuilder<>(function, functions);
+        }
+    }
+
+    public static final class OutputBuilder<I_ITEM, O_ITEM> {
+        private final List<Function> functions;
+
+        private OutputBuilder(final Function<I_ITEM, O_ITEM> function, final List<Function> functions) {
+            this.functions = functions;
+            functions.add(function);
+        }
+
+        public <NEXT> OutputBuilder<I_ITEM, NEXT> then(final Function<? super O_ITEM, NEXT> function) {
+            return new OutputBuilder(function, functions);
+        }
+
+        public IterableFunction<I_ITEM, O_ITEM> build() {
+            return new IterableFunction<>(functions);
+        }
+    }
 }
