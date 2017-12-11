@@ -23,6 +23,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 import uk.gov.gchq.koryphe.util.IterableUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -34,29 +36,34 @@ import java.util.function.Function;
  * @param <O_ITEM> the type of objects in the output iterable
  */
 public class IterableFunction<I_ITEM, O_ITEM> extends KorypheFunction<Iterable<I_ITEM>, Iterable<O_ITEM>> {
-    private Function<I_ITEM, O_ITEM> function;
+    private List<Function> functions;
 
     public IterableFunction() {
         // empty
     }
 
-    public IterableFunction(final Function<I_ITEM, O_ITEM> function) {
-        this.function = function;
+    public IterableFunction(final Function function) {
+        functions = new ArrayList<>();
+        functions.add(function);
+    }
+
+    public IterableFunction(final List<Function> functions) {
+        this.functions = functions;
     }
 
     @Override
     public Iterable<O_ITEM> apply(final Iterable<I_ITEM> items) {
-        return IterableUtil.map(items, function);
+        return IterableUtil.map(items, functions);
     }
 
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
-    public Function<I_ITEM, O_ITEM> getFunction() {
-        return function;
+    public List<Function> getFunctions() {
+        return functions;
     }
 
-    public void setFunction(final Function<I_ITEM, O_ITEM> func) {
-        this.function = func;
+    public void setFunctions(final List<Function> functions) {
+        this.functions = functions;
     }
 
     @Override
@@ -72,21 +79,21 @@ public class IterableFunction<I_ITEM, O_ITEM> extends KorypheFunction<Iterable<I
         final IterableFunction func = (IterableFunction) obj;
 
         return new EqualsBuilder()
-                .append(function, func.function)
+                .append(functions, func.functions)
                 .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(19, 71)
-                .append(function)
+                .append(functions)
                 .build();
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("function", function)
+                .append("functions", functions)
                 .toString();
     }
 }

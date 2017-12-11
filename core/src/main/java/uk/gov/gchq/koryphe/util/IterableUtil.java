@@ -20,7 +20,9 @@ import com.google.common.collect.Iterators;
 import uk.gov.gchq.koryphe.iterable.CloseableIterable;
 import uk.gov.gchq.koryphe.iterable.CloseableIterator;
 
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -32,8 +34,12 @@ public final class IterableUtil {
         // Empty
     }
 
-    public static <I_ITEM, O_ITEM> CloseableIterable<O_ITEM> map(final Iterable<I_ITEM> iterable, final Function<I_ITEM, O_ITEM> function) {
-        return new MappedIterable<>(iterable, function);
+    public static <I_ITEM, O_ITEM> CloseableIterable<O_ITEM> map(final Iterable<I_ITEM> iterable, final Function function) {
+        return map(iterable, Collections.singletonList(function));
+    }
+
+    public static <I_ITEM, O_ITEM> CloseableIterable<O_ITEM> map(final Iterable<I_ITEM> iterable, final List<Function> functions) {
+        return new MappedIterable<>(iterable, functions);
     }
 
     public static <T> CloseableIterable<T> concat(final Iterable<? extends Iterable<? extends T>> iterables) {
@@ -42,16 +48,16 @@ public final class IterableUtil {
 
     private static class MappedIterable<I_ITEM, O_ITEM> implements CloseableIterable<O_ITEM> {
         private final Iterable<I_ITEM> iterable;
-        private final Function<I_ITEM, O_ITEM> function;
+        private final List<Function> functions;
 
-        MappedIterable(final Iterable<I_ITEM> iterable, final Function<I_ITEM, O_ITEM> function) {
+        MappedIterable(final Iterable<I_ITEM> iterable, final List<Function> functions) {
             this.iterable = iterable;
-            this.function = function;
+            this.functions = functions;
         }
 
         @Override
         public CloseableIterator<O_ITEM> iterator() {
-            return new MappedIterator<>(iterable.iterator(), function);
+            return new MappedIterator<>(iterable.iterator(), functions);
         }
 
         @Override
@@ -62,11 +68,11 @@ public final class IterableUtil {
 
     private static class MappedIterator<I_ITEM, O_ITEM> implements CloseableIterator<O_ITEM> {
         private final Iterator<? extends I_ITEM> iterator;
-        private final Function<I_ITEM, O_ITEM> function;
+        private final List<Function> functions;
 
-        MappedIterator(final Iterator<I_ITEM> iterator, final Function<I_ITEM, O_ITEM> function) {
+        MappedIterator(final Iterator<I_ITEM> iterator, final List<Function> functions) {
             this.iterator = iterator;
-            this.function = function;
+            this.functions = functions;
         }
 
         @Override
@@ -76,7 +82,18 @@ public final class IterableUtil {
 
         @Override
         public O_ITEM next() {
-            return function.apply(iterator.next());
+            Object item = iterator.next();
+            try {
+                for (final Function function : functions) {
+                    if (null == function) {
+                        throw new IllegalArgumentException("Function cannot be null");
+                    }
+                    item = function.apply(item);
+                }
+                return (O_ITEM) item;
+            } catch (final ClassCastException c) {
+                throw new IllegalArgumentException("The input/output types of the functions were incompatible", c);
+            }
         }
 
         @Override
