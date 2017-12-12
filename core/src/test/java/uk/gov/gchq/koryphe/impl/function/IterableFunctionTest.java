@@ -82,7 +82,7 @@ public class IterableFunctionTest extends FunctionTest {
     @Test
     public void shouldConvertIterableOfIntegers() {
         // Given
-        final IterableFunction<Integer, String> function = new IterableFunction<>(Object::toString);
+        final IterableFunction<Integer, String> function = new IterableFunction<>(new ToString());
 
         // When
         final Iterable<String> result = function.apply(Arrays.asList(1, 2, 3, 4));
@@ -179,7 +179,7 @@ public class IterableFunctionTest extends FunctionTest {
     public void shouldThrowErrorForListOfFunctionsWithNullFunction() {
         // Given
         final List<Function> functions = new ArrayList<>();
-        functions.add(Object::toString);
+        functions.add(new ToString());
         functions.add(null);
 
         final IterableFunction<Integer, Integer> function = new IterableFunction<>(functions);

@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 public class NthItemExample extends KorypheFunctionExample<Iterable<Integer>, Integer> {
     @Override
     public Function<Iterable<Integer>, Integer> getFunction() {
-        return new NthItem<>();
+        return new NthItem<>(2);
     }
 
     @Override
