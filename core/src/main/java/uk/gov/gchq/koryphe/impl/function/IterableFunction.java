@@ -28,22 +28,22 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
- * An {@code IterableFunction} is a {@link KorypheFunction} which lazily applies a
- * supplied {@link Function} to each object in the input {@link Iterable}, returning
+ * An {@code IterableFunction} is a {@link KorypheFunction} which lazily applies
+ * a supplied {@link Function}, or {@link List} of {@link Function}s
+ * to each object in the input {@link Iterable}, returning
  * an output {@link Iterable}.
  *
  * @param <I_ITEM> the type of objects in the input iterable
  * @param <O_ITEM> the type of objects in the output iterable
  */
 public class IterableFunction<I_ITEM, O_ITEM> extends KorypheFunction<Iterable<I_ITEM>, Iterable<O_ITEM>> {
-    private List<Function> functions;
+    private List<Function> functions = new ArrayList<>();
 
     public IterableFunction() {
         // empty
     }
 
     public IterableFunction(final Function function) {
-        functions = new ArrayList<>();
         functions.add(function);
     }
 

@@ -26,8 +26,12 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
- * An {@code IterableUtil} is a utility class for lazily applying a {@link Function}
- * to each element of an {@link Iterable}
+ * An {@code IterableUtil} is a utility class providing capabilities for:
+ * <ul>
+ * <li>Lazily applying a {@link Function}, or a {@link List} of {@link Function}s,
+ * to each element of an {@link Iterable}</li>
+ * <li>Flatmapping of nested {@link Iterable}s via concatenation, to allow correct closing of the iterables</li>
+ * </ul>
  */
 public final class IterableUtil {
     private IterableUtil() {
@@ -35,10 +39,26 @@ public final class IterableUtil {
     }
 
     public static <I_ITEM, O_ITEM> CloseableIterable<O_ITEM> map(final Iterable<I_ITEM> iterable, final Function function) {
+        if (null == function) {
+            throw new IllegalArgumentException("Function cannot be null");
+        }
         return map(iterable, Collections.singletonList(function));
     }
 
     public static <I_ITEM, O_ITEM> CloseableIterable<O_ITEM> map(final Iterable<I_ITEM> iterable, final List<Function> functions) {
+        if (null == iterable) {
+            return null;
+        }
+
+        if (null == functions) {
+            throw new IllegalArgumentException("List of functions cannot be null");
+        }
+
+        for (final Function func : functions) {
+            if (null == func) {
+                throw new IllegalArgumentException("Functions list cannot contain a null function");
+            }
+        }
         return new MappedIterable<>(iterable, functions);
     }
 
@@ -85,9 +105,6 @@ public final class IterableUtil {
             Object item = iterator.next();
             try {
                 for (final Function function : functions) {
-                    if (null == function) {
-                        throw new IllegalArgumentException("Function cannot be null");
-                    }
                     item = function.apply(item);
                 }
                 return (O_ITEM) item;
