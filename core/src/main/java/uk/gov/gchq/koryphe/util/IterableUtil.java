@@ -20,20 +20,46 @@ import com.google.common.collect.Iterators;
 import uk.gov.gchq.koryphe.iterable.CloseableIterable;
 import uk.gov.gchq.koryphe.iterable.CloseableIterator;
 
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.function.Function;
 
 /**
- * An {@code IterableUtil} is a utility class for lazily applying a {@link Function}
- * to each element of an {@link Iterable}
+ * An {@code IterableUtil} is a utility class providing capabilities for:
+ * <ul>
+ * <li>Lazily applying a {@link Function}, or a {@link List} of {@link Function}s,
+ * to each element of an {@link Iterable}</li>
+ * <li>Flatmapping of nested {@link Iterable}s via concatenation, to allow correct closing of the iterables</li>
+ * </ul>
  */
 public final class IterableUtil {
     private IterableUtil() {
         // Empty
     }
 
-    public static <I_ITEM, O_ITEM> CloseableIterable<O_ITEM> map(final Iterable<I_ITEM> iterable, final Function<I_ITEM, O_ITEM> function) {
-        return new MappedIterable<>(iterable, function);
+    public static <I_ITEM, O_ITEM> CloseableIterable<O_ITEM> map(final Iterable<I_ITEM> iterable, final Function function) {
+        if (null == function) {
+            throw new IllegalArgumentException("Function cannot be null");
+        }
+        return map(iterable, Collections.singletonList(function));
+    }
+
+    public static <I_ITEM, O_ITEM> CloseableIterable<O_ITEM> map(final Iterable<I_ITEM> iterable, final List<Function> functions) {
+        if (null == iterable) {
+            return null;
+        }
+
+        if (null == functions) {
+            throw new IllegalArgumentException("List of functions cannot be null");
+        }
+
+        for (final Function func : functions) {
+            if (null == func) {
+                throw new IllegalArgumentException("Functions list cannot contain a null function");
+            }
+        }
+        return new MappedIterable<>(iterable, functions);
     }
 
     public static <T> CloseableIterable<T> concat(final Iterable<? extends Iterable<? extends T>> iterables) {
@@ -42,16 +68,16 @@ public final class IterableUtil {
 
     private static class MappedIterable<I_ITEM, O_ITEM> implements CloseableIterable<O_ITEM> {
         private final Iterable<I_ITEM> iterable;
-        private final Function<I_ITEM, O_ITEM> function;
+        private final List<Function> functions;
 
-        MappedIterable(final Iterable<I_ITEM> iterable, final Function<I_ITEM, O_ITEM> function) {
+        MappedIterable(final Iterable<I_ITEM> iterable, final List<Function> functions) {
             this.iterable = iterable;
-            this.function = function;
+            this.functions = functions;
         }
 
         @Override
         public CloseableIterator<O_ITEM> iterator() {
-            return new MappedIterator<>(iterable.iterator(), function);
+            return new MappedIterator<>(iterable.iterator(), functions);
         }
 
         @Override
@@ -62,11 +88,11 @@ public final class IterableUtil {
 
     private static class MappedIterator<I_ITEM, O_ITEM> implements CloseableIterator<O_ITEM> {
         private final Iterator<? extends I_ITEM> iterator;
-        private final Function<I_ITEM, O_ITEM> function;
+        private final List<Function> functions;
 
-        MappedIterator(final Iterator<I_ITEM> iterator, final Function<I_ITEM, O_ITEM> function) {
+        MappedIterator(final Iterator<I_ITEM> iterator, final List<Function> functions) {
             this.iterator = iterator;
-            this.function = function;
+            this.functions = functions;
         }
 
         @Override
@@ -76,7 +102,15 @@ public final class IterableUtil {
 
         @Override
         public O_ITEM next() {
-            return function.apply(iterator.next());
+            Object item = iterator.next();
+            try {
+                for (final Function function : functions) {
+                    item = function.apply(item);
+                }
+                return (O_ITEM) item;
+            } catch (final ClassCastException c) {
+                throw new IllegalArgumentException("The input/output types of the functions were incompatible", c);
+            }
         }
 
         @Override

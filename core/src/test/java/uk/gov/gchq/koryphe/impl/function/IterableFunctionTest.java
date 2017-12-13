@@ -20,13 +20,19 @@ import com.google.common.collect.Lists;
 import org.junit.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
+import uk.gov.gchq.koryphe.iterable.CloseableIterable;
+import uk.gov.gchq.koryphe.util.IterableUtil;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -47,7 +53,10 @@ public class IterableFunctionTest extends FunctionTest {
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
-        final IterableFunction<Iterable<Integer>, Integer> function = new IterableFunction<>(new FirstItem<>());
+        final IterableFunction function = new IterableFunction.Builder<Iterable<Iterable<Integer>>>()
+                .first(new FirstItem<>())
+                .then(new NthItem<>(1))
+                .build();
 
         // When
         final String json = JsonSerialiser.serialise(function);
@@ -55,9 +64,12 @@ public class IterableFunctionTest extends FunctionTest {
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
                 "   \"class\" : \"uk.gov.gchq.koryphe.impl.function.IterableFunction\",%n" +
-                "   \"function\" : {%n" +
+                "   \"functions\" : [{%n" +
                 "      \"class\" : \"uk.gov.gchq.koryphe.impl.function.FirstItem\"%n" +
-                "   }%n" +
+                "   }, {%n" +
+                "       \"class\" : \"uk.gov.gchq.koryphe.impl.function.NthItem\",%n" +
+                "       \"selection\" : 1%n" +
+                "   }]%n" +
                 "}"), json);
 
         // When 2
@@ -70,7 +82,7 @@ public class IterableFunctionTest extends FunctionTest {
     @Test
     public void shouldConvertIterableOfIntegers() {
         // Given
-        final IterableFunction<Integer, String> function = new IterableFunction<>(Object::toString);
+        final IterableFunction<Integer, String> function = new IterableFunction<>(new ToString());
 
         // When
         final Iterable<String> result = function.apply(Arrays.asList(1, 2, 3, 4));
@@ -91,5 +103,92 @@ public class IterableFunctionTest extends FunctionTest {
         // Then
         assertNotNull(result);
         assertTrue(Iterables.isEmpty(result));
+    }
+
+    @Test
+    public void shouldPopulateFunctionFromBuilder() {
+        // Given
+        final Function<Integer, String> func = Object::toString;
+        final Function<String, Integer> func1 = Integer::valueOf;
+        final Function<Integer, String> func2 = Object::toString;
+        final IterableFunction<Integer, String> function = new IterableFunction.Builder<Integer>()
+                .first(func)
+                .then(func1)
+                .then(func2)
+                .build();
+
+        // Then
+        assertEquals(3, function.getFunctions().size());
+        assertEquals(Arrays.asList(func, func1, func2), function.getFunctions());
+    }
+
+    @Test
+    public void shouldApplyMultipleFunctions() {
+        // Given
+        final IterableFunction<Integer, Integer> function = new IterableFunction.Builder<Integer>()
+                .first(Object::toString)
+                .then(Integer::valueOf)
+                .build();
+
+        // When
+        final Iterable<Integer> result = function.apply(Arrays.asList(1, 2, 3, 4));
+
+        // Then
+        assertEquals(4, Iterables.size(result));
+        assertEquals(Arrays.asList(1, 2, 3, 4), Lists.newArrayList(result));
+    }
+
+    @Test
+    public void shouldReturnNullForNullInputIterable() {
+        // Given
+        final IterableFunction function = new IterableFunction();
+
+        // When
+        final Object result = function.apply(null);
+
+        assertNull(result);
+    }
+
+    @Test
+    public void shouldNotModifyInputForEmptyListOfFunctions() {
+        // Given
+        final IterableFunction<Integer, Integer> function = new IterableFunction<>(new ArrayList<>());
+
+        // When
+        final Iterable<Integer> result = function.apply(Arrays.asList(1, 2, 3));
+
+        // Then
+        assertEquals(Arrays.asList(1, 2, 3), Lists.newArrayList(result));
+    }
+
+    @Test
+    public void shouldThrowErrorForNullListOfFunctions() {
+        // Given
+        final List<Function> functions = null;
+        final IterableFunction<Integer, Integer> function = new IterableFunction<>(functions);
+
+        // When / Then
+        try {
+            function.apply(Arrays.asList(1, 2, 3));
+        } catch (final IllegalArgumentException e) {
+            assertTrue(e.getMessage().contains("List of functions cannot be null"));
+        }
+    }
+
+    @Test
+    public void shouldThrowErrorForListOfFunctionsWithNullFunction() {
+        // Given
+        final List<Function> functions = new ArrayList<>();
+        functions.add(new ToString());
+        functions.add(null);
+
+        final IterableFunction<Integer, Integer> function = new IterableFunction<>(functions);
+
+        // When / Then
+        try {
+            function.apply(Arrays.asList(1, 2, 3));
+        } catch (final IllegalArgumentException e) {
+            assertTrue(e.getMessage().contains("Functions list cannot contain a null function"));
+        }
     }
 }
