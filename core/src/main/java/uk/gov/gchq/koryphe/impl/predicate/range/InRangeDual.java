@@ -16,16 +16,15 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.tuple.predicate.KoryphePredicate2;
-
-import java.util.function.Predicate;
+import uk.gov.gchq.koryphe.util.RangeUtil;
 
 /**
  * <p>
@@ -53,59 +52,34 @@ import java.util.function.Predicate;
  *
  * @see Builder
  */
+@JsonDeserialize(builder = InRangeDual.Builder.class)
 public class InRangeDual<T extends Comparable<T>> extends KoryphePredicate2<Comparable<T>, Comparable<T>> {
-    private final T start;
-    private final T end;
-    private final Boolean startInclusive;
-    private final Boolean endInclusive;
+    private T start;
+    private T end;
+    private Boolean startInclusive;
+    private Boolean endInclusive;
 
-    @JsonCreator
-    public InRangeDual(@JsonProperty("start") @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT) final T start,
-                       @JsonProperty("end") @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT) final T end,
-                       @JsonProperty("startInclusive") final Boolean startInclusive,
-                       @JsonProperty("endInclusive") final Boolean endInclusive) {
-        if (null != start && null != end && !start.getClass().equals(end.getClass())) {
+    InRangeDual() {
+    }
+
+    public void initialise() {
+        if (null != getStart() && null != getEnd()
+                && !getStart().getClass().equals(getEnd().getClass())) {
             throw new IllegalArgumentException("start and end should be instances of the same class");
         }
-        this.start = start;
-        this.end = end;
-        this.startInclusive = startInclusive;
-        this.endInclusive = endInclusive;
     }
 
     @Override
     public boolean test(final Comparable<T> startValue, final Comparable<T> endValue) {
-        if (null == startValue || null == endValue) {
-            return false;
-        }
-
-        boolean startInRange;
-        if (null == start) {
-            startInRange = true;
-        } else if (null == startInclusive || startInclusive) {
-            startInRange = startValue.compareTo(start) >= 0;
-        } else {
-            startInRange = startValue.compareTo(start) > 0;
-        }
-        if (!startInRange) {
-            return false;
-        }
-
-        boolean endInRange;
-        if (null == end) {
-            endInRange = true;
-        } else if (null == endInclusive || endInclusive) {
-            endInRange = endValue.compareTo(end) <= 0;
-        } else {
-            endInRange = endValue.compareTo(end) < 0;
-        }
-        return endInRange;
+        return RangeUtil.inRange(startValue, endValue, start, end, startInclusive, endInclusive);
     }
 
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
     public T getStart() {
         return start;
     }
 
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
     public T getEnd() {
         return end;
     }
@@ -116,6 +90,22 @@ public class InRangeDual<T extends Comparable<T>> extends KoryphePredicate2<Comp
 
     public Boolean isEndInclusive() {
         return endInclusive;
+    }
+
+    protected void setStart(final T start) {
+        this.start = start;
+    }
+
+    protected void setEnd(final T end) {
+        this.end = end;
+    }
+
+    protected void setStartInclusive(final Boolean startInclusive) {
+        this.startInclusive = startInclusive;
+    }
+
+    protected void setEndInclusive(final Boolean endInclusive) {
+        this.endInclusive = endInclusive;
     }
 
     @Override
@@ -158,43 +148,63 @@ public class InRangeDual<T extends Comparable<T>> extends KoryphePredicate2<Comp
                 .toString();
     }
 
-    public abstract static class BaseBuilder<B extends BaseBuilder<B, R, T>, R extends Predicate, T extends Comparable<T>> {
-        protected T start;
-        protected T end;
-        protected Boolean startInclusive;
-        protected Boolean endInclusive;
+    @JsonPOJOBuilder(withPrefix = "")
+    public abstract static class BaseBuilder<B extends BaseBuilder<B, R, T>, R extends InRangeDual<T>, T extends Comparable<T>> {
+        protected final InRangeDual<T> predicate;
+
+        public BaseBuilder(final R predicate) {
+            this.predicate = predicate;
+        }
 
         public B start(final T start) {
-            this.start = start;
+            predicate.setStart(start);
             return getSelf();
         }
 
         public B end(final T end) {
-            this.end = end;
+            predicate.setEnd(end);
             return getSelf();
         }
 
         public B startInclusive(final boolean startInclusive) {
-            this.startInclusive = startInclusive;
+            predicate.setStartInclusive(startInclusive);
             return getSelf();
         }
 
         public B endInclusive(final boolean endInclusive) {
-            this.endInclusive = endInclusive;
+            predicate.setEndInclusive(endInclusive);
             return getSelf();
         }
 
-        public abstract R build();
+        public R build() {
+            predicate.initialise();
+            return (R) predicate;
+        }
 
         protected B getSelf() {
             return (B) this;
         }
+
+        protected R getPredicate() {
+            return (R) predicate;
+        }
     }
 
     public static class Builder<T extends Comparable<T>> extends BaseBuilder<Builder<T>, InRangeDual<T>, T> {
+        public Builder() {
+            super(new InRangeDual<>());
+        }
+
+        @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
         @Override
-        public InRangeDual<T> build() {
-            return new InRangeDual<>(start, end, startInclusive, endInclusive);
+        public Builder<T> start(final T start) {
+            return super.start(start);
+        }
+
+        @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
+        @Override
+        public Builder<T> end(final T end) {
+            return super.end(end);
         }
     }
 }

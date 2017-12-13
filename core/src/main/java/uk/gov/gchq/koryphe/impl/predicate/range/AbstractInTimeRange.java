@@ -16,18 +16,17 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
+import uk.gov.gchq.koryphe.util.TimeUnit;
 
 /**
  * <p>
- * An <code>InRange</code> is a {@link java.util.function.Predicate}
+ * An <code>AbstractInTimeRange</code> is a {@link java.util.function.Predicate}
  * that tests if a {@link Comparable} is within a provided range [start, end].
  * By default the range is inclusive, you can toggle this using the startInclusive
  * and endInclusive booleans.
@@ -42,17 +41,37 @@ import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
  * <p>
  * This range predicate takes a single value to test, if you want to test
  * a startValue and endValue lies within a range then you can use the
- * {@link InRangeDual} predicate.
+ * {@link AbstractInTimeRangeDual} predicate.
  * </p>
- *
- * @see Builder
+ * <p>
+ * The range can also be configured using time offsets
+ * from the current system time or a provided start/end time.
+ * You can set the start and end offsets using startOffset and endOffset.
+ * By default the offset is measured in Days, this can be changed to
+ * DAY, HOUR, MINUTE, SECOND and MILLISECOND using the offsetUnit field.
+ * <p>
+ * At the point when test is called on the class the
+ * current system time is used to calculate the start and end values based on:
+ * System.currentTimeMillis() + offset.
+ * </p>
+ * <p>
+ * You can configure the start and end time strings using one of the following formats:
+ * </p>
+ * <ul>
+ * <li>timestamp in milliseconds</li>
+ * <li>yyyy/MM</li>
+ * <li>yyyy/MM/dd</li>
+ * <li>yyyy/MM/dd HH</li>
+ * <li>yyyy/MM/dd HH:mm</li>
+ * <li>yyyy/MM/dd HH:mm:ss</li>
+ * </ul>
+ * You can use a space, '-', '/', '_', ':', '|', or '.' to separate the parts.
  */
-@JsonDeserialize(builder = InRange.Builder.class)
-public class InRange<T extends Comparable<T>> extends KoryphePredicate<T> {
-    private final InRangeDual<T> predicate;
+public abstract class AbstractInTimeRange<T extends Comparable<T>> extends KoryphePredicate<T> {
+    private final AbstractInTimeRangeDual<T> predicate;
 
-    InRange() {
-        predicate = new InRangeDual<>();
+    protected AbstractInTimeRange(final AbstractInTimeRangeDual<T> predicate) {
+        this.predicate = predicate;
     }
 
     @Override
@@ -60,25 +79,35 @@ public class InRange<T extends Comparable<T>> extends KoryphePredicate<T> {
         return predicate.test(value, value);
     }
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
-    public T getStart() {
+    public String getStart() {
         return predicate.getStart();
     }
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
-    public T getEnd() {
-        return predicate.getEnd();
+    public Long getStartOffset() {
+        return predicate.getStartOffset();
     }
 
     public Boolean isStartInclusive() {
         return predicate.isStartInclusive();
     }
 
+    public String getEnd() {
+        return predicate.getEnd();
+    }
+
+    public Long getEndOffset() {
+        return predicate.getEndOffset();
+    }
+
     public Boolean isEndInclusive() {
         return predicate.isEndInclusive();
     }
 
-    protected InRangeDual<T> getPredicate() {
+    public TimeUnit getOffsetUnit() {
+        return predicate.getOffsetUnit();
+    }
+
+    protected AbstractInTimeRangeDual<T> getPredicate() {
         return predicate;
     }
 
@@ -92,7 +121,7 @@ public class InRange<T extends Comparable<T>> extends KoryphePredicate<T> {
             return false;
         }
 
-        final InRange otherPredicate = (InRange) obj;
+        final AbstractInTimeRange otherPredicate = (AbstractInTimeRange) obj;
         return new EqualsBuilder()
                 .append(predicate, otherPredicate.predicate)
                 .isEquals();
@@ -114,20 +143,20 @@ public class InRange<T extends Comparable<T>> extends KoryphePredicate<T> {
     }
 
     @JsonPOJOBuilder(withPrefix = "")
-    public abstract static class BaseBuilder<B extends BaseBuilder<B, R, T>, R extends InRange<T>, T extends Comparable<T>> {
-        protected final InRange<T> predicate;
+    public abstract static class BaseBuilder<B extends BaseBuilder<B, R, T>, R extends AbstractInTimeRange<T>, T extends Comparable<T>> {
+        protected final R predicate;
 
         public BaseBuilder(final R predicate) {
             this.predicate = predicate;
         }
 
-        public B start(final T start) {
+        public B start(final String start) {
             predicate.getPredicate().setStart(start);
             return getSelf();
         }
 
-        public B end(final T end) {
-            predicate.getPredicate().setEnd(end);
+        public B startOffset(final Long startOffset) {
+            predicate.getPredicate().setStartOffset(startOffset);
             return getSelf();
         }
 
@@ -136,43 +165,33 @@ public class InRange<T extends Comparable<T>> extends KoryphePredicate<T> {
             return getSelf();
         }
 
+        public B end(final String end) {
+            predicate.getPredicate().setEnd(end);
+            return getSelf();
+        }
+
+        public B endOffset(final Long endOffset) {
+            predicate.getPredicate().setEndOffset(endOffset);
+            return getSelf();
+        }
+
         public B endInclusive(final boolean endInclusive) {
             predicate.getPredicate().setEndInclusive(endInclusive);
             return getSelf();
         }
 
+        public B offsetUnit(final TimeUnit offsetUnit) {
+            predicate.getPredicate().setOffsetUnit(offsetUnit);
+            return getSelf();
+        }
+
         public R build() {
-            if (null != predicate.getStart() && null != predicate.getEnd()
-                    && !predicate.getStart().getClass().equals(predicate.getEnd().getClass())) {
-                throw new IllegalArgumentException("start and end should be instances of the same class");
-            }
-            return (R) predicate;
+            predicate.getPredicate().initialise();
+            return predicate;
         }
 
         protected B getSelf() {
             return (B) this;
-        }
-
-        protected R getPredicate() {
-            return (R) predicate;
-        }
-    }
-
-    public static class Builder<T extends Comparable<T>> extends BaseBuilder<Builder<T>, InRange<T>, T> {
-        public Builder() {
-            super(new InRange<>());
-        }
-
-        @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
-        @Override
-        public Builder<T> start(final T start) {
-            return super.start(start);
-        }
-
-        @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
-        @Override
-        public Builder<T> end(final T end) {
-            return super.end(end);
         }
     }
 }

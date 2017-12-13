@@ -131,7 +131,7 @@ public class InRangeTest<T extends Comparable<T>> extends PredicateTest {
     @Test
     public void shouldJsonSerialiseAndDeserialisWithExclusive() throws IOException {
         // Given
-        final InRange<T> filter = createBuilder()
+        final Predicate<T> filter = createBuilder()
                 .start(convert(1000L))
                 .end(convert(1010L))
                 .startInclusive(false)
@@ -217,7 +217,7 @@ public class InRangeTest<T extends Comparable<T>> extends PredicateTest {
         return (Class<T>) Long.class;
     }
 
-    protected InRangeDual.BaseBuilder<?, ? extends InRange<T>, T> createBuilder() {
+    protected InRange.BaseBuilder<?, ? extends InRange<T>, T> createBuilder() {
         return new InRange.Builder<>();
     }
 
