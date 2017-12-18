@@ -23,7 +23,7 @@ import java.util.Arrays;
  * A <code>ToString</code> is a {@link java.util.function.Function} that takes in
  * an object (null or otherwise), and calls toString on it.
  */
-public class ToString extends KorypheFunction {
+public class ToString extends KorypheFunction<Object, String> {
 
     @Override
     public String apply(final Object o) {
