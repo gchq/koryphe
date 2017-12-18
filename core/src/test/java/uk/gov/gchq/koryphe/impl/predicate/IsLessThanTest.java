@@ -149,6 +149,7 @@ public class IsLessThanTest extends PredicateTest {
         assertFalse(predicate.isInputValid(Integer.class, Integer.class).isValid());
     }
 
+    // TODO This test will currently fail, but probably should pass with the correct implementation
     @Test
     public void shouldDeserialiseToDate() throws IOException {
         final String json = String.format("{%n" +

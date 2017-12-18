@@ -17,6 +17,22 @@ package uk.gov.gchq.koryphe.signature;
 
 import uk.gov.gchq.koryphe.ValidationResult;
 
+/**
+ * A {@code TypeResolver} should attempt to dynamically resolve the
+ * type of a JSON field.
+ * This removes the requirement for users to explicitly specify types
+ * when providing {@link java.util.function.Predicate} or
+ * {@link java.util.function.Function} control value(s).
+ */
 public interface TypeResolver {
+
+    /**
+     * This method should attempt to serialise and deserialise any control
+     * values of the predicate/function into the
+     * concrete type(s) contained within the arguments.
+     *
+     * @param arguments the concrete classes to which to attempt to resolve
+     * @return {@link ValidationResult} containing any errors
+     */
     ValidationResult resolveTypes(final Class<?>... arguments);
 }
