@@ -16,13 +16,13 @@
 package uk.gov.gchq.koryphe.example.function.iterable;
 
 import uk.gov.gchq.koryphe.example.KorypheFunctionExample;
-import uk.gov.gchq.koryphe.example.util.JsonSerialiser;
+import uk.gov.gchq.koryphe.util.JsonSerialiserUtil;
 
 public abstract class KorypheIterableFunctionExample<I extends Iterable, O extends Iterable> extends KorypheFunctionExample<I, O> {
     @Override
     protected void executeExample() throws Exception {
         System.out.println("Function json: ");
-        System.out.println(JsonSerialiser.serialise(getFunction()));
+        System.out.println(JsonSerialiserUtil.serialise(getFunction()));
         System.out.println();
         System.out.println("Function inputs: ");
         getInput().forEach(this::printInput);

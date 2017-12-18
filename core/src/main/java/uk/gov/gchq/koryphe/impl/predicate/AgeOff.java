@@ -23,14 +23,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 /**
- * An <code>AgeOff</code> is a {@link java.util.function.Predicate} that ages off old data based on a provided age of time in milliseconds.
+ * An <code>AgeOff</code> is a {@link java.util.function.Predicate} that ages off old data based on a provided age off time in milliseconds.
  */
 public class AgeOff extends KoryphePredicate<Long> {
     public static final long HOURS_TO_MILLISECONDS = 60L * 60L * 1000L;
     public static final long DAYS_TO_MILLISECONDS = 24L * HOURS_TO_MILLISECONDS;
 
     /**
-     * The default age of time (1 year) in milliseconds.
+     * The default age off time (1 year) in milliseconds.
      */
     public static final long AGE_OFF_TIME_DEFAULT = 365L * DAYS_TO_MILLISECONDS;
 

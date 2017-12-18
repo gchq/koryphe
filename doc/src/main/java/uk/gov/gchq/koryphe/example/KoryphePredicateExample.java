@@ -16,7 +16,7 @@
 
 package uk.gov.gchq.koryphe.example;
 
-import uk.gov.gchq.koryphe.example.util.JsonSerialiser;
+import uk.gov.gchq.koryphe.util.JsonSerialiserUtil;
 
 import java.util.function.Predicate;
 
@@ -26,7 +26,7 @@ public abstract class KoryphePredicateExample<I> extends KorypheExample<I, I> {
     @Override
     protected void executeExample() throws Exception {
         System.out.println("Predicate json: ");
-        System.out.println(JsonSerialiser.serialise(getPredicate()));
+        System.out.println(JsonSerialiserUtil.serialise(getPredicate()));
         System.out.println();
         System.out.println("Predicate inputs: ");
         getInput().forEach(this::printInput);

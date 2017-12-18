@@ -209,15 +209,16 @@ public class OrTest extends PredicateTest {
     public void shouldCheckInputClass() {
         Or<?> predicate = new Or<>(new IsMoreThan(1), new IsLessThan(10));
         assertTrue(predicate.isInputValid(Integer.class).isValid());
-        assertFalse(predicate.isInputValid(Double.class).isValid());
+        assertTrue(predicate.isInputValid(Double.class).isValid());
         assertFalse(predicate.isInputValid(Integer.class, Integer.class).isValid());
 
         predicate = new Or<>(new IsMoreThan(1.0), new IsLessThan(10.0));
         assertTrue(predicate.isInputValid(Double.class).isValid());
-        assertFalse(predicate.isInputValid(Integer.class).isValid());
+        assertTrue(predicate.isInputValid(Integer.class).isValid());
+        assertFalse(predicate.isInputValid(Integer.class, Integer.class).isValid());
 
         predicate = new Or<>(new IsMoreThan(1), new IsLessThan(10.0));
-        assertFalse(predicate.isInputValid(Integer.class).isValid());
+        assertTrue(predicate.isInputValid(Integer.class).isValid());
         assertFalse(predicate.isInputValid(Integer.class, Double.class).isValid());
 
         predicate = new Or<>(
@@ -225,8 +226,9 @@ public class OrTest extends PredicateTest {
                 new IntegerTupleAdaptedPredicate(new IsLessThan(10.0), 1)
         );
         assertTrue(predicate.isInputValid(Integer.class, Double.class).isValid());
+        assertTrue(predicate.isInputValid(Double.class, Integer.class).isValid());
         assertFalse(predicate.isInputValid(Integer.class).isValid());
-        assertFalse(predicate.isInputValid(Double.class, Integer.class).isValid());
+
 
         predicate = new Or.Builder()
                 .select(0)
@@ -235,8 +237,8 @@ public class OrTest extends PredicateTest {
                 .execute(new IsLessThan(10.0))
                 .build();
         assertTrue(predicate.isInputValid(Integer.class, Double.class).isValid());
+        assertTrue(predicate.isInputValid(Double.class, Integer.class).isValid());
         assertFalse(predicate.isInputValid(Integer.class).isValid());
-        assertFalse(predicate.isInputValid(Double.class, Integer.class).isValid());
     }
 
     @Override

@@ -16,7 +16,7 @@
 
 package uk.gov.gchq.koryphe.example;
 
-import uk.gov.gchq.koryphe.example.util.JsonSerialiser;
+import uk.gov.gchq.koryphe.util.JsonSerialiserUtil;
 
 import java.util.function.Function;
 
@@ -26,7 +26,7 @@ public abstract class KorypheFunctionExample<I, O> extends KorypheExample<I, O> 
     @Override
     protected void executeExample() throws Exception {
         System.out.println("Function json: ");
-        System.out.println(JsonSerialiser.serialise(getFunction()));
+        System.out.println(JsonSerialiserUtil.serialise(getFunction()));
         System.out.println();
         System.out.println("Function inputs: ");
         getInput().forEach(this::printInput);

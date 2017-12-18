@@ -16,7 +16,7 @@
 
 package uk.gov.gchq.koryphe.example;
 
-import uk.gov.gchq.koryphe.example.util.JsonSerialiser;
+import uk.gov.gchq.koryphe.util.JsonSerialiserUtil;
 
 import java.util.Optional;
 import java.util.function.BinaryOperator;
@@ -27,7 +27,7 @@ public abstract class KorypheBinaryOperatorExample<T> extends KorypheExample<T, 
     @Override
     protected void executeExample() throws Exception {
         System.out.println("Binary Operator json: ");
-        System.out.println(JsonSerialiser.serialise(getBinaryOperator()));
+        System.out.println(JsonSerialiserUtil.serialise(getBinaryOperator()));
         System.out.println();
         System.out.println("Binary Operator inputs: ");
         getInput().forEach(i -> printInput(i));

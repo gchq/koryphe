@@ -119,7 +119,7 @@ public class NotTest extends PredicateTest {
         Predicate predicate = new Not<>(new IsMoreThan(1));
         Signature input = Signature.getInputSignature(predicate);
         assertTrue(input.assignable(Integer.class).isValid());
-        assertFalse(input.assignable(Double.class).isValid());
+        assertTrue(input.assignable(Double.class).isValid());
         assertFalse(input.assignable(Integer.class, Integer.class).isValid());
 
         predicate = new Not<>(new IsXLessThanY());

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Crown Copyright
+ * Copyright 2017 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package uk.gov.gchq.koryphe.example.util;
+package uk.gov.gchq.koryphe.util;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.io.IOException;
 
-public final class JsonSerialiser {
-    private JsonSerialiser() { }
+public final class JsonSerialiserUtil {
+    private JsonSerialiserUtil() {
+    }
 
     private static final ObjectMapper MAPPER = createObjectMapper();
 
@@ -36,8 +37,8 @@ public final class JsonSerialiser {
         return mapper;
     }
 
-    public static String serialise(final Object object) throws IOException {
-        return MAPPER.writeValueAsString(object);
+    public static String serialise(final Object obj) throws IOException {
+        return MAPPER.writeValueAsString(obj);
     }
 
     public static <T> T deserialise(final String json, final Class<T> type) throws IOException {
@@ -46,5 +47,9 @@ public final class JsonSerialiser {
 
     public static <T> T deserialise(final String json, final TypeReference<T> typeReference) throws IOException {
         return MAPPER.readValue(json, typeReference);
+    }
+
+    public static <T> T deserialise(final byte[] bytes, final Class<T> clazz) throws IOException {
+        return MAPPER.readValue(bytes, clazz);
     }
 }

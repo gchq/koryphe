@@ -23,6 +23,7 @@ import uk.gov.gchq.koryphe.util.CustomObj;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -144,8 +145,23 @@ public class IsLessThanTest extends PredicateTest {
         final IsLessThan predicate = new IsLessThan(1);
 
         assertTrue(predicate.isInputValid(Integer.class).isValid());
-        assertFalse(predicate.isInputValid(Double.class).isValid());
+        assertTrue(predicate.isInputValid(Double.class).isValid());
         assertFalse(predicate.isInputValid(Integer.class, Integer.class).isValid());
+    }
+
+    @Test
+    public void shouldDeserialiseToDate() throws IOException {
+        final String json = String.format("{%n" +
+                "  \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.IsLessThan\",%n" +
+                "  \"orEqualTo\" : false,%n" +
+                "  \"value\" : 10000000000%n" +
+                "}");
+
+        final IsLessThan deserialised = JsonSerialiser.deserialise(json, IsLessThan.class);
+
+        deserialised.resolveTypes(Date.class);
+
+        assertEquals(new Date(10000000000L), deserialised.getControlValue());
     }
 
     @Override

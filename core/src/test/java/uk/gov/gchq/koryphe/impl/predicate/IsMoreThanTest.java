@@ -132,7 +132,7 @@ public class IsMoreThanTest extends PredicateTest {
         final IsMoreThan predicate = new IsMoreThan(1);
 
         assertTrue(predicate.isInputValid(Integer.class).isValid());
-        assertFalse(predicate.isInputValid(Double.class).isValid());
+        assertTrue(predicate.isInputValid(Double.class).isValid());
         assertFalse(predicate.isInputValid(Integer.class, Integer.class).isValid());
     }
 

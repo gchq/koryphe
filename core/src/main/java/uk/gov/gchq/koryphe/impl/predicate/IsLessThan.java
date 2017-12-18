@@ -25,13 +25,17 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import uk.gov.gchq.koryphe.ValidationResult;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 import uk.gov.gchq.koryphe.signature.InputValidator;
+import uk.gov.gchq.koryphe.signature.TypeResolver;
+import uk.gov.gchq.koryphe.util.JsonSerialiserUtil;
 
 /**
  * An <code>IsLessThan</code> is a {@link java.util.function.Predicate} that checks that the input
  * {@link Comparable} is less than a control value. There is also an orEqualTo flag that can be set to allow
  * the input value to be less than or equal to the control value.
  */
-public class IsLessThan extends KoryphePredicate<Comparable> implements InputValidator {
+public class IsLessThan extends KoryphePredicate<Comparable>
+        implements InputValidator,
+        TypeResolver {
     private Comparable controlValue;
     private boolean orEqualTo;
 
@@ -94,9 +98,22 @@ public class IsLessThan extends KoryphePredicate<Comparable> implements InputVal
         }
 
         if (!controlValue.getClass().isAssignableFrom(arguments[0])) {
-            result.addError("Control value class " + controlValue.getClass().getName() + " is not compatible with the input type: " + arguments[0]);
+            result.add(resolveTypes(arguments[0]));
         }
 
+        return result;
+    }
+
+    @Override
+    public ValidationResult resolveTypes(final Class<?>... arguments) {
+        final ValidationResult result = new ValidationResult();
+        final String json;
+        try {
+            json = JsonSerialiserUtil.serialise(controlValue);
+            controlValue = (Comparable) JsonSerialiserUtil.deserialise(json, arguments[0]);
+        } catch (final Exception e) {
+            result.addError("Control value class " + controlValue.getClass().getName() + " is not compatible with the input type: " + arguments[0]);
+        }
         return result;
     }
 
