@@ -173,7 +173,7 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"" + getPredicateClass().getName() + "\",%n" +
+                "  \"class\" : \"" + getPredicateClass().getSimpleName() + "\",%n" +
                 "  \"start\" : \"" + start + "\",%n" +
                 "  \"end\" : \"" + end + "\",%n" +
                 "  \"startInclusive\" : false,%n" +
@@ -204,7 +204,7 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"" + getPredicateClass().getName() + "\",%n" +
+                "  \"class\" : \"" + getPredicateClass().getSimpleName() + "\",%n" +
                 "  \"start\" : \"" + start + "\",%n" +
                 "  \"end\" : \"" + end + "\"%n" +
                 "}"), json);
@@ -308,7 +308,7 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"" + getPredicateClass().getName() + "\",%n" +
+                "  \"class\" : \"" + getPredicateClass().getSimpleName() + "\",%n" +
                 "  \"startOffset\" : 7,%n" +
                 "  \"endOffset\" : 0%n" +
                 "}"), json);

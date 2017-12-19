@@ -18,7 +18,10 @@ package uk.gov.gchq.koryphe.function;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.BeforeClass;
 import org.junit.Test;
+
+import uk.gov.gchq.koryphe.serialisation.json.SimpleClassNameIdResolver;
 
 import java.io.IOException;
 import java.util.function.Function;
@@ -39,6 +42,11 @@ public abstract class FunctionTest {
     protected abstract Function getInstance();
 
     protected abstract Class<? extends Function> getFunctionClass();
+
+    @BeforeClass
+    public static void beforeClass() {
+        SimpleClassNameIdResolver.setEnableForSerialisation(true);
+    }
 
     @Test
     public abstract void shouldJsonSerialiseAndDeserialise() throws IOException;

@@ -17,10 +17,12 @@
 package uk.gov.gchq.koryphe.impl.predicate;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.predicate.PredicateComposite;
+import uk.gov.gchq.koryphe.serialisation.json.PredicateIdResolver;
 import uk.gov.gchq.koryphe.tuple.predicate.IntegerTupleAdaptedPredicate;
 
 import java.util.List;
@@ -31,7 +33,8 @@ import java.util.function.Predicate;
  *
  * @param <I> Type of input to be validated
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+@JsonTypeInfo(use = JsonTypeInfo.Id.CUSTOM, include = JsonTypeInfo.As.PROPERTY, property = "class")
+@JsonTypeIdResolver(PredicateIdResolver.class)
 public class And<I> extends PredicateComposite<I, Predicate<I>> {
     public And() {
         super();

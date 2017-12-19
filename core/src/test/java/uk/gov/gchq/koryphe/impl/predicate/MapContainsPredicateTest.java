@@ -101,9 +101,9 @@ public class MapContainsPredicateTest extends PredicateTest {
 
         // Then
         JsonSerialiser.assertEquals("{" +
-                "\"class\":\"uk.gov.gchq.koryphe.impl.predicate.MapContainsPredicate\"," +
+                "\"class\":\"MapContainsPredicate\"," +
                 "\"keyPredicate\":{" +
-                "\"class\":\"uk.gov.gchq.koryphe.impl.predicate.IsEqual\"," +
+                "\"class\":\"IsEqual\"," +
                 "\"value\":\"key1\"" +
                 "}" +
                 "}", json);

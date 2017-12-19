@@ -121,7 +121,7 @@ public class StringDeduplicateConcatTest extends BinaryOperatorTest {
 
         // Then 1
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.binaryoperator.StringDeduplicateConcat\",%n" +
+                "  \"class\" : \"StringDeduplicateConcat\",%n" +
                 "  \"separator\" : \";\"%n" +
                 "}"), json);
 

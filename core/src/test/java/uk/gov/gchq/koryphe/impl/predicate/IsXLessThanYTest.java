@@ -59,7 +59,7 @@ public class IsXLessThanYTest extends PredicateTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.IsXLessThanY\"%n" +
+                "  \"class\" : \"IsXLessThanY\"%n" +
                 "}"), json);
 
         // When 2

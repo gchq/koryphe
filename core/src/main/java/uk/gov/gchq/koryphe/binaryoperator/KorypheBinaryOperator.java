@@ -17,6 +17,9 @@
 package uk.gov.gchq.koryphe.binaryoperator;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
+
+import uk.gov.gchq.koryphe.serialisation.json.BinaryOperatorIdResolver;
 
 import java.util.function.BinaryOperator;
 
@@ -25,7 +28,8 @@ import java.util.function.BinaryOperator;
  *
  * @param <T> Input/Output type
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+@JsonTypeInfo(use = JsonTypeInfo.Id.CUSTOM, include = JsonTypeInfo.As.PROPERTY, property = "class")
+@JsonTypeIdResolver(BinaryOperatorIdResolver.class)
 public abstract class KorypheBinaryOperator<T> implements BinaryOperator<T> {
     /**
      * Apply the operator after completing null checks.

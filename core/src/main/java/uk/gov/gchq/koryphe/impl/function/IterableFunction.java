@@ -16,11 +16,13 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.function.KorypheFunction;
+import uk.gov.gchq.koryphe.serialisation.json.FunctionIdResolver;
 import uk.gov.gchq.koryphe.util.IterableUtil;
 
 import java.util.ArrayList;
@@ -57,7 +59,8 @@ public class IterableFunction<I_ITEM, O_ITEM> extends KorypheFunction<Iterable<I
     }
 
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CUSTOM, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeIdResolver(FunctionIdResolver.class)
     public List<Function> getFunctions() {
         return functions;
     }

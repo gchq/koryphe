@@ -51,7 +51,7 @@ public class FirstItemTest extends FunctionTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.function.FirstItem\"%n" +
+                "  \"class\" : \"FirstItem\"%n" +
                 "}"), json);
 
         // When 2

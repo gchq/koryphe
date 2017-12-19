@@ -114,7 +114,7 @@ public class IsMoreThanTest extends PredicateTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.IsMoreThan\",%n" +
+                "  \"class\" : \"IsMoreThan\",%n" +
                 "  \"orEqualTo\" : false,%n" +
                 "  \"value\" : {\"uk.gov.gchq.koryphe.util.CustomObj\":{\"value\":\"1\"}}%n" +
                 "}"), json);

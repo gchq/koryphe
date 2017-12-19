@@ -517,7 +517,7 @@ public class SumTest extends BinaryOperatorTest {
 
         // Then 1
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.binaryoperator.Sum\"%n" +
+                "  \"class\" : \"Sum\"%n" +
                 "}"), json);
 
         // When 2

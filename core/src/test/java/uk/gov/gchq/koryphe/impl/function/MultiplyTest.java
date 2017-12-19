@@ -70,7 +70,7 @@ public class MultiplyTest extends FunctionTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.function.Multiply\"" +
+                "  \"class\" : \"Multiply\"" +
                 "}"), json);
 
         // When 2

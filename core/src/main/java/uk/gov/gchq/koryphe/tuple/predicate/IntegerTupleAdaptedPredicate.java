@@ -17,8 +17,10 @@
 package uk.gov.gchq.koryphe.tuple.predicate;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
 
 import uk.gov.gchq.koryphe.ValidationResult;
+import uk.gov.gchq.koryphe.serialisation.json.PredicateIdResolver;
 import uk.gov.gchq.koryphe.signature.InputValidator;
 import uk.gov.gchq.koryphe.signature.Signature;
 
@@ -26,7 +28,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.function.Predicate;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+@JsonTypeInfo(use = JsonTypeInfo.Id.CUSTOM, include = JsonTypeInfo.As.PROPERTY, property = "class")
+@JsonTypeIdResolver(PredicateIdResolver.class)
 public class IntegerTupleAdaptedPredicate extends TupleAdaptedPredicate<Integer, Object> implements InputValidator {
     public IntegerTupleAdaptedPredicate() {
     }

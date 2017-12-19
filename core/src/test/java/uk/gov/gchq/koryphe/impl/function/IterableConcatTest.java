@@ -53,7 +53,7 @@ public class IterableConcatTest extends FunctionTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "   \"class\" : \"uk.gov.gchq.koryphe.impl.function.IterableConcat\"%n" +
+                "   \"class\" : \"IterableConcat\"%n" +
                 "}"), json);
 
         // When 2

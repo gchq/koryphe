@@ -62,7 +62,7 @@ public class ExistsTest extends PredicateTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.Exists\"%n" +
+                "  \"class\" : \"Exists\"%n" +
                 "}"), json);
 
         // When 2

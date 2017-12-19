@@ -157,7 +157,7 @@ public class AreInTest extends PredicateTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.AreIn\",%n" +
+                "  \"class\" : \"AreIn\",%n" +
                 "  \"values\" : [{\"uk.gov.gchq.koryphe.util.CustomObj\":{\"value\":\"1\"}}]%n" +
                 "}"), json);
 

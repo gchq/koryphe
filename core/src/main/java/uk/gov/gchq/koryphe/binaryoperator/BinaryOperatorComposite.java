@@ -17,8 +17,11 @@
 package uk.gov.gchq.koryphe.binaryoperator;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
 
 import uk.gov.gchq.koryphe.composite.Composite;
+import uk.gov.gchq.koryphe.serialisation.json.BinaryOperatorIdResolver;
 
 import java.util.List;
 import java.util.function.BinaryOperator;
@@ -43,6 +46,8 @@ public class BinaryOperatorComposite<T, C extends BinaryOperator<T>> extends Com
     }
 
     @JsonProperty("operators")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CUSTOM, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeIdResolver(BinaryOperatorIdResolver.class)
     public List<C> getComponents() {
         return super.getComponents();
     }

@@ -108,7 +108,7 @@ public class IsATest {
         final String json = JsonSerialiser.serialise(filter);
 
         // Then
-        assertEquals("{\"class\":\"uk.gov.gchq.koryphe.impl.predicate.IsA\",\"type\":\"java.lang.Integer\"}", json);
+        JsonSerialiser.assertEquals("{\"class\":\"IsA\",\"type\":\"java.lang.Integer\"}", json);
 
         // When 2
         final IsA deserialisedFilter = JsonSerialiser.deserialise(json, IsA.class);

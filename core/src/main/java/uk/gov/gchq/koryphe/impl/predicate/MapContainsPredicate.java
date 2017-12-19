@@ -17,11 +17,13 @@
 package uk.gov.gchq.koryphe.impl.predicate;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
+import uk.gov.gchq.koryphe.serialisation.json.PredicateIdResolver;
 
 import java.util.Map;
 import java.util.function.Predicate;
@@ -41,7 +43,8 @@ public class MapContainsPredicate extends KoryphePredicate<Map> {
         this.keyPredicate = keyPredicate;
     }
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CUSTOM, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeIdResolver(PredicateIdResolver.class)
     public Predicate getKeyPredicate() {
         return keyPredicate;
     }

@@ -51,7 +51,7 @@ public class NthItemTest extends FunctionTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.function.NthItem\",%n" +
+                "  \"class\" : \"NthItem\",%n" +
                 "  \"selection\" : 2%n" +
                 "}"), json);
 

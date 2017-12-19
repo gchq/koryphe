@@ -70,7 +70,7 @@ public class MultiplyByTest extends FunctionTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.function.MultiplyBy\",%n" +
+                "  \"class\" : \"MultiplyBy\",%n" +
                 "  \"by\" : 4%n" +
                 "}"), json);
 

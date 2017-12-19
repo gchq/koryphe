@@ -74,7 +74,7 @@ public class MultiRegexTest extends PredicateTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.MultiRegex\",%n" +
+                "  \"class\" : \"MultiRegex\",%n" +
                 "  \"value\" : [ {%n" +
                 "    \"java.util.regex.Pattern\" : \"test\"%n" +
                 "  }, {%n" +

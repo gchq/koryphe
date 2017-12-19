@@ -90,7 +90,7 @@ public class ConcatTest extends FunctionTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.function.Concat\",%n" +
+                "  \"class\" : \"Concat\",%n" +
                 "  \"separator\" : \"-\"%n" +
                 "}"), json);
 

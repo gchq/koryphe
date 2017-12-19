@@ -89,9 +89,9 @@ public class NotTest extends PredicateTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.Not\",%n" +
+                "  \"class\" : \"Not\",%n" +
                 "  \"predicate\" : {%n" +
-                "    \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.IsA\",%n" +
+                "    \"class\" : \"IsA\",%n" +
                 "    \"type\" : \"java.lang.String\"%n" +
                 "  }%n" +
                 "}"), json);

@@ -49,7 +49,7 @@ public class SizeTest extends FunctionTest
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "   \"class\" : \"uk.gov.gchq.koryphe.impl.function.Size\"%n" +
+                "   \"class\" : \"Size\"%n" +
                 "}"), json);
     }
 

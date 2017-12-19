@@ -17,9 +17,12 @@
 package uk.gov.gchq.koryphe.predicate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
 
 import uk.gov.gchq.koryphe.ValidationResult;
 import uk.gov.gchq.koryphe.composite.Composite;
+import uk.gov.gchq.koryphe.serialisation.json.PredicateIdResolver;
 import uk.gov.gchq.koryphe.signature.InputValidator;
 import uk.gov.gchq.koryphe.signature.Signature;
 import uk.gov.gchq.koryphe.tuple.Tuple;
@@ -47,6 +50,8 @@ public class PredicateComposite<I, C extends Predicate<I>> extends Composite<C> 
         super(predicates);
     }
 
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CUSTOM, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeIdResolver(PredicateIdResolver.class)
     @JsonProperty("predicates")
     public List<C> getComponents() {
         return super.getComponents();

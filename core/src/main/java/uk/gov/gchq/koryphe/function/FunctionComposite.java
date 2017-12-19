@@ -17,8 +17,11 @@
 package uk.gov.gchq.koryphe.function;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
 
 import uk.gov.gchq.koryphe.composite.Composite;
+import uk.gov.gchq.koryphe.serialisation.json.FunctionIdResolver;
 
 import java.util.List;
 import java.util.function.Function;
@@ -44,6 +47,8 @@ public class FunctionComposite<I, O, C extends Function> extends Composite<C> im
     }
 
     @JsonProperty("functions")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CUSTOM, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeIdResolver(FunctionIdResolver.class)
     public List<C> getComponents() {
         return super.getComponents();
     }

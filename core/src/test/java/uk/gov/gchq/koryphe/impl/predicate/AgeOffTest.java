@@ -106,7 +106,7 @@ public class AgeOffTest extends PredicateTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.AgeOff\",%n" +
+                "  \"class\" : \"AgeOff\",%n" +
                 "  \"ageOffTime\" : 100000%n" +
                 "}"), json);
 

@@ -403,7 +403,7 @@ public class ProductTest extends BinaryOperatorTest {
 
         // Then 1
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.binaryoperator.Product\"%n" +
+                "  \"class\" : \"Product\"%n" +
                 "}"), json);
 
         // When 2

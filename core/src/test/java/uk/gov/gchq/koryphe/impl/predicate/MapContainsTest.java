@@ -88,7 +88,7 @@ public class MapContainsTest extends PredicateTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.MapContains\",%n" +
+                "  \"class\" : \"MapContains\",%n" +
                 "  \"key\" : \"key1\"%n" +
                 "}"), json);
 

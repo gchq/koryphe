@@ -151,9 +151,9 @@ public class OrTest extends PredicateTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.Or\",%n" +
+                "  \"class\" : \"Or\",%n" +
                 "  \"predicates\" : [ {%n" +
-                "    \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.IsA\"%n" +
+                "    \"class\" : \"IsA\"%n" +
                 "  } ]%n" +
                 "}"), json);
 
@@ -179,18 +179,18 @@ public class OrTest extends PredicateTest {
 
         // Then
         JsonSerialiser.assertEquals("{" +
-                "\"class\":\"uk.gov.gchq.koryphe.impl.predicate.Or\"," +
+                "\"class\":\"Or\"," +
                 "\"predicates\":[{" +
-                "\"class\":\"uk.gov.gchq.koryphe.tuple.predicate.IntegerTupleAdaptedPredicate\"," +
+                "\"class\":\"IntegerTupleAdaptedPredicate\"," +
                 "\"predicate\":{" +
-                "\"class\":\"uk.gov.gchq.koryphe.impl.predicate.IsMoreThan\"," +
+                "\"class\":\"IsMoreThan\"," +
                 "\"orEqualTo\":false," +
                 "\"value\":1}," +
                 "\"selection\":[0]" +
                 "}," +
-                "{\"class\":\"uk.gov.gchq.koryphe.tuple.predicate.IntegerTupleAdaptedPredicate\"," +
+                "{\"class\":\"IntegerTupleAdaptedPredicate\"," +
                 "\"predicate\":{" +
-                "\"class\":\"uk.gov.gchq.koryphe.impl.predicate.IsLessThan\"," +
+                "\"class\":\"IsLessThan\"," +
                 "\"orEqualTo\":false," +
                 "\"value\":10.0" +
                 "}," +

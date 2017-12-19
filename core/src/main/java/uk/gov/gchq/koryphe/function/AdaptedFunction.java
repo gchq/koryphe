@@ -17,8 +17,10 @@
 package uk.gov.gchq.koryphe.function;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
 
 import uk.gov.gchq.koryphe.adapted.Adapted;
+import uk.gov.gchq.koryphe.serialisation.json.FunctionIdResolver;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -32,7 +34,8 @@ import java.util.function.Function;
  * @param <O> Output type
  */
 public abstract class AdaptedFunction<I, FI, FO, O> extends Adapted<I, FI, FO, O, I> implements Function<I, O> {
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CUSTOM, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeIdResolver(FunctionIdResolver.class)
     protected Function<FI, FO> function;
 
     /**
