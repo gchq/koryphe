@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.jsontype.impl.ClassNameIdResolver;
 import uk.gov.gchq.koryphe.util.ReflectionUtil;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * A {@code SimpleClassNameIdResolver} is a {@link TypeIdResolver} that allows simple class names to be
@@ -32,17 +33,17 @@ import java.util.Map;
  * a simple class name is provided. Once the class path has been scanned the
  * results should be cached in a static variable.
  */
-public abstract class SimpleClassNameIdResolver implements TypeIdResolver {
+public class SimpleClassNameIdResolver implements TypeIdResolver {
     /**
      * If true then simple class names are used for serialisation. This is
      * useful for testing and generating json examples.
      * However, it is not efficient as reflection is used to scan the class path
      * to find sub classes.
      */
-    private static boolean enableForSerialisation = false;
+    private static boolean enableForSerialisation = true;
 
     private final Class parentClass;
-    private Map<String, Class> classes;
+    private Map<String, Set<String>> classes;
     private ClassNameIdResolver defaultResolver;
     private JavaType baseType;
 
@@ -127,9 +128,13 @@ public abstract class SimpleClassNameIdResolver implements TypeIdResolver {
     private String expandId(final String id) {
         String expandedId = null;
         if (null != id && !id.contains(".")) {
-            final Class clazz = getClasses().get(id);
-            if (null != clazz) {
-                expandedId = clazz.getName();
+            final Set<String> classes = getClasses().get(id);
+            if (null != classes && !classes.isEmpty()) {
+                if (1 == classes.size()) {
+                    expandedId = classes.iterator().next();
+                } else {
+                    throw new IllegalArgumentException("Multiple " + id + " classes exist. Please choose one of the following and specify the full class name: " + classes);
+                }
             }
         }
         if (null == expandedId) {
@@ -138,7 +143,7 @@ public abstract class SimpleClassNameIdResolver implements TypeIdResolver {
         return expandedId;
     }
 
-    private Map<String, Class> getClasses() {
+    private Map<String, Set<String>> getClasses() {
         if (null == classes) {
             classes = ReflectionUtil.getSimpleClassNames(parentClass);
         }

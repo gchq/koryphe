@@ -41,7 +41,7 @@ public final class ReflectionUtil {
     public static final String PATHS_KEY = "gaffer.reflection.paths";
     private static final String DEFAULT_PATH = "uk.gov.gchq";
     private static final Set<String> PATHS = Sets.newHashSet(DEFAULT_PATH);
-    private static final Map<Class<?>, Map<String, Class>> SIMPLE_CLASS_NAMES = new HashMap<>();
+    private static final Map<Class<?>, Map<String, Set<String>>> SIMPLE_CLASS_NAMES = new HashMap<>();
     private static final Map<Class<?>, Set<Class>> SUB_CLASSES = new HashMap<>();
 
     private ReflectionUtil() {
@@ -65,18 +65,18 @@ public final class ReflectionUtil {
      * @param clazz the class to get simple class names for.
      * @return a map of simple class name to class
      */
-    public static Map<String, Class> getSimpleClassNames(final Class<?> clazz) {
-        Map<String, Class> simpleClassNames = SIMPLE_CLASS_NAMES.get(clazz);
+    public static Map<String, Set<String>> getSimpleClassNames(final Class<?> clazz) {
+        Map<String, Set<String>> simpleClassNames = SIMPLE_CLASS_NAMES.get(clazz);
         if (null == simpleClassNames) {
             final Set<Class> classes = getSubClasses(clazz);
             simpleClassNames = new HashMap<>(classes.size());
             for (final Class op : classes) {
-                if (simpleClassNames.containsKey(op.getSimpleName())) {
-                    // Multiple classes with the same simple name
-                    simpleClassNames.put(op.getSimpleName(), null);
-                } else {
-                    simpleClassNames.put(op.getSimpleName(), op);
+                Set<String> simpleClasses = simpleClassNames.get(op.getSimpleName());
+                if (null == simpleClasses) {
+                    simpleClasses = new HashSet<>();
+                    simpleClassNames.put(op.getSimpleName(), simpleClasses);
                 }
+                simpleClasses.add(op.getName());
             }
             simpleClassNames = Collections.unmodifiableMap(simpleClassNames);
             SIMPLE_CLASS_NAMES.put(clazz, simpleClassNames);

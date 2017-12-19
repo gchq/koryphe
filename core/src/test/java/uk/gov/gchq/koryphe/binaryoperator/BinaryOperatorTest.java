@@ -18,10 +18,7 @@ package uk.gov.gchq.koryphe.binaryoperator;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.BeforeClass;
 import org.junit.Test;
-
-import uk.gov.gchq.koryphe.serialisation.json.SimpleClassNameIdResolver;
 
 import java.io.IOException;
 import java.util.function.BinaryOperator;
@@ -42,11 +39,6 @@ public abstract class BinaryOperatorTest {
     protected abstract BinaryOperator getInstance();
 
     protected abstract Class<? extends BinaryOperator> getFunctionClass();
-
-    @BeforeClass
-    public static void beforeClass() {
-        SimpleClassNameIdResolver.setEnableForSerialisation(true);
-    }
 
     @Test
     public abstract void shouldJsonSerialiseAndDeserialise() throws IOException;
