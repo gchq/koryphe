@@ -20,6 +20,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 
+import uk.gov.gchq.koryphe.serialisation.json.SimpleClassNameIdResolver;
+
 import java.io.IOException;
 import java.util.function.Predicate;
 
@@ -39,6 +41,11 @@ public abstract class PredicateTest {
     protected abstract Predicate getInstance();
 
     protected abstract Class<? extends Predicate> getPredicateClass();
+
+    @Test
+    public void before() {
+        SimpleClassNameIdResolver.setEnableForSerialisation(true);
+    }
 
     @Test
     public abstract void shouldJsonSerialiseAndDeserialise() throws IOException;

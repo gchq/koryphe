@@ -16,6 +16,7 @@ public class StringConcatTest extends BinaryOperatorTest {
 
     @Before
     public void before() {
+        super.before();
         state = null;
     }
 

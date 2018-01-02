@@ -35,6 +35,7 @@ public class SumTest extends BinaryOperatorTest {
 
     @Before
     public void before() {
+        super.before();
         state = null;
     }
 

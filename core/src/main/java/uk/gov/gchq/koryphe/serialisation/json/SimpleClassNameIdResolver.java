@@ -36,13 +36,13 @@ import java.util.Set;
 public class SimpleClassNameIdResolver implements TypeIdResolver {
     /**
      * If true then simple class names are used for serialisation.
+     * The default is false, this could be changed to true in the next major release.
      * However, for large class paths this may be inefficient as reflection is
      * used to scan the class path to find sub classes.
      */
-    private static boolean enableForSerialisation = true;
+    private static boolean enableForSerialisation = false;
 
     private final Class parentClass;
-    private Map<String, Set<String>> classes;
     private ClassNameIdResolver defaultResolver;
     private JavaType baseType;
 
@@ -153,9 +153,6 @@ public class SimpleClassNameIdResolver implements TypeIdResolver {
     }
 
     private Map<String, Set<String>> getClasses() {
-        if (null == classes) {
-            classes = ReflectionUtil.getSimpleClassNames(parentClass);
-        }
-        return classes;
+        return ReflectionUtil.getSimpleClassNames(parentClass);
     }
 }

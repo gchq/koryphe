@@ -34,6 +34,7 @@ public class MaxTest extends BinaryOperatorTest {
 
     @Before
     public void before() {
+        super.before();
         state = null;
     }
 
