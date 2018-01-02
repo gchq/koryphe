@@ -40,22 +40,29 @@ import java.util.Set;
 public final class ReflectionUtil {
     public static final String PATHS_KEY = "gaffer.reflection.paths";
     private static final String DEFAULT_PATH = "uk.gov.gchq";
-    private static final Set<String> PATHS = Sets.newHashSet(DEFAULT_PATH);
-    private static final Map<Class<?>, Map<String, Set<String>>> SIMPLE_CLASS_NAMES = new HashMap<>();
-    private static final Map<Class<?>, Set<Class>> SUB_CLASSES = new HashMap<>();
+
+    private static Set<String> paths = Sets.newHashSet(DEFAULT_PATH);
+    private static Map<Class<?>, Map<String, Set<String>>> simpleClassNamesCache = new HashMap<>();
+    private static Map<Class<?>, Set<Class>> subclassesCache = new HashMap<>();
 
     private ReflectionUtil() {
         // Private constructor to prevent instantiation.
     }
 
-    public static void addPaths(final String... paths) {
-        if (null != paths) {
-            for (final String path : paths) {
+    public static void addPaths(final String... newPaths) {
+        if (null != newPaths) {
+            for (final String path : newPaths) {
                 if (null != path) {
-                    Collections.addAll(PATHS, path.replace(" ", "").split(","));
+                    Collections.addAll(paths, path.replace(" ", "").split(","));
                 }
             }
         }
+    }
+
+    public static void resetPaths() {
+        paths = Sets.newHashSet(DEFAULT_PATH);
+        simpleClassNamesCache = new HashMap<>();
+        subclassesCache = new HashMap<>();
     }
 
     /**
@@ -66,20 +73,16 @@ public final class ReflectionUtil {
      * @return a map of simple class name to class
      */
     public static Map<String, Set<String>> getSimpleClassNames(final Class<?> clazz) {
-        Map<String, Set<String>> simpleClassNames = SIMPLE_CLASS_NAMES.get(clazz);
+        Map<String, Set<String>> simpleClassNames = simpleClassNamesCache.get(clazz);
         if (null == simpleClassNames) {
             final Set<Class> classes = getSubClasses(clazz);
             simpleClassNames = new HashMap<>(classes.size());
             for (final Class op : classes) {
-                Set<String> simpleClasses = simpleClassNames.get(op.getSimpleName());
-                if (null == simpleClasses) {
-                    simpleClasses = new HashSet<>();
-                    simpleClassNames.put(op.getSimpleName(), simpleClasses);
-                }
+                final Set<String> simpleClasses = simpleClassNames.computeIfAbsent(op.getSimpleName(), k -> new HashSet<>());
                 simpleClasses.add(op.getName());
             }
             simpleClassNames = Collections.unmodifiableMap(simpleClassNames);
-            SIMPLE_CLASS_NAMES.put(clazz, simpleClassNames);
+            simpleClassNamesCache.put(clazz, simpleClassNames);
         }
         return simpleClassNames;
     }
@@ -91,12 +94,12 @@ public final class ReflectionUtil {
      * @return the sub classes.
      */
     public static Set<Class> getSubClasses(final Class<?> clazz) {
-        Set<Class> subClasses = SUB_CLASSES.get(clazz);
+        Set<Class> subClasses = subclassesCache.get(clazz);
         if (null == subClasses) {
             addPaths(System.getProperty(PATHS_KEY));
 
             final Set<URL> urls = new HashSet<>();
-            for (final String packagePrefix : PATHS) {
+            for (final String packagePrefix : paths) {
                 urls.addAll(ClasspathHelper.forPackage(packagePrefix));
             }
 
@@ -104,7 +107,7 @@ public final class ReflectionUtil {
             subClasses.addAll(new Reflections(urls).getSubTypesOf(clazz));
             keepPublicConcreteClasses(subClasses);
             subClasses = Collections.unmodifiableSet(subClasses);
-            SUB_CLASSES.put(clazz, subClasses);
+            subclassesCache.put(clazz, subClasses);
         }
 
         return subClasses;

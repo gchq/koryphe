@@ -35,10 +35,9 @@ import java.util.Set;
  */
 public class SimpleClassNameIdResolver implements TypeIdResolver {
     /**
-     * If true then simple class names are used for serialisation. This is
-     * useful for testing and generating json examples.
-     * However, it is not efficient as reflection is used to scan the class path
-     * to find sub classes.
+     * If true then simple class names are used for serialisation.
+     * However, for large class paths this may be inefficient as reflection is
+     * used to scan the class path to find sub classes.
      */
     private static boolean enableForSerialisation = true;
 
@@ -63,8 +62,13 @@ public class SimpleClassNameIdResolver implements TypeIdResolver {
         } else {
             this.baseType = baseType.getContentType();
         }
-        defaultResolver = new ClassNameIdResolver(this.baseType, null);
-        defaultResolver.init(this.baseType);
+        final ClassNameIdResolver newDefaultResolver = new ClassNameIdResolver(this.baseType, null);
+        newDefaultResolver.init(this.baseType);
+        init(newDefaultResolver);
+    }
+
+    protected void init(final ClassNameIdResolver defaultResolver) {
+        this.defaultResolver = defaultResolver;
     }
 
     @Override
@@ -72,7 +76,8 @@ public class SimpleClassNameIdResolver implements TypeIdResolver {
         String id;
         if (enableForSerialisation) {
             id = value.getClass().getSimpleName();
-            if (!getClasses().containsKey(id)) {
+            final Set<String> classesForId = getClasses().get(id);
+            if (null == classesForId || 1 != classesForId.size()) {
                 id = defaultResolver.idFromValue(value);
             }
         } else {
@@ -123,6 +128,10 @@ public class SimpleClassNameIdResolver implements TypeIdResolver {
     @Override
     public JsonTypeInfo.Id getMechanism() {
         return JsonTypeInfo.Id.CLASS;
+    }
+
+    public Class getParentClass() {
+        return parentClass;
     }
 
     private String expandId(final String id) {
