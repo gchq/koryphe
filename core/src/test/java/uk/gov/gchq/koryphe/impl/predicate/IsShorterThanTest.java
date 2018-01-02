@@ -110,7 +110,7 @@ public class IsShorterThanTest extends PredicateTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.IsShorterThan\",%n" +
+                "  \"class\" : \"IsShorterThan\",%n" +
                 "  \"orEqualTo\" : false,%n" +
                 "  \"maxLength\" : 5%n" +
                 "}"), json);

@@ -86,7 +86,7 @@ public class ToStringTest extends FunctionTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.function.ToString\"" +
+                "  \"class\" : \"ToString\"" +
                 "}"), json);
 
         // When 2

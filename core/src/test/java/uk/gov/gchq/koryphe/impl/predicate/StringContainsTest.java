@@ -113,7 +113,7 @@ public class StringContainsTest extends PredicateTest {
         final String json = JsonSerialiser.serialise(filter);
 
         // Then
-        JsonSerialiser.assertEquals(String.format("{%n" + "  \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.StringContains\",%n" +
+        JsonSerialiser.assertEquals(String.format("{%n" + "  \"class\" : \"StringContains\",%n" +
                                                           "  \"value\" : \"stringcontains\",%n" +
                                                           "  \"ignoreCase\" : false%n" +
                                                           "}"), json);

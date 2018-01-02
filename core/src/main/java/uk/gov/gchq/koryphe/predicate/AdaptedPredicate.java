@@ -17,8 +17,10 @@
 package uk.gov.gchq.koryphe.predicate;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
 
 import uk.gov.gchq.koryphe.adapted.InputAdapted;
+import uk.gov.gchq.koryphe.serialisation.json.PredicateIdResolver;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -26,11 +28,12 @@ import java.util.function.Predicate;
 /**
  * An {@link InputAdapted} {@link Predicate}.
  *
- * @param <I> Input type
+ * @param <I>  Input type
  * @param <PI> Adapted input type for predicate
  */
 public class AdaptedPredicate<I, PI> extends InputAdapted<I, PI> implements Predicate<I> {
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CUSTOM, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeIdResolver(PredicateIdResolver.class)
     protected Predicate<PI> predicate;
 
     /**

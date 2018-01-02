@@ -71,7 +71,7 @@ public class DivideTest extends FunctionTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.function.Divide\"" +
+                "  \"class\" : \"Divide\"" +
                 "}"), json);
 
         // When 2

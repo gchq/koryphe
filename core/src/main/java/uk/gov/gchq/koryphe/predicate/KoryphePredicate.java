@@ -17,7 +17,10 @@
 package uk.gov.gchq.koryphe.predicate;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import uk.gov.gchq.koryphe.serialisation.json.PredicateIdResolver;
 
 import java.util.function.Predicate;
 
@@ -26,7 +29,8 @@ import java.util.function.Predicate;
  *
  * @param <I> Input type
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+@JsonTypeInfo(use = JsonTypeInfo.Id.CUSTOM, include = JsonTypeInfo.As.PROPERTY, property = "class")
+@JsonTypeIdResolver(PredicateIdResolver.class)
 public abstract class KoryphePredicate<I> implements Predicate<I> {
     @SuppressFBWarnings(value = "BC_EQUALS_METHOD_SHOULD_WORK_FOR_ALL_OBJECTS", justification = "the method classEquals does the check")
     @Override

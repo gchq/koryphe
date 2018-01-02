@@ -18,11 +18,14 @@ package uk.gov.gchq.koryphe.impl.predicate;
 
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.ValidationResult;
+import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
+import uk.gov.gchq.koryphe.serialisation.json.PredicateIdResolver;
 import uk.gov.gchq.koryphe.signature.InputValidator;
 import uk.gov.gchq.koryphe.signature.Signature;
 
@@ -33,9 +36,11 @@ import java.util.function.Predicate;
  *
  * @param <I> Type of input to be validated
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
-public class Not<I> implements Predicate<I>, InputValidator {
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+@JsonTypeInfo(use = JsonTypeInfo.Id.CUSTOM, include = JsonTypeInfo.As.PROPERTY, property = "class")
+@JsonTypeIdResolver(PredicateIdResolver.class)
+public class Not<I> extends KoryphePredicate<I> implements InputValidator {
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CUSTOM, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeIdResolver(PredicateIdResolver.class)
     private Predicate<I> predicate;
 
     public Not() {

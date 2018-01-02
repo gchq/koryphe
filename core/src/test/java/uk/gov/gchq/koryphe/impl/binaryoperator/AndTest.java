@@ -81,7 +81,7 @@ public class AndTest extends BinaryOperatorTest {
 
         // Then 1
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.binaryoperator.And\"%n" +
+                "  \"class\" : \"And\"%n" +
                 "}"), json);
 
         // When 2

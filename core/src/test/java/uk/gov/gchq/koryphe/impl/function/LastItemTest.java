@@ -50,7 +50,7 @@ public class LastItemTest extends FunctionTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.function.LastItem\"%n" +
+                "  \"class\" : \"LastItem\"%n" +
                 "}"), json);
 
         // When 2

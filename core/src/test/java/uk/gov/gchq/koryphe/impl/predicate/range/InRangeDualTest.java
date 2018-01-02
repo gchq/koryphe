@@ -170,7 +170,7 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"" + getPredicateClass().getName() + "\",%n" +
+                "  \"class\" : \"" + getPredicateClass().getSimpleName() + "\",%n" +
                 "  \"start\" : " + getStartJson(convert(1000L)) + ",%n" +
                 "  \"end\" : " + getEndJson(convert(1010L)) + ",%n" +
                 "  \"startInclusive\" : false,%n" +
@@ -199,7 +199,7 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"" + getPredicateClass().getName() + "\",%n" +
+                "  \"class\" : \"" + getPredicateClass().getSimpleName() + "\",%n" +
                 "  \"start\" : " + getStartJson(convert(1000L)) + ",%n" +
                 "  \"end\" : " + getEndJson(convert(1010L)) + "%n" +
                 "}"), json);

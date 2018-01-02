@@ -92,7 +92,7 @@ public class CollectionConcatTest extends BinaryOperatorTest {
 
         // Then 1
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.binaryoperator.CollectionConcat\"%n" +
+                "  \"class\" : \"CollectionConcat\"%n" +
                 "}"), json);
 
         // When 2

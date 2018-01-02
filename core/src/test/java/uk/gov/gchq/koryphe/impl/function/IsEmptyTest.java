@@ -50,7 +50,7 @@ public class IsEmptyTest extends FunctionTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "   \"class\" : \"uk.gov.gchq.koryphe.impl.function.IsEmpty\"%n" +
+                "   \"class\" : \"IsEmpty\"%n" +
                 "}"), json);
 
         // When 2

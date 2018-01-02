@@ -86,7 +86,7 @@ public class IsFalseTest extends PredicateTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.IsFalse\"%n" +
+                "  \"class\" : \"IsFalse\"%n" +
                 "}"), json);
 
         // When 2

@@ -34,6 +34,7 @@ public class MaxTest extends BinaryOperatorTest {
 
     @Before
     public void before() {
+        super.before();
         state = null;
     }
 
@@ -155,7 +156,7 @@ public class MaxTest extends BinaryOperatorTest {
 
         // Then 1
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.binaryoperator.Max\"%n" +
+                "  \"class\" : \"Max\"%n" +
                 "}"), json);
 
         // When 2

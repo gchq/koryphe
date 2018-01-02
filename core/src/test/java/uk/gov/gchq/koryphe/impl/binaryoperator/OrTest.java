@@ -82,7 +82,7 @@ public class OrTest extends BinaryOperatorTest {
 
         // Then 1
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.binaryoperator.Or\"%n" +
+                "  \"class\" : \"Or\"%n" +
                 "}"), json);
 
         // When 2

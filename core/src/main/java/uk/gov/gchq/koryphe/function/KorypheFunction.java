@@ -17,6 +17,9 @@
 package uk.gov.gchq.koryphe.function;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
+
+import uk.gov.gchq.koryphe.serialisation.json.FunctionIdResolver;
 
 import java.util.function.Function;
 
@@ -26,7 +29,8 @@ import java.util.function.Function;
  * @param <I> Input type
  * @param <O> Output type
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+@JsonTypeInfo(use = JsonTypeInfo.Id.CUSTOM, include = JsonTypeInfo.As.PROPERTY, property = "class")
+@JsonTypeIdResolver(FunctionIdResolver.class)
 public abstract class KorypheFunction<I, O> implements Function<I, O> {
     @Override
     public boolean equals(final Object obj) {

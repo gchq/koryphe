@@ -64,7 +64,7 @@ public class RegexTest extends PredicateTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.Regex\",%n" +
+                "  \"class\" : \"Regex\",%n" +
                 "  \"value\" : {%n"
                 + "    \"java.util.regex.Pattern\" : \"test\"%n"
                 + "  }%n" +

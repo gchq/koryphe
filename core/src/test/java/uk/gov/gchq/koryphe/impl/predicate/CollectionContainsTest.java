@@ -129,7 +129,7 @@ public class CollectionContainsTest extends PredicateTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.CollectionContains\",%n" +
+                "  \"class\" : \"CollectionContains\",%n" +
                 "  \"value\" : {\"class\":\"uk.gov.gchq.koryphe.util.CustomObj\", \"value\":\"1\"}%n" +
                 "}"), json);
 

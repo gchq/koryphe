@@ -52,7 +52,7 @@ public class ExtractKeysTest extends FunctionTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "   \"class\" : \"uk.gov.gchq.koryphe.impl.function.ExtractKeys\"%n" +
+                "   \"class\" : \"ExtractKeys\"%n" +
                 "}"), json);
 
         // When 2
