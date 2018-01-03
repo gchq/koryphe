@@ -1,0 +1,221 @@
+/*
+ * Copyright 2017 Crown Copyright
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package uk.gov.gchq.koryphe.util;
+
+import org.reflections.Reflections;
+import org.reflections.util.ClasspathHelper;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Modifier;
+import java.net.URL;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
+/**
+ * Reflection utilities. Contains methods such as getting sub classes.
+ * By default only classes prefixed with uk.gov.gchq will be scanned. If you
+ * wish to include your own packages/classes in the scanner you can call
+ * {@link ReflectionUtil#addReflectionPackages(String...)} or set the System Property
+ * "koryphe.reflection.packages" with a csv of your additional packages.
+ */
+public final class ReflectionUtil {
+    public static final String PATHS_KEY = "koryphe.reflection.packages";
+    public static final String DEFAULT_PATH = "uk.gov.gchq";
+
+    private static Set<String> packages;
+    private static Map<Class<?>, Map<String, Set<Class>>> simpleClassNamesCache;
+    private static Map<Class<?>, Set<Class>> subclassesCache;
+    private static Map<Class<? extends Annotation>, Set<Class>> annoClassesCache;
+
+    static {
+        resetReflectionPackages();
+        resetReflectionCache();
+    }
+
+    private ReflectionUtil() {
+        // Private constructor to prevent instantiation.
+    }
+
+    /**
+     * Simply returns Class.forName(className), but any ClassNotFoundException exceptions are caught and null is returned.
+     *
+     * @param className the class name to lookup
+     * @return the class if found, otherwise null.
+     */
+    public static Class<?> getClassFromName(final String className) {
+        try {
+            return Class.forName(className);
+        } catch (final ClassNotFoundException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Get a map of simple class name to class, for all sub classes of a given class.
+     * The results are cached.
+     *
+     * @param clazz the class to get simple class names for.
+     * @return a map of simple class name to class
+     */
+    public static Map<String, Set<Class>> getSimpleClassNames(final Class<?> clazz) {
+        Map<String, Set<Class>> simpleClassNames = simpleClassNamesCache.get(clazz);
+        if (null == simpleClassNames) {
+            final Set<Class> subTypes = getSubTypes(clazz);
+            simpleClassNames = new HashMap<>(subTypes.size());
+            for (final Class subType : subTypes) {
+                final Set<Class> simpleClasses = simpleClassNames.computeIfAbsent(subType.getSimpleName(), k -> new HashSet<>());
+                simpleClasses.add(subType);
+            }
+            simpleClassNames = Collections.unmodifiableMap(simpleClassNames);
+            simpleClassNamesCache.put(clazz, simpleClassNames);
+        }
+        return simpleClassNames;
+    }
+
+    /**
+     * Get implementations of a given class. The results are cached.
+     *
+     * @param clazz the class to get sub types of.
+     * @return the sub classes.
+     */
+    public static Set<Class> getSubTypes(final Class<?> clazz) {
+        Set<Class> subClasses = subclassesCache.get(clazz);
+        if (null == subClasses) {
+            addReflectionPackages(System.getProperty(PATHS_KEY));
+
+            final Set<URL> urls = new HashSet<>();
+            for (final String packagePrefix : packages) {
+                urls.addAll(ClasspathHelper.forPackage(packagePrefix));
+            }
+
+            subClasses = new HashSet<>();
+            final Reflections reflections = new Reflections(urls);
+            subClasses.addAll(reflections.getSubTypesOf(clazz));
+            keepPublicConcreteClasses(subClasses);
+            subClasses = Collections.unmodifiableSet(subClasses);
+            subclassesCache.put(clazz, subClasses);
+        }
+
+        return subClasses;
+    }
+
+    /**
+     * Get classes annotated with the given annotation class. The results are cached.
+     *
+     * @param annoClass the annotation class to get classes for.
+     * @return the annotated classes.
+     */
+    public static Set<Class> getAnnotatedTypes(final Class<? extends Annotation> annoClass) {
+        Set<Class> annoClasses = annoClassesCache.get(annoClass);
+        if (null == annoClasses) {
+            addReflectionPackages(System.getProperty(PATHS_KEY));
+
+            final Set<URL> urls = new HashSet<>();
+            for (final String packagePrefix : packages) {
+                urls.addAll(ClasspathHelper.forPackage(packagePrefix));
+            }
+
+            annoClasses = new HashSet<>();
+            annoClasses.addAll(new Reflections(urls).getTypesAnnotatedWith(annoClass));
+            annoClasses = Collections.unmodifiableSet(annoClasses);
+            subclassesCache.put(annoClass, annoClasses);
+        }
+
+        return annoClasses;
+    }
+
+    /**
+     * @param clazz the class to test
+     * @return true if the class is public, not abstract and not an interface.
+     */
+    public static boolean isPublicConcrete(final Class clazz) {
+        final int modifiers = clazz.getModifiers();
+        return Modifier.isPublic(modifiers)
+                && !Modifier.isAbstract(modifiers)
+                && !Modifier.isInterface(modifiers);
+    }
+
+    /**
+     * Removes non public or non concrete classes from the given collection.
+     *
+     * @param classes the collection of classes to modify.
+     */
+    public static void keepPublicConcreteClasses(final Collection<Class> classes) {
+        if (null != classes) {
+            final Iterator<Class> itr = classes.iterator();
+            while (itr.hasNext()) {
+                final Class clazz = itr.next();
+                if (null != clazz) {
+                    if (!isPublicConcrete(clazz)) {
+                        itr.remove();
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Resets the list of packages that are scanned. It will be set back to the
+     * default path and the paths set in the system property
+     * "koryphe.reflection.packages".
+     */
+    public static void resetReflectionPackages() {
+        packages = ConcurrentHashMap.newKeySet(1);
+        addReflectionPackages(DEFAULT_PATH, System.getProperty(PATHS_KEY));
+    }
+
+    /**
+     * Resets the caches.
+     */
+    public static void resetReflectionCache() {
+        simpleClassNamesCache = new ConcurrentHashMap<>();
+        subclassesCache = new ConcurrentHashMap<>();
+        annoClassesCache = new ConcurrentHashMap<>();
+    }
+
+    /**
+     * Adds new reflection packages. If any new packages are found then the
+     * reflection cache is reset.
+     *
+     * @param newPackages new packages to add. These can be CSVs.
+     */
+    public static void addReflectionPackages(final String... newPackages) {
+        if (null != newPackages) {
+            boolean hasNewPackage = false;
+            for (final String packageCsv : newPackages) {
+                if (null != packageCsv) {
+                    for (final String path : packageCsv.replace(" ", "").split(",")) {
+                        if (!packages.contains(path)) {
+                            packages.add(path);
+                            hasNewPackage = true;
+                        }
+                    }
+                }
+            }
+
+            if (hasNewPackage) {
+                resetReflectionCache();
+            }
+        }
+    }
+}
