@@ -18,6 +18,7 @@ package uk.gov.gchq.koryphe.serialisation.json;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.DatabindContext;
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.TypeIdResolver;
 import com.fasterxml.jackson.databind.jsontype.impl.ClassNameIdResolver;
 import com.google.common.collect.Sets;
@@ -89,6 +90,11 @@ public class SimpleClassNameIdResolver implements TypeIdResolver {
         reset();
     }
 
+    public static void configureObjectMapper(final ObjectMapper mapper) {
+        mapper.setAnnotationIntrospector(new SimpleClassNamedIdAnnotationIntrospector());
+        mapper.registerModule(SimpleClassSerializer.getModule());
+    }
+
     /**
      * Allows you to add additional classes to the cache that you wish to be
      * accessed via the simple class name.
@@ -125,8 +131,13 @@ public class SimpleClassNameIdResolver implements TypeIdResolver {
      * @return the simple class name, or null a simple class name can't be used.
      */
     public static String getSimpleClassName(final Class<?> clazz) {
+        final String simpleClassName = getSimpleClassNameOrNull(clazz);
+        return null != simpleClassName ? simpleClassName : null != clazz ? clazz.getName() : null;
+    }
+
+    private static String getSimpleClassNameOrNull(final Class<?> clazz) {
         String id;
-        if (useFullNameForSerialisation) {
+        if (null == clazz || useFullNameForSerialisation) {
             id = null;
         } else {
             id = clazz.getSimpleName();
@@ -255,7 +266,7 @@ public class SimpleClassNameIdResolver implements TypeIdResolver {
 
     @Override
     public String idFromValue(final Object value) {
-        String id = getSimpleClassName(value.getClass());
+        String id = getSimpleClassNameOrNull(value.getClass());
         if (null == id) {
             id = defaultResolver.idFromValue(value);
         }
@@ -264,7 +275,7 @@ public class SimpleClassNameIdResolver implements TypeIdResolver {
 
     @Override
     public String idFromValueAndType(final Object value, final Class<?> suggestedType) {
-        String id = getSimpleClassName(value.getClass());
+        String id = getSimpleClassNameOrNull(value.getClass());
         if (null == id) {
             id = defaultResolver.idFromValueAndType(value, suggestedType);
         }
@@ -273,7 +284,7 @@ public class SimpleClassNameIdResolver implements TypeIdResolver {
 
     @Override
     public String idFromBaseType() {
-        String id = getSimpleClassName(baseType.getRawClass());
+        String id = getSimpleClassNameOrNull(baseType.getRawClass());
         if (null == id) {
             id = defaultResolver.idFromBaseType();
         }

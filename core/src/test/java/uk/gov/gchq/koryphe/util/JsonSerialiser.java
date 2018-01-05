@@ -21,7 +21,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 
-import uk.gov.gchq.koryphe.serialisation.json.SimpleClassNamedIdAnnotationIntrospector;
+import uk.gov.gchq.koryphe.serialisation.json.SimpleClassNameIdResolver;
 
 import java.io.IOException;
 import java.util.Map;
@@ -37,7 +37,7 @@ public class JsonSerialiser {
     private static ObjectMapper createObjectMapper() {
         final ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        mapper.setAnnotationIntrospector(new SimpleClassNamedIdAnnotationIntrospector());
+        SimpleClassNameIdResolver.configureObjectMapper(mapper);
         return mapper;
     }
 
