@@ -26,7 +26,7 @@ import com.fasterxml.jackson.databind.ser.std.ClassSerializer;
 import java.io.IOException;
 
 public class SimpleClassSerializer extends ClassSerializer {
-    private static final long serialVersionUID = 5201502817672242242L;
+    private static final long serialVersionUID = -2838787535145218110L;
 
     public static SimpleModule getModule() {
         final SimpleModule module = new SimpleModule();
@@ -39,6 +39,6 @@ public class SimpleClassSerializer extends ClassSerializer {
 
     @Override
     public void serialize(final Class<?> value, final JsonGenerator jgen, final SerializerProvider provider) throws IOException, JsonGenerationException {
-        jgen.writeString(SimpleClassNameIdResolver.getSimpleClassName(value));
+        jgen.writeString(SimpleClassNameCache.getSimpleClassName(value));
     }
 }

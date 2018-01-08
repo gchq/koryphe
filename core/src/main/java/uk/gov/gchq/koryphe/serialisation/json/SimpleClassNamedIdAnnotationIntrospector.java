@@ -33,7 +33,7 @@ import java.lang.annotation.Annotation;
  * annotation from this class.
  */
 public class SimpleClassNamedIdAnnotationIntrospector extends JacksonAnnotationIntrospector {
-    private static final long serialVersionUID = -8810132418628913715L;
+    private static final long serialVersionUID = -6308527388339985525L;
 
     @SuppressFBWarnings(value = "SIC_INNER_SHOULD_BE_STATIC_ANON", justification = "This is required")
     @SuppressWarnings("unchecked")

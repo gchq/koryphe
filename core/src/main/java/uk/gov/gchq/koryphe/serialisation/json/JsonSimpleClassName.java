@@ -22,6 +22,11 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.ANNOTATION_TYPE, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
+/**
+ * Classes annotated with {@code JsonSimpleClassName} will be indexed allowing
+ * simple class names to be used to reference them in JSON. If includeSubtypes
+ * is set to true, then all subtypes will also be indexed.
+ */
 public @interface JsonSimpleClassName {
     boolean includeSubtypes() default false;
 }

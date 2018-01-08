@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Crown Copyright
+ * Copyright 2017 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,9 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.gov.gchq.koryphe.serialisation.json.second;
 
-import uk.gov.gchq.koryphe.serialisation.json.TestCustomObj;
+package uk.gov.gchq.koryphe.serialisation.json.obj.binaryoperator;
 
-public class TestCustomObjImpl implements TestCustomObj {
+import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
+
+public class TestCustomClass extends KorypheBinaryOperator<Object> {
+    @Override
+    public Object _apply(final Object item1, final Object item2) {
+        return item1;
+    }
 }

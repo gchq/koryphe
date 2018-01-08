@@ -21,14 +21,18 @@ import com.fasterxml.jackson.databind.KeyDeserializer;
 
 import java.io.IOException;
 
+/**
+ * A {@code SimpleClassDeserializer} is a {@link com.fasterxml.jackson.databind.JsonSerializer}
+ * for {@link Class}es, which utilises the {@link SimpleClassNameIdResolver} to
+ * allow simple class names to be used.
+ */
 public class SimpleClassKeyDeserializer extends KeyDeserializer {
-
     @Override
     public Object deserializeKey(final String key, final DeserializationContext ctxt) throws IOException {
         try {
             return ctxt.findClass(SimpleClassNameIdResolver.getClassName(key));
         } catch (final Exception e) {
-            throw ctxt.mappingException("Cannot find class %s", SimpleClassNameIdResolver.getClassName(key));
+            throw ctxt.mappingException("Cannot find class %s", key);
         }
     }
 }

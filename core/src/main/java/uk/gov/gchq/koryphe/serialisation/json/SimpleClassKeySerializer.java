@@ -24,6 +24,11 @@ import com.fasterxml.jackson.databind.ser.std.StdKeySerializer;
 import java.io.IOException;
 import java.util.Date;
 
+/**
+ * A {@code SimpleClassDeserializer} is a {@link com.fasterxml.jackson.databind.JsonDeserializer}
+ * for {@link Class}es as Map keys, which utilises the {@link SimpleClassNameIdResolver} to
+ * allow simple class names to be used.
+ */
 public class SimpleClassKeySerializer extends StdKeySerializer {
     private static final long serialVersionUID = -1765103660342721103L;
 
@@ -49,7 +54,7 @@ public class SimpleClassKeySerializer extends StdKeySerializer {
             provider.defaultSerializeDateKey((Date) value, g);
             return;
         } else if (cls == Class.class) {
-            str = SimpleClassNameIdResolver.getSimpleClassName(((Class<?>) value));
+            str = SimpleClassNameCache.getSimpleClassName(((Class<?>) value));
         } else {
             str = value.toString();
         }

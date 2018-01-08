@@ -22,6 +22,11 @@ import com.fasterxml.jackson.databind.util.ClassUtil;
 
 import java.io.IOException;
 
+/**
+ * A {@code SimpleClassDeserializer} is a {@link com.fasterxml.jackson.databind.JsonDeserializer}
+ * for {@link Class}es, which utilises the {@link SimpleClassNameIdResolver} to
+ * allow simple class names to be used.
+ */
 public class SimpleClassDeserializer extends FromStringDeserializer<Class> {
     private static final long serialVersionUID = 1714355399436671951L;
 

@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.gov.gchq.koryphe.serialisation.json.first;
+package uk.gov.gchq.koryphe.serialisation.json.obj;
 
-import uk.gov.gchq.koryphe.serialisation.json.TestCustomObj;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-public class TestCustomObjImpl implements TestCustomObj {
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+public interface TestCustomObj {
 }

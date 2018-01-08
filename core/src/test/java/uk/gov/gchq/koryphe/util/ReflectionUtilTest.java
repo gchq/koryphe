@@ -20,10 +20,11 @@ import com.google.common.collect.Sets;
 import com.google.common.primitives.UnsignedLong;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsCollectionContaining;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.gov.gchq.koryphe.serialisation.json.first.TestCustomNumber;
+import uk.gov.gchq.koryphe.serialisation.json.obj.first.TestCustomNumber;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -40,7 +41,8 @@ import static org.junit.Assert.fail;
 
 public class ReflectionUtilTest {
     @Before
-    public void before() {
+    @After
+    public void cleanUp() {
         ReflectionUtil.resetReflectionPackages();
         ReflectionUtil.resetReflectionCache();
     }
@@ -108,7 +110,7 @@ public class ReflectionUtilTest {
                 Matchers.allOf(
                         IsCollectionContaining.hasItems(
                                 TestCustomNumber.class,
-                                uk.gov.gchq.koryphe.serialisation.json.second.TestCustomNumber.class
+                                uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class
                         ),
                         Matchers.not(IsCollectionContaining.hasItems(UnsignedLong.class))
                 )
@@ -124,7 +126,7 @@ public class ReflectionUtilTest {
         assertEquals(
                 Sets.newHashSet(
                         TestCustomNumber.class,
-                        uk.gov.gchq.koryphe.serialisation.json.second.TestCustomNumber.class
+                        uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class
                 ),
                 simpleClassNames.get(TestCustomNumber.class.getSimpleName())
         );
@@ -141,7 +143,7 @@ public class ReflectionUtilTest {
         assertThat(subclasses,
                 IsCollectionContaining.hasItems(
                         TestCustomNumber.class,
-                        uk.gov.gchq.koryphe.serialisation.json.second.TestCustomNumber.class,
+                        uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class,
                         UnsignedLong.class
                 )
         );
@@ -157,10 +159,34 @@ public class ReflectionUtilTest {
         assertEquals(
                 Sets.newHashSet(
                         TestCustomNumber.class,
-                        uk.gov.gchq.koryphe.serialisation.json.second.TestCustomNumber.class
+                        uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class
                 ),
                 simpleClassNames.get(TestCustomNumber.class.getSimpleName())
         );
         assertEquals(Collections.singleton(UnsignedLong.class), simpleClassNames.get(UnsignedLong.class.getSimpleName()));
+
+        final Set<String> expected = Sets.newHashSet(ReflectionUtil.DEFAULT_PACKAGES);
+        expected.add(UnsignedLong.class.getPackage().getName());
+        assertEquals(expected, ReflectionUtil.getReflectionPackages());
+    }
+
+    @Test
+    public void shouldReturnSimpleClassNamesWithExtraClassesInPathWithTrailingDot() throws IOException {
+        // When
+        ReflectionUtil.addReflectionPackages(UnsignedLong.class.getPackage().getName() + ".");
+        final Map<String, Set<Class>> simpleClassNames = ReflectionUtil.getSimpleClassNames(Number.class);
+
+        // Then
+        assertEquals(
+                Sets.newHashSet(
+                        TestCustomNumber.class,
+                        uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class
+                ),
+                simpleClassNames.get(TestCustomNumber.class.getSimpleName())
+        );
+        assertEquals(Collections.singleton(UnsignedLong.class), simpleClassNames.get(UnsignedLong.class.getSimpleName()));
+        final Set<String> expected = Sets.newHashSet(ReflectionUtil.DEFAULT_PACKAGES);
+        expected.add(UnsignedLong.class.getPackage().getName());
+        assertEquals(expected, ReflectionUtil.getReflectionPackages());
     }
 }

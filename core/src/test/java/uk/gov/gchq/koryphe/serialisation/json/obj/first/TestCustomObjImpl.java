@@ -13,28 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.gov.gchq.koryphe.serialisation.json.second;
+package uk.gov.gchq.koryphe.serialisation.json.obj.first;
 
-public class TestCustomNumber extends Number {
-    private static final long serialVersionUID = -5559164082971977231L;
+import uk.gov.gchq.koryphe.serialisation.json.obj.TestCustomObj;
 
-    @Override
-    public int intValue() {
-        return 0;
-    }
-
-    @Override
-    public long longValue() {
-        return 0;
-    }
-
-    @Override
-    public float floatValue() {
-        return 0;
-    }
-
-    @Override
-    public double doubleValue() {
-        return 0;
-    }
+public class TestCustomObjImpl implements TestCustomObj {
 }

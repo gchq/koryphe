@@ -16,6 +16,7 @@
 
 package uk.gov.gchq.koryphe.util;
 
+import com.google.common.collect.Sets;
 import org.reflections.Reflections;
 import org.reflections.util.ClasspathHelper;
 
@@ -33,14 +34,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Reflection utilities. Contains methods such as getting sub classes.
- * By default only classes prefixed with uk.gov.gchq will be scanned. If you
- * wish to include your own packages/classes in the scanner you can call
+ * By default only classes prefixed with 'uk.gov.gchq' will be scanned.
+ * If you wish to include your own packages/classes in the scanner you can call
  * {@link ReflectionUtil#addReflectionPackages(String...)} or set the System Property
  * "koryphe.reflection.packages" with a csv of your additional packages.
  */
 public final class ReflectionUtil {
-    public static final String PATHS_KEY = "koryphe.reflection.packages";
-    public static final String DEFAULT_PATH = "uk.gov.gchq";
+    public static final String PACKAGES_KEY = "koryphe.reflection.packages";
+    public static final Set<String> DEFAULT_PACKAGES = Collections.unmodifiableSet(Sets.newHashSet("uk.gov.gchq"));
 
     private static Set<String> packages;
     private static Map<Class<?>, Map<String, Set<Class>>> simpleClassNamesCache;
@@ -101,7 +102,7 @@ public final class ReflectionUtil {
     public static Set<Class> getSubTypes(final Class<?> clazz) {
         Set<Class> subClasses = subclassesCache.get(clazz);
         if (null == subClasses) {
-            addReflectionPackages(System.getProperty(PATHS_KEY));
+            updateReflectionPackages();
 
             final Set<URL> urls = new HashSet<>();
             for (final String packagePrefix : packages) {
@@ -128,7 +129,7 @@ public final class ReflectionUtil {
     public static Set<Class> getAnnotatedTypes(final Class<? extends Annotation> annoClass) {
         Set<Class> annoClasses = annoClassesCache.get(annoClass);
         if (null == annoClasses) {
-            addReflectionPackages(System.getProperty(PATHS_KEY));
+            updateReflectionPackages();
 
             final Set<URL> urls = new HashSet<>();
             for (final String packagePrefix : packages) {
@@ -180,8 +181,9 @@ public final class ReflectionUtil {
      * "koryphe.reflection.packages".
      */
     public static void resetReflectionPackages() {
-        packages = ConcurrentHashMap.newKeySet(1);
-        addReflectionPackages(DEFAULT_PATH, System.getProperty(PATHS_KEY));
+        packages = ConcurrentHashMap.newKeySet();
+        addReflectionPackages(DEFAULT_PACKAGES);
+        addReflectionPackages(System.getProperty(PACKAGES_KEY));
     }
 
     /**
@@ -194,19 +196,37 @@ public final class ReflectionUtil {
     }
 
     /**
+     * Updates the reflection packages using the system property.
+     */
+    public static void updateReflectionPackages() {
+        addReflectionPackages(System.getProperty(PACKAGES_KEY));
+    }
+
+    /**
      * Adds new reflection packages. If any new packages are found then the
      * reflection cache is reset.
      *
      * @param newPackages new packages to add. These can be CSVs.
      */
     public static void addReflectionPackages(final String... newPackages) {
+        if (null != newPackages && 0 < newPackages.length) {
+            if (1 == newPackages.length) {
+                addReflectionPackages(Collections.singleton(newPackages[0]));
+            } else {
+                addReflectionPackages(Sets.newHashSet(newPackages));
+            }
+        }
+    }
+
+    public static void addReflectionPackages(final Iterable<String> newPackages) {
         if (null != newPackages) {
             boolean hasNewPackage = false;
             for (final String packageCsv : newPackages) {
                 if (null != packageCsv) {
                     for (final String path : packageCsv.replace(" ", "").split(",")) {
-                        if (!packages.contains(path)) {
-                            packages.add(path);
+                        final String pathChecked = path.endsWith(".") ? path.substring(0, path.length() - 1) : path;
+                        if (!packages.contains(pathChecked)) {
+                            packages.add(pathChecked);
                             hasNewPackage = true;
                         }
                     }
@@ -217,5 +237,9 @@ public final class ReflectionUtil {
                 resetReflectionCache();
             }
         }
+    }
+
+    public static Set<String> getReflectionPackages() {
+        return Collections.unmodifiableSet(packages);
     }
 }

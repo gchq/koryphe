@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.gov.gchq.koryphe.serialisation.json.first;
+package uk.gov.gchq.koryphe.serialisation.json.obj.second;
 
 public class TestCustomNumber extends Number {
     private static final long serialVersionUID = -5559164082971977231L;
