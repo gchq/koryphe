@@ -22,6 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import uk.gov.gchq.koryphe.util.ReflectionUtil;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +69,8 @@ public final class SimpleClassNameCache {
     private static final Set<Class> DEFAULT_PARENT_CLASSES = Sets.newHashSet(
             Predicate.class,
             Function.class,
-            BinaryOperator.class
+            BinaryOperator.class,
+            Comparator.class
     );
 
     private static final Set<String> DEFAULT_CORE_PACKAGES = Sets.newLinkedHashSet(
