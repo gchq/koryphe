@@ -15,15 +15,13 @@
  */
 package uk.gov.gchq.koryphe.serialisation.json;
 
-import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
 import com.fasterxml.jackson.databind.introspect.Annotated;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
-import com.fasterxml.jackson.databind.jsontype.TypeIdResolver;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.lang.annotation.Annotation;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A {@code SimpleClassNamedIdAnnotationIntrospector} is a lightweight extension
@@ -32,8 +30,13 @@ import java.lang.annotation.Annotation;
  * If you add a custom JsonTypeIdResolver annotation it will override the magic
  * annotation from this class.
  */
-public class SimpleClassNamedIdAnnotationIntrospector extends JacksonAnnotationIntrospector {
+public class DelegatingAnnotationIntrospector extends JacksonAnnotationIntrospector {
     private static final long serialVersionUID = -6308527388339985525L;
+    private final Map<Class, Object> delegateAnnotations;
+
+    DelegatingAnnotationIntrospector(final Map<Class, Object> delegateAnnotations) {
+        this.delegateAnnotations = delegateAnnotations;
+    }
 
     @SuppressFBWarnings(value = "SIC_INNER_SHOULD_BE_STATIC_ANON", justification = "This is required")
     @SuppressWarnings("unchecked")
@@ -41,38 +44,22 @@ public class SimpleClassNamedIdAnnotationIntrospector extends JacksonAnnotationI
     protected <A extends Annotation> A _findAnnotation(
             final Annotated annotated, final Class<A> annoClass) {
         A annotation = super._findAnnotation(annotated, annoClass);
-        if (null == annotation && JsonTypeIdResolver.class.equals(annoClass)) {
-            annotation = (A) new SimpleClassNameIdResolverAnnotation();
+        if (null == annotation) {
+            annotation = (A) delegateAnnotations.get(annoClass);
         }
         return annotation;
     }
 
-    @SuppressWarnings("ClassExplicitlyAnnotation")
-    private static class SimpleClassNameIdResolverAnnotation implements JsonTypeIdResolver {
-        @Override
-        public Class<? extends Annotation> annotationType() {
-            return JsonTypeIdResolver.class;
+    public static class Builder {
+        private final Map<Class, Object> delegateAnnotations = new HashMap<>();
+
+        public Builder add(final Annotation annotation) {
+            delegateAnnotations.put(annotation.annotationType(), annotation);
+            return this;
         }
 
-        @Override
-        public Class<? extends TypeIdResolver> value() {
-            return SimpleClassNameIdResolver.class;
-        }
-
-        @Override
-        public boolean equals(final Object obj) {
-            return this == obj || (null != obj && getClass().equals(obj.getClass()));
-        }
-
-        @Override
-        public int hashCode() {
-            return new HashCodeBuilder(11, 17)
-                    .build();
-        }
-
-        @Override
-        public String toString() {
-            return new ToStringBuilder(this).toString();
+        public DelegatingAnnotationIntrospector build() {
+            return new DelegatingAnnotationIntrospector(delegateAnnotations);
         }
     }
 }

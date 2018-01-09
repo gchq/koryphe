@@ -92,7 +92,9 @@ public class SimpleClassNameIdResolver implements TypeIdResolver {
      * @param mapper the object mapper to configure.
      */
     public static void configureObjectMapper(final ObjectMapper mapper) {
-        mapper.setAnnotationIntrospector(new SimpleClassNamedIdAnnotationIntrospector());
+        mapper.setAnnotationIntrospector(new DelegatingAnnotationIntrospector.Builder()
+                .add(new SimpleClassNameIdResolverAnnotation())
+                .build());
         mapper.registerModule(SimpleClassSerializer.getModule());
     }
 
