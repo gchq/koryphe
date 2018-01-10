@@ -65,7 +65,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
  */
 @JsonDeserialize(builder = InTimeRange.Builder.class)
 public class InTimeRange extends AbstractInTimeRange<Long> {
-    protected InTimeRange() {
+    public InTimeRange() {
         super(new InTimeRangeDual());
     }
 

@@ -59,9 +59,6 @@ public class InRangeDual<T extends Comparable<T>> extends KoryphePredicate2<Comp
     private Boolean startInclusive;
     private Boolean endInclusive;
 
-    InRangeDual() {
-    }
-
     public void initialise() {
         if (null != getStart() && null != getEnd()
                 && !getStart().getClass().equals(getEnd().getClass())) {
