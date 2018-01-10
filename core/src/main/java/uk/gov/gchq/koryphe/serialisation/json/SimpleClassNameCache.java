@@ -223,7 +223,8 @@ public final class SimpleClassNameCache {
         if (null != id && !id.contains(".")) {
             // Remove the array brackets if required, these will be added again at the end.
             final boolean isArray = id.endsWith("[]");
-            final String nonArrayId = isArray ? id.substring(0, id.length() - 2) : id;
+            String nonArrayId = isArray ? id.substring(0, id.length() - 2) : id;
+            nonArrayId = StringUtils.capitalize(nonArrayId);
 
             final Set<Class> classesForId = getClassesFromId(nonArrayId);
             // If the class is unknown (not in the cache) then try the core packages
@@ -250,7 +251,7 @@ public final class SimpleClassNameCache {
                     // First check the conflict cache
                     Map<String, Class> idToClass = baseTypeToIdToClass.get(baseClass);
                     if (null != idToClass) {
-                        final Class clazz = getClassFromId(id, idToClass);
+                        final Class clazz = getClassFromId(nonArrayId, idToClass);
                         if (null != clazz) {
                             className = clazz.getName();
                         }
@@ -277,7 +278,7 @@ public final class SimpleClassNameCache {
                                 idToClass = new ConcurrentHashMap<>();
                                 baseTypeToIdToClass.put(baseClass, idToClass);
                             }
-                            addIdClass(id, matchedClass, idToClass);
+                            addIdClass(nonArrayId, matchedClass, idToClass);
                         }
                     }
                 }
@@ -285,7 +286,7 @@ public final class SimpleClassNameCache {
                 // that they need to provide the full class name.
                 if (null == className) {
                     final List<String> classOptions = classesForId.stream().map(c -> isArray ? "[L" + c.getName() + ";" : c.getName()).collect(Collectors.toList());
-                    throw new IllegalArgumentException("Multiple " + id + " classes exist. Please choose one of the following and specify the full class name: " + classOptions);
+                    throw new IllegalArgumentException("Multiple " + nonArrayId + " classes exist. Please choose one of the following and specify the full class name: " + classOptions);
                 }
             }
 
