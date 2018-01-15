@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A {@code SimpleClassNamedIdAnnotationIntrospector} is a lightweight extension
+ * A {@code DelegatingAnnotationIntrospector} is a lightweight extension
  * to {@link JacksonAnnotationIntrospector} to trick Jackson into thinking all
  * classes are annotated with {@code @JsonTypeIdResolver(value = SimpleClassNameIdResolver.class) }
  * If you add a custom JsonTypeIdResolver annotation it will override the magic

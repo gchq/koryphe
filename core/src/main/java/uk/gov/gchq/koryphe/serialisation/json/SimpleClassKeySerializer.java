@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.Date;
 
 /**
- * A {@code SimpleClassDeserializer} is a {@link com.fasterxml.jackson.databind.JsonDeserializer}
+ * A {@code SimpleClassKeySerializer} is a {@link com.fasterxml.jackson.databind.JsonSerializer}
  * for {@link Class}es as Map keys, which utilises the {@link SimpleClassNameIdResolver} to
  * allow simple class names to be used.
  */
