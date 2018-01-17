@@ -51,7 +51,7 @@ import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 public class InRange<T extends Comparable<T>> extends KoryphePredicate<T> {
     private final InRangeDual<T> predicate;
 
-    InRange() {
+    public InRange() {
         predicate = new InRangeDual<>();
     }
 

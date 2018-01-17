@@ -70,7 +70,7 @@ import java.util.Date;
  */
 @JsonDeserialize(builder = InDateRangeDual.Builder.class)
 public class InDateRangeDual extends AbstractInTimeRangeDual<Date> {
-    InDateRangeDual() {
+    public InDateRangeDual() {
         super(Date::new);
     }
 

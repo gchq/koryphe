@@ -26,7 +26,7 @@ import java.util.function.Predicate;
 /**
  * An {@link InputAdapted} {@link Predicate}.
  *
- * @param <I> Input type
+ * @param <I>  Input type
  * @param <PI> Adapted input type for predicate
  */
 public class AdaptedPredicate<I, PI> extends InputAdapted<I, PI> implements Predicate<I> {

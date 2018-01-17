@@ -27,5 +27,4 @@ script:
 after_success: travis_wait 45 ./cd/after_success.sh
 
 before_cache:
-  - rm -rf $HOME/.m2/repository/uk/gov/gchq/gaffer
   - rm -rf $HOME/.m2/repository/uk/gov/gchq/koryphe
