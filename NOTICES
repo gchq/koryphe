@@ -60,3 +60,8 @@ Nexus Staging (org.sonatype.nexus.maven:nexus-staging:1.6.7):
 Maven war plugin (org.apache.maven.plugins:maven-war-plugin:3.0.0):
 
 - Apache License, Version 2.0
+
+
+Reflections (org.reflections:reflections:RC1:0.9.9)
+
+- WTFPL

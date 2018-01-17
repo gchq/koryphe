@@ -21,36 +21,43 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 
+import uk.gov.gchq.koryphe.serialisation.json.SimpleClassNameIdResolver;
+
 import java.io.IOException;
 import java.util.Map;
 
 public class JsonSerialiser {
-    private static final ObjectMapper MAPPER = createObjectMapper();
+    private static final ObjectMapper BASIC__MAPPER = new ObjectMapper();
+    private static ObjectMapper mapper = createObjectMapper();
+
+    public static void resetMapper() {
+        mapper = createObjectMapper();
+    }
 
     private static ObjectMapper createObjectMapper() {
         final ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        SimpleClassNameIdResolver.configureObjectMapper(mapper);
         return mapper;
     }
 
     public static String serialise(Object object) throws IOException {
-        return MAPPER.writeValueAsString(object);
+        return mapper.writeValueAsString(object);
     }
 
     public static <T> T deserialise(String json, Class<T> type) throws IOException {
-        return MAPPER.readValue(json, type);
+        return mapper.readValue(json, type);
     }
 
     public static <T> T deserialise(String json, TypeReference<T> typeReference) throws IOException {
-        return MAPPER.readValue(json, typeReference);
+        return mapper.readValue(json, typeReference);
     }
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     public static void assertEquals(final String expectedJson, final String actualJson) {
         try {
-            final Map expectedSchemaMap = OBJECT_MAPPER.readValue(expectedJson, Map.class);
-            final Map actualSchemaMap = OBJECT_MAPPER.readValue(actualJson, Map.class);
+            final Map expectedSchemaMap = BASIC__MAPPER.readValue(expectedJson, Map.class);
+            final Map actualSchemaMap = BASIC__MAPPER.readValue(actualJson, Map.class);
             Assert.assertEquals(expectedSchemaMap, actualSchemaMap);
         } catch (final IOException e) {
             throw new AssertionError(expectedJson + "is not equal to " + actualJson, e);
