@@ -43,14 +43,6 @@ public class ExtractValue<K, V> extends KorypheFunction<Map<K, V>, V> {
 
     @Override
     public V apply(final Map<K, V> map) {
-        if (null == map) {
-            throw new IllegalArgumentException("Input cannot be null");
-        }
-
-        if (map.containsKey(key)) {
-            return map.get(key);
-        } else {
-            throw new IllegalArgumentException("Key not present in provided input map");
-        }
+        return null == map ? null : map.get(key);
     }
 }

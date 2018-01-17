@@ -27,6 +27,7 @@ import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class ExtractValueTest extends FunctionTest {
@@ -96,12 +97,12 @@ public class ExtractValueTest extends FunctionTest {
     public void shouldThrowExceptionForEmptyInput() {
         // Given
         final ExtractValue<String, Integer> function = new ExtractValue<>();
+        final Map<String, Integer> input = null;
 
-        // When / Then
-        try {
-            final Integer result = function.apply(new HashMap<>());
-        } catch (final IllegalArgumentException e) {
-            assertTrue(e.getMessage().contains("Key not present in provided input map"));
-        }
+        // When
+        final Integer result = function.apply(input);
+
+        // Then
+        assertNull(result);
     }
 }
