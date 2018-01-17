@@ -19,6 +19,7 @@ package uk.gov.gchq.koryphe.impl.predicate;
 import org.junit.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
+import uk.gov.gchq.koryphe.serialisation.json.SimpleClassNameCache;
 import uk.gov.gchq.koryphe.util.CustomObj;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
@@ -137,6 +138,35 @@ public class IsLessThanTest extends PredicateTest {
         // Then 2
         assertNotNull(deserialisedFilter);
         assertEquals(controlValue, deserialisedFilter.getControlValue());
+    }
+
+    @Test
+    public void shouldJsonSerialiseAndDeserialiseWithSimpleLongClassName() throws IOException {
+        // Given
+        final IsLessThan filter = new IsLessThan(1L);
+
+        // When
+        final String json;
+        try {
+            SimpleClassNameCache.setUseFullNameForSerialisation(false);
+            json = JsonSerialiser.serialise(filter);
+        } finally {
+            SimpleClassNameCache.setUseFullNameForSerialisation(SimpleClassNameCache.DEFAULT_USE_FULL_NAME_FOR_SERIALISATION);
+        }
+
+        // Then
+        JsonSerialiser.assertEquals(String.format("{%n" +
+                "  \"class\" : \"IsLessThan\",%n" +
+                "  \"orEqualTo\" : false,%n" +
+                "  \"value\" : {\"Long\":1}%n" +
+                "}"), json);
+
+        // When 2
+        final IsLessThan deserialisedFilter = JsonSerialiser.deserialise(json, IsLessThan.class);
+
+        // Then 2
+        assertNotNull(deserialisedFilter);
+        assertEquals(1L, deserialisedFilter.getControlValue());
     }
 
     @Test

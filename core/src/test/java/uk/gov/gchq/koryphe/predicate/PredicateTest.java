@@ -16,9 +16,9 @@
 
 package uk.gov.gchq.koryphe.predicate;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
+
+import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.function.Predicate;
@@ -27,15 +27,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 public abstract class PredicateTest {
-    private static final ObjectMapper MAPPER = createObjectMapper();
-
-    private static ObjectMapper createObjectMapper() {
-        final ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
-        return mapper;
-    }
-
     protected abstract Predicate getInstance();
 
     protected abstract Class<? extends Predicate> getPredicateClass();
@@ -44,11 +35,11 @@ public abstract class PredicateTest {
     public abstract void shouldJsonSerialiseAndDeserialise() throws IOException;
 
     protected String serialise(Object object) throws IOException {
-        return MAPPER.writeValueAsString(object);
+        return JsonSerialiser.serialise(object);
     }
 
     protected Predicate deserialise(String json) throws IOException {
-        return MAPPER.readValue(json, getPredicateClass());
+        return JsonSerialiser.deserialise(json, getPredicateClass());
     }
 
     @Test

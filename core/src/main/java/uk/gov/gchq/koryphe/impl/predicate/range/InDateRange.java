@@ -67,7 +67,7 @@ import java.util.Date;
  */
 @JsonDeserialize(builder = InDateRange.Builder.class)
 public class InDateRange extends AbstractInTimeRange<Date> {
-    protected InDateRange() {
+    public InDateRange() {
         super(new InDateRangeDual());
     }
 
