@@ -20,15 +20,29 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
 import java.util.Map;
 
 /**
- * An {@link ExtractValues} is a {@link KorypheFunction} which extracts the {@link java.util.Set} of values
- * of a provided input {@link Map}
- *
- * @param <K> the key type
- * @param <V> the value type
+ * An <code>ExtractValue</code> is a {@link java.util.function.Function} that retrieves the value from a given {@link Map}, for the corresponding pre-configured key.
+ * @param <K>   the key type
+ * @param <V>   the value type
  */
-public class ExtractValues<K, V> extends KorypheFunction<Map<K, V>, Iterable<V>> {
+public class ExtractValue<K, V> extends KorypheFunction<Map<K, V>, V> {
+    private K key;
+
+    public ExtractValue() { }
+
+    public ExtractValue(final K key) {
+        this.key = key;
+    }
+
+    public K getKey() {
+        return key;
+    }
+
+    public void setKey(final K key) {
+        this.key = key;
+    }
+
     @Override
-    public Iterable<V> apply(final Map<K, V> map) {
-        return null == map ? null : map.values();
+    public V apply(final Map<K, V> map) {
+        return null == map ? null : map.get(key);
     }
 }

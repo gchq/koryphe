@@ -15,8 +15,6 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
 import org.junit.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
@@ -27,79 +25,82 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-public class ExtractValuesTest extends FunctionTest {
+public class ExtractValueTest extends FunctionTest {
     @Override
     protected Function getInstance() {
-        return new ExtractValues();
+        return new ExtractValue<String, Integer>("testKey");
     }
 
     @Override
     protected Class<? extends Function> getFunctionClass() {
-        return ExtractValues.class;
+        return ExtractValue.class;
     }
 
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
-        final ExtractValues function = new ExtractValues();
+        final ExtractValue<String, Integer> function = new ExtractValue<>("test");
 
         // When
         final String json = JsonSerialiser.serialise(function);
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "   \"class\" : \"uk.gov.gchq.koryphe.impl.function.ExtractValues\"%n" +
+                "   \"class\" : \"uk.gov.gchq.koryphe.impl.function.ExtractValue\",%n" +
+                "   \"key\" : \"test\"%n" +
                 "}"), json);
 
         // When 2
-        final ExtractValues deserialised = JsonSerialiser.deserialise(json, ExtractValues.class);
+        final ExtractValue deserialised = JsonSerialiser.deserialise(json, ExtractValue.class);
 
-        // Then
+        // Then 2
         assertNotNull(deserialised);
+        assertEquals("test", deserialised.getKey());
     }
 
     @Test
-    public void shouldExtractValuesFromGivenMap() {
+    public void shouldExtractCorrectValueFromMap() {
         // Given
-        final ExtractValues<String, Integer> function = new ExtractValues<>();
+        final ExtractValue<String, Integer> function = new ExtractValue<>("secondKey");
         final Map<String, Integer> input = new HashMap<>();
-        input.put("first", 1);
-        input.put("second", 2);
-        input.put("third", 3);
+        input.put("firstKey", 1);
+        input.put("secondKey", 3);
+        input.put("thirdKey", 6);
+        input.put("second", 12);
 
         // When
-        final Iterable<Integer> results = function.apply(input);
+        final Integer result = function.apply(input);
 
         // Then
-        assertThat(results, containsInAnyOrder(1, 2, 3));
+        assertEquals(new Integer(3), result);
     }
 
     @Test
-    public void shouldReturnEmptySetForEmptyMap() {
+    public void shouldThrowExceptionForNullInput() {
         // Given
-        final ExtractValues<String, Integer> function = new ExtractValues<>();
+        final ExtractValue<String, Integer> function = new ExtractValue<>();
 
-        // When
-        final Iterable<Integer> results = function.apply(new HashMap<>());
-
-        // Then
-        assertTrue(Iterables.isEmpty(results));
+        // When / Then
+        try {
+            final Integer result = function.apply(null);
+        } catch (final IllegalArgumentException e) {
+            assertTrue(e.getMessage().contains("Input cannot be null"));
+        }
     }
 
     @Test
-    public void shouldReturnNullForNullInput() {
+    public void shouldThrowExceptionForEmptyInput() {
         // Given
-        final ExtractValues<String, String> function = new ExtractValues<>();
-        final Map<String, String> input = null;
+        final ExtractValue<String, Integer> function = new ExtractValue<>();
+        final Map<String, Integer> input = null;
 
         // When
-        final Iterable result = function.apply(input);
+        final Integer result = function.apply(input);
 
         // Then
         assertNull(result);
