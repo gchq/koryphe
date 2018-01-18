@@ -112,7 +112,6 @@ public final class SimpleClassNameCache {
 
     public static void initialise() {
         if (!initialised) {
-            ReflectionUtil.initialise();
             baseClasses = createParentClasses();
             idToClasses = createIdToClasses();
             initialised = true;

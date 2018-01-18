@@ -40,8 +40,8 @@
         <scm.plugin.version>1.1</scm.plugin.version>
         <source.plugin.version>2.4</source.plugin.version>
         <surefire.plugin.version>2.19.1</surefire.plugin.version>
-        <reflections.version>0.9.10</reflections.version>
-        
+        <class-path-scanner.version>2.10.0</class-path-scanner.version>
+
         <!-- Define SCM properties for use with Release Plugin -->
         <scm.url>
             https://github.com/gchq/koryphe
@@ -155,9 +155,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
-            <version>${reflections.version}</version>
+            <groupId>io.github.lukehutch</groupId>
+            <artifactId>fast-classpath-scanner</artifactId>
+            <version>${class-path-scanner.version}</version>
         </dependency>
     </dependencies>
 

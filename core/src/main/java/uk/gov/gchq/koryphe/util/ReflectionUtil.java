@@ -17,12 +17,10 @@
 package uk.gov.gchq.koryphe.util;
 
 import com.google.common.collect.Sets;
-import org.reflections.Reflections;
-import org.reflections.util.ClasspathHelper;
+import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
-import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -47,8 +45,6 @@ public final class ReflectionUtil {
     private static Map<Class<?>, Map<String, Set<Class>>> simpleClassNamesCache;
     private static Map<Class<?>, Set<Class>> subclassesCache;
     private static Map<Class<? extends Annotation>, Set<Class>> annoClassesCache;
-    private static Reflections reflections;
-    private static boolean updateReflections = true;
 
     static {
         resetReflectionPackages();
@@ -57,11 +53,6 @@ public final class ReflectionUtil {
 
     private ReflectionUtil() {
         // Private constructor to prevent instantiation.
-    }
-
-    public static void initialise() {
-        // Ensures the reflections field is initialised.
-        getReflections();
     }
 
     /**
@@ -111,10 +102,21 @@ public final class ReflectionUtil {
         if (null == subClasses) {
             updateReflectionPackages();
 
-            subClasses = new HashSet<>();
-            subClasses.addAll(getReflections().getSubTypesOf(clazz));
-            keepPublicConcreteClasses(subClasses);
-            subClasses = Collections.unmodifiableSet(subClasses);
+            final Set<Class> newSubClasses = new HashSet<>();
+            if (clazz.isInterface()) {
+                getScanner().matchClassesImplementing(clazz, c -> {
+                    if (isPublicConcrete(c)) {
+                        newSubClasses.add(c);
+                    }
+                }).scan();
+            } else {
+                getScanner().matchSubclassesOf(clazz, c -> {
+                    if (isPublicConcrete(c)) {
+                        newSubClasses.add(c);
+                    }
+                }).scan();
+            }
+            subClasses = Collections.unmodifiableSet(newSubClasses);
             subclassesCache.put(clazz, subClasses);
         }
 
@@ -132,7 +134,7 @@ public final class ReflectionUtil {
         if (null == annoClasses) {
             updateReflectionPackages();
             annoClasses = new HashSet<>();
-            annoClasses.addAll(getReflections().getTypesAnnotatedWith(annoClass));
+            getScanner().matchClassesWithAnnotation(annoClass, annoClasses::add).scan();
             annoClasses = Collections.unmodifiableSet(annoClasses);
             subclassesCache.put(annoClass, annoClasses);
         }
@@ -188,7 +190,6 @@ public final class ReflectionUtil {
         simpleClassNamesCache = new ConcurrentHashMap<>();
         subclassesCache = new ConcurrentHashMap<>();
         annoClassesCache = new ConcurrentHashMap<>();
-        updateReflections = true;
     }
 
     /**
@@ -239,19 +240,7 @@ public final class ReflectionUtil {
         return Collections.unmodifiableSet(packages);
     }
 
-    private static Reflections getReflections() {
-        if (null == reflections || updateReflections) {
-            updateReflections();
-        }
-        return reflections;
-    }
-
-    private static void updateReflections() {
-        updateReflections = false;
-        final Set<URL> urls = new HashSet<>();
-        for (final String packagePrefix : packages) {
-            urls.addAll(ClasspathHelper.forPackage(packagePrefix));
-        }
-        reflections = new Reflections(urls);
+    private static FastClasspathScanner getScanner() {
+        return new FastClasspathScanner(packages.toArray(new String[packages.size()]));
     }
 }
