@@ -47,6 +47,8 @@ public final class ReflectionUtil {
     private static Map<Class<?>, Map<String, Set<Class>>> simpleClassNamesCache;
     private static Map<Class<?>, Set<Class>> subclassesCache;
     private static Map<Class<? extends Annotation>, Set<Class>> annoClassesCache;
+    private static Reflections reflections;
+    private static boolean updateReflections = true;
 
     static {
         resetReflectionPackages();
@@ -55,6 +57,11 @@ public final class ReflectionUtil {
 
     private ReflectionUtil() {
         // Private constructor to prevent instantiation.
+    }
+
+    public static void initialise() {
+        // Ensures the reflections field is initialised.
+        getReflections();
     }
 
     /**
@@ -104,14 +111,8 @@ public final class ReflectionUtil {
         if (null == subClasses) {
             updateReflectionPackages();
 
-            final Set<URL> urls = new HashSet<>();
-            for (final String packagePrefix : packages) {
-                urls.addAll(ClasspathHelper.forPackage(packagePrefix));
-            }
-
             subClasses = new HashSet<>();
-            final Reflections reflections = new Reflections(urls);
-            subClasses.addAll(reflections.getSubTypesOf(clazz));
+            subClasses.addAll(getReflections().getSubTypesOf(clazz));
             keepPublicConcreteClasses(subClasses);
             subClasses = Collections.unmodifiableSet(subClasses);
             subclassesCache.put(clazz, subClasses);
@@ -130,14 +131,8 @@ public final class ReflectionUtil {
         Set<Class> annoClasses = annoClassesCache.get(annoClass);
         if (null == annoClasses) {
             updateReflectionPackages();
-
-            final Set<URL> urls = new HashSet<>();
-            for (final String packagePrefix : packages) {
-                urls.addAll(ClasspathHelper.forPackage(packagePrefix));
-            }
-
             annoClasses = new HashSet<>();
-            annoClasses.addAll(new Reflections(urls).getTypesAnnotatedWith(annoClass));
+            annoClasses.addAll(getReflections().getTypesAnnotatedWith(annoClass));
             annoClasses = Collections.unmodifiableSet(annoClasses);
             subclassesCache.put(annoClass, annoClasses);
         }
@@ -193,6 +188,7 @@ public final class ReflectionUtil {
         simpleClassNamesCache = new ConcurrentHashMap<>();
         subclassesCache = new ConcurrentHashMap<>();
         annoClassesCache = new ConcurrentHashMap<>();
+        updateReflections = true;
     }
 
     /**
@@ -241,5 +237,21 @@ public final class ReflectionUtil {
 
     public static Set<String> getReflectionPackages() {
         return Collections.unmodifiableSet(packages);
+    }
+
+    private static Reflections getReflections() {
+        if (null == reflections || updateReflections) {
+            updateReflections();
+        }
+        return reflections;
+    }
+
+    private static void updateReflections() {
+        updateReflections = false;
+        final Set<URL> urls = new HashSet<>();
+        for (final String packagePrefix : packages) {
+            urls.addAll(ClasspathHelper.forPackage(packagePrefix));
+        }
+        reflections = new Reflections(urls);
     }
 }
