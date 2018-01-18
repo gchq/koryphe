@@ -16,6 +16,7 @@ uk.gov.gchq.koryphe.impl.predicate
 uk.gov.gchq.koryphe.impl.predicate.range
 uk.gov.gchq.koryphe.iterable
 uk.gov.gchq.koryphe.predicate
+uk.gov.gchq.koryphe.serialisation.json
 uk.gov.gchq.koryphe.signature
 uk.gov.gchq.koryphe.tuple
 uk.gov.gchq.koryphe.tuple.binaryoperator
