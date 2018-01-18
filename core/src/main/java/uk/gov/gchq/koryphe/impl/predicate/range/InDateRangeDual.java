@@ -16,7 +16,10 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import uk.gov.gchq.koryphe.util.TimeUnit;
 
 import java.util.Date;
 
@@ -68,6 +71,7 @@ import java.util.Date;
  *
  * @see Builder
  */
+@JsonPropertyOrder(value = {"start", "startOffset", "end", "endOffset", "startInclusive", "endInclusive", "offsetUnit"}, alphabetic = true)
 @JsonDeserialize(builder = InDateRangeDual.Builder.class)
 public class InDateRangeDual extends AbstractInTimeRangeDual<Date> {
     public InDateRangeDual() {
@@ -77,6 +81,14 @@ public class InDateRangeDual extends AbstractInTimeRangeDual<Date> {
     public static class Builder extends BaseBuilder<Builder, InDateRangeDual, Date> {
         public Builder() {
             super(new InDateRangeDual());
+        }
+
+        @Override
+        public Builder timeUnit(final TimeUnit timeUnit) {
+            if (!TimeUnit.MILLISECOND.equals(timeUnit)) {
+                throw new IllegalArgumentException("timeUnit must be set to " + TimeUnit.MILLISECOND);
+            }
+            return this;
         }
     }
 }

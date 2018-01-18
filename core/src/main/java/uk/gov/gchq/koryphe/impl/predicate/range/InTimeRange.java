@@ -16,12 +16,13 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * <p>
  * An <code>InTimeRange</code> is a {@link java.util.function.Predicate}
- * that tests if a {@link Comparable} is within a provided range [start, end].
+ * that tests if a {@link Long} representing a timestamp is within a provided range [start, end].
  * By default the range is inclusive, you can toggle this using the startInclusive
  * and endInclusive booleans.
  * </p>
@@ -49,6 +50,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
  * System.currentTimeMillis() + offset.
  * </p>
  * <p>
+ * By default checks are carried out assuming the data will be in milliseconds.
+ * If this is not the case you can change the time unit using the timeUnit property.
+ * </p>
+ * <p>
  * You can configure the start and end time strings using one of the following formats:
  * </p>
  * <ul>
@@ -63,6 +68,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
  *
  * @see Builder
  */
+@JsonPropertyOrder(value = {"start", "startOffset", "end", "endOffset", "startInclusive", "endInclusive", "timeUnit", "offsetUnit"}, alphabetic = true)
 @JsonDeserialize(builder = InTimeRange.Builder.class)
 public class InTimeRange extends AbstractInTimeRange<Long> {
     public InTimeRange() {
