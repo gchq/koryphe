@@ -16,6 +16,8 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -107,6 +109,11 @@ public abstract class AbstractInTimeRange<T extends Comparable<T>> extends Koryp
         return predicate.getOffsetUnit();
     }
 
+    @JsonInclude(Include.NON_DEFAULT)
+    public TimeUnit getTimeUnit() {
+        return predicate.getTimeUnit();
+    }
+
     protected AbstractInTimeRangeDual<T> getPredicate() {
         return predicate;
     }
@@ -182,6 +189,11 @@ public abstract class AbstractInTimeRange<T extends Comparable<T>> extends Koryp
 
         public B offsetUnit(final TimeUnit offsetUnit) {
             predicate.getPredicate().setOffsetUnit(offsetUnit);
+            return getSelf();
+        }
+
+        public B timeUnit(final TimeUnit timeUnit) {
+            predicate.getPredicate().setTimeUnit(timeUnit);
             return getSelf();
         }
 
