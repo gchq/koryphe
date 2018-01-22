@@ -81,23 +81,23 @@ public final class SimpleClassNameCache {
      * Core packages such as java.lang that will be used to try and expand unknown
      * simple class names.
      */
-    private static Set<String> corePackages;
+    private static Set<String> corePackages = new LinkedHashSet<>(DEFAULT_CORE_PACKAGES);
 
     /**
      * Base classes to use to find implementations to be added to idToClasses
      */
-    private static Set<Class> baseClasses;
+    private static Set<Class> baseClasses = ConcurrentHashMap.newKeySet();
 
     /**
      * Map of simple class name to classes.
      */
-    private static Map<String, Set<Class>> idToClasses;
+    private static Map<String, Set<Class>> idToClasses = new ConcurrentHashMap<>();
 
     /**
      * If conflicts are found in idToClasses this will be used to try to
      * differentiate the classes.
      */
-    private static Map<Class<?>, Map<String, Class>> baseTypeToIdToClass;
+    private static Map<Class<?>, Map<String, Class>> baseTypeToIdToClass = new ConcurrentHashMap<>();
 
     /**
      * If true then the full class name is used for serialisation.
@@ -105,11 +105,17 @@ public final class SimpleClassNameCache {
      */
     private static boolean useFullNameForSerialisation = DEFAULT_USE_FULL_NAME_FOR_SERIALISATION;
 
-    static {
-        reset();
-    }
+    private static boolean initialised = false;
 
     private SimpleClassNameCache() {
+    }
+
+    public static void initialise() {
+        if (!initialised) {
+            baseClasses = createParentClasses();
+            idToClasses = createIdToClasses();
+            initialised = true;
+        }
     }
 
     /**
@@ -135,6 +141,7 @@ public final class SimpleClassNameCache {
      * @param classes         the classes to be included.
      */
     public static void addSimpleClassNames(final boolean includeSubtypes, final Class... classes) {
+        initialise();
         for (final Class clazz : classes) {
             final Set<Class> existingClasses = getClassesFromId(clazz.getSimpleName());
             if (null == existingClasses || !existingClasses.contains(clazz)) {
@@ -169,6 +176,8 @@ public final class SimpleClassNameCache {
         if (null == clazz || useFullNameForSerialisation) {
             id = null;
         } else {
+            initialise();
+
             // If the class is an array, use the component type and we will
             // add the array brackets at the end.
             final boolean isArray = null != clazz.getComponentType();
@@ -221,6 +230,8 @@ public final class SimpleClassNameCache {
     public static String getClassName(final String id, final JavaType baseType) {
         String className = null;
         if (null != id && !id.contains(".")) {
+            initialise();
+
             // Remove the array brackets if required, these will be added again at the end.
             final boolean isArray = id.endsWith("[]");
             String nonArrayId = isArray ? id.substring(0, id.length() - 2) : id;

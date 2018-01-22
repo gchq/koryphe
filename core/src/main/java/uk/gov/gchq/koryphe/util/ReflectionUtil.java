@@ -17,12 +17,10 @@
 package uk.gov.gchq.koryphe.util;
 
 import com.google.common.collect.Sets;
-import org.reflections.Reflections;
-import org.reflections.util.ClasspathHelper;
+import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
-import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -104,16 +102,21 @@ public final class ReflectionUtil {
         if (null == subClasses) {
             updateReflectionPackages();
 
-            final Set<URL> urls = new HashSet<>();
-            for (final String packagePrefix : packages) {
-                urls.addAll(ClasspathHelper.forPackage(packagePrefix));
+            final Set<Class> newSubClasses = new HashSet<>();
+            if (clazz.isInterface()) {
+                getScanner().matchClassesImplementing(clazz, c -> {
+                    if (isPublicConcrete(c)) {
+                        newSubClasses.add(c);
+                    }
+                }).scan();
+            } else {
+                getScanner().matchSubclassesOf(clazz, c -> {
+                    if (isPublicConcrete(c)) {
+                        newSubClasses.add(c);
+                    }
+                }).scan();
             }
-
-            subClasses = new HashSet<>();
-            final Reflections reflections = new Reflections(urls);
-            subClasses.addAll(reflections.getSubTypesOf(clazz));
-            keepPublicConcreteClasses(subClasses);
-            subClasses = Collections.unmodifiableSet(subClasses);
+            subClasses = Collections.unmodifiableSet(newSubClasses);
             subclassesCache.put(clazz, subClasses);
         }
 
@@ -130,14 +133,8 @@ public final class ReflectionUtil {
         Set<Class> annoClasses = annoClassesCache.get(annoClass);
         if (null == annoClasses) {
             updateReflectionPackages();
-
-            final Set<URL> urls = new HashSet<>();
-            for (final String packagePrefix : packages) {
-                urls.addAll(ClasspathHelper.forPackage(packagePrefix));
-            }
-
             annoClasses = new HashSet<>();
-            annoClasses.addAll(new Reflections(urls).getTypesAnnotatedWith(annoClass));
+            getScanner().matchClassesWithAnnotation(annoClass, annoClasses::add).scan();
             annoClasses = Collections.unmodifiableSet(annoClasses);
             subclassesCache.put(annoClass, annoClasses);
         }
@@ -241,5 +238,9 @@ public final class ReflectionUtil {
 
     public static Set<String> getReflectionPackages() {
         return Collections.unmodifiableSet(packages);
+    }
+
+    private static FastClasspathScanner getScanner() {
+        return new FastClasspathScanner(packages.toArray(new String[packages.size()]));
     }
 }

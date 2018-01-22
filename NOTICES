@@ -62,6 +62,6 @@ Maven war plugin (org.apache.maven.plugins:maven-war-plugin:3.0.0):
 - Apache License, Version 2.0
 
 
-Reflections (org.reflections:reflections:RC1:0.9.9)
+FastClasspathScanner (io.github.lukehutch:fast-classpath-scanner:2.10.0)
 
-- WTFPL
+- MIT License
