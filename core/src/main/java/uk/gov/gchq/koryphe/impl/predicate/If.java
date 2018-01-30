@@ -17,6 +17,7 @@ package uk.gov.gchq.koryphe.impl.predicate;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.ValidationResult;
@@ -26,10 +27,18 @@ import uk.gov.gchq.koryphe.signature.Signature;
 
 import java.util.function.Predicate;
 
+/**
+ * An {@code If} is a {@link Predicate} that conditionally applies one of two predicates to a provided input.
+ *
+ * @param <I> the type of input to be validated
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
 public class If<I> extends KoryphePredicate<I> implements InputValidator {
 
-    private boolean condition;
+    private Boolean condition;
+
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    private Predicate<I> predicate;
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
     private Predicate<I> then;
@@ -38,34 +47,65 @@ public class If<I> extends KoryphePredicate<I> implements InputValidator {
     private Predicate<I> otherwise;
 
     public If() {
-
     }
 
-    public If(final boolean condition, final Predicate<I> then, final Predicate<I> otherwise) {
+    public If(final Boolean condition, final Predicate<I> then, final Predicate<I> otherwise) {
         this.condition = condition;
         this.then = then;
         this.otherwise = otherwise;
     }
 
-    public boolean getCondition() {
+    public If(final Predicate<I> predicate, final Predicate<I> then, final Predicate<I> otherwise) {
+        this.predicate = predicate;
+        this.then = then;
+        this.otherwise = otherwise;
+    }
+
+    public Boolean getCondition() {
         return condition;
+    }
+
+    public void setCondition(final Boolean condition) {
+        this.condition = condition;
     }
 
     public Predicate<I> getThen() {
         return then;
     }
 
+    public void setThen(final Predicate<I> then) {
+        this.then = then;
+    }
+
     public Predicate<I> getOtherwise() {
         return otherwise;
     }
 
+    public void setOtherwise(final Predicate<I> otherwise) {
+        this.otherwise = otherwise;
+    }
+
+    public Predicate<I> getPredicate() {
+        return predicate;
+    }
+
+    public void setPredicate(final Predicate<I> predicate) {
+        this.predicate = predicate;
+    }
+
     @Override
     public boolean test(final I input) {
-        if (condition) {
-            return null != then && then.test(input);
+        final boolean computedCondition;
+        if (null == condition) {
+            computedCondition = null != predicate && predicate.test(input);
         } else {
-            return null != otherwise && otherwise.test(input);
+            computedCondition = condition;
         }
+
+        if (computedCondition) {
+            return null != then && then.test(input);
+        }
+        return null != otherwise && otherwise.test(input);
     }
 
     @Override
@@ -82,8 +122,19 @@ public class If<I> extends KoryphePredicate<I> implements InputValidator {
 
         return new EqualsBuilder()
                 .append(condition, ifPredicate.condition)
+                .append(predicate, ifPredicate.predicate)
                 .append(then, ifPredicate.then)
                 .append(otherwise, ifPredicate.otherwise)
+                .build();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(11, 73)
+                .append(condition)
+                .append(predicate)
+                .append(then)
+                .append(otherwise)
                 .build();
     }
 
@@ -91,6 +142,7 @@ public class If<I> extends KoryphePredicate<I> implements InputValidator {
     public String toString() {
         return new ToStringBuilder(this)
                 .append("condition", condition)
+                .append("predicate", predicate)
                 .append("then", then)
                 .append("otherwise", otherwise)
                 .toString();
@@ -98,12 +150,14 @@ public class If<I> extends KoryphePredicate<I> implements InputValidator {
 
     @Override
     public ValidationResult isInputValid(final Class<?>... args) {
-        if (null == then || null == otherwise) {
+        if (null == predicate || null == then || null == otherwise) {
             return new ValidationResult();
         }
 
-        final ValidationResult result = Signature.getInputSignature(then).assignable(args);
+        final ValidationResult result = Signature.getInputSignature(predicate).assignable(args);
+        result.add(Signature.getInputSignature(then).assignable(args));
         result.add(Signature.getInputSignature(otherwise).assignable(args));
         return result;
     }
+
 }
