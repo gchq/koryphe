@@ -16,6 +16,7 @@
 
 package uk.gov.gchq.koryphe.tuple.predicate;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import uk.gov.gchq.koryphe.ValidationResult;
@@ -27,6 +28,7 @@ import java.util.Collections;
 import java.util.function.Predicate;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+@JsonPropertyOrder(value = {"class", "selection", "predicate"}, alphabetic = true)
 public class IntegerTupleAdaptedPredicate extends TupleAdaptedPredicate<Integer, Object> implements InputValidator {
     public IntegerTupleAdaptedPredicate() {
     }
