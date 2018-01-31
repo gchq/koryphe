@@ -35,7 +35,7 @@ import java.util.function.Predicate;
  * @param <I> the type of input to be validated
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
-public class If<I> extends KoryphePredicate<I> implements InputValidator {
+public class If<I> extends KoryphePredicate<I> {
 
     private Boolean condition;
 
@@ -154,24 +154,6 @@ public class If<I> extends KoryphePredicate<I> implements InputValidator {
                 .append("then", then)
                 .append("otherwise", otherwise)
                 .toString();
-    }
-
-    @Override
-    public ValidationResult isInputValid(final Class<?>... args) {
-        final ValidationResult result = new ValidationResult();
-        if (null != predicate) {
-            result.add(Signature.getInputSignature(predicate).assignable(args));
-        }
-
-        if (null != then) {
-            result.add(Signature.getInputSignature(then).assignable(args));
-        }
-
-        if (null != otherwise) {
-            result.add(Signature.getInputSignature(otherwise).assignable(args));
-        }
-
-        return result;
     }
 
     public static class SelectedBuilder {
