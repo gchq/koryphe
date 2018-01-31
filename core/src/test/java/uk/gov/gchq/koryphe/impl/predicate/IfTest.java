@@ -18,6 +18,8 @@ package uk.gov.gchq.koryphe.impl.predicate;
 import org.junit.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
+import uk.gov.gchq.koryphe.tuple.ArrayTuple;
+import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
@@ -36,8 +38,8 @@ public class IfTest extends PredicateTest {
         return new If<>(true, new IsA(String.class), new IsA(Integer.class));
     }
 
-    private If<Object> getAltInstance() {
-        return new If(new IsA(Integer.class), new IsLessThan(3), new IsA(String.class));
+    private If<Comparable> getAltInstance() {
+        return new If<>(new IsA(Integer.class), new IsLessThan(3), new IsA(String.class));
     }
 
     @Override
@@ -154,32 +156,117 @@ public class IfTest extends PredicateTest {
     }
 
     @Test
-    public void shouldApplyPredicateAndTestCorrectCondition() {
+    public void shouldApplyPredicateAndPassBothConditions() {
         // Given
-        final If<Object> filter = new If(new IsA(Integer.class), new IsLessThan(3), new IsA(String.class));
+        final If<Comparable> filter = new If<>(new IsLessThan(3), new IsEqual(2), new IsIn(3, 4, 5));
 
         // When
         final boolean firstConditional = filter.test(2);
 
         // Then
         assertTrue(firstConditional);
+    }
 
-        // When 2
-        final boolean secondConditional = filter.test("test value");
+    @Test
+    public void shouldApplyPredicateAndPassSecondCondition() {
+        // Given
+        final If<Comparable> filter = new If<>(new IsLessThan(3), new IsEqual(2), new IsIn(3, 4, 5));
 
-        // THen
+        // When
+        final boolean secondConditional = filter.test(4);
+
+        // Then
         assertTrue(secondConditional);
+    }
 
-        // When 3
-        final boolean firstConditional2 = filter.test(5);
+    @Test
+    public void shouldApplyPredicateAndPassFirstButNotSecondCondition() {
+        // Given
+        final If<Comparable> filter = new If<>(new IsLessThan(3), new IsEqual(1), new IsIn(3, 4, 5));
+        // When
+        final boolean firstConditional2 = filter.test(2);
 
-        // Then 3
+        // Then
         assertFalse(firstConditional2);
+    }
 
-        // When 4
+    @Test
+    public void shouldApplyPredicateButFailBothConditions() {
+        // Given
+        final If<Object> filter = new If<>(new IsA(Comparable.class), new IsA(Integer.class), new IsA(String.class));
+
+        // When
         final boolean secondConditional2 = filter.test(new ArrayList<>());
 
-        // Then 4
+        // Then
         assertFalse(secondConditional2);
+    }
+
+    @Test
+    public void shouldReturnFalseForNullInput() {
+        // Given
+        final If<Comparable> filter = new If<>(new IsLessThan(3), new IsIn(0, 1, 2));
+
+        // When
+        final boolean result = filter.test(null);
+
+        // Then
+        assertFalse(result);
+    }
+
+    @Test
+    public void shouldReturnFalseForNullConditionalPredicate() {
+        // Given
+        final If<Object> filter = new If<>(null, new IsA(String.class));
+
+        // When
+        final boolean result = filter.test("testValue");
+
+        // Then
+        assertFalse(result);
+    }
+
+    @Test
+    public void shouldReturnFalseForNullThenOrOtherwise() {
+        // Given
+        final If<Object> filter = new If<>(new Exists(), null, null);
+
+        // When
+        final boolean result = filter.test("testValue");
+
+        // Then
+        assertFalse(result);
+    }
+
+    @Test
+    public void shouldApplyPredicatesToSelectionWithIfBuilder() {
+        // Given
+        final If<Tuple<Integer>> filter = new If.SelectedBuilder()
+                .predicate(new IsA(String.class), 0)
+                .then(new StringContains("test"), 1)
+                .otherwise(new IsMoreThan(3), 2)
+                .build();
+
+        // When
+        final boolean result = filter.test(new ArrayTuple("prop", "test", 4));
+
+        // Then
+        assertTrue(result);
+    }
+
+    @Test
+    public void shouldApplyPredicatesToMultipleSelectionsWithIfBuilder() {
+        // Given
+        final If<Tuple<Integer>> filter = new If.SelectedBuilder()
+                .predicate(new IsA(String.class), 0)
+                .then(new IsXLessThanY(), 1, 2)
+                .otherwise(new IsXMoreThanY(), 1, 2)
+                .build();
+
+        // When
+        final boolean result = filter.test(new ArrayTuple("prop", "test", "testValue"));
+
+        // Then
+        assertTrue(result);
     }
 }
