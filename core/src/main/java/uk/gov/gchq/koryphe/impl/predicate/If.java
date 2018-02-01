@@ -20,10 +20,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import uk.gov.gchq.koryphe.ValidationResult;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
-import uk.gov.gchq.koryphe.signature.InputValidator;
-import uk.gov.gchq.koryphe.signature.Signature;
 import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.tuple.predicate.IntegerTupleAdaptedPredicate;
 
@@ -105,6 +102,10 @@ public class If<I> extends KoryphePredicate<I> {
 
     @Override
     public boolean test(final I input) {
+        if (null == input) {
+            return false;
+        }
+
         if (null == condition) {
             condition = null != predicate && predicate.test(input);
         }

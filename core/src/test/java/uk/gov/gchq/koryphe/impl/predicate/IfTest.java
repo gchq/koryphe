@@ -19,17 +19,22 @@ import org.junit.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.tuple.ArrayTuple;
+import uk.gov.gchq.koryphe.tuple.ReferenceArrayTuple;
 import uk.gov.gchq.koryphe.tuple.Tuple;
+import uk.gov.gchq.koryphe.tuple.predicate.KoryphePredicate2;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.function.Predicate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 public class IfTest extends PredicateTest {
 
@@ -116,40 +121,51 @@ public class IfTest extends PredicateTest {
     }
 
     @Test
-    public void shouldReturnTrueWithCorrectArguments() {
+    public void shouldReturnTrueWithSuccessfulThen() {
         // Given
-        final IsA then = new IsA(String.class);
-        final IsA otherwise = new IsA(Integer.class);
+        final Object input = "testValue";
+        final Predicate then = mock(Predicate.class);
+        final Predicate otherwise = mock(Predicate.class);
+
         final If<Object> filter = new If<>(true, then, otherwise);
 
+        given(then.test(input)).willReturn(true);
+
         // When
-        final boolean accepted = filter.test("test value");
+        final boolean accepted = filter.test(input);
 
         // Then
         assertTrue(accepted);
+        verify(otherwise, never()).test(input);
     }
 
     @Test
-    public void shouldReturnFalseWithIncorrectArguments() {
+    public void shouldReturnFalseFromFailedOtherwise() {
         // Given
-        final IsA then = new IsA(String.class);
-        final IsA otherwise = new IsA(Integer.class);
-        final If<Object> filter = new If<>(true, then, otherwise);
+        final Object input = 6;
+        final Predicate then = mock(Predicate.class);
+        final Predicate otherwise = mock(Predicate.class);
+
+        final If<Object> filter = new If<>(false, then, otherwise);
+
+        given(otherwise.test(input)).willReturn(false);
 
         // When
-        final boolean denied = filter.test(6);
+        final boolean denied = filter.test(input);
 
         // Then
         assertFalse(denied);
+        verify(then, never()).test(input);
     }
 
     @Test
     public void shouldRejectValueWithNullFunctions() {
         // Given
+        final Object input = "testValue";
         final If<Object> filter = new If<>();
 
         // When
-        final boolean denied = filter.test("test value");
+        final boolean denied = filter.test(input);
 
         // Then
         assertFalse(denied);
@@ -158,115 +174,207 @@ public class IfTest extends PredicateTest {
     @Test
     public void shouldApplyPredicateAndPassBothConditions() {
         // Given
-        final If<Comparable> filter = new If<>(new IsLessThan(3), new IsEqual(2), new IsIn(3, 4, 5));
+        final Object input = mock(Object.class);
+        final Predicate predicate = mock(Predicate.class);
+        final Predicate then = mock(Predicate.class);
+        final Predicate otherwise = mock(Predicate.class);
+
+        final If<Object> filter = new If<>(predicate, then, otherwise);
+
+        given(predicate.test(input)).willReturn(true);
+        given(then.test(input)).willReturn(true);
 
         // When
-        final boolean firstConditional = filter.test(2);
+        final boolean result = filter.test(input);
 
         // Then
-        assertTrue(firstConditional);
+        assertTrue(result);
+        verify(predicate).test(input);
+        verify(then).test(input);
+        verify(otherwise, never()).test(input);
     }
 
     @Test
     public void shouldApplyPredicateAndPassSecondCondition() {
         // Given
-        final If<Comparable> filter = new If<>(new IsLessThan(3), new IsEqual(2), new IsIn(3, 4, 5));
+        final Object input = mock(Object.class);
+        final Predicate predicate = mock(Predicate.class);
+        final Predicate then = mock(Predicate.class);
+        final Predicate otherwise = mock(Predicate.class);
+
+        final If<Object> filter = new If<>(predicate, then, otherwise);
+
+        given(predicate.test(input)).willReturn(false);
+        given(otherwise.test(input)).willReturn(true);
 
         // When
-        final boolean secondConditional = filter.test(4);
+        final boolean result = filter.test(input);
 
         // Then
-        assertTrue(secondConditional);
+        assertTrue(result);
+        verify(predicate).test(input);
+        verify(then, never()).test(input);
+        verify(otherwise).test(input);
     }
 
     @Test
     public void shouldApplyPredicateAndPassFirstButNotSecondCondition() {
         // Given
-        final If<Comparable> filter = new If<>(new IsLessThan(3), new IsEqual(1), new IsIn(3, 4, 5));
+        final Object input = mock(Object.class);
+        final Predicate predicate = mock(Predicate.class);
+        final Predicate then = mock(Predicate.class);
+        final Predicate otherwise = mock(Predicate.class);
+
+        final If<Object> filter = new If<>(predicate, then, otherwise);
+
+        given(predicate.test(input)).willReturn(true);
+        given(then.test(input)).willReturn(false);
+
         // When
-        final boolean firstConditional2 = filter.test(2);
+        final boolean result = filter.test(input);
 
         // Then
-        assertFalse(firstConditional2);
+        assertFalse(result);
+        verify(predicate).test(input);
+        verify(then).test(input);
+        verify(otherwise, never()).test(input);
     }
 
     @Test
     public void shouldApplyPredicateButFailBothConditions() {
         // Given
-        final If<Object> filter = new If<>(new IsA(Comparable.class), new IsA(Integer.class), new IsA(String.class));
+        final Object input = mock(Object.class);
+        final Predicate predicate = mock(Predicate.class);
+        final Predicate then = mock(Predicate.class);
+        final Predicate otherwise = mock(Predicate.class);
+
+        final If<Object> filter = new If<>(predicate, then, otherwise);
+
+        given(predicate.test(input)).willReturn(false);
+        given(otherwise.test(input)).willReturn(false);
 
         // When
-        final boolean secondConditional2 = filter.test(new ArrayList<>());
+        final boolean result = filter.test(input);
 
         // Then
-        assertFalse(secondConditional2);
+        assertFalse(result);
+        verify(predicate).test(input);
+        verify(then, never()).test(input);
+        verify(otherwise).test(input);
     }
 
     @Test
     public void shouldReturnFalseForNullInput() {
         // Given
-        final If<Comparable> filter = new If<>(new IsLessThan(3), new IsIn(0, 1, 2));
+        final Comparable input = null;
+        final Predicate predicate = mock(Predicate.class);
+        final Predicate then = mock(Predicate.class);
+        final Predicate otherwise = mock(Predicate.class);
+        final If<Comparable> filter = new If<>(predicate, then, otherwise);
 
         // When
         final boolean result = filter.test(null);
 
         // Then
         assertFalse(result);
+        verify(predicate, never()).test(input);
+        verify(then, never()).test(input);
+        verify(otherwise, never()).test(input);
     }
 
     @Test
     public void shouldReturnFalseForNullConditionalPredicate() {
         // Given
-        final If<Object> filter = new If<>(null, new IsA(String.class));
+        final Object input = "testValue";
+        final Predicate predicate = null;
+        final Predicate then = mock(Predicate.class);
+
+        final If<Object> filter = new If<>(predicate, then);
 
         // When
-        final boolean result = filter.test("testValue");
+        final boolean result = filter.test(input);
 
         // Then
         assertFalse(result);
+        verify(then, never()).test(input);
     }
 
     @Test
     public void shouldReturnFalseForNullThenOrOtherwise() {
         // Given
-        final If<Object> filter = new If<>(new Exists(), null, null);
+        final Object input = "testValue";
+        final Predicate predicate = mock(Predicate.class);
+        final Predicate then = null;
+        final Predicate otherwise = null;
+
+        final If<Object> filter = new If<>(predicate, then, otherwise);
+
+        given(predicate.test(input)).willReturn(true);
 
         // When
-        final boolean result = filter.test("testValue");
+        final boolean result = filter.test(input);
 
         // Then
         assertFalse(result);
+        verify(predicate).test(input);
     }
 
     @Test
     public void shouldApplyPredicatesToSelectionWithIfBuilder() {
         // Given
+        final Integer firstVal = 6;
+        final Integer secondVal = 2;
+        final Integer thirdVal = 4;
+        final ArrayTuple input = new ArrayTuple(firstVal, secondVal, thirdVal);
+        final Predicate predicate = mock(Predicate.class);
+        final Predicate then = mock(Predicate.class);
+        final Predicate otherwise = mock(Predicate.class);
+
         final If<Tuple<Integer>> filter = new If.SelectedBuilder()
-                .predicate(new IsA(String.class), 0)
-                .then(new StringContains("test"), 1)
-                .otherwise(new IsMoreThan(3), 2)
+                .predicate(predicate, 0)
+                .then(then, 1)
+                .otherwise(otherwise, 2)
                 .build();
 
+        given(predicate.test(firstVal)).willReturn(true);
+        given(then.test(secondVal)).willReturn(true);
+
         // When
-        final boolean result = filter.test(new ArrayTuple("prop", "test", 4));
+        final boolean result = filter.test(input);
 
         // Then
         assertTrue(result);
+        verify(predicate).test(firstVal);
+        verify(then).test(secondVal);
     }
 
     @Test
     public void shouldApplyPredicatesToMultipleSelectionsWithIfBuilder() {
         // Given
+        final Integer firstInput = 2;
+        final Integer secondInput = 7;
+        final Integer thirdInput = 1;
+        final ArrayTuple input = new ArrayTuple(firstInput, secondInput, thirdInput);
+        final ReferenceArrayTuple<Integer> refTuple = new ReferenceArrayTuple<>(input, new Integer[]{1, 2});
+        final Predicate predicate = mock(Predicate.class);
+        final KoryphePredicate2 then = mock(KoryphePredicate2.class);
+        final KoryphePredicate2 otherwise = mock(KoryphePredicate2.class);
         final If<Tuple<Integer>> filter = new If.SelectedBuilder()
-                .predicate(new IsA(String.class), 0)
-                .then(new IsXLessThanY(), 1, 2)
-                .otherwise(new IsXMoreThanY(), 1, 2)
+                .predicate(predicate, 0)
+                .then(then, 1, 2)
+                .otherwise(otherwise, 1, 2)
                 .build();
 
+        given(predicate.test(firstInput)).willReturn(true);
+        given(then.test(refTuple)).willReturn(true);
+
         // When
-        final boolean result = filter.test(new ArrayTuple("prop", "test", "testValue"));
+        final boolean result = filter.test(input);
 
         // Then
         assertTrue(result);
+        verify(predicate).test(firstInput);
+        verify(then).test(refTuple);
+        verify(otherwise, never()).test(refTuple);
     }
 }
