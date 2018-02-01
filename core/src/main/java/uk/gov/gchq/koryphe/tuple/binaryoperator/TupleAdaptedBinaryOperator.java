@@ -17,6 +17,7 @@
 package uk.gov.gchq.koryphe.tuple.binaryoperator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import uk.gov.gchq.koryphe.binaryoperator.AdaptedBinaryOperator;
 import uk.gov.gchq.koryphe.tuple.Tuple;
@@ -34,6 +35,7 @@ import java.util.function.BinaryOperator;
  * @see TupleInputAdapter
  * @see TupleOutputAdapter
  */
+@JsonPropertyOrder(value = {"class", "selection", "binaryOperator"}, alphabetic = true)
 public class TupleAdaptedBinaryOperator<R, OT> extends AdaptedBinaryOperator<Tuple<R>, OT> {
     /**
      * Default - for serialisation.
