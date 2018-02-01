@@ -18,7 +18,6 @@ package uk.gov.gchq.koryphe.util;
 
 import com.google.common.collect.Sets;
 import com.google.common.primitives.UnsignedLong;
-import org.hamcrest.Matchers;
 import org.hamcrest.core.IsCollectionContaining;
 import org.junit.After;
 import org.junit.Before;
@@ -106,15 +105,14 @@ public class ReflectionUtilTest {
         final Set<Class> subclasses = ReflectionUtil.getSubTypes(Number.class);
 
         // Then
-        assertThat(subclasses,
-                Matchers.allOf(
-                        IsCollectionContaining.hasItems(
-                                TestCustomNumber.class,
-                                uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class
-                        ),
-                        Matchers.not(IsCollectionContaining.hasItems(UnsignedLong.class))
-                )
+        assertEquals(
+                Sets.newHashSet(
+                        TestCustomNumber.class,
+                        uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class
+                ),
+                subclasses
         );
+        assertFalse(subclasses.contains(UnsignedLong.class));
     }
 
     @Test

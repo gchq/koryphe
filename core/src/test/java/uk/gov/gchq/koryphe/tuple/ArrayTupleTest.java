@@ -36,7 +36,7 @@ public class ArrayTupleTest {
 
 
         // test initial array constructor
-        String[] initialValues = new String[]{"a", "b", "c", "d", "e"};
+        Object[] initialValues = new String[]{"a", "b", "c", "d", "e"};
         tuple = new ArrayTuple(initialValues);
         i = 0;
         for (Object value : tuple) {
