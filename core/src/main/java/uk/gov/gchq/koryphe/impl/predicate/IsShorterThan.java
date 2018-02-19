@@ -39,6 +39,8 @@ public class IsShorterThan extends KoryphePredicate<Object> implements InputVali
     private int maxLength;
     private boolean orEqualTo;
 
+    private final Length delegate = new Length();
+
     // Default constructor for serialisation
     public IsShorterThan() {
     }
@@ -77,8 +79,6 @@ public class IsShorterThan extends KoryphePredicate<Object> implements InputVali
     }
 
     private int getLength(final Object value) {
-        final Length delegate = new Length();
-
         return delegate.apply(value);
     }
 
