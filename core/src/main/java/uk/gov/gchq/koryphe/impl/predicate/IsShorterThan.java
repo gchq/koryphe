@@ -21,10 +21,10 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.ValidationResult;
+import uk.gov.gchq.koryphe.impl.function.Length;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 import uk.gov.gchq.koryphe.signature.InputValidator;
 
-import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -38,6 +38,8 @@ import java.util.Map;
 public class IsShorterThan extends KoryphePredicate<Object> implements InputValidator {
     private int maxLength;
     private boolean orEqualTo;
+
+    private final Length delegate = new Length();
 
     // Default constructor for serialisation
     public IsShorterThan() {
@@ -77,20 +79,7 @@ public class IsShorterThan extends KoryphePredicate<Object> implements InputVali
     }
 
     private int getLength(final Object value) {
-        final int length;
-        if (value instanceof String) {
-            length = ((String) value).length();
-        } else if (value instanceof Object[]) {
-            length = ((Object[]) value).length;
-        } else if (value instanceof Collection) {
-            length = ((Collection) value).size();
-        } else if (value instanceof Map) {
-            length = ((Map) value).size();
-        } else {
-            throw new IllegalArgumentException("Could not determine the size of the provided value");
-        }
-
-        return length;
+        return delegate.apply(value);
     }
 
     @Override
@@ -103,12 +92,12 @@ public class IsShorterThan extends KoryphePredicate<Object> implements InputVali
 
         if (!String.class.isAssignableFrom(arguments[0])
                 && !Object[].class.isAssignableFrom(arguments[0])
-                && !Collection.class.isAssignableFrom(arguments[0])
+                && !Iterable.class.isAssignableFrom(arguments[0])
                 && !Map.class.isAssignableFrom(arguments[0])) {
             result.addError("Input class " + arguments[0].getName() + " must be one of the following: "
                     + String.class.getName() + ", "
                     + Object[].class.getName() + ", "
-                    + Collection.class.getName() + ", "
+                    + Iterable.class.getName() + ", "
                     + Map.class.getName());
         }
 
