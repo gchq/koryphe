@@ -29,6 +29,28 @@ import java.util.function.Predicate;
 /**
  * An {@code If} is a {@link Predicate} that conditionally applies one of two predicates to a provided input.
  *
+ * <p> Note that the <code>If</code> has both a number of constructors as well as a <code>Builder</code>.
+ * The use case for constructors would generally be for testing a single input. </p>
+ *
+ * <p> The use case for the Builder allows greater flexibility,
+ * mainly for allowing multiple inputs such as an Array of objects,
+ * and control over which of these objects is tested by each predicate. </p>
+ *
+ * <p> For example,
+ * Given an input array of 3 objects, one may wish to test the first object in the array against the initial predicate,
+ * then pass both the second and third objects to the resulting predicate, based on the outcome of the initial test.
+ * This would require use of the <code>Builder</code>, passing a selection of 0 along with the first predicate,
+ * and a selection of 1, 2 with the other predicates. </p>
+ *
+ * This would look something like:
+ * <pre>
+ *     final If ifPredicate = new If.SelectedBuilder()
+ *          .predicate(firstPredicate, 0)
+ *          .then(thenPredicate, 1, 2)
+ *          .otherwise(otherwisePredicate, 1, 2)
+ *          .build();
+ * </pre>
+ *
  * @param <I> the type of input to be validated
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
@@ -48,24 +70,79 @@ public class If<I> extends KoryphePredicate<I> {
     public If() {
     }
 
+    /**
+     * Constructs a new <code>If</code> object, with a boolean condition,
+     * and one predicate that will test the input, if the boolean condition resolves to true.
+     *
+     * @param condition a boolean condition
+     * @param then      the predicate to apply if true
+     */
     public If(final boolean condition, final Predicate<? super I> then) {
         this(condition, then, null);
     }
 
+    /**
+     * Constructs a new <code>If</code> object, with a boolean condition,
+     * one predicate to test the input if the condition is true,
+     * and another predicate to test the input if the condition is false.
+     *
+     * @param condition a boolean condition
+     * @param then      the predicate to apply if true
+     * @param otherwise the predicate to apply if false
+     */
     public If(final boolean condition, final Predicate<? super I> then, final Predicate<? super I> otherwise) {
         this.condition = condition;
         this.then = then;
         this.otherwise = otherwise;
     }
 
+    /**
+     * Constructs a new <code>If</code> object, with an initial <code>predicate</code>,
+     * and another predicate to test the input if the initial predicate resolves to true.
+     *
+     * @param predicate the initial predicate applied to the input
+     * @param then      the predicate to apply if true
+     */
     public If(final Predicate<? super I> predicate, final Predicate<? super I> then) {
         this(predicate, then, null);
     }
 
+    /**
+     * Constructs a new <code>If</code> object, with an initial <code>predicate</code>,
+     * a second predicate to test the input if the initial predicate resolves to true,
+     * and a third predicate to test the input if the initial predicate resolves to false.
+     *
+     * @param predicate the initial predicate applied to the input
+     * @param then      the predicate to apply if true
+     * @param otherwise the predicate to apply if false
+     */
     public If(final Predicate<? super I> predicate, final Predicate<? super I> then, final Predicate<? super I> otherwise) {
         this.predicate = predicate;
         this.then = then;
         this.otherwise = otherwise;
+    }
+
+    /**
+     * If the condition is not being used or has not been set,
+     * then the provided predicate will test the input (assuming it is also not null).
+     * If this resolves to true, the <code>then</code> predicate will test the input,
+     * else the <code>otherwise</code> predicate will be used.
+     * The result of either of these being applied to the input is finally returned.
+     *
+     * @param input     the input object to be tested
+     * @return          true if the input passes the predicate, otherwise false
+     */
+    @Override
+    public boolean test(final I input) {
+        if (null == condition) {
+            condition = null != predicate && predicate.test(input);
+        }
+
+        if (condition) {
+            return null != then && then.test(input);
+        }
+
+        return null != otherwise && otherwise.test(input);
     }
 
     public Boolean getCondition() {
@@ -98,23 +175,6 @@ public class If<I> extends KoryphePredicate<I> {
 
     public void setPredicate(final Predicate<? super I> predicate) {
         this.predicate = predicate;
-    }
-
-    @Override
-    public boolean test(final I input) {
-        if (null == input) {
-            return false;
-        }
-
-        if (null == condition) {
-            condition = null != predicate && predicate.test(input);
-        }
-
-        if (condition) {
-            return null != then && then.test(input);
-        }
-
-        return null != otherwise && otherwise.test(input);
     }
 
     @Override
