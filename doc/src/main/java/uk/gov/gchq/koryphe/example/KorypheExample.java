@@ -16,6 +16,8 @@
 
 package uk.gov.gchq.koryphe.example;
 
+import com.google.common.collect.Lists;
+
 import uk.gov.gchq.koryphe.example.annotation.Example;
 import uk.gov.gchq.koryphe.tuple.MapTuple;
 import uk.gov.gchq.koryphe.tuple.Tuple;
@@ -73,6 +75,10 @@ public abstract class KorypheExample<I, O> {
             System.out.print(value);
         }
         System.out.println("}");
+    }
+
+    protected <T> void printIterable(final Iterable<T> iterable) {
+        System.out.println(Lists.newArrayList(iterable));
     }
 
     protected Tuple<String> createMapTuple(final Object valueA, final Object valueB, final Object valueC) {
