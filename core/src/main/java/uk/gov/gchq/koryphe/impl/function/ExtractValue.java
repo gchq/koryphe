@@ -15,6 +15,7 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
 import java.util.Map;
@@ -24,6 +25,7 @@ import java.util.Map;
  * @param <K>   the key type
  * @param <V>   the value type
  */
+@Since("1.2.0")
 public class ExtractValue<K, V> extends KorypheFunction<Map<K, V>, V> {
     private K key;
 
