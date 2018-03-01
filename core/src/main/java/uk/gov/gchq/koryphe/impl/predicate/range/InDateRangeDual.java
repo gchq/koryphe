@@ -18,6 +18,8 @@ package uk.gov.gchq.koryphe.impl.predicate.range;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import uk.gov.gchq.koryphe.Since;
+
 import java.util.Date;
 
 /**
@@ -69,6 +71,7 @@ import java.util.Date;
  * @see Builder
  */
 @JsonDeserialize(builder = InDateRangeDual.Builder.class)
+@Since("1.1.0")
 public class InDateRangeDual extends AbstractInTimeRangeDual<Date> {
     InDateRangeDual() {
         super(Date::new);

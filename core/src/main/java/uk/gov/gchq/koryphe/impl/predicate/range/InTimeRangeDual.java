@@ -18,6 +18,8 @@ package uk.gov.gchq.koryphe.impl.predicate.range;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import uk.gov.gchq.koryphe.Since;
+
 /**
  * <p>
  * An <code>InTimeRangeDual</code> is a {@link java.util.function.Predicate}
@@ -67,6 +69,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
  * @see Builder
  */
 @JsonDeserialize(builder = InTimeRangeDual.Builder.class)
+@Since("1.1.0")
 public class InTimeRangeDual extends AbstractInTimeRangeDual<Long> {
     public static class Builder extends BaseBuilder<Builder, InTimeRangeDual, Long> {
         public Builder() {

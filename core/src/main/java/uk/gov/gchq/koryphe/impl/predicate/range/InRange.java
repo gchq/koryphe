@@ -23,6 +23,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 /**
@@ -48,6 +49,7 @@ import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
  * @see Builder
  */
 @JsonDeserialize(builder = InRange.Builder.class)
+@Since("1.1.0")
 public class InRange<T extends Comparable<T>> extends KoryphePredicate<T> {
     private final InRangeDual<T> predicate;
 
