@@ -16,15 +16,19 @@
 
 package uk.gov.gchq.koryphe.predicate;
 
+import org.junit.AssumptionViolatedException;
 import org.junit.Test;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
+import uk.gov.gchq.koryphe.util.VersionUtil;
 
 import java.io.IOException;
 import java.util.function.Predicate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assume.assumeTrue;
 
 public abstract class PredicateTest {
     protected abstract Predicate getInstance();
@@ -85,5 +89,21 @@ public abstract class PredicateTest {
 
         // Then
         assertNotEquals(instance, null);
+    }
+
+    @Test
+    public void shouldHaveSinceAnnotation() {
+        // Given
+        final Predicate instance = getInstance();
+
+        // When
+        final Since annotation = instance.getClass().getAnnotation(Since.class);
+
+        // Then
+        if (null == annotation || null == annotation.value()) {
+            throw new AssumptionViolatedException("Missing Since annotation on class " + instance.getClass().getName());
+        }
+        assumeTrue(annotation.value() + " is not a valid value string.",
+                VersionUtil.validateVersionString(annotation.value()));
     }
 }
