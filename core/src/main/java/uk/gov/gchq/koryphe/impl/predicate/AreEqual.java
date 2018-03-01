@@ -16,12 +16,14 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.tuple.predicate.KoryphePredicate2;
 
 /**
  * An <code>AreEqual</code> is a {@link java.util.function.BiPredicate} that returns true if the two input objects
  * are equal.
  */
+@Since("1.0.0")
 public class AreEqual extends KoryphePredicate2<Object, Object> {
     /**
      * @param input1 input 1

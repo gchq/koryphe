@@ -18,13 +18,18 @@ package uk.gov.gchq.koryphe.function;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.AssumptionViolatedException;
 import org.junit.Test;
+
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.util.VersionUtil;
 
 import java.io.IOException;
 import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assume.assumeTrue;
 
 public abstract class FunctionTest {
     private static final ObjectMapper MAPPER = createObjectMapper();
@@ -94,5 +99,21 @@ public abstract class FunctionTest {
 
         // Then
         assertNotEquals(instance, null);
+    }
+
+    @Test
+    public void shouldHaveSinceAnnotation() {
+        // Given
+        final Function instance = getInstance();
+
+        // When
+        final Since annotation = instance.getClass().getAnnotation(Since.class);
+
+        // Then
+        if (null == annotation || null == annotation.value()) {
+            throw new AssumptionViolatedException("Missing Since annotation on class " + instance.getClass().getName());
+        }
+        assumeTrue(annotation.value() + " is not a valid value string.",
+                VersionUtil.validateVersionString(annotation.value()));
     }
 }

@@ -19,6 +19,7 @@ package uk.gov.gchq.koryphe.tuple.predicate;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.predicate.AdaptedPredicate;
 import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.tuple.TupleInputAdapter;
@@ -34,6 +35,7 @@ import java.util.function.Predicate;
  * @see TupleInputAdapter
  */
 @JsonPropertyOrder(value = {"class", "selection", "predicate"}, alphabetic = true)
+@Since("1.0.0")
 public class TupleAdaptedPredicate<R, PI> extends AdaptedPredicate<Tuple<R>, PI> {
     /**
      * Default constructor - for serialisation.

@@ -22,10 +22,12 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 import java.util.regex.Pattern;
 
+@Since("1.0.0")
 public class Regex extends KoryphePredicate<String> {
     private Pattern controlValue;
 

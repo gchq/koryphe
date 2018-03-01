@@ -20,6 +20,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 import java.util.Map;
@@ -28,6 +29,7 @@ import java.util.Map;
  * An <code>MapContains</code> is a {@link java.util.function.Predicate} that checks
  * whether a {@link java.util.Map} contains a provided key.
  */
+@Since("1.0.0")
 public class MapContains extends KoryphePredicate<Map> {
     private String key;
 

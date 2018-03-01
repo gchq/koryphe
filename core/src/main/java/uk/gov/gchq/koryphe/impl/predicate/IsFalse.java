@@ -16,12 +16,14 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 /**
  * An <code>IsFalse</code> is a {@link java.util.function.Predicate} that checks that the input boolean is
  * false.
  */
+@Since("1.0.0")
 public class IsFalse extends KoryphePredicate<Boolean> {
     @Override
     public boolean test(final Boolean input) {

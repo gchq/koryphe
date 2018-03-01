@@ -22,6 +22,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.ValidationResult;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 import uk.gov.gchq.koryphe.signature.InputValidator;
@@ -31,6 +32,7 @@ import uk.gov.gchq.koryphe.signature.InputValidator;
  * {@link Comparable} is less than a control value. There is also an orEqualTo flag that can be set to allow
  * the input value to be less than or equal to the control value.
  */
+@Since("1.0.0")
 public class IsLessThan extends KoryphePredicate<Comparable> implements InputValidator {
     private Comparable controlValue;
     private boolean orEqualTo;

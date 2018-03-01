@@ -22,12 +22,14 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 /**
  * An <code>IsEqual</code> is a {@link java.util.function.Predicate} that checks that the input object is
  * equal to a control value.
  */
+@Since("1.0.0")
 public class IsEqual extends KoryphePredicate<Object> {
     private Object controlValue;
 

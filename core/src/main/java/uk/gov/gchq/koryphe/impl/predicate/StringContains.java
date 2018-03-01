@@ -20,6 +20,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 /**
@@ -28,6 +29,7 @@ import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
  * The {@link java.util.function.Predicate} is case-sensitive by default, this can be changed with
  * <code>setIgnoreCase(true)</code>.
  */
+@Since("1.0.0")
 public class StringContains extends KoryphePredicate<String> {
     private String value;
     private boolean ignoreCase;

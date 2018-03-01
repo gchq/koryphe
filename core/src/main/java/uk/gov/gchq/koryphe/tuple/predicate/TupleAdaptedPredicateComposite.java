@@ -18,6 +18,7 @@ package uk.gov.gchq.koryphe.tuple.predicate;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.predicate.PredicateComposite;
 import uk.gov.gchq.koryphe.tuple.Tuple;
 
@@ -30,6 +31,7 @@ import java.util.function.Predicate;
  *
  * @param <R> Reference type used by tuples
  */
+@Since("1.0.0")
 public class TupleAdaptedPredicateComposite<R> extends PredicateComposite<Tuple<R>, TupleAdaptedPredicate<R, ? extends Object>> {
     @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
     public List<TupleAdaptedPredicate<R, ? extends Object>> getComponents() {

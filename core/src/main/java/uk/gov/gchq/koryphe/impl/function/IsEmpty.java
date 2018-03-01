@@ -18,6 +18,7 @@ package uk.gov.gchq.koryphe.impl.function;
 import com.google.common.collect.Iterables;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 import uk.gov.gchq.koryphe.util.CloseableUtil;
 
@@ -25,6 +26,7 @@ import uk.gov.gchq.koryphe.util.CloseableUtil;
  * A {@code IsEmpty} is a {@link KorypheFunction} which returns a boolean based
  * on whether or not the input {@link Iterable} is empty.
  */
+@Since("1.1.0")
 public class IsEmpty extends KorypheFunction<Iterable, Boolean> {
     @Override
     @SuppressFBWarnings(value = "DE_MIGHT_IGNORE", justification = "Any exceptions are to be ignored")
