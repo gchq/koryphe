@@ -18,6 +18,7 @@ package uk.gov.gchq.koryphe.predicate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.ValidationResult;
 import uk.gov.gchq.koryphe.composite.Composite;
 import uk.gov.gchq.koryphe.signature.InputValidator;
@@ -35,6 +36,7 @@ import java.util.function.Predicate;
  * @param <I> Input type
  * @param <C> Type of Predicate components
  */
+@Since("1.0.0")
 public class PredicateComposite<I, C extends Predicate<I>> extends Composite<C> implements Predicate<I>, InputValidator {
     /**
      * Default - for serialisation.

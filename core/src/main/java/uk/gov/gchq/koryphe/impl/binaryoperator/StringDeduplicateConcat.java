@@ -20,6 +20,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
 
 import java.util.Collections;
@@ -35,6 +36,7 @@ import java.util.regex.Pattern;
  * The default separator is a comma, you can set a custom separator
  * using setSeparator(String).
  */
+@Since("1.0.0")
 public class StringDeduplicateConcat extends KorypheBinaryOperator<String> {
 
     private static final String DEFAULT_SEPARATOR = ",";

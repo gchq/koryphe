@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.gchq.koryphe.impl.function;
+package uk.gov.gchq.koryphe;
 
-import uk.gov.gchq.koryphe.Since;
-import uk.gov.gchq.koryphe.function.KorypheFunction;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * An <code>Identity</code> is a {@link java.util.function.Function} which takes
- * a single object as an input, and simply returns that object.
+ * Annotation used to define the version at which an implementation was added.
  */
-@Since("1.0.0")
-public class Identity extends KorypheFunction<Object, Object> {
-    @Override
-    public Object apply(final Object input) {
-        return input;
-    }
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Since {
+    String value();
 }

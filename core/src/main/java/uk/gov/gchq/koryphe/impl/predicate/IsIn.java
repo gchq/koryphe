@@ -24,6 +24,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 import java.util.Arrays;
@@ -35,6 +36,7 @@ import java.util.Set;
  * An <code>IsIn</code> is a {@link java.util.function.Predicate} that checks that the input object is
  * in a set of allowed values.
  */
+@Since("1.0.0")
 public class IsIn extends KoryphePredicate<Object> {
     private Set<Object> allowedValues;
 

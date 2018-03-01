@@ -18,6 +18,7 @@ package uk.gov.gchq.koryphe.tuple.function;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.function.AdaptedFunction;
 import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.tuple.TupleInputAdapter;
@@ -35,6 +36,7 @@ import java.util.function.Function;
  * @see TupleInputAdapter
  * @see TupleOutputAdapter
  */
+@Since("1.0.0")
 public class TupleAdaptedFunction<R, FI, FO> extends AdaptedFunction<Tuple<R>, FI, FO, Tuple<R>> {
     /**
      * Default - for serialisation.

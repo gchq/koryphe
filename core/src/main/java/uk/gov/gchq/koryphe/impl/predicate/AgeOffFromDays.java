@@ -16,12 +16,14 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.tuple.predicate.KoryphePredicate2;
 
 /**
  * An <code>AgeOffFromDays</code> is a {@link java.util.function.BiPredicate}
  * that ages off old data based on a provided age off time in days.
  */
+@Since("1.0.0")
 public class AgeOffFromDays extends KoryphePredicate2<Long, Integer> {
     public static final long DAYS_TO_MILLISECONDS = 24L * 60L * 60L * 1000L;
 

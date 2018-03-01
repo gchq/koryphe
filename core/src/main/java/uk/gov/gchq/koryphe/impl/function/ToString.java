@@ -15,6 +15,7 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
 import java.util.Arrays;
@@ -23,6 +24,7 @@ import java.util.Arrays;
  * A <code>ToString</code> is a {@link java.util.function.Function} that takes in
  * an object (null or otherwise), and calls toString on it.
  */
+@Since("1.0.0")
 public class ToString extends KorypheFunction {
 
     @Override

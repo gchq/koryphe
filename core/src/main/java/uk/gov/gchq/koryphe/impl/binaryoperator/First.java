@@ -16,12 +16,14 @@
 
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
 
 /**
  * A <code>First</code> is a {@link KorypheBinaryOperator} that assumes the
  * value will never change and just returns the first non null value it gets.
  */
+@Since("1.0.0")
 public class First extends KorypheBinaryOperator<Object> {
     @Override
     protected Object _apply(final Object a, final Object b) {

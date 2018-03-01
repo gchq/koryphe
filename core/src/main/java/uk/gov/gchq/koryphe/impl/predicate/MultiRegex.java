@@ -22,6 +22,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+@Since("1.0.0")
 public class MultiRegex extends KoryphePredicate<String> {
     private Pattern[] patterns;
 

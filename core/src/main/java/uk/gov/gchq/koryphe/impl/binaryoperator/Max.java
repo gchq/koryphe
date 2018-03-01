@@ -16,6 +16,7 @@
 
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
 
 /**
@@ -23,6 +24,7 @@ import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
  * {@link Comparable}s and calculates the maximum comparable. It assumes that all the input comparables
  * are compatible and can be compared against each other.
  */
+@Since("1.0.0")
 public class Max extends KorypheBinaryOperator<Comparable> {
     @Override
     protected Comparable _apply(final Comparable a, final Comparable b) {

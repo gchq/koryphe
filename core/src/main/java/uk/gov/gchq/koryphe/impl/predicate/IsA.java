@@ -20,12 +20,14 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 /**
  * An <code>IsA</code> {@link java.util.function.Predicate} tests whether an input {@link Object} is an
  * instance of a given control {@link Class}.
  */
+@Since("1.0.0")
 public class IsA extends KoryphePredicate<Object> {
     private Class<?> type;
 

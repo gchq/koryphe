@@ -16,6 +16,7 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 import uk.gov.gchq.koryphe.tuple.n.Tuple2;
 
@@ -26,6 +27,7 @@ import uk.gov.gchq.koryphe.tuple.n.Tuple2;
  *
  * The resulting object is a {@link Tuple2} containing the quotient and remainder.
  */
+@Since("1.0.0")
 public class DivideBy extends KorypheFunction<Integer, Tuple2<Integer, Integer>> {
     private int by = 1;
 

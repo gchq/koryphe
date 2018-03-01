@@ -16,12 +16,14 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 /**
  * An <code>Exists</code> is a {@link java.util.function.Predicate} that simply checks the input object
  * is not null.
  */
+@Since("1.0.0")
 public class Exists extends KoryphePredicate<Object> {
     @Override
     public boolean test(final Object input) {

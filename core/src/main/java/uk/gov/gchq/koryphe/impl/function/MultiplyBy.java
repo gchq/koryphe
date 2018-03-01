@@ -16,6 +16,7 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
 /**
@@ -23,6 +24,7 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
  * an {@link Integer} and returns the result of multiplying this integer by a pre-configured
  * value.
  */
+@Since("1.0.0")
 public class MultiplyBy extends KorypheFunction<Integer, Integer> {
     private int by = 1;
 

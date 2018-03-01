@@ -21,6 +21,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import uk.gov.gchq.koryphe.Since;
+
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -29,6 +31,7 @@ import java.util.function.Predicate;
  * value from a map using the provided key and passes the value to a provided
  * {@link java.util.function.Predicate}.
  */
+@Since("1.0.0")
 public class PredicateMap<T> extends KoryphePredicate<Map<?, T>> {
     private Predicate<? super T> predicate;
     private Object key;

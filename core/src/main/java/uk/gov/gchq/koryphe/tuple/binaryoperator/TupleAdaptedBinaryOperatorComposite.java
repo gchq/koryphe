@@ -18,6 +18,7 @@ package uk.gov.gchq.koryphe.tuple.binaryoperator;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.binaryoperator.BinaryOperatorComposite;
 import uk.gov.gchq.koryphe.tuple.Tuple;
 
@@ -30,6 +31,7 @@ import java.util.function.BinaryOperator;
  *
  * @param <R> Reference type used by tuples
  */
+@Since("1.0.0")
 public class TupleAdaptedBinaryOperatorComposite<R> extends BinaryOperatorComposite<Tuple<R>, TupleAdaptedBinaryOperator<R, ? extends Object>> {
     @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
     public List<TupleAdaptedBinaryOperator<R, ? extends Object>> getComponents() {
