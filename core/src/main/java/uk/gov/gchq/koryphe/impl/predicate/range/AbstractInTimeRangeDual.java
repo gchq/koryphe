@@ -16,6 +16,8 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -55,11 +57,15 @@ import java.util.function.Function;
  * from the current system time or a provided start/end time.
  * You can set the start and end offsets using startOffset and endOffset.
  * By default the offset is measured in Days, this can be changed to
- * DAY, HOUR, MINUTE, SECOND and MILLISECOND using the offsetUnit field.
+ * DAY, HOUR, MINUTE, SECOND, MILLISECOND and MICROSECOND using the offsetUnit field.
  * <p>
  * At the point when test is called on the class the
  * current system time is used to calculate the start and end values based on:
  * System.currentTimeMillis() + offset.
+ * </p>
+ * <p>
+ * By default checks are carried out assuming the data will be in milliseconds.
+ * If this is not the case you can change the time unit using the timeUnit property.
  * </p>
  * <p>
  * You can configure the start and end time strings using one of the following formats:
@@ -84,11 +90,13 @@ public abstract class AbstractInTimeRangeDual<T extends Comparable<T>> extends K
     private Boolean endInclusive;
 
     private TimeUnit offsetUnit;
+    private TimeUnit timeUnit = TimeUnit.MILLISECOND;
 
-    private Long startInMillis;
-    private Long startOffsetInMillis;
-    private Long endInMillis;
-    private Long endOffsetInMillis;
+
+    private Long startTime;
+    private Long startOffsetTime;
+    private Long endTime;
+    private Long endOffsetTime;
 
     private final Function<Long, T> toT;
 
@@ -101,10 +109,10 @@ public abstract class AbstractInTimeRangeDual<T extends Comparable<T>> extends K
     }
 
     public void initialise() {
-        this.startInMillis = DateUtil.parseTime(start);
-        this.endInMillis = DateUtil.parseTime(end);
-        this.startOffsetInMillis = TimeUnit.asMilliSeconds(offsetUnit, startOffset);
-        this.endOffsetInMillis = TimeUnit.asMilliSeconds(offsetUnit, endOffset);
+        this.startTime = timeUnit.fromMilliSeconds(DateUtil.parseTime(start));
+        this.endTime = timeUnit.fromMilliSeconds(DateUtil.parseTime(end));
+        this.startOffsetTime = timeUnit.fromMilliSeconds(TimeUnit.asMilliSeconds(offsetUnit, startOffset));
+        this.endOffsetTime = timeUnit.fromMilliSeconds(TimeUnit.asMilliSeconds(offsetUnit, endOffset));
     }
 
     @Override
@@ -112,8 +120,8 @@ public abstract class AbstractInTimeRangeDual<T extends Comparable<T>> extends K
         return RangeUtil.inRange(
                 startValue,
                 endValue,
-                getValueFromOffset(startInMillis, startOffsetInMillis),
-                getValueFromOffset(endInMillis, endOffsetInMillis),
+                getValueFromOffset(startTime, startOffsetTime),
+                getValueFromOffset(endTime, endOffsetTime),
                 startInclusive,
                 endInclusive
         );
@@ -124,7 +132,7 @@ public abstract class AbstractInTimeRangeDual<T extends Comparable<T>> extends K
             return null != value ? toT.apply(value) : null;
         }
 
-        final long base = null != value ? value : System.currentTimeMillis();
+        final long base = null != value ? value : timeUnit.fromMilliSeconds(System.currentTimeMillis());
         return toT.apply(base + offset);
     }
 
@@ -147,6 +155,7 @@ public abstract class AbstractInTimeRangeDual<T extends Comparable<T>> extends K
                 .append(endOffset, otherPredicate.endOffset)
                 .append(endInclusive, otherPredicate.endInclusive)
                 .append(offsetUnit, otherPredicate.offsetUnit)
+                .append(timeUnit, otherPredicate.timeUnit)
                 .isEquals();
     }
 
@@ -161,6 +170,7 @@ public abstract class AbstractInTimeRangeDual<T extends Comparable<T>> extends K
                 .append(endOffset)
                 .append(endInclusive)
                 .append(offsetUnit)
+                .append(timeUnit)
                 .toHashCode();
     }
 
@@ -175,6 +185,7 @@ public abstract class AbstractInTimeRangeDual<T extends Comparable<T>> extends K
                 .append("endOffset", endOffset)
                 .append("endInclusive", endInclusive)
                 .append("offsetUnit", offsetUnit)
+                .append("timeUnit", timeUnit)
                 .toString();
     }
 
@@ -204,6 +215,15 @@ public abstract class AbstractInTimeRangeDual<T extends Comparable<T>> extends K
 
     public TimeUnit getOffsetUnit() {
         return offsetUnit;
+    }
+
+    @JsonInclude(Include.NON_DEFAULT)
+    public TimeUnit getTimeUnit() {
+        return timeUnit;
+    }
+
+    protected void setTimeUnit(final TimeUnit timeUnit) {
+        this.timeUnit = timeUnit;
     }
 
     protected void setStart(final String start) {
@@ -277,6 +297,11 @@ public abstract class AbstractInTimeRangeDual<T extends Comparable<T>> extends K
 
         public B offsetUnit(final TimeUnit timeUnit) {
             getPredicate().setOffsetUnit(timeUnit);
+            return getSelf();
+        }
+
+        public B timeUnit(final TimeUnit timeUnit) {
+            getPredicate().setTimeUnit(timeUnit);
             return getSelf();
         }
 

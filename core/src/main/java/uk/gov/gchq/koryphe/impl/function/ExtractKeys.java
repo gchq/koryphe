@@ -31,9 +31,6 @@ import java.util.Map;
 public class ExtractKeys<K, V> extends KorypheFunction<Map<K, V>, Iterable<K>> {
     @Override
     public Iterable<K> apply(final Map<K, V> map) {
-        if (null == map) {
-            throw new IllegalArgumentException("Input cannot be null");
-        }
-        return map.keySet();
+        return null == map ? null : map.keySet();
     }
 }

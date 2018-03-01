@@ -16,6 +16,7 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import uk.gov.gchq.koryphe.Since;
@@ -54,6 +55,10 @@ import uk.gov.gchq.koryphe.Since;
  * System.currentTimeMillis() + offset.
  * </p>
  * <p>
+ * By default checks are carried out assuming the data will be in milliseconds.
+ * If this is not the case you can change the time unit using the timeUnit property.
+ * </p>
+ * <p>
  * You can configure the start and end time strings using one of the following formats:
  * </p>
  * <ul>
@@ -68,6 +73,7 @@ import uk.gov.gchq.koryphe.Since;
  *
  * @see Builder
  */
+@JsonPropertyOrder(value = {"start", "startOffset", "end", "endOffset", "startInclusive", "endInclusive", "timeUnit", "offsetUnit"}, alphabetic = true)
 @JsonDeserialize(builder = InTimeRangeDual.Builder.class)
 @Since("1.1.0")
 public class InTimeRangeDual extends AbstractInTimeRangeDual<Long> {

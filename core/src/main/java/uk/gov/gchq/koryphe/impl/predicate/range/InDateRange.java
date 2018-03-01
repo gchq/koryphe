@@ -16,9 +16,11 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.util.TimeUnit;
 
 import java.util.Date;
 
@@ -67,16 +69,25 @@ import java.util.Date;
  *
  * @see Builder
  */
+@JsonPropertyOrder(value = {"start", "startOffset", "end", "endOffset", "startInclusive", "endInclusive", "offsetUnit"}, alphabetic = true)
 @JsonDeserialize(builder = InDateRange.Builder.class)
 @Since("1.1.0")
 public class InDateRange extends AbstractInTimeRange<Date> {
-    protected InDateRange() {
+    public InDateRange() {
         super(new InDateRangeDual());
     }
 
     public static class Builder extends BaseBuilder<Builder, InDateRange, Date> {
         public Builder() {
             super(new InDateRange());
+        }
+
+        @Override
+        public Builder timeUnit(final TimeUnit timeUnit) {
+            if (!TimeUnit.MILLISECOND.equals(timeUnit)) {
+                throw new IllegalArgumentException("timeUnit must be set to " + TimeUnit.MILLISECOND);
+            }
+            return this;
         }
     }
 }

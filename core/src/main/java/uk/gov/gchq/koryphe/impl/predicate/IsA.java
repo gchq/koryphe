@@ -22,6 +22,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
+import uk.gov.gchq.koryphe.serialisation.json.SimpleClassNameIdResolver;
 
 /**
  * An <code>IsA</code> {@link java.util.function.Predicate} tests whether an input {@link Object} is an
@@ -60,7 +61,7 @@ public class IsA extends KoryphePredicate<Object> {
      */
     public void setType(final String type) {
         try {
-            this.type = Class.forName(type);
+            this.type = Class.forName(SimpleClassNameIdResolver.getClassName(type));
         } catch (final ClassNotFoundException e) {
             throw new IllegalArgumentException("Could not load class for given type: " + type);
         }

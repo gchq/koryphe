@@ -57,6 +57,7 @@ public class DateUtilTest {
         assertDate("2017-01-02 01:02", "2017/01/02 01 02", "yyyy-MM-dd HH:mm");
         assertDate("2017-01-02 01:02:30", "2017/01/02 01:02:30", "yyyy-MM-dd HH:mm:ss");
         assertDate("2017-01-02 01:02:30", "2017-01-02-01:02:30", "yyyy-MM-dd HH:mm:ss");
+        assertDate("2017-01-02 01:02:30.123", "2017-01-02-01:02:30.123", "yyyy-MM-dd HH:mm:ss.SSS");
     }
 
     @Test

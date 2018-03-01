@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
  * A utility class for Dates.
  */
 public final class DateUtil {
+    public static final double MICROSECONDS_TO_MILLISECONDS = 0.001;
     public static final long SECONDS_TO_MILLISECONDS = 1000L;
     public static final long MINUTES_TO_MILLISECONDS = 60L * SECONDS_TO_MILLISECONDS;
     public static final long HOURS_TO_MILLISECONDS = 60L * MINUTES_TO_MILLISECONDS;
@@ -42,12 +43,13 @@ public final class DateUtil {
         FORMATS.put(Pattern.compile("^\\d{10}$"), "yyyyMMddHH");
         FORMATS.put(Pattern.compile("^\\d{12}$"), "yyyyMMddHHmm");
         FORMATS.put(Pattern.compile("^\\d{14}$"), "yyyyMMddHHmmss");
+        FORMATS.put(Pattern.compile("^\\d{17}$"), "yyyyMMddHHmmssSSS");
     }
 
     private static final Pattern CHARS_TO_STRIP = Pattern.compile("[/_.:\\-| ]");
     private static final String ERROR_MSG = "The provided date string %s could not be parsed. " +
             "Please use a timestamp in milliseconds or one of the following formats: "
-            + "[yyyy/MM, yyyy/MM/dd, yyyy/MM/dd HH, yyyy/MM/dd HH:mm, yyyy/MM/dd HH:mm:ss]"
+            + "[yyyy/MM, yyyy/MM/dd, yyyy/MM/dd HH, yyyy/MM/dd HH:mm, yyyy/MM/dd HH:mm:ss, yyyy/MM/dd HH:mm:ss.SSS]"
             + ". You can use a space, '-', '/', '_', ':', '|', or '.' to separate the parts.";
 
     private DateUtil() {
@@ -65,6 +67,7 @@ public final class DateUtil {
      * <li>yyyy/MM/dd HH</li>
      * <li>yyyy/MM/dd HH:mm</li>
      * <li>yyyy/MM/dd HH:mm:ss</li>
+     * <li>yyyy/MM/dd HH:mm:ss.SSS</li>
      * </ul>
      * You can use a space, '-', '/', '_', ':', '|', or '.' to separate the parts.
      *
@@ -110,6 +113,7 @@ public final class DateUtil {
      * <li>yyyy/MM/dd HH</li>
      * <li>yyyy/MM/dd HH:mm</li>
      * <li>yyyy/MM/dd HH:mm:ss</li>
+     * <li>yyyy/MM/dd HH:mm:ss.SSS</li>
      * </ul>
      * You can use a space, '-', '/', '_', ':', '|', or '.' to separate the parts.
      *
