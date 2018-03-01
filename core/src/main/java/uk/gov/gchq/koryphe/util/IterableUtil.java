@@ -15,6 +15,7 @@
  */
 package uk.gov.gchq.koryphe.util;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Iterators;
 
 import uk.gov.gchq.koryphe.iterable.CloseableIterable;
@@ -23,6 +24,7 @@ import uk.gov.gchq.koryphe.iterable.CloseableIterator;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.function.Function;
 
 /**
@@ -64,6 +66,10 @@ public final class IterableUtil {
 
     public static <T> CloseableIterable<T> concat(final Iterable<? extends Iterable<? extends T>> iterables) {
         return new ChainedIterable<>(iterables);
+    }
+
+    public static <T> CloseableIterable<T> limit(final Iterable<T> iterable, final int start, final Integer end, final boolean truncate) {
+        return new LimitedIterable<>(iterable, start, end, truncate);
     }
 
     private static class MappedIterable<I_ITEM, O_ITEM> implements CloseableIterable<O_ITEM> {
@@ -184,6 +190,106 @@ public final class IterableUtil {
             }
 
             return currentIterator;
+        }
+    }
+
+    private static final class LimitedIterable<T> implements CloseableIterable<T> {
+        private final Iterable<T> iterable;
+        private final int start;
+        private final Integer end;
+        private final Boolean truncate;
+
+        private LimitedIterable(final Iterable<T> iterable, final int start, final Integer end, final boolean truncate) {
+            if (null != end && start > end) {
+                throw new IllegalArgumentException("The start pointer must be less than the end pointer.");
+            }
+
+            if (null == iterable) {
+                this.iterable = Collections.emptyList();
+            } else {
+                this.iterable = iterable;
+            }
+
+            this.start = start;
+            this.end = end;
+            this.truncate = truncate;
+        }
+
+        @JsonIgnore
+        public int getStart() {
+            return start;
+        }
+
+        @JsonIgnore
+        public Integer getEnd() {
+            return end;
+        }
+
+        @Override
+        public void close() {
+            CloseableUtil.close(iterable);
+        }
+
+        @Override
+        public CloseableIterator<T> iterator() {
+            return new LimitedIterator<>(iterable.iterator(), start, end, truncate);
+        }
+    }
+
+    private static final class LimitedIterator<T> implements CloseableIterator<T> {
+        private final Iterator<T> iterator;
+        private final Integer end;
+        private int index = 0;
+        private Boolean truncate = true;
+
+        private LimitedIterator(final Iterator<T> iterator, final int start, final Integer end, final boolean truncate) {
+            if (null != end && start > end) {
+                throw new IllegalArgumentException("start should be less than end");
+            }
+
+            if (null == iterator) {
+                this.iterator = Collections.emptyIterator();
+            } else {
+                this.iterator = iterator;
+            }
+            this.end = end;
+            this.truncate = truncate;
+
+            while (index < start && hasNext()) {
+                next();
+            }
+        }
+
+        @Override
+        public void close() {
+            CloseableUtil.close(iterator);
+        }
+
+        @Override
+        public boolean hasNext() {
+            final boolean withinLimit = (null == end || index < end);
+
+            if (!withinLimit && !truncate && iterator.hasNext()) {
+                // Throw an exception if we are - not within the limit, we don't want to truncate and there are items remaining.
+                throw new NoSuchElementException("Limit of " + end + " exceeded.");
+            }
+
+            final boolean hasNext = withinLimit && iterator.hasNext();
+            if (!hasNext) {
+                close();
+            }
+
+            return hasNext;
+        }
+
+        @Override
+        public T next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+
+            index++;
+            return iterator.next();
         }
     }
 }

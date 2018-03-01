@@ -46,7 +46,12 @@ public class IsShorterThan extends KoryphePredicate<Object> implements InputVali
     }
 
     public IsShorterThan(final int maxLength) {
-        this.maxLength = maxLength;
+        this(maxLength, false);
+    }
+
+    public IsShorterThan(final int maxLength, final boolean orEqualTo) {
+        setMaxLength(maxLength);
+        this.orEqualTo = orEqualTo;
     }
 
     public int getMaxLength() {
@@ -55,6 +60,11 @@ public class IsShorterThan extends KoryphePredicate<Object> implements InputVali
 
     public void setMaxLength(final int maxLength) {
         this.maxLength = maxLength;
+        if (maxLength < Integer.MAX_VALUE) {
+            delegate.setMaxLength(maxLength + 1);
+        } else {
+            delegate.setMaxLength(null);
+        }
     }
 
     public boolean isOrEqualTo() {
