@@ -20,10 +20,13 @@ import com.google.common.collect.Iterables;
 import uk.gov.gchq.koryphe.ValidationResult;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 import uk.gov.gchq.koryphe.signature.InputValidator;
+import uk.gov.gchq.koryphe.util.IterableUtil;
 
 import java.util.Map;
 
 public class Length extends KorypheFunction<Object, Integer> implements InputValidator {
+
+    private Integer maxLength;
 
     public Length() {
         // For Serialisation
@@ -40,14 +43,22 @@ public class Length extends KorypheFunction<Object, Integer> implements InputVal
         } else if (value instanceof Object[]) {
             length = ((Object[]) value).length;
         } else if (value instanceof Iterable) {
-            length = Iterables.size((Iterable) value);
+            if (null != maxLength) {
+                length = Iterables.size(IterableUtil.limit((Iterable) value, 0, maxLength, true));
+            } else {
+                length = Iterables.size((Iterable) value);
+            }
         } else if (value instanceof Map) {
             length = ((Map) value).size();
         } else {
             throw new IllegalArgumentException("Could not determine the size of the provided value");
         }
 
-        return length;
+        if (null == maxLength) {
+            return length;
+        }
+
+        return Math.min(length, maxLength);
     }
 
     @Override
@@ -63,12 +74,20 @@ public class Length extends KorypheFunction<Object, Integer> implements InputVal
                 && !Iterable.class.isAssignableFrom(arguments[0])
                 && !Map.class.isAssignableFrom(arguments[0])) {
             result.addError("Input class " + arguments[0].getName() + " must be one of the following: "
-            + String.class.getName() + ", "
-            + Object[].class.getName() + ", "
-            + Iterable.class.getName() + ", "
-            + Map.class.getName());
+                    + String.class.getName() + ", "
+                    + Object[].class.getName() + ", "
+                    + Iterable.class.getName() + ", "
+                    + Map.class.getName());
         }
 
         return result;
+    }
+
+    public Integer getMaxLength() {
+        return maxLength;
+    }
+
+    public void setMaxLength(final Integer maxLength) {
+        this.maxLength = maxLength;
     }
 }

@@ -264,7 +264,7 @@ public class IfTest extends PredicateTest {
     }
 
     @Test
-    public void shouldReturnFalseForNullInput() {
+    public void shouldDelegateNullInputToPredicates() {
         // Given
         final Comparable input = null;
         final Predicate predicate = mock(Predicate.class);
@@ -273,13 +273,13 @@ public class IfTest extends PredicateTest {
         final If<Comparable> filter = new If<>(predicate, then, otherwise);
 
         // When
-        final boolean result = filter.test(null);
+        final boolean result = filter.test(input);
 
         // Then
         assertFalse(result);
-        verify(predicate, never()).test(input);
+        verify(predicate).test(input);
         verify(then, never()).test(input);
-        verify(otherwise, never()).test(input);
+        verify(otherwise).test(input);
     }
 
     @Test
