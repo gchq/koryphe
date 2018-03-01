@@ -19,6 +19,8 @@ package uk.gov.gchq.koryphe.util;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 
+import uk.gov.gchq.koryphe.iterable.CloseableIterable;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,6 +28,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class IterableUtilTest {
 
@@ -97,5 +102,124 @@ public class IterableUtilTest {
         assertEquals(itr2Size, itr2.size());
         assertEquals(itr3Size - 1, itr3.size());
         assertEquals(itr4Size, itr4.size());
+    }
+
+    @Test
+    public void shouldLimitResultsToFirstItem() {
+        // Given
+        final List<Integer> values = Arrays.asList(0, 1, 2, 3);
+        final int start = 0;
+        final int end = 1;
+
+        // When
+        final CloseableIterable<Integer> limitedValues = IterableUtil.limit(values, start, end, true);
+
+        // Then
+        assertEquals(values.subList(start, end), Lists.newArrayList(limitedValues));
+    }
+
+    @Test
+    public void shouldLimitResultsToLastItem() {
+        // Given
+        final List<Integer> values = Arrays.asList(0, 1, 2, 3);
+        final int start = 2;
+        final int end = Integer.MAX_VALUE;
+
+        // When
+        final CloseableIterable<Integer> limitedValues = IterableUtil.limit(values, start, end, true);
+
+        // Then
+        assertEquals(values.subList(start, values.size()), Lists.newArrayList(limitedValues));
+    }
+
+    @Test
+    public void shouldNotLimitResults() {
+        // Given
+        final List<Integer> values = Arrays.asList(0, 1, 2, 3);
+        final int start = 0;
+        final int end = Integer.MAX_VALUE;
+
+        // When
+        final CloseableIterable<Integer> limitedValues = IterableUtil.limit(values, start, end, true);
+
+        // Then
+        assertEquals(values, Lists.newArrayList(limitedValues));
+    }
+
+    @Test
+    public void shouldReturnNoValuesIfStartIsBiggerThanSize() {
+        // Given
+        final List<Integer> values = Arrays.asList(0, 1, 2, 3);
+        final int start = 5;
+        final int end = Integer.MAX_VALUE;
+
+        // When
+        final CloseableIterable<Integer> limitedValues = IterableUtil.limit(values, start, end, true);
+
+        // Then
+        assertTrue(Lists.newArrayList(limitedValues).isEmpty());
+    }
+
+    @Test
+    public void shouldThrowExceptionIfStartIsBiggerThanEnd() {
+        // Given
+        final List<Integer> values = Arrays.asList(0, 1, 2, 3);
+        final int start = 3;
+        final int end = 1;
+
+        // When / Then
+        try {
+            IterableUtil.limit(values, start, end, false);
+            fail("Exception expected");
+        } catch (final IllegalArgumentException e) {
+            assertNotNull(e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldThrowExceptionIfDataIsTruncated() {
+        // Given
+        final List<Integer> values = Arrays.asList(0, 1, 2, 3);
+        final int start = 0;
+        final int end = 2;
+        final boolean truncate = false;
+
+        // When
+        final CloseableIterable<Integer> limitedValues = IterableUtil.limit(values, start, end, truncate);
+
+        // Then
+        try {
+            for (final Integer i : limitedValues) {
+                // Do nothing
+            }
+            fail("Exception expected");
+        } catch (final Exception e) {
+            assertEquals("Limit of " + end + " exceeded.", e
+                    .getMessage());
+        }
+    }
+
+    @Test
+    public void shouldHandleNullIterable() {
+        // Given
+        final CloseableIterable<Integer> nullIterable = IterableUtil.limit(null, 0, 1, true);
+
+        // Then
+        assertTrue(Lists.newArrayList(nullIterable).isEmpty());
+    }
+
+    @Test
+    public void shouldHandleLimitEqualToIterableLength() {
+        // Given
+        final List<Integer> values = Arrays.asList(0, 1, 2, 3);
+        final int start = 0;
+        final int end = 4;
+        final boolean truncate = false;
+
+        // When
+        final CloseableIterable<Integer> equalValues = IterableUtil.limit(values, start, end, truncate);
+
+        // Then
+        assertEquals(values, Lists.newArrayList(equalValues));
     }
 }
