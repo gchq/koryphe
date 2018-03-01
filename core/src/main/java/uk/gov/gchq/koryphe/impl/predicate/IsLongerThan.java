@@ -20,6 +20,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.ValidationResult;
 import uk.gov.gchq.koryphe.impl.function.Length;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
@@ -35,6 +36,7 @@ import java.util.Map;
  * Allowed object types are {@link String}s, arrays, {@link java.util.Collection}s and {@link Map}s.
  * Additional object types can easily be added by modifying the getLength(Object) method.
  */
+@Since("1.3.0")
 public class IsLongerThan extends KoryphePredicate<Object> implements InputValidator {
     private int minLength;
     private boolean orEqualTo;

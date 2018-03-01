@@ -20,6 +20,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.tuple.predicate.IntegerTupleAdaptedPredicate;
@@ -28,20 +29,16 @@ import java.util.function.Predicate;
 
 /**
  * An {@code If} is a {@link Predicate} that conditionally applies one of two predicates to a provided input.
- *
  * <p> Note that the <code>If</code> has both a number of constructors as well as a <code>Builder</code>.
  * The use case for constructors would generally be for testing a single input. </p>
- *
  * <p> The use case for the Builder allows greater flexibility,
  * mainly for allowing multiple inputs such as an Array of objects,
  * and control over which of these objects is tested by each predicate. </p>
- *
  * <p> For example,
  * Given an input array of 3 objects, one may wish to test the first object in the array against the initial predicate,
  * then pass both the second and third objects to the resulting predicate, based on the outcome of the initial test.
  * This would require use of the <code>Builder</code>, passing a selection of 0 along with the first predicate,
  * and a selection of 1, 2 with the other predicates. </p>
- *
  * This would look something like:
  * <pre>
  *     final If ifPredicate = new If.SelectedBuilder()
@@ -54,6 +51,7 @@ import java.util.function.Predicate;
  * @param <I> the type of input to be validated
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+@Since("1.3.0")
 public class If<I> extends KoryphePredicate<I> {
 
     private Boolean condition;
@@ -129,8 +127,8 @@ public class If<I> extends KoryphePredicate<I> {
      * else the <code>otherwise</code> predicate will be used.
      * The result of either of these being applied to the input is finally returned.
      *
-     * @param input     the input object to be tested
-     * @return          true if the input passes the predicate, otherwise false
+     * @param input the input object to be tested
+     * @return true if the input passes the predicate, otherwise false
      */
     @Override
     public boolean test(final I input) {
