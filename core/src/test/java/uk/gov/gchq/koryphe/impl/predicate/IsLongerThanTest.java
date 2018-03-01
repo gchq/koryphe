@@ -34,41 +34,41 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-public class IsShorterThanTest extends PredicateTest {
+public class IsLongerThanTest extends PredicateTest {
     @Test
-    public void shouldSetAndGetMaxLength() {
+    public void shouldSetAndGetMinLength() {
         // Given
-        final IsShorterThan filter = new IsShorterThan(5);
+        final IsLongerThan filter = new IsLongerThan(5);
 
         // When
-        final int maxLength1 = filter.getMaxLength();
-        filter.setMaxLength(10);
-        final int maxLength2 = filter.getMaxLength();
+        final int minLength1 = filter.getMinLength();
+        filter.setMinLength(10);
+        final int minLength2 = filter.getMinLength();
 
         // Then
-        assertEquals(5, maxLength1);
-        assertEquals(10, maxLength2);
+        assertEquals(5, minLength1);
+        assertEquals(10, minLength2);
     }
 
     @Test
-    public void shouldAcceptTheValueWhenLessThan() {
+    public void shouldAcceptTheValueWhenMoreThan() {
         // Given
-        final IsShorterThan filter = new IsShorterThan(5);
+        final IsLongerThan filter = new IsLongerThan(5);
 
         // When
-        final boolean accepted = filter.test("1234");
+        final boolean accepted = filter.test("123456");
 
         // Then
         assertTrue(accepted);
     }
 
     @Test
-    public void shouldRejectTheValueWhenMoreThan() {
+    public void shouldRejectTheValueWhenLessThan() {
         // Given
-        final IsShorterThan filter = new IsShorterThan(5);
+        final IsLongerThan filter = new IsLongerThan(5);
 
         // When
-        final boolean accepted = filter.test("123456");
+        final boolean accepted = filter.test("1234");
 
         // Then
         assertFalse(accepted);
@@ -77,7 +77,7 @@ public class IsShorterThanTest extends PredicateTest {
     @Test
     public void shouldAcceptTheIterableValueWhenEqualTo() {
         // Given
-        final IsShorterThan filter = new IsShorterThan(5, true);
+        final IsLongerThan filter = new IsLongerThan(5, true);
 
         // When
         final boolean accepted = filter.test(Collections.nCopies(5, "item"));
@@ -89,7 +89,7 @@ public class IsShorterThanTest extends PredicateTest {
     @Test
     public void shouldRejectTheIterableValueWhenNotEqualTo() {
         // Given
-        final IsShorterThan filter = new IsShorterThan(5, false);
+        final IsLongerThan filter = new IsLongerThan(5, false);
 
         // When
         final boolean accepted = filter.test(Collections.nCopies(5, "item"));
@@ -99,24 +99,24 @@ public class IsShorterThanTest extends PredicateTest {
     }
 
     @Test
-    public void shouldAcceptTheIterableValueWhenLessThan() {
+    public void shouldAcceptTheIterableValueWhenMoreThan() {
         // Given
-        final IsShorterThan filter = new IsShorterThan(5, true);
+        final IsLongerThan filter = new IsLongerThan(5, true);
 
         // When
-        final boolean accepted = filter.test(Collections.nCopies(4, "item"));
+        final boolean accepted = filter.test(Collections.nCopies(6, "item"));
 
         // Then
         assertTrue(accepted);
     }
 
     @Test
-    public void shouldRejectTheIterableValueWhenMoreThan() {
+    public void shouldRejectTheIterableValueWhenLessThan() {
         // Given
-        final IsShorterThan filter = new IsShorterThan(5);
+        final IsLongerThan filter = new IsLongerThan(5);
 
         // When
-        final boolean accepted = filter.test(Collections.nCopies(6, "item"));
+        final boolean accepted = filter.test(Collections.nCopies(4, "item"));
 
         // Then
         assertFalse(accepted);
@@ -125,7 +125,7 @@ public class IsShorterThanTest extends PredicateTest {
     @Test
     public void shouldRejectTheValueWhenEqual() {
         // Given
-        final IsShorterThan filter = new IsShorterThan(5);
+        final IsLongerThan filter = new IsLongerThan(5);
 
         // When
         final boolean accepted = filter.test("12345");
@@ -137,7 +137,7 @@ public class IsShorterThanTest extends PredicateTest {
     @Test
     public void shouldThrowExceptionWhenTheValueWhenUnknownType() {
         // Given
-        final IsShorterThan filter = new IsShorterThan(5);
+        final IsLongerThan filter = new IsLongerThan(5);
 
         // When / Then
         try {
@@ -151,30 +151,30 @@ public class IsShorterThanTest extends PredicateTest {
     @Test
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
-        final int max = 5;
-        final IsShorterThan filter = new IsShorterThan(max);
+        final int min = 5;
+        final IsLongerThan filter = new IsLongerThan(min);
 
         // When
         final String json = JsonSerialiser.serialise(filter);
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.IsShorterThan\",%n" +
+                "  \"class\" : \"uk.gov.gchq.koryphe.impl.predicate.IsLongerThan\",%n" +
                 "  \"orEqualTo\" : false,%n" +
-                "  \"maxLength\" : 5%n" +
+                "  \"minLength\" : 5%n" +
                 "}"), json);
 
         // When 2
-        final IsShorterThan deserialisedFilter = JsonSerialiser.deserialise(json, IsShorterThan.class);
+        final IsLongerThan deserialisedFilter = JsonSerialiser.deserialise(json, IsLongerThan.class);
 
         // Then 2
         assertNotNull(deserialisedFilter);
-        assertEquals(max, deserialisedFilter.getMaxLength());
+        assertEquals(min, deserialisedFilter.getMinLength());
     }
 
     @Test
     public void shouldCheckInputClass() {
-        final IsShorterThan predicate = new IsShorterThan(10);
+        final IsLongerThan predicate = new IsLongerThan(10);
 
         assertTrue(predicate.isInputValid(String.class).isValid());
         assertTrue(predicate.isInputValid(Object[].class).isValid());
@@ -190,12 +190,12 @@ public class IsShorterThanTest extends PredicateTest {
     }
 
     @Override
-    protected Class<IsShorterThan> getPredicateClass() {
-        return IsShorterThan.class;
+    protected Class<IsLongerThan> getPredicateClass() {
+        return IsLongerThan.class;
     }
 
     @Override
-    protected IsShorterThan getInstance() {
-        return new IsShorterThan(5);
+    protected IsLongerThan getInstance() {
+        return new IsLongerThan(5);
     }
 }

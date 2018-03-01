@@ -20,7 +20,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.ValidationResult;
 import uk.gov.gchq.koryphe.impl.function.Length;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
@@ -29,41 +28,40 @@ import uk.gov.gchq.koryphe.signature.InputValidator;
 import java.util.Map;
 
 /**
- * An <code>IsShorterThan</code> is a {@link java.util.function.Predicate} that checks that the input
- * object has a length less than a maximum length. There is also an orEqualTo flag that can be set to allow
- * the input object length to be less than or equal to the maximum length.
+ * An <code>IsLongerThan</code> is a {@link java.util.function.Predicate} that checks that the input
+ * object has a length more than a minimum length. There is also an orEqualTo flag that can be set to allow
+ * the input object length to be more than or equal to the minimum length.
  * <p>
- * Allowed object types are {@link String}s, arrays, {@link java.util.Collection}s and {@link java.util.Map}s.
+ * Allowed object types are {@link String}s, arrays, {@link java.util.Collection}s and {@link Map}s.
  * Additional object types can easily be added by modifying the getLength(Object) method.
  */
-@Since("1.0.0")
-public class IsShorterThan extends KoryphePredicate<Object> implements InputValidator {
-    private int maxLength;
+public class IsLongerThan extends KoryphePredicate<Object> implements InputValidator {
+    private int minLength;
     private boolean orEqualTo;
 
     private final Length delegate = new Length();
 
     // Default constructor for serialisation
-    public IsShorterThan() {
+    public IsLongerThan() {
     }
 
-    public IsShorterThan(final int maxLength) {
-        this(maxLength, false);
+    public IsLongerThan(final int minLength) {
+        this(minLength, false);
     }
 
-    public IsShorterThan(final int maxLength, final boolean orEqualTo) {
-        setMaxLength(maxLength);
+    public IsLongerThan(final int minLength, final boolean orEqualTo) {
+        setMinLength(minLength);
         this.orEqualTo = orEqualTo;
     }
 
-    public int getMaxLength() {
-        return maxLength;
+    public int getMinLength() {
+        return minLength;
     }
 
-    public void setMaxLength(final int maxLength) {
-        this.maxLength = maxLength;
-        if (maxLength < Integer.MAX_VALUE) {
-            delegate.setMaxLength(maxLength + 1);
+    public void setMinLength(final int minLength) {
+        this.minLength = minLength;
+        if (minLength < Integer.MAX_VALUE) {
+            delegate.setMaxLength(minLength + 1);
         } else {
             delegate.setMaxLength(null);
         }
@@ -84,9 +82,9 @@ public class IsShorterThan extends KoryphePredicate<Object> implements InputVali
         }
 
         if (orEqualTo) {
-            return getLength(input) <= maxLength;
+            return getLength(input) >= minLength;
         } else {
-            return getLength(input) < maxLength;
+            return getLength(input) > minLength;
         }
     }
 
@@ -126,9 +124,9 @@ public class IsShorterThan extends KoryphePredicate<Object> implements InputVali
             return false;
         }
 
-        final IsShorterThan that = (IsShorterThan) obj;
+        final IsLongerThan that = (IsLongerThan) obj;
         return new EqualsBuilder()
-                .append(maxLength, that.maxLength)
+                .append(minLength, that.minLength)
                 .append(orEqualTo, that.orEqualTo)
                 .isEquals();
     }
@@ -136,7 +134,7 @@ public class IsShorterThan extends KoryphePredicate<Object> implements InputVali
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-                .append(maxLength)
+                .append(minLength)
                 .append(orEqualTo)
                 .toHashCode();
     }
@@ -144,7 +142,7 @@ public class IsShorterThan extends KoryphePredicate<Object> implements InputVali
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("maxLength", maxLength)
+                .append("minLength", minLength)
                 .append("orEqualTo", orEqualTo)
                 .toString();
     }
