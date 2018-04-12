@@ -26,10 +26,10 @@ import java.util.function.Function;
 /**
  * An {@link Adapted} {@link Function}.
  *
- * @param <I> Input type
+ * @param <I>  Input type
  * @param <FI> Adapted input type for function
  * @param <FO> Function output to be adapted
- * @param <O> Output type
+ * @param <O>  Output type
  */
 public abstract class AdaptedFunction<I, FI, FO, O> extends Adapted<I, FI, FO, O, I> implements Function<I, O> {
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")

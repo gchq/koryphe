@@ -19,6 +19,7 @@ package uk.gov.gchq.koryphe.function;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.composite.Composite;
 
 import java.util.List;
@@ -33,6 +34,7 @@ import java.util.function.Function;
  * @param <C> Type of BinaryOperator components
  */
 @Since("1.0.0")
+@Summary("A Composite Function, applying each function in turn, returning the last function.")
 public class FunctionComposite<I, O, C extends Function> extends Composite<C> implements Function<I, O> {
     /**
      * Default - for serialisation.
