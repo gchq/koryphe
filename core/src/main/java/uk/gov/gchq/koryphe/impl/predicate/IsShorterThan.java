@@ -21,6 +21,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.ValidationResult;
 import uk.gov.gchq.koryphe.impl.function.Length;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
@@ -37,6 +38,7 @@ import java.util.Map;
  * Additional object types can easily be added by modifying the getLength(Object) method.
  */
 @Since("1.0.0")
+@Summary("Checks if the input object has a length more than than the maximum value (there is also an orEqualTo flag).")
 public class IsShorterThan extends KoryphePredicate<Object> implements InputValidator {
     private int maxLength;
     private boolean orEqualTo;

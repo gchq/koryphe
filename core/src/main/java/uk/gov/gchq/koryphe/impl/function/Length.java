@@ -18,6 +18,7 @@ package uk.gov.gchq.koryphe.impl.function;
 import com.google.common.collect.Iterables;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.ValidationResult;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 import uk.gov.gchq.koryphe.signature.InputValidator;
@@ -25,7 +26,11 @@ import uk.gov.gchq.koryphe.util.IterableUtil;
 
 import java.util.Map;
 
+/**
+ * A {@link Length} is a {@link KorypheFunction} that returns the length for a provided object.
+ */
 @Since("1.3.0")
+@Summary("Returns the length of a provided object.")
 public class Length extends KorypheFunction<Object, Integer> implements InputValidator {
 
     private Integer maxLength;

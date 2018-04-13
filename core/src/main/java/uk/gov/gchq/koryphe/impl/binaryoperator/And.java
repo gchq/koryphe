@@ -18,6 +18,7 @@ package uk.gov.gchq.koryphe.impl.binaryoperator;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
 
 /**
@@ -26,6 +27,7 @@ import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
  * the logical AND operation on the inputs.
  */
 @Since("1.0.0")
+@Summary("Takes two booleans and applies the logical AND operation.")
 public class And extends KorypheBinaryOperator<Boolean> {
 
     @Override

@@ -19,6 +19,7 @@ package uk.gov.gchq.koryphe.tuple.function;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.FunctionComposite;
 import uk.gov.gchq.koryphe.tuple.Tuple;
 
@@ -32,6 +33,7 @@ import java.util.function.Function;
  * @param <R> Reference type used by tuples
  */
 @Since("1.0.0")
+@Summary("Allows different functions to be applied to different fields in tuples as a single function.")
 public class TupleAdaptedFunctionComposite<R>
         extends FunctionComposite<Tuple<R>, Tuple<R>, TupleAdaptedFunction<R, ? extends Object, ? extends Object>> {
     @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)

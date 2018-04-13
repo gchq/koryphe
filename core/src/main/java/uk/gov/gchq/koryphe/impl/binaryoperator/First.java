@@ -17,6 +17,7 @@
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
 
 /**
@@ -24,6 +25,7 @@ import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
  * value will never change and just returns the first non null value it gets.
  */
 @Since("1.0.0")
+@Summary("Assumes the value will never change and returns the first non nun value given.")
 public class First extends KorypheBinaryOperator<Object> {
     @Override
     protected Object _apply(final Object a, final Object b) {

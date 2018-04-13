@@ -23,6 +23,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.ValidationResult;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 import uk.gov.gchq.koryphe.signature.InputValidator;
@@ -33,6 +34,7 @@ import uk.gov.gchq.koryphe.signature.InputValidator;
  * the input value to be more than or equal to the control value.
  */
 @Since("1.0.0")
+@Summary("Checks if the input comparable is more than the control value (there is also an orEqualTo flag).")
 public class IsMoreThan extends KoryphePredicate<Comparable> implements InputValidator {
     private Comparable controlValue;
     private boolean orEqualTo;

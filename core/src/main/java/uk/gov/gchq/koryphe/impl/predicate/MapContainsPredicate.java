@@ -22,6 +22,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 import java.util.Map;
@@ -32,6 +33,7 @@ import java.util.function.Predicate;
  * whether a {@link Map} contains a key that matches a given predicate.
  */
 @Since("1.0.0")
+@Summary("Checks whether a map contains a key that matches a given predicate.")
 public class MapContainsPredicate extends KoryphePredicate<Map> {
     private Predicate keyPredicate;
 

@@ -17,6 +17,7 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
 /**
@@ -24,6 +25,7 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
  * a single object as an input, and simply returns that object.
  */
 @Since("1.0.0")
+@Summary("Takes a single object as an input and returns that object.")
 public class Identity extends KorypheFunction<Object, Object> {
     @Override
     public Object apply(final Object input) {

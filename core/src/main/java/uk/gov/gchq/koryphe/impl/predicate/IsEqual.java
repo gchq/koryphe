@@ -23,6 +23,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 /**
@@ -30,6 +31,7 @@ import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
  * equal to a control value.
  */
 @Since("1.0.0")
+@Summary("Checks whether the input object is equal to a control value.")
 public class IsEqual extends KoryphePredicate<Object> {
     private Object controlValue;
 

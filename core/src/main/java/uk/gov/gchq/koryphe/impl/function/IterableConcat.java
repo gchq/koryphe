@@ -16,6 +16,7 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 import uk.gov.gchq.koryphe.util.IterableUtil;
 
@@ -26,6 +27,7 @@ import uk.gov.gchq.koryphe.util.IterableUtil;
  * @param <I_ITEM> the type of objects in the innermost iterable
  */
 @Since("1.1.0")
+@Summary("Flattens an iterable of iterables by concatenating them.")
 public class IterableConcat<I_ITEM> extends KorypheFunction<Iterable<Iterable<I_ITEM>>, Iterable<I_ITEM>> {
     @Override
     public Iterable<I_ITEM> apply(final Iterable<Iterable<I_ITEM>> items) {

@@ -17,6 +17,7 @@
 package uk.gov.gchq.koryphe.impl.predicate;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.tuple.predicate.KoryphePredicate2;
 
 /**
@@ -24,6 +25,7 @@ import uk.gov.gchq.koryphe.tuple.predicate.KoryphePredicate2;
  * are equal.
  */
 @Since("1.0.0")
+@Summary("Returns true if the two input objects are equal.")
 public class AreEqual extends KoryphePredicate2<Object, Object> {
     /**
      * @param input1 input 1

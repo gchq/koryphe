@@ -21,6 +21,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 /**
@@ -30,6 +31,7 @@ import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
  * <code>setIgnoreCase(true)</code>.
  */
 @Since("1.0.0")
+@Summary("Checks whether a provided string contains some string value (case sensitive by default, use setIgnoreCase flag).")
 public class StringContains extends KoryphePredicate<String> {
     private String value;
     private boolean ignoreCase;

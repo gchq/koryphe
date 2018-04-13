@@ -23,11 +23,17 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 import java.util.regex.Pattern;
 
+/**
+ * A {@link Regex} is a {@link KoryphePredicate} that returns true if an input
+ * string matches a supplied regex pattern, false otherwise.
+ */
 @Since("1.0.0")
+@Summary("Returns true if input string matches the supplied regex pattern, false otherwise.")
 public class Regex extends KoryphePredicate<String> {
     private Pattern controlValue;
 

@@ -17,6 +17,7 @@
 package uk.gov.gchq.koryphe.impl.predicate;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 /**
@@ -24,6 +25,7 @@ import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
  * true.
  */
 @Since("1.0.0")
+@Summary("Checks the input boolean is true.")
 public class IsTrue extends KoryphePredicate<Boolean> {
     @Override
     public boolean test(final Boolean input) {
