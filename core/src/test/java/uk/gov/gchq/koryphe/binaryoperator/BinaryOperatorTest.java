@@ -20,7 +20,9 @@ import org.junit.AssumptionViolatedException;
 import org.junit.Test;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
+import uk.gov.gchq.koryphe.util.SummaryUtil;
 import uk.gov.gchq.koryphe.util.VersionUtil;
 
 import java.io.IOException;
@@ -105,5 +107,21 @@ public abstract class BinaryOperatorTest {
         }
         assumeTrue(annotation.value() + " is not a valid value string.",
                 VersionUtil.validateVersionString(annotation.value()));
+    }
+
+    @Test
+    public void shouldHaveSummaryAnnotation() {
+        // Given
+        final BinaryOperator instance = getInstance();
+
+        // When
+        final Summary annotation = instance.getClass().getAnnotation(Summary.class);
+
+        // Then
+        if (null == annotation || null == annotation.value()) {
+            throw new AssumptionViolatedException("Missing Summary annotation on class " + instance.getClass().getName());
+        }
+        assumeTrue(annotation.value() + " is not a valid value string.",
+                SummaryUtil.validateSummaryString(annotation.value()));
     }
 }
