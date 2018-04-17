@@ -17,6 +17,7 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
 import java.lang.reflect.InvocationTargetException;
@@ -29,6 +30,7 @@ import java.lang.reflect.Method;
  * The resulting object is what is returned from the method.
  */
 @Since("1.3.1")
+@Summary("Calls a supplied method")
 public class CallMethod extends KorypheFunction<Object, Object> {
     private String method;
 
