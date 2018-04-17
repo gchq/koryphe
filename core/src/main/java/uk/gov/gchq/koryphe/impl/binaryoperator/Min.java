@@ -17,6 +17,7 @@
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
 
 /**
@@ -25,6 +26,7 @@ import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
  * are compatible and can be compared against each other.
  */
 @Since("1.0.0")
+@Summary("Calculates the min value")
 public class Min extends KorypheBinaryOperator<Comparable> {
     @Override
     protected Comparable _apply(final Comparable a, final Comparable b) {

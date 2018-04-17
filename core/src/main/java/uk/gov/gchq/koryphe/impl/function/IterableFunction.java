@@ -21,6 +21,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 import uk.gov.gchq.koryphe.util.IterableUtil;
 
@@ -38,6 +39,7 @@ import java.util.function.Function;
  * @param <O_ITEM> the type of objects in the output iterable
  */
 @Since("1.1.0")
+@Summary("Lazily applies functions to each item in an iterable")
 public class IterableFunction<I_ITEM, O_ITEM> extends KorypheFunction<Iterable<I_ITEM>, Iterable<O_ITEM>> {
     private List<Function> functions = new ArrayList<>();
 

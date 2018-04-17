@@ -19,6 +19,7 @@ package uk.gov.gchq.koryphe.binaryoperator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.composite.Composite;
 
 import java.util.List;
@@ -32,6 +33,7 @@ import java.util.function.BinaryOperator;
  * @param <C> Type of BinaryOperator components
  */
 @Since("1.0.0")
+@Summary("Applies multiple binary operators")
 public class BinaryOperatorComposite<T, C extends BinaryOperator<T>> extends Composite<C> implements BinaryOperator<T> {
     /**
      * Default - for serialisation.

@@ -25,6 +25,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 import java.util.Arrays;
@@ -33,9 +34,10 @@ import java.util.HashSet;
 
 /**
  * An <code>AreIn</code> is a {@link java.util.function.BiPredicate}
- * that checks whether a provided {@link java.util.Collection} contains all the input values.
+ * that checks if a provided {@link java.util.Collection} contains all the provided input values.
  */
 @Since("1.0.0")
+@Summary("Checks if a provided collection contains all the provided input values")
 public class AreIn extends KoryphePredicate<Collection<?>> {
     private Collection<?> allowedValues;
 

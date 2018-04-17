@@ -21,6 +21,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
 
 /**
@@ -29,6 +30,7 @@ import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
  * separator using setSeparator(String).
  */
 @Since("1.0.0")
+@Summary("Concatenates 2 strings")
 public class StringConcat extends KorypheBinaryOperator<String> {
     private static final String DEFAULT_SEPARATOR = ",";
     private String separator = DEFAULT_SEPARATOR;

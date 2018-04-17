@@ -22,6 +22,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 
 import java.util.Map;
 import java.util.function.Predicate;
@@ -32,6 +33,7 @@ import java.util.function.Predicate;
  * {@link java.util.function.Predicate}.
  */
 @Since("1.0.0")
+@Summary("Extracts a value from a map then applies the predicate to it")
 public class PredicateMap<T> extends KoryphePredicate<Map<?, T>> {
     private Predicate<? super T> predicate;
     private Object key;

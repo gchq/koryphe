@@ -17,6 +17,7 @@
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
 
 import java.util.Collection;
@@ -26,6 +27,7 @@ import java.util.Collection;
  * {@link java.util.Collection}s together.
  */
 @Since("1.0.0")
+@Summary("Concatenates collections together.")
 public class CollectionConcat<T> extends KorypheBinaryOperator<Collection<T>> {
     @Override
     protected Collection<T> _apply(final Collection<T> a, final Collection<T> b) {

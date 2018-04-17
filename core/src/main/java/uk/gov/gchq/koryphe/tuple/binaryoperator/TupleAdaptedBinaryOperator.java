@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.binaryoperator.AdaptedBinaryOperator;
 import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.tuple.TupleInputAdapter;
@@ -38,6 +39,7 @@ import java.util.function.BinaryOperator;
  */
 @JsonPropertyOrder(value = {"class", "selection", "binaryOperator"}, alphabetic = true)
 @Since("1.0.0")
+@Summary("Applies a binary operator and adapts the input/output")
 public class TupleAdaptedBinaryOperator<R, OT> extends AdaptedBinaryOperator<Tuple<R>, OT> {
     /**
      * Default - for serialisation.

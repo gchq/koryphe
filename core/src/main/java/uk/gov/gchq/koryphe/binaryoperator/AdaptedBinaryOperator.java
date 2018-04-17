@@ -19,6 +19,7 @@ package uk.gov.gchq.koryphe.binaryoperator;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.adapted.Adapted;
 
 import java.util.function.BiFunction;
@@ -32,6 +33,7 @@ import java.util.function.Function;
  * @param <OT> Input/Output type of the BinaryOperator being applied
  */
 @Since("1.0.0")
+@Summary("Applies a function and adapts the input/output")
 public class AdaptedBinaryOperator<T, OT> extends Adapted<T, OT, OT, T, T> implements BinaryOperator<T> {
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
     protected BinaryOperator<OT> binaryOperator;
