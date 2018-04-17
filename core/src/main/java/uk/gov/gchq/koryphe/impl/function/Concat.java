@@ -21,6 +21,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.tuple.function.KorypheFunction2;
 
 /**
@@ -29,6 +30,7 @@ import uk.gov.gchq.koryphe.tuple.function.KorypheFunction2;
  * you can set a custom separator using setSeparator(String).
  */
 @Since("1.0.0")
+@Summary("Converts to strings and concatenates 2 objects")
 public class Concat extends KorypheFunction2<Object, Object, String> {
     private static final String DEFAULT_SEPARATOR = ",";
     private String separator = DEFAULT_SEPARATOR;

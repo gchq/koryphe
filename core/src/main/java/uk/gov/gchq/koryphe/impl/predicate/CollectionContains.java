@@ -22,15 +22,17 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 import java.util.Collection;
 
 /**
  * An <code>CollectionContains</code> is a {@link java.util.function.Predicate}
- * that checks whether a {@link java.util.Collection} contains a provided value.
+ * that checks if a {@link java.util.Collection} contains a provided value.
  */
 @Since("1.0.0")
+@Summary("Checks if a collection contains a provided value")
 public class CollectionContains extends KoryphePredicate<Collection<?>> {
     private Object value;
 

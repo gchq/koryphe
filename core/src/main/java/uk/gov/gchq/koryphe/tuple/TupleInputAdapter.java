@@ -19,6 +19,7 @@ package uk.gov.gchq.koryphe.tuple;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 
 import java.util.Arrays;
 import java.util.function.Function;
@@ -28,6 +29,7 @@ import java.util.function.Function;
  * @param <FI> The adapted input type.
  */
 @Since("1.0.0")
+@Summary("Extracts items from a tuple")
 public class TupleInputAdapter<R, FI> implements Function<Tuple<R>, FI> {
     private R[] selection;
 

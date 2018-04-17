@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 
 /**
  * <p>
@@ -76,6 +77,7 @@ import uk.gov.gchq.koryphe.Since;
 @JsonPropertyOrder(value = {"start", "startOffset", "end", "endOffset", "startInclusive", "endInclusive", "timeUnit", "offsetUnit"}, alphabetic = true)
 @JsonDeserialize(builder = InTimeRangeDual.Builder.class)
 @Since("1.1.0")
+@Summary("Checks if the start and end timestamps are within a provided date range")
 public class InTimeRangeDual extends AbstractInTimeRangeDual<Long> {
     public static class Builder extends BaseBuilder<Builder, InTimeRangeDual, Long> {
         public Builder() {

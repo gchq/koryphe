@@ -21,12 +21,14 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 /**
  * An <code>AgeOff</code> is a {@link java.util.function.Predicate} that ages off old data based on a provided age of time in milliseconds.
  */
 @Since("1.0.0")
+@Summary("Checks if a timestamp is recent based on a provided age off time")
 public class AgeOff extends KoryphePredicate<Long> {
     public static final long HOURS_TO_MILLISECONDS = 60L * 60L * 1000L;
     public static final long DAYS_TO_MILLISECONDS = 24L * HOURS_TO_MILLISECONDS;

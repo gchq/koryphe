@@ -19,6 +19,7 @@ package uk.gov.gchq.koryphe.impl.binaryoperator;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
 
 /**
@@ -27,6 +28,7 @@ import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
  * the logical OR operation on the inputs.
  */
 @Since("1.0.0")
+@Summary("Applies the logical OR operation to 2 booleans")
 public class Or extends KorypheBinaryOperator<Boolean> {
 
     @Override

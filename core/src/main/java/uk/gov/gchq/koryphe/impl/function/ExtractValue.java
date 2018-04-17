@@ -16,20 +16,24 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
 import java.util.Map;
 
 /**
  * An <code>ExtractValue</code> is a {@link java.util.function.Function} that retrieves the value from a given {@link Map}, for the corresponding pre-configured key.
- * @param <K>   the key type
- * @param <V>   the value type
+ *
+ * @param <K> the key type
+ * @param <V> the value type
  */
 @Since("1.2.0")
+@Summary("Extracts a value from a Map")
 public class ExtractValue<K, V> extends KorypheFunction<Map<K, V>, V> {
     private K key;
 
-    public ExtractValue() { }
+    public ExtractValue() {
+    }
 
     public ExtractValue(final K key) {
         this.key = key;

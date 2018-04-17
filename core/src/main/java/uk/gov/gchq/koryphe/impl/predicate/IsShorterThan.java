@@ -21,6 +21,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.ValidationResult;
 import uk.gov.gchq.koryphe.impl.function.Length;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
@@ -31,12 +32,13 @@ import java.util.Map;
 /**
  * An <code>IsShorterThan</code> is a {@link java.util.function.Predicate} that checks that the input
  * object has a length less than a maximum length. There is also an orEqualTo flag that can be set to allow
- * the input object length to be less than or equal to the maximum length.
+ * the input length to be less than or equal to the maximum length.
  * <p>
  * Allowed object types are {@link String}s, arrays, {@link java.util.Collection}s and {@link java.util.Map}s.
  * Additional object types can easily be added by modifying the getLength(Object) method.
  */
 @Since("1.0.0")
+@Summary("Checks if the length of an input is more than than a value")
 public class IsShorterThan extends KoryphePredicate<Object> implements InputValidator {
     private int maxLength;
     private boolean orEqualTo;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2018 Crown Copyright
+ * Copyright 2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.gchq.koryphe.impl.function;
+package uk.gov.gchq.koryphe;
 
-import uk.gov.gchq.koryphe.Since;
-import uk.gov.gchq.koryphe.Summary;
-import uk.gov.gchq.koryphe.function.KorypheFunction;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * An <code>Identity</code> is a {@link java.util.function.Function} which takes
- * a single object as an input, and simply returns that object.
+ * Annotation used to provide a quick summary of the implementation.
  */
-@Since("1.0.0")
-@Summary("Returns the input value")
-public class Identity extends KorypheFunction<Object, Object> {
-    @Override
-    public Object apply(final Object input) {
-        return input;
-    }
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Summary {
+    String value();
 }

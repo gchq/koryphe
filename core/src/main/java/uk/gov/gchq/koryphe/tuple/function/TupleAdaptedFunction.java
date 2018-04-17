@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.AdaptedFunction;
 import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.tuple.TupleInputAdapter;
@@ -39,6 +40,7 @@ import java.util.function.Function;
  */
 @JsonPropertyOrder(value = {"class", "selection", "function", "projection"}, alphabetic = true)
 @Since("1.0.0")
+@Summary("Applies a function and adapts the input/output")
 public class TupleAdaptedFunction<R, FI, FO> extends AdaptedFunction<Tuple<R>, FI, FO, Tuple<R>> {
     /**
      * Default - for serialisation.
