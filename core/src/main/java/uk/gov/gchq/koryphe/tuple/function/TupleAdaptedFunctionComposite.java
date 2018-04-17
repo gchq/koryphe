@@ -33,7 +33,7 @@ import java.util.function.Function;
  * @param <R> Reference type used by tuples
  */
 @Since("1.0.0")
-@Summary("Allows different functions to be applied to different fields in tuples as a single function.")
+@Summary("Applies multiple functions and adapts the input/outputs")
 public class TupleAdaptedFunctionComposite<R>
         extends FunctionComposite<Tuple<R>, Tuple<R>, TupleAdaptedFunction<R, ? extends Object, ? extends Object>> {
     @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)

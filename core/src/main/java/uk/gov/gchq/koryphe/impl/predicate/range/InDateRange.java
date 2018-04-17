@@ -73,7 +73,7 @@ import java.util.Date;
 @JsonPropertyOrder(value = {"start", "startOffset", "end", "endOffset", "startInclusive", "endInclusive", "offsetUnit"}, alphabetic = true)
 @JsonDeserialize(builder = InDateRange.Builder.class)
 @Since("1.1.0")
-@Summary("Tests if a comparable is within a provided date range [start, end].")
+@Summary("Checks if a date is within a provided date range")
 public class InDateRange extends AbstractInTimeRange<Date> {
     public InDateRange() {
         super(new InDateRangeDual());

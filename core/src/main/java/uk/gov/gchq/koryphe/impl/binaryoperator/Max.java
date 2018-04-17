@@ -26,7 +26,7 @@ import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
  * are compatible and can be compared against each other.
  */
 @Since("1.0.0")
-@Summary("Takes in comparables and calculates the max (assuming all are compatible).")
+@Summary("Calculates the max value")
 public class Max extends KorypheBinaryOperator<Comparable> {
     @Override
     protected Comparable _apply(final Comparable a, final Comparable b) {

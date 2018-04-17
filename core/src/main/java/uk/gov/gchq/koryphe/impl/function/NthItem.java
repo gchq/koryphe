@@ -30,7 +30,7 @@ import uk.gov.gchq.koryphe.util.CloseableUtil;
  * @param <T> the type of objects in the iterable
  */
 @Since("1.1.0")
-@Summary("Returns an item based on user selection from an iterable of items of type T.")
+@Summary("Returns the item at position n in an iterable")
 public class NthItem<T> extends KorypheFunction<Iterable<T>, T> {
 
     private int selection;

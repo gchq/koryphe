@@ -32,7 +32,7 @@ import uk.gov.gchq.koryphe.ValidationResult;
  * @see NumericAggregateFunction
  */
 @Since("1.0.0")
-@Summary("Takes in numbers of the same type and calculates the product.")
+@Summary("Calculates the product of 2 numbers")
 public class Product extends NumericAggregateFunction {
     private static final Logger LOGGER = LoggerFactory.getLogger(ValidationResult.class);
 

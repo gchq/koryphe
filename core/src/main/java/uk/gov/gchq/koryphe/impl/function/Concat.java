@@ -30,7 +30,7 @@ import uk.gov.gchq.koryphe.tuple.function.KorypheFunction2;
  * you can set a custom separator using setSeparator(String).
  */
 @Since("1.0.0")
-@Summary("Takes in two objects, calls toString and then concatenates them.")
+@Summary("Converts to strings and concatenates 2 objects")
 public class Concat extends KorypheFunction2<Object, Object, String> {
     private static final String DEFAULT_SEPARATOR = ",";
     private String separator = DEFAULT_SEPARATOR;

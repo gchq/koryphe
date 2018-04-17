@@ -26,7 +26,7 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
  * value.
  */
 @Since("1.0.0")
-@Summary("Takes in an integer and returns the result of multiplying it by a pre-configured value.")
+@Summary("Multiplies an integer by a provided integer")
 public class MultiplyBy extends KorypheFunction<Integer, Integer> {
     private int by = 1;
 

@@ -30,7 +30,7 @@ import uk.gov.gchq.koryphe.serialisation.json.SimpleClassNameIdResolver;
  * instance of a given control {@link Class}.
  */
 @Since("1.0.0")
-@Summary("Tests whether an input object is an instance of a given control class.")
+@Summary("Checks if an input is an instance of a class")
 public class IsA extends KoryphePredicate<Object> {
     private Class<?> type;
 

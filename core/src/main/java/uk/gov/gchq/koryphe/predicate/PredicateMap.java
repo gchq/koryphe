@@ -33,7 +33,7 @@ import java.util.function.Predicate;
  * {@link java.util.function.Predicate}.
  */
 @Since("1.0.0")
-@Summary("A Predicate that extracts a value using a provided key and passes it to a provided Predicate.")
+@Summary("Extracts a value from a map then applies the predicate to it")
 public class PredicateMap<T> extends KoryphePredicate<Map<?, T>> {
     private Predicate<? super T> predicate;
     private Object key;

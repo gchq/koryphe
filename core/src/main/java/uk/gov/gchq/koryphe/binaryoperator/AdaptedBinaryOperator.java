@@ -33,7 +33,7 @@ import java.util.function.Function;
  * @param <OT> Input/Output type of the BinaryOperator being applied
  */
 @Since("1.0.0")
-@Summary("An Adapted BinaryOperator.")
+@Summary("Applies a function and adapts the input/output")
 public class AdaptedBinaryOperator<T, OT> extends Adapted<T, OT, OT, T, T> implements BinaryOperator<T> {
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
     protected BinaryOperator<OT> binaryOperator;

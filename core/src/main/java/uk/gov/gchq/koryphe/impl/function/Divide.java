@@ -28,7 +28,7 @@ import uk.gov.gchq.koryphe.tuple.n.Tuple2;
  * The resulting object is a {@link Tuple2} containing the quotient and remainder.
  */
 @Since("1.0.0")
-@Summary("Takes in two integers and returns the result of dividing the first by the second.")
+@Summary("Calculates the first integer divided by the second integer")
 public class Divide extends KorypheFunction2<Integer, Integer, Tuple2<Integer, Integer>> {
     @Override
     public Tuple2<Integer, Integer> apply(final Integer input1, final Integer input2) {

@@ -27,7 +27,7 @@ import uk.gov.gchq.koryphe.tuple.predicate.KoryphePredicate2;
  * {@link Comparable} is less than the second input {@link Comparable}.
  */
 @Since("1.0.0")
-@Summary("Checks the first input comparable is less than the second input comparable.")
+@Summary("Checks the first comparable is less than the second comparable")
 public class IsXLessThanY extends KoryphePredicate2<Comparable, Comparable> implements InputValidator {
     @Override
     public boolean test(final Comparable input1, final Comparable input2) {

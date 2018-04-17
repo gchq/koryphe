@@ -29,10 +29,10 @@ import java.util.Collection;
 
 /**
  * An <code>CollectionContains</code> is a {@link java.util.function.Predicate}
- * that checks whether a {@link java.util.Collection} contains a provided value.
+ * that checks if a {@link java.util.Collection} contains a provided value.
  */
 @Since("1.0.0")
-@Summary("Checks whether a collection contains a provided value.")
+@Summary("Checks if a collection contains a provided value")
 public class CollectionContains extends KoryphePredicate<Collection<?>> {
     private Object value;
 

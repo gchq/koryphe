@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
  * using setSeparator(String).
  */
 @Since("1.0.0")
-@Summary("Takes in strings, concatenates them together and omits any duplicates.")
+@Summary("Concatenates 2 strings and omits duplicates")
 public class StringDeduplicateConcat extends KorypheBinaryOperator<String> {
 
     private static final String DEFAULT_SEPARATOR = ",";

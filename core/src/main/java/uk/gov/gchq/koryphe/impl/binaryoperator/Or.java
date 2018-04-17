@@ -28,7 +28,7 @@ import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
  * the logical OR operation on the inputs.
  */
 @Since("1.0.0")
-@Summary("Takes two booleans and applies the logical OR.")
+@Summary("Applies the logical OR operation to 2 booleans")
 public class Or extends KorypheBinaryOperator<Boolean> {
 
     @Override

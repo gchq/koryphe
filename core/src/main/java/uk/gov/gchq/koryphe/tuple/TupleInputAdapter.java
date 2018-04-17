@@ -29,7 +29,7 @@ import java.util.function.Function;
  * @param <FI> The adapted input type.
  */
 @Since("1.0.0")
-@Summary("")
+@Summary("Extracts items from a tuple")
 public class TupleInputAdapter<R, FI> implements Function<Tuple<R>, FI> {
     private R[] selection;
 

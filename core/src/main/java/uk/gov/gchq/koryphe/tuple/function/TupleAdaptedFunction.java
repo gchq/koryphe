@@ -40,7 +40,7 @@ import java.util.function.Function;
  */
 @JsonPropertyOrder(value = {"class", "selection", "function", "projection"}, alphabetic = true)
 @Since("1.0.0")
-@Summary("Adapts a function so it can be applied to selected fields from a tuple, projecting output back into the tuple.")
+@Summary("Applies a function and adapts the input/output")
 public class TupleAdaptedFunction<R, FI, FO> extends AdaptedFunction<Tuple<R>, FI, FO, Tuple<R>> {
     /**
      * Default - for serialisation.

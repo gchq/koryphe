@@ -33,7 +33,7 @@ import java.util.function.BinaryOperator;
  * @param <R> Reference type used by tuples
  */
 @Since("1.0.0")
-@Summary("Allows different BinaryOperators to be applied to different fields in tuples as a single BinaryOperator.")
+@Summary("Applies multiple binary operators, adapting the input/outputs")
 public class TupleAdaptedBinaryOperatorComposite<R> extends BinaryOperatorComposite<Tuple<R>, TupleAdaptedBinaryOperator<R, ? extends Object>> {
     @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
     public List<TupleAdaptedBinaryOperator<R, ? extends Object>> getComponents() {

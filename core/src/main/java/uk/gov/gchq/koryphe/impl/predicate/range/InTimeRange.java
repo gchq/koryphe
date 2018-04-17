@@ -74,7 +74,7 @@ import uk.gov.gchq.koryphe.Summary;
 @JsonPropertyOrder(value = {"start", "startOffset", "end", "endOffset", "startInclusive", "endInclusive", "timeUnit", "offsetUnit"}, alphabetic = true)
 @JsonDeserialize(builder = InTimeRange.Builder.class)
 @Since("1.1.0")
-@Summary("Tests if a long representing a timestamp is within a provided range [start, end].")
+@Summary("Checks if a timestamp is within a provided date range")
 public class InTimeRange extends AbstractInTimeRange<Long> {
     public InTimeRange() {
         super(new InTimeRangeDual());

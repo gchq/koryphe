@@ -32,7 +32,7 @@ import uk.gov.gchq.koryphe.ValidationResult;
  * @see NumericAggregateFunction
  */
 @Since("1.0.0")
-@Summary("Takes in numbers of the same type and calculates the sum.")
+@Summary("Calculates the sum of 2 numbers")
 public class Sum extends NumericAggregateFunction {
     private static final Logger LOGGER = LoggerFactory.getLogger(ValidationResult.class);
 

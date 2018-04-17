@@ -77,7 +77,7 @@ import uk.gov.gchq.koryphe.Summary;
 @JsonPropertyOrder(value = {"start", "startOffset", "end", "endOffset", "startInclusive", "endInclusive", "timeUnit", "offsetUnit"}, alphabetic = true)
 @JsonDeserialize(builder = InTimeRangeDual.Builder.class)
 @Since("1.1.0")
-@Summary("Tests if a start and end comarable are within a provided time range [start, end].")
+@Summary("Checks if the start and end timestamps are within a provided date range")
 public class InTimeRangeDual extends AbstractInTimeRangeDual<Long> {
     public static class Builder extends BaseBuilder<Builder, InTimeRangeDual, Long> {
         public Builder() {

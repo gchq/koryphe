@@ -28,7 +28,7 @@ import uk.gov.gchq.koryphe.util.CloseableUtil;
  * {@link Iterable}.
  */
 @Since("1.1.0")
-@Summary("Returns the size of a provided iterable.")
+@Summary("Calculates the size of an iterable")
 public class Size extends KorypheFunction<Iterable, Integer> {
     @Override
     @SuppressFBWarnings(value = "DE_MIGHT_IGNORE", justification = "Any exceptions are to be ignored")

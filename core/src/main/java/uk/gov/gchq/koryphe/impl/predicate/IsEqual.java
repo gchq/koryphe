@@ -27,11 +27,11 @@ import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 /**
- * An <code>IsEqual</code> is a {@link java.util.function.Predicate} that checks that the input object is
+ * An <code>IsEqual</code> is a {@link java.util.function.Predicate} that checks that the input is
  * equal to a control value.
  */
 @Since("1.0.0")
-@Summary("Checks whether the input object is equal to a control value.")
+@Summary("Checks if an input is equal to a provided value")
 public class IsEqual extends KoryphePredicate<Object> {
     private Object controlValue;
 

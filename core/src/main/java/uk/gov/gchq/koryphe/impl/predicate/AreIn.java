@@ -34,10 +34,10 @@ import java.util.HashSet;
 
 /**
  * An <code>AreIn</code> is a {@link java.util.function.BiPredicate}
- * that checks whether a provided {@link java.util.Collection} contains all the provided input values.
+ * that checks if a provided {@link java.util.Collection} contains all the provided input values.
  */
 @Since("1.0.0")
-@Summary("Checks whether a provided collection contains all the provided input values.")
+@Summary("Checks if a provided collection contains all the provided input values")
 public class AreIn extends KoryphePredicate<Collection<?>> {
     private Collection<?> allowedValues;
 

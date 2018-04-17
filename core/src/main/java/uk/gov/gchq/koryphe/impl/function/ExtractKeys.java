@@ -29,7 +29,7 @@ import java.util.Map;
  * @param <V> the value type
  */
 @Since("1.1.0")
-@Summary("Extracts the set of keys from a provided map.")
+@Summary("Extracts the keys from a Map")
 public class ExtractKeys<K, V> extends KorypheFunction<Map<K, V>, Iterable<K>> {
     @Override
     public Iterable<K> apply(final Map<K, V> map) {

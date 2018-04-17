@@ -53,7 +53,7 @@ import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 @JsonPropertyOrder(value = {"start", "end", "startInclusive", "endInclusive"}, alphabetic = true)
 @JsonDeserialize(builder = InRange.Builder.class)
 @Since("1.1.0")
-@Summary("Tests if a comparable is within a provided range [start, end].")
+@Summary("Checks if a comparable is within a provided range")
 public class InRange<T extends Comparable<T>> extends KoryphePredicate<T> {
     private final InRangeDual<T> predicate;
 

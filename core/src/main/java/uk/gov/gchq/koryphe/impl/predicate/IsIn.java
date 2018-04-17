@@ -34,11 +34,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * An <code>IsIn</code> is a {@link java.util.function.Predicate} that checks that the input object is
+ * An <code>IsIn</code> is a {@link java.util.function.Predicate} that checks that the input is
  * in a set of allowed values.
  */
 @Since("1.0.0")
-@Summary("Checks whether the input object is in a set of allowed values.")
+@Summary("Checks if an input is in a set of allowed values")
 public class IsIn extends KoryphePredicate<Object> {
     private Set<Object> allowedValues;
 

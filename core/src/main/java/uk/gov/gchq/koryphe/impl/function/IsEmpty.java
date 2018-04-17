@@ -28,7 +28,7 @@ import uk.gov.gchq.koryphe.util.CloseableUtil;
  * on whether or not the input {@link Iterable} is empty.
  */
 @Since("1.1.0")
-@Summary("Returns a boolean based on whether or not the input iterable is empty")
+@Summary("Returns true if an iterable is empty")
 public class IsEmpty extends KorypheFunction<Iterable, Boolean> {
     @Override
     @SuppressFBWarnings(value = "DE_MIGHT_IGNORE", justification = "Any exceptions are to be ignored")

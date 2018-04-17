@@ -32,7 +32,7 @@ import java.util.function.Predicate;
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
 @JsonPropertyOrder(value = {"class", "selection", "predicate"}, alphabetic = true)
 @Since("1.0.0")
-@Summary("")
+@Summary("Applies a predicate and adapts an input integer tuple")
 public class IntegerTupleAdaptedPredicate extends TupleAdaptedPredicate<Integer, Object> implements InputValidator {
     public IntegerTupleAdaptedPredicate() {
     }

@@ -33,7 +33,7 @@ import java.util.function.Predicate;
  * whether a {@link Map} contains a key that matches a given predicate.
  */
 @Since("1.0.0")
-@Summary("Checks whether a map contains a key that matches a given predicate.")
+@Summary("Checks if a map contains a key that matches a predicate")
 public class MapContainsPredicate extends KoryphePredicate<Map> {
     private Predicate keyPredicate;
 

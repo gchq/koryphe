@@ -31,7 +31,7 @@ public final class SummaryUtil {
      */
 
     public static boolean validateSummaryString(final String summaryString) {
-        return summaryString.length() <= 100;
+        return summaryString.length() > 0 && summaryString.length() <= 100;
     }
 
     private SummaryUtil() {

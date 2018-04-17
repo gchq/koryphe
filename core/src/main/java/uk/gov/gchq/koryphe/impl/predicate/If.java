@@ -53,7 +53,7 @@ import java.util.function.Predicate;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
 @Since("1.3.0")
-@Summary("Conditionally applies one of two predicates to a provided input.")
+@Summary("Conditionally applies a predicate")
 public class If<I> extends KoryphePredicate<I> {
 
     private Boolean condition;
@@ -129,7 +129,7 @@ public class If<I> extends KoryphePredicate<I> {
      * else the <code>otherwise</code> predicate will be used.
      * The result of either of these being applied to the input is finally returned.
      *
-     * @param input the input object to be tested
+     * @param input the input to be tested
      * @return true if the input passes the predicate, otherwise false
      */
     @Override

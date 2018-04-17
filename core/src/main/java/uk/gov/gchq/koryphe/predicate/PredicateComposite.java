@@ -38,7 +38,7 @@ import java.util.function.Predicate;
  * @param <C> Type of Predicate components
  */
 @Since("1.0.0")
-@Summary("A Composite Predicate, applying each predicate in turn, returning the true if all met.")
+@Summary("Returns true if all of its predicates are true")
 public class PredicateComposite<I, C extends Predicate<I>> extends Composite<C> implements Predicate<I>, InputValidator {
     /**
      * Default - for serialisation.

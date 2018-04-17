@@ -33,7 +33,7 @@ import java.util.function.BinaryOperator;
  * @param <C> Type of BinaryOperator components
  */
 @Since("1.0.0")
-@Summary("A Composite BinaryOperator, applying each in turn, returning the last operator.")
+@Summary("Applies multiple binary operators")
 public class BinaryOperatorComposite<T, C extends BinaryOperator<T>> extends Composite<C> implements BinaryOperator<T> {
     /**
      * Default - for serialisation.

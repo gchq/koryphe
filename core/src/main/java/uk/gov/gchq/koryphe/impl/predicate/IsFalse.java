@@ -25,7 +25,7 @@ import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
  * false.
  */
 @Since("1.0.0")
-@Summary("Checks whether this input boolean is false.")
+@Summary("Checks if an input is false")
 public class IsFalse extends KoryphePredicate<Boolean> {
     @Override
     public boolean test(final Boolean input) {

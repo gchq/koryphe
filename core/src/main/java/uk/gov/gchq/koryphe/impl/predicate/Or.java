@@ -37,7 +37,7 @@ import java.util.function.Predicate;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
 @Since("1.0.0")
-@Summary("Returns true if any of the predicates return true, otherwise false.")
+@Summary("Returns true if any of the predicates are true")
 public class Or<I> extends PredicateComposite<I, Predicate<I>> {
     public Or() {
         super();

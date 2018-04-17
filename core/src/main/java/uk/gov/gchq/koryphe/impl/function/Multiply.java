@@ -25,7 +25,7 @@ import uk.gov.gchq.koryphe.tuple.function.KorypheFunction2;
  * two {@link Integer}s and returns the result of multiplying the first by the second.
  */
 @Since("1.0.0")
-@Summary("Takes in two integers and returns the result of multiplying them.")
+@Summary("Multiplies 2 integers")
 public class Multiply extends KorypheFunction2<Integer, Integer, Integer> {
     @Override
     public Integer apply(final Integer input1, final Integer input2) {

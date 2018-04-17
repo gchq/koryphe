@@ -30,7 +30,7 @@ import uk.gov.gchq.koryphe.util.CloseableUtil;
  * @param <T> the type of objects in the iterable
  */
 @Since("1.1.0")
-@Summary("Returns the last item for a provided iterable of items of type T.")
+@Summary("Returns the last item in an iterable")
 public class LastItem<T> extends KorypheFunction<Iterable<T>, T> {
 
     @Override

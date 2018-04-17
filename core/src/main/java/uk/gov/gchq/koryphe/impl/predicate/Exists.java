@@ -25,7 +25,7 @@ import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
  * is not null.
  */
 @Since("1.0.0")
-@Summary("Checks the input object is not null.")
+@Summary("Checks the input exists")
 public class Exists extends KoryphePredicate<Object> {
     @Override
     public boolean test(final Object input) {

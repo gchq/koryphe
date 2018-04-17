@@ -39,7 +39,7 @@ import java.util.function.Function;
  * @param <O_ITEM> the type of objects in the output iterable
  */
 @Since("1.1.0")
-@Summary("Lazily applies a supplied function, or list of functions to each input object, returning an output iterable")
+@Summary("Lazily applies functions to each item in an iterable")
 public class IterableFunction<I_ITEM, O_ITEM> extends KorypheFunction<Iterable<I_ITEM>, Iterable<O_ITEM>> {
     private List<Function> functions = new ArrayList<>();
 

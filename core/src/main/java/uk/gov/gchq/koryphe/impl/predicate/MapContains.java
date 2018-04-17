@@ -31,7 +31,7 @@ import java.util.Map;
  * whether a {@link java.util.Map} contains a provided key.
  */
 @Since("1.0.0")
-@Summary("Checks whether a map contains a provided key.")
+@Summary("Checks if a map contains a given key")
 public class MapContains extends KoryphePredicate<Map> {
     private String key;
 

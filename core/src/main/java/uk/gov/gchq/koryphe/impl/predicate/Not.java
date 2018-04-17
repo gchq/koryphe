@@ -38,7 +38,7 @@ import java.util.function.Predicate;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
 @Since("1.0.0")
-@Summary("Returns the inverse of the wrapped predicate.")
+@Summary("Returns the inverse of a predicate")
 public class Not<I> extends KoryphePredicate<I> implements InputValidator {
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
     private Predicate<I> predicate;

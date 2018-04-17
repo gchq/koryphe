@@ -34,7 +34,7 @@ import java.util.function.Function;
  * @param <C> Type of BinaryOperator components
  */
 @Since("1.0.0")
-@Summary("A Composite Function, applying each function in turn, returning the last function.")
+@Summary("Applies multiple functions")
 public class FunctionComposite<I, O, C extends Function> extends Composite<C> implements Function<I, O> {
     /**
      * Default - for serialisation.

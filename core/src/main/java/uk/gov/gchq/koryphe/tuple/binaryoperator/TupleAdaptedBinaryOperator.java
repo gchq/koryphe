@@ -39,7 +39,7 @@ import java.util.function.BinaryOperator;
  */
 @JsonPropertyOrder(value = {"class", "selection", "binaryOperator"}, alphabetic = true)
 @Since("1.0.0")
-@Summary("Adapts a BinaryOperator so it can be applied to selected fields from a tuple.")
+@Summary("Applies a binary operator and adapts the input/output")
 public class TupleAdaptedBinaryOperator<R, OT> extends AdaptedBinaryOperator<Tuple<R>, OT> {
     /**
      * Default - for serialisation.

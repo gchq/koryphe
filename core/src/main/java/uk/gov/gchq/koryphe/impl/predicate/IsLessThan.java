@@ -34,7 +34,7 @@ import uk.gov.gchq.koryphe.signature.InputValidator;
  * the input value to be less than or equal to the control value.
  */
 @Since("1.0.0")
-@Summary("Checks if the input comparable is less than the control value (there is also an orEqualTo flag).")
+@Summary("Checks if a comparable is less than a provided value")
 public class IsLessThan extends KoryphePredicate<Comparable> implements InputValidator {
     private Comparable controlValue;
     private boolean orEqualTo;

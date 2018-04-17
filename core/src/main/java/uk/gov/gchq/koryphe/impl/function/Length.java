@@ -30,7 +30,7 @@ import java.util.Map;
  * A {@link Length} is a {@link KorypheFunction} that returns the length for a provided object.
  */
 @Since("1.3.0")
-@Summary("Returns the length of a provided object.")
+@Summary("Attempts to returns the length of an object")
 public class Length extends KorypheFunction<Object, Integer> implements InputValidator {
 
     private Integer maxLength;

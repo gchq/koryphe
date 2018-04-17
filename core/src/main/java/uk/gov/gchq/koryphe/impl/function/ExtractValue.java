@@ -28,7 +28,7 @@ import java.util.Map;
  * @param <V> the value type
  */
 @Since("1.2.0")
-@Summary("Retrieves the value from a given map, for the corresponding pre-configured key.")
+@Summary("Extracts a value from a Map")
 public class ExtractValue<K, V> extends KorypheFunction<Map<K, V>, V> {
     private K key;
 

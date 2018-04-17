@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
  * string matches a supplied regex pattern, false otherwise.
  */
 @Since("1.0.0")
-@Summary("Returns true if input string matches the supplied regex pattern, false otherwise.")
+@Summary("Checks if a string matches a pattern")
 public class Regex extends KoryphePredicate<String> {
     private Pattern controlValue;
 

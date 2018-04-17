@@ -26,7 +26,7 @@ import java.util.Arrays;
  * an object (null or otherwise), and calls toString on it.
  */
 @Since("1.0.0")
-@Summary("Takes in an object and calls toString on it (null or otherwise).")
+@Summary("Calls ToString on an object")
 public class ToString extends KorypheFunction<Object, String> {
     @Override
     public String apply(final Object o) {

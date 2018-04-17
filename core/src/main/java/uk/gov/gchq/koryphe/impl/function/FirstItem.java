@@ -30,7 +30,7 @@ import uk.gov.gchq.koryphe.util.CloseableUtil;
  * @param <T> the type of objects in the iterable
  */
 @Since("1.1.0")
-@Summary("Returns the first item from a provided iterable of items of type T.")
+@Summary("Returns the first item from an iterable")
 public class FirstItem<T> extends KorypheFunction<Iterable<T>, T> {
     @Override
     @SuppressFBWarnings(value = "DE_MIGHT_IGNORE", justification = "Any exceptions are to be ignored")

@@ -25,7 +25,7 @@ import uk.gov.gchq.koryphe.tuple.predicate.KoryphePredicate2;
  * that ages off old data based on a provided age off time in days.
  */
 @Since("1.0.0")
-@Summary("Ages off old data based on a provided age off time in days.")
+@Summary("Checks if a timestamp is recent based on a provided age off in days")
 public class AgeOffFromDays extends KoryphePredicate2<Long, Integer> {
     public static final long DAYS_TO_MILLISECONDS = 24L * 60L * 60L * 1000L;
 

@@ -37,7 +37,7 @@ import java.util.function.Predicate;
  */
 @JsonPropertyOrder(value = {"class", "selection", "predicate"}, alphabetic = true)
 @Since("1.0.0")
-@Summary("Adapts a predicate so it can be applied to selected fields from a tuple.")
+@Summary("Applies a predicate and adapts the input")
 public class TupleAdaptedPredicate<R, PI> extends AdaptedPredicate<Tuple<R>, PI> {
     /**
      * Default constructor - for serialisation.

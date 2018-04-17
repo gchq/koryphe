@@ -37,7 +37,7 @@ import java.util.regex.Pattern;
  * Multiple patterns are passed in as an array.
  */
 @Since("1.0.0")
-@Summary("Checks whether an input string matches a provided multiregex pattern.")
+@Summary("Checks if a string matches at least one pattern")
 public class MultiRegex extends KoryphePredicate<String> {
     private Pattern[] patterns;
 

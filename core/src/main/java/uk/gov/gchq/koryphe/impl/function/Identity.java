@@ -25,7 +25,7 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
  * a single object as an input, and simply returns that object.
  */
 @Since("1.0.0")
-@Summary("Takes a single object as an input and returns that object.")
+@Summary("Returns the input value")
 public class Identity extends KorypheFunction<Object, Object> {
     @Override
     public Object apply(final Object input) {
