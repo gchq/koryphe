@@ -29,7 +29,7 @@ import java.lang.reflect.Method;
  * <p>
  * The resulting object is what is returned from the method.
  */
-@Since("1.3.1")
+@Since("1.4.0")
 @Summary("Calls a supplied method")
 public class CallMethod extends KorypheFunction<Object, Object> {
     private String method;
