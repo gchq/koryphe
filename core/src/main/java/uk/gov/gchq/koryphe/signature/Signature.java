@@ -119,16 +119,16 @@ public abstract class Signature {
     }
 
     private static Signature createSignature(final Object input, final Type type, final Map<TypeVariable<?>, Type> typeArgs, final boolean isInput) {
-        final Class clazz = getTypeClass(type, typeArgs);
+        final Class clazz = getTypeClass(input, type, typeArgs);
 
         if (Tuple.class.isAssignableFrom(clazz)) {
-            final TypeVariable[] tupleTypes = getTypeClass(type, typeArgs).getTypeParameters();
+            final TypeVariable[] tupleTypes = getTypeClass(input, type, typeArgs).getTypeParameters();
             final Map<TypeVariable<?>, Type> classTypeArgs = TypeUtils.getTypeArguments(type, clazz);
             Collection<? extends Type> types = TypeUtils.getTypeArguments(type, clazz).values();
             Class[] classes = new Class[types.size()];
             int i = 0;
             for (final TypeVariable tupleType : tupleTypes) {
-                classes[i++] = getTypeClass(classTypeArgs.get(tupleType), typeArgs);
+                classes[i++] = getTypeClass(input, classTypeArgs.get(tupleType), typeArgs);
             }
 
             return new TupleSignature(input, clazz, classes, isInput);
@@ -137,9 +137,9 @@ public abstract class Signature {
         return new SingletonSignature(input, clazz, isInput);
     }
 
-    protected static Class getTypeClass(final Type type, final Map<TypeVariable<?>, Type> typeArgs) {
+    protected static Class getTypeClass(final Object input, final Type type, final Map<TypeVariable<?>, Type> typeArgs) {
         Type rawType = type;
-        if (type instanceof ParameterizedType) {
+        if (rawType instanceof ParameterizedType) {
             rawType = ((ParameterizedType) type).getRawType();
         }
 
@@ -151,9 +151,27 @@ public abstract class Signature {
         if (rawType instanceof TypeVariable) {
             final Type t = typeArgs.get(rawType);
             if (null != t) {
-                return getTypeClass(t, typeArgs);
+                return getTypeClass(input, t, typeArgs);
             }
         }
+
+        TypeVariable<?>[] inputClassTypeParameters = input.getClass().getTypeParameters();
+        if (inputClassTypeParameters.length > 0) {
+            Type[] inputClassTypeParameterBounds = inputClassTypeParameters[0].getBounds();
+            if (inputClassTypeParameterBounds.length > 0) {
+                if (inputClassTypeParameterBounds[0] instanceof ParameterizedType) {
+                    ParameterizedType parameterizedType = (ParameterizedType) inputClassTypeParameterBounds[0];
+                    try {
+                        return Class.forName(parameterizedType.getRawType().getTypeName());
+                    } catch (final ClassNotFoundException e) {
+                        throw new RuntimeException("Invalid class: " + parameterizedType.getRawType().getTypeName(), e);
+                    }
+                } else {
+                    return getTypeClass(input, inputClassTypeParameterBounds[0], typeArgs);
+                }
+            }
+        }
+
         // cannot resolve - default to UnknownGenericType;
         return UnknownGenericType.class;
     }
