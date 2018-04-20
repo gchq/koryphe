@@ -22,6 +22,8 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A <code>CallMethod</code> is a {@link java.util.function.Function} that takes
@@ -33,6 +35,7 @@ import java.lang.reflect.Method;
 @Summary("Calls a supplied method")
 public class CallMethod extends KorypheFunction<Object, Object> {
     private String method;
+    private Map<Class, Method> cache = new HashMap<>();
 
     public CallMethod() {
 
@@ -56,11 +59,26 @@ public class CallMethod extends KorypheFunction<Object, Object> {
             return null;
         }
 
+        Class clazz = obj.getClass();
+
+        if (!cache.containsKey(clazz)) {
+            Map<Class, Method> newCache = new HashMap<>(cache);
+            newCache.put(clazz, getMethodFromClass(clazz));
+            cache = newCache;
+        }
+
         try {
-            final Method objMethod = obj.getClass().getMethod(method);
-            return objMethod.invoke(obj);
-        } catch (final IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new RuntimeException("Unable to invoke " + method + " on object class " + obj.getClass(), e);
+            return cache.get(clazz).invoke(obj);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException("Unable to invoke " + method + " on object class " + clazz, e);
+        }
+    }
+
+    private Method getMethodFromClass(Class clazz) {
+        try {
+            return clazz.getMethod(method);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("Unable to invoke " + method + " on object class " + clazz, e);
         }
     }
 }
