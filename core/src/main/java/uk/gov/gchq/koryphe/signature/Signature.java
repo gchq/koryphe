@@ -112,23 +112,37 @@ public abstract class Signature {
      * @return Signature of the type variable.
      */
     private static Signature createSignatureFromTypeVariable(final Object input, final Class functionClass, final int typeVariableIndex, final boolean isInput) {
-        TypeVariable<?> tv = functionClass.getTypeParameters()[typeVariableIndex];
+        TypeVariable<?> tv;
+        if(input.getClass().getTypeParameters().length > 0) {
+            tv = input.getClass().getTypeParameters()[typeVariableIndex];
+        } else {
+            tv = functionClass.getTypeParameters()[typeVariableIndex];
+        }
         final Map<TypeVariable<?>, Type> typeArgs = TypeUtils.getTypeArguments(input.getClass(), functionClass);
         Type type = typeArgs.get(tv);
         return createSignature(input, type, typeArgs, isInput);
     }
 
     private static Signature createSignature(final Object input, final Type type, final Map<TypeVariable<?>, Type> typeArgs, final boolean isInput) {
-        final Class clazz = getTypeClass(input, type, typeArgs);
+        Class clazz = null;
+        if (input.getClass().getTypeParameters().length > 0) {
+            TypeVariable<?>[] inputClassTypeParameters = input.getClass().getTypeParameters();
+            Type[] inputClassTypeParameterBounds = inputClassTypeParameters[0].getBounds();
+            if (inputClassTypeParameterBounds.length > 0) {
+                clazz = getTypeClass(inputClassTypeParameterBounds[0], typeArgs);
+            }
+        } else {
+            clazz = getTypeClass(type, typeArgs);
+        }
 
         if (Tuple.class.isAssignableFrom(clazz)) {
-            final TypeVariable[] tupleTypes = getTypeClass(input, type, typeArgs).getTypeParameters();
+            final TypeVariable[] tupleTypes = getTypeClass(type, typeArgs).getTypeParameters();
             final Map<TypeVariable<?>, Type> classTypeArgs = TypeUtils.getTypeArguments(type, clazz);
             Collection<? extends Type> types = TypeUtils.getTypeArguments(type, clazz).values();
             Class[] classes = new Class[types.size()];
             int i = 0;
             for (final TypeVariable tupleType : tupleTypes) {
-                classes[i++] = getTypeClass(input, classTypeArgs.get(tupleType), typeArgs);
+                classes[i++] = getTypeClass(classTypeArgs.get(tupleType), typeArgs);
             }
 
             return new TupleSignature(input, clazz, classes, isInput);
@@ -137,7 +151,7 @@ public abstract class Signature {
         return new SingletonSignature(input, clazz, isInput);
     }
 
-    protected static Class getTypeClass(final Object input, final Type type, final Map<TypeVariable<?>, Type> typeArgs) {
+    protected static Class getTypeClass(final Type type, final Map<TypeVariable<?>, Type> typeArgs) {
         Type rawType = type;
         if (rawType instanceof ParameterizedType) {
             rawType = ((ParameterizedType) type).getRawType();
@@ -151,29 +165,16 @@ public abstract class Signature {
         if (rawType instanceof TypeVariable) {
             final Type t = typeArgs.get(rawType);
             if (null != t) {
-                return getTypeClass(input, t, typeArgs);
+                return getTypeClass(t, typeArgs);
             }
         }
 
-        TypeVariable<?>[] inputClassTypeParameters = input.getClass().getTypeParameters();
-        if (inputClassTypeParameters.length > 0) {
-            Type[] inputClassTypeParameterBounds = inputClassTypeParameters[0].getBounds();
-            if (inputClassTypeParameterBounds.length > 0) {
-                if (inputClassTypeParameterBounds[0] instanceof ParameterizedType) {
-                    ParameterizedType parameterizedType = (ParameterizedType) inputClassTypeParameterBounds[0];
-                    try {
-                        return Class.forName(parameterizedType.getRawType().getTypeName());
-                    } catch (final ClassNotFoundException e) {
-                        throw new RuntimeException("Invalid class: " + parameterizedType.getRawType().getTypeName(), e);
-                    }
-                } else {
-                    return getTypeClass(input, inputClassTypeParameterBounds[0], typeArgs);
-                }
+            try {
+                return Class.forName(rawType.getTypeName());
+            } catch (final ClassNotFoundException e) {
+                // cannot resolve - default to UnknownGenericType;
+                return UnknownGenericType.class;
             }
-        }
-
-        // cannot resolve - default to UnknownGenericType;
-        return UnknownGenericType.class;
     }
 
     public static class UnknownGenericType {
