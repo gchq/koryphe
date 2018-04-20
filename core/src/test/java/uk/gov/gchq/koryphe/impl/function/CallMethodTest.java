@@ -26,6 +26,11 @@ import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class CallMethodTest extends FunctionTest {
 
@@ -39,6 +44,27 @@ public class CallMethodTest extends FunctionTest {
 
         // Then
         assertEquals(5, output);
+    }
+
+    @Test
+    public void shouldGetMethodFromCache() throws Exception {
+        // Given
+        final CallMethod function = mock(CallMethod.class);
+        given(function.getMethod()).willReturn("testMethod");
+
+        // When
+        Object output = function.apply(this);
+
+        // Then
+        verify(function, times(1)).getMethodFromClass(any());
+        assertEquals(5, output);
+
+        // When
+        Object output2 = function.apply(this);
+
+        // Then
+        verify(function, times(1)).getMethodFromClass(any());
+        assertEquals(5, output2);
     }
 
     @Override

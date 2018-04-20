@@ -60,25 +60,27 @@ public class CallMethod extends KorypheFunction<Object, Object> {
         }
 
         Class clazz = obj.getClass();
+        Method method = cache.get(clazz);
 
-        if (!cache.containsKey(clazz)) {
+        if (null == method) {
+            method = getMethodFromClass(clazz);
             Map<Class, Method> newCache = new HashMap<>(cache);
-            newCache.put(clazz, getMethodFromClass(clazz));
+            newCache.put(clazz, method);
             cache = newCache;
         }
 
         try {
-            return cache.get(clazz).invoke(obj);
+            return method.invoke(obj);
         } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException("Unable to invoke " + method + " on object class " + clazz, e);
+            throw new RuntimeException("Unable to invoke " + getMethod() + " on object class " + clazz, e);
         }
     }
 
-    private Method getMethodFromClass(Class clazz) {
+    protected Method getMethodFromClass(Class clazz) {
         try {
-            return clazz.getMethod(method);
+            return clazz.getMethod(getMethod());
         } catch (NoSuchMethodException e) {
-            throw new RuntimeException("Unable to invoke " + method + " on object class " + clazz, e);
+            throw new RuntimeException("Unable to invoke " + getMethod() + " on object class " + clazz, e);
         }
     }
 }
