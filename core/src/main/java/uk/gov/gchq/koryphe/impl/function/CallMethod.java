@@ -38,7 +38,6 @@ public class CallMethod extends KorypheFunction<Object, Object> {
     private Map<Class, Method> cache = new HashMap<>();
 
     public CallMethod() {
-
     }
 
     public CallMethod(final String method) {
@@ -71,15 +70,19 @@ public class CallMethod extends KorypheFunction<Object, Object> {
 
         try {
             return method.invoke(obj);
-        } catch (IllegalAccessException | InvocationTargetException e) {
+        } catch (final IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException("Unable to invoke " + getMethod() + " on object class " + clazz, e);
         }
     }
 
-    protected Method getMethodFromClass(Class clazz) {
+    protected Map<Class, Method> getCache() {
+        return cache;
+    }
+
+    private Method getMethodFromClass(final Class clazz) {
         try {
             return clazz.getMethod(getMethod());
-        } catch (NoSuchMethodException e) {
+        } catch (final NoSuchMethodException e) {
             throw new RuntimeException("Unable to invoke " + getMethod() + " on object class " + clazz, e);
         }
     }

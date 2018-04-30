@@ -22,22 +22,23 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
 
 public class CallMethodTest extends FunctionTest {
+    private static final String TEST_METHOD = "testMethod";
 
     @Test
     public void shouldCallMethod() throws Exception {
         // Given
-        final CallMethod function = new CallMethod("testMethod");
+        final CallMethod function = new CallMethod(TEST_METHOD);
 
         // When
         Object output = function.apply(this);
@@ -49,28 +50,34 @@ public class CallMethodTest extends FunctionTest {
     @Test
     public void shouldGetMethodFromCache() throws Exception {
         // Given
-        final CallMethod function = mock(CallMethod.class);
-        given(function.getMethod()).willReturn("testMethod");
+        final Map<Object, Object> expectedCache = new HashMap<>();
+        expectedCache.put(getClass(), getClass().getMethod(TEST_METHOD));
 
+        final CallMethod function = new CallMethod(TEST_METHOD);
+        final Map<Class, Method> initialCache = function.getCache();
         // When
         Object output = function.apply(this);
 
-        // Then
-        verify(function, times(1)).getMethodFromClass(any());
+        // Then - check the cache has been updated
+        final Map<Class, Method> interimCache = function.getCache();
+        assertNotSame(initialCache, interimCache);
+        assertEquals(expectedCache, interimCache);
         assertEquals(5, output);
 
         // When
         Object output2 = function.apply(this);
 
-        // Then
-        verify(function, times(1)).getMethodFromClass(any());
+        // Then - check the cache hasn't changed
+        final Map<Class, Method> finalCache = function.getCache();
+        assertSame(interimCache, finalCache);
+        assertEquals(expectedCache, finalCache);
         assertEquals(5, output2);
     }
 
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
-        final CallMethod function = new CallMethod("testMethod");
+        final CallMethod function = new CallMethod(TEST_METHOD);
 
         // When
         final String json = JsonSerialiser.serialise(function);
@@ -86,7 +93,7 @@ public class CallMethodTest extends FunctionTest {
 
         // Then 2
         assertNotNull(deserialisedCallMethod);
-        assertEquals("testMethod", deserialisedCallMethod.getMethod());
+        assertEquals(TEST_METHOD, deserialisedCallMethod.getMethod());
     }
 
     @Override
