@@ -40,6 +40,8 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
         final Predicate filter = createBuilder()
                 .start(convert(1L))
                 .end(convert(10L))
+                .startFullyContained(true)
+                .endFullyContained(true)
                 .build();
 
         final List<Tuple2<Long, Long>> values = Arrays.asList(
@@ -58,6 +60,8 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
         // Given
         final Predicate filter = createBuilder()
                 .start(convert(1L))
+                .startFullyContained(true)
+                .endFullyContained(true)
                 .build();
 
         final List<Tuple2<Long, Long>> values = Arrays.asList(
@@ -78,6 +82,8 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
         // Given
         final Predicate filter = createBuilder()
                 .end(convert(10L))
+                .startFullyContained(true)
+                .endFullyContained(true)
                 .build();
 
         final List<Tuple2<Long, Long>> values = Arrays.asList(
@@ -99,6 +105,8 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
         final Predicate filter = createBuilder()
                 .start(convert(1L))
                 .end(convert(10L))
+                .startFullyContained(true)
+                .endFullyContained(true)
                 .build();
 
         final List<Tuple2<Long, Long>> values = Arrays.asList(
@@ -117,6 +125,8 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
         final Predicate filter = createBuilder()
                 .start(convert(1L))
                 .end(convert(10L))
+                .startFullyContained(true)
+                .endFullyContained(true)
                 .build();
 
         final List<Tuple2<Long, Long>> values = Arrays.asList(
@@ -140,6 +150,8 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
                 .end(convert(10L))
                 .startInclusive(false)
                 .endInclusive(false)
+                .startFullyContained(true)
+                .endFullyContained(true)
                 .build();
 
         final List<Tuple2<Long, Long>> values = Arrays.asList(
@@ -156,13 +168,102 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
     }
 
     @Test
-    public void shouldJsonSerialiseAndDeserialisWithExclusive() throws IOException {
+    public void shouldAcceptValuesInStartAndEndPartiallyContained() throws IOException {
+        // Given
+        final Predicate filter = createBuilder()
+                .start(convert(1L))
+                .end(convert(10L))
+                .startInclusive(false)
+                .endInclusive(false)
+                .startFullyContained(false)
+                .endFullyContained(false)
+                .build();
+
+        final List<Tuple2<Long, Long>> values = Arrays.asList(
+                new Tuple2<>(1L, 10L),
+                new Tuple2<>(1L, 5L),
+                new Tuple2<>(5L, 10L)
+        );
+
+        // When / Then
+        testValues(true, values, filter);
+    }
+
+    @Test
+    public void shouldAcceptValuesInStartAndEndPartiallyContainedInclusive() throws IOException {
+        // Given
+        final Predicate filter = createBuilder()
+                .start(convert(1L))
+                .end(convert(10L))
+                .startInclusive(true)
+                .endInclusive(true)
+                .startFullyContained(false)
+                .endFullyContained(false)
+                .build();
+
+        final List<Tuple2<Long, Long>> values = Arrays.asList(
+                new Tuple2<>(0L, 10L),
+                new Tuple2<>(0L, 5L),
+                new Tuple2<>(5L, 11L),
+                new Tuple2<>(10L, 10L)
+        );
+
+        // When / Then
+        testValues(true, values, filter);
+    }
+
+    @Test
+    public void shouldRejectValuesInStartAndEndPartiallyContained() throws IOException {
+        // Given
+        final Predicate filter = createBuilder()
+                .start(convert(1L))
+                .end(convert(10L))
+                .startInclusive(false)
+                .endInclusive(false)
+                .startFullyContained(false)
+                .endFullyContained(false)
+                .build();
+
+        final List<Tuple2<Long, Long>> values = Arrays.asList(
+                new Tuple2<>(0L, 1L),
+                new Tuple2<>(10L, 11L)
+        );
+
+        // When / Then
+        testValues(false, values, filter);
+    }
+
+    @Test
+    public void shouldRejectValuesInStartAndEndPartiallyContainedInclusive() throws IOException {
+        // Given
+        final Predicate filter = createBuilder()
+                .start(convert(1L))
+                .end(convert(10L))
+                .startInclusive(true)
+                .endInclusive(true)
+                .startFullyContained(false)
+                .endFullyContained(false)
+                .build();
+
+        final List<Tuple2<Long, Long>> values = Arrays.asList(
+                new Tuple2<>(-1L, 0L),
+                new Tuple2<>(11L, 12L)
+        );
+
+        // When / Then
+        testValues(false, values, filter);
+    }
+
+    @Test
+    public void shouldJsonSerialiseAndDeserialisWithFields() throws IOException {
         // Given
         final Predicate filter = createBuilder()
                 .start(convert(1000L))
                 .end(convert(1010L))
                 .startInclusive(false)
                 .endInclusive(false)
+                .startFullyContained(true)
+                .endFullyContained(true)
                 .build();
 
         // When
@@ -174,7 +275,9 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
                 "  \"start\" : " + getStartJson(convert(1000L)) + ",%n" +
                 "  \"end\" : " + getEndJson(convert(1010L)) + ",%n" +
                 "  \"startInclusive\" : false,%n" +
-                "  \"endInclusive\" : false%n" +
+                "  \"endInclusive\" : false,%n" +
+                "  \"startFullyContained\" : true,%n" +
+                "  \"endFullyContained\" : true%n" +
                 "}"), json);
 
         // When 2
