@@ -34,6 +34,8 @@ public class InTimeRangeDualTest extends AbstractInTimeRangeDualTest<Long> {
                 .start("1")
                 .end("10")
                 .timeUnit(TimeUnit.MICROSECOND)
+                .startFullyContained(true)
+                .endFullyContained(true)
                 .build();
 
         final List<Tuple2<Long, Long>> values = Arrays.asList(
@@ -54,6 +56,8 @@ public class InTimeRangeDualTest extends AbstractInTimeRangeDualTest<Long> {
                 .start("1000")
                 .end("10000")
                 .timeUnit(TimeUnit.SECOND)
+                .startFullyContained(true)
+                .endFullyContained(true)
                 .build();
 
         final List<Tuple2<Long, Long>> values = Arrays.asList(
@@ -74,6 +78,8 @@ public class InTimeRangeDualTest extends AbstractInTimeRangeDualTest<Long> {
                 .start("60000")
                 .end("600000")
                 .timeUnit(TimeUnit.MINUTE)
+                .startFullyContained(true)
+                .endFullyContained(true)
                 .build();
 
         final List<Tuple2<Long, Long>> values = Arrays.asList(
@@ -94,6 +100,8 @@ public class InTimeRangeDualTest extends AbstractInTimeRangeDualTest<Long> {
                 .start("3600000")
                 .end("36000000")
                 .timeUnit(TimeUnit.HOUR)
+                .startFullyContained(true)
+                .endFullyContained(true)
                 .build();
 
         final List<Tuple2<Long, Long>> values = Arrays.asList(
@@ -114,6 +122,8 @@ public class InTimeRangeDualTest extends AbstractInTimeRangeDualTest<Long> {
                 .start("86400000")
                 .end("864000000")
                 .timeUnit(TimeUnit.DAY)
+                .startFullyContained(true)
+                .endFullyContained(true)
                 .build();
 
         final List<Tuple2<Long, Long>> values = Arrays.asList(
@@ -137,6 +147,8 @@ public class InTimeRangeDualTest extends AbstractInTimeRangeDualTest<Long> {
                 .endOffset(20L)
                 .offsetUnit(TimeUnit.MILLISECOND)
                 .timeUnit(TimeUnit.MICROSECOND)
+                .startFullyContained(true)
+                .endFullyContained(true)
                 .build();
 
         final List<Tuple2<Long, Long>> values = Arrays.asList(
@@ -160,6 +172,8 @@ public class InTimeRangeDualTest extends AbstractInTimeRangeDualTest<Long> {
                 .endOffset(20L)
                 .offsetUnit(TimeUnit.MILLISECOND)
                 .timeUnit(TimeUnit.MICROSECOND)
+                .startFullyContained(true)
+                .endFullyContained(true)
                 .build();
 
         final List<Tuple2<Long, Long>> values = Arrays.asList(

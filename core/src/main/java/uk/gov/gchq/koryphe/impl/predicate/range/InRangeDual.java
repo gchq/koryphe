@@ -65,6 +65,9 @@ public class InRangeDual<T extends Comparable<T>> extends KoryphePredicate2<Comp
     private Boolean startInclusive;
     private Boolean endInclusive;
 
+    private Boolean startFullyContained;
+    private Boolean endFullyContained;
+
     public void initialise() {
         if (null != getStart() && null != getEnd()
                 && !getStart().getClass().equals(getEnd().getClass())) {
@@ -74,7 +77,12 @@ public class InRangeDual<T extends Comparable<T>> extends KoryphePredicate2<Comp
 
     @Override
     public boolean test(final Comparable<T> startValue, final Comparable<T> endValue) {
-        return RangeUtil.inRange(startValue, endValue, start, end, startInclusive, endInclusive);
+        return RangeUtil.inRange(
+                startValue, endValue,
+                start, end,
+                startInclusive, endInclusive,
+                startFullyContained, endFullyContained
+        );
     }
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
@@ -95,6 +103,14 @@ public class InRangeDual<T extends Comparable<T>> extends KoryphePredicate2<Comp
         return endInclusive;
     }
 
+    public Boolean isStartFullyContained() {
+        return startFullyContained;
+    }
+
+    public Boolean isEndFullyContained() {
+        return endFullyContained;
+    }
+
     protected void setStart(final T start) {
         this.start = start;
     }
@@ -109,6 +125,14 @@ public class InRangeDual<T extends Comparable<T>> extends KoryphePredicate2<Comp
 
     protected void setEndInclusive(final Boolean endInclusive) {
         this.endInclusive = endInclusive;
+    }
+
+    protected void setStartFullyContained(final Boolean startFullyContained) {
+        this.startFullyContained = startFullyContained;
+    }
+
+    protected void setEndFullyContained(final Boolean endFullyContained) {
+        this.endFullyContained = endFullyContained;
     }
 
     @Override
@@ -127,6 +151,8 @@ public class InRangeDual<T extends Comparable<T>> extends KoryphePredicate2<Comp
                 .append(end, otherPredicate.end)
                 .append(startInclusive, otherPredicate.startInclusive)
                 .append(endInclusive, otherPredicate.endInclusive)
+                .append(startFullyContained, otherPredicate.startFullyContained)
+                .append(endFullyContained, otherPredicate.endFullyContained)
                 .isEquals();
     }
 
@@ -138,6 +164,8 @@ public class InRangeDual<T extends Comparable<T>> extends KoryphePredicate2<Comp
                 .append(end)
                 .append(startInclusive)
                 .append(endInclusive)
+                .append(startFullyContained)
+                .append(endFullyContained)
                 .toHashCode();
     }
 
@@ -148,6 +176,8 @@ public class InRangeDual<T extends Comparable<T>> extends KoryphePredicate2<Comp
                 .append("end", end)
                 .append("startInclusive", startInclusive)
                 .append("endInclusive", endInclusive)
+                .append("startFullyContained", startFullyContained)
+                .append("endFullyContained", endFullyContained)
                 .toString();
     }
 
@@ -176,6 +206,16 @@ public class InRangeDual<T extends Comparable<T>> extends KoryphePredicate2<Comp
 
         public B endInclusive(final boolean endInclusive) {
             predicate.setEndInclusive(endInclusive);
+            return getSelf();
+        }
+
+        public B startFullyContained(final boolean startFullyContained) {
+            predicate.setStartFullyContained(startFullyContained);
+            return getSelf();
+        }
+
+        public B endFullyContained(final boolean endFullyContained) {
+            predicate.setEndFullyContained(endFullyContained);
             return getSelf();
         }
 

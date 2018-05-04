@@ -84,10 +84,12 @@ public abstract class AbstractInTimeRangeDual<T extends Comparable<T>> extends K
     private String start;
     private Long startOffset;
     private Boolean startInclusive;
+    private Boolean startFullyContained;
 
     private String end;
     private Long endOffset;
     private Boolean endInclusive;
+    private Boolean endFullyContained;
 
     private TimeUnit offsetUnit;
     private TimeUnit timeUnit = TimeUnit.MILLISECOND;
@@ -123,7 +125,9 @@ public abstract class AbstractInTimeRangeDual<T extends Comparable<T>> extends K
                 getValueFromOffset(startTime, startOffsetTime),
                 getValueFromOffset(endTime, endOffsetTime),
                 startInclusive,
-                endInclusive
+                endInclusive,
+                startFullyContained,
+                endFullyContained
         );
     }
 
@@ -151,9 +155,11 @@ public abstract class AbstractInTimeRangeDual<T extends Comparable<T>> extends K
                 .append(start, otherPredicate.start)
                 .append(startOffset, otherPredicate.startOffset)
                 .append(startInclusive, otherPredicate.startInclusive)
+                .append(startFullyContained, otherPredicate.startFullyContained)
                 .append(end, otherPredicate.end)
                 .append(endOffset, otherPredicate.endOffset)
                 .append(endInclusive, otherPredicate.endInclusive)
+                .append(endFullyContained, otherPredicate.endFullyContained)
                 .append(offsetUnit, otherPredicate.offsetUnit)
                 .append(timeUnit, otherPredicate.timeUnit)
                 .isEquals();
@@ -166,9 +172,11 @@ public abstract class AbstractInTimeRangeDual<T extends Comparable<T>> extends K
                 .append(start)
                 .append(startOffset)
                 .append(startInclusive)
+                .append(startFullyContained)
                 .append(end)
                 .append(endOffset)
                 .append(endInclusive)
+                .append(endFullyContained)
                 .append(offsetUnit)
                 .append(timeUnit)
                 .toHashCode();
@@ -181,9 +189,11 @@ public abstract class AbstractInTimeRangeDual<T extends Comparable<T>> extends K
                 .append("start", start)
                 .append("startOffset", startOffset)
                 .append("startInclusive", startInclusive)
+                .append("startFullyContained", startFullyContained)
                 .append("end", end)
                 .append("endOffset", endOffset)
                 .append("endInclusive", endInclusive)
+                .append("endFullyContained", endFullyContained)
                 .append("offsetUnit", offsetUnit)
                 .append("timeUnit", timeUnit)
                 .toString();
@@ -201,6 +211,10 @@ public abstract class AbstractInTimeRangeDual<T extends Comparable<T>> extends K
         return startInclusive;
     }
 
+    public Boolean isStartFullyContained() {
+        return startFullyContained;
+    }
+
     public String getEnd() {
         return end;
     }
@@ -211,6 +225,10 @@ public abstract class AbstractInTimeRangeDual<T extends Comparable<T>> extends K
 
     public Boolean isEndInclusive() {
         return endInclusive;
+    }
+
+    public Boolean isEndFullyContained() {
+        return endFullyContained;
     }
 
     public TimeUnit getOffsetUnit() {
@@ -238,6 +256,10 @@ public abstract class AbstractInTimeRangeDual<T extends Comparable<T>> extends K
         this.startInclusive = startInclusive;
     }
 
+    protected void setStartFullyContained(final Boolean startFullyContained) {
+        this.startFullyContained = startFullyContained;
+    }
+
     protected void setEnd(final String end) {
         this.end = end;
     }
@@ -248,6 +270,10 @@ public abstract class AbstractInTimeRangeDual<T extends Comparable<T>> extends K
 
     protected void setEndInclusive(final Boolean endInclusive) {
         this.endInclusive = endInclusive;
+    }
+
+    protected void setEndFullyContained(final Boolean endFullyContained) {
+        this.endFullyContained = endFullyContained;
     }
 
     protected void setOffsetUnit(final TimeUnit offsetUnit) {
@@ -280,6 +306,11 @@ public abstract class AbstractInTimeRangeDual<T extends Comparable<T>> extends K
             return getSelf();
         }
 
+        public B startFullyContained(final boolean startFullyContained) {
+            predicate.setStartFullyContained(startFullyContained);
+            return getSelf();
+        }
+
         public B end(final String end) {
             predicate.setEnd(end);
             return getSelf();
@@ -292,6 +323,11 @@ public abstract class AbstractInTimeRangeDual<T extends Comparable<T>> extends K
 
         public B endInclusive(final boolean endInclusive) {
             predicate.setEndInclusive(endInclusive);
+            return getSelf();
+        }
+
+        public B endFullyContained(final boolean endFullyContained) {
+            predicate.setEndFullyContained(endFullyContained);
             return getSelf();
         }
 
