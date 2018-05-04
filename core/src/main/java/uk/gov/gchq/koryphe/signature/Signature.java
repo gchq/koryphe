@@ -113,7 +113,7 @@ public abstract class Signature {
      */
     private static Signature createSignatureFromTypeVariable(final Object input, final Class functionClass, final int typeVariableIndex, final boolean isInput) {
         TypeVariable<?> tv;
-        if(input.getClass().getTypeParameters().length > 0) {
+        if (input.getClass().getTypeParameters().length > 0) {
             tv = input.getClass().getTypeParameters()[typeVariableIndex];
         } else {
             tv = functionClass.getTypeParameters()[typeVariableIndex];
@@ -169,12 +169,12 @@ public abstract class Signature {
             }
         }
 
-            try {
-                return Class.forName(rawType.getTypeName());
-            } catch (final ClassNotFoundException e) {
-                // cannot resolve - default to UnknownGenericType;
-                return UnknownGenericType.class;
-            }
+        try {
+            return Class.forName(rawType.getTypeName());
+        } catch (final ClassNotFoundException e) {
+            // cannot resolve - default to UnknownGenericType;
+            return UnknownGenericType.class;
+        }
     }
 
     public static class UnknownGenericType {

@@ -191,6 +191,90 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
     }
 
     @Test
+    public void shouldAcceptValuesInStartPartiallyContained() throws IOException {
+        // Given
+        final Predicate filter = createBuilder()
+                .start("1")
+                .end("10")
+                .startInclusive(false)
+                .endInclusive(false)
+                .startFullyContained(false)
+                .endFullyContained(true)
+                .build();
+
+        final List<Tuple2<Long, Long>> values = Arrays.asList(
+                new Tuple2<>(1L, 5L),
+                new Tuple2<>(0L, 5L)
+        );
+
+        // When / Then
+        testValues(true, values, filter);
+    }
+
+    @Test
+    public void shouldRejectValuesInStartPartiallyContained() throws IOException {
+        // Given
+        final Predicate filter = createBuilder()
+                .start("1")
+                .end("10")
+                .startInclusive(false)
+                .endInclusive(false)
+                .startFullyContained(false)
+                .endFullyContained(true)
+                .build();
+
+        final List<Tuple2<Long, Long>> values = Arrays.asList(
+                new Tuple2<>(1L, 10L),
+                new Tuple2<>(5L, 10L)
+        );
+
+        // When / Then
+        testValues(false, values, filter);
+    }
+
+    @Test
+    public void shouldAcceptValuesInEndPartiallyContained() throws IOException {
+        // Given
+        final Predicate filter = createBuilder()
+                .start("1")
+                .end("10")
+                .startInclusive(false)
+                .endInclusive(false)
+                .startFullyContained(true)
+                .endFullyContained(false)
+                .build();
+
+        final List<Tuple2<Long, Long>> values = Arrays.asList(
+                new Tuple2<>(5L, 10L),
+                new Tuple2<>(5L, 11L)
+        );
+
+        // When / Then
+        testValues(true, values, filter);
+    }
+
+    @Test
+    public void shouldRejectValuesInEndPartiallyContained() throws IOException {
+        // Given
+        final Predicate filter = createBuilder()
+                .start("1")
+                .end("10")
+                .startInclusive(false)
+                .endInclusive(false)
+                .startFullyContained(true)
+                .endFullyContained(false)
+                .build();
+
+        final List<Tuple2<Long, Long>> values = Arrays.asList(
+                new Tuple2<>(1L, 5L),
+                new Tuple2<>(1L, 10L)
+        );
+
+        // When / Then
+        testValues(false, values, filter);
+    }
+
+    @Test
     public void shouldAcceptValuesInStartAndEndPartiallyContainedInclusive() throws IOException {
         // Given
         final Predicate filter = createBuilder()
@@ -255,9 +339,8 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
         testValues(false, values, filter);
     }
 
-
     @Test
-    public void shouldJsonSerialiseAndDeserialisWithExclusive() throws IOException {
+    public void shouldJsonSerialiseAndDeserialisWithOtherFields() throws IOException {
         // Given
         final String start = "1000";
         final String end = "1010";
@@ -266,6 +349,8 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
                 .end(end)
                 .startInclusive(false)
                 .endInclusive(false)
+                .startFullyContained(false)
+                .endFullyContained(false)
                 .build();
 
         // When
@@ -277,7 +362,9 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
                 "  \"start\" : \"" + start + "\",%n" +
                 "  \"end\" : \"" + end + "\",%n" +
                 "  \"startInclusive\" : false,%n" +
-                "  \"endInclusive\" : false%n" +
+                "  \"endInclusive\" : false,%n" +
+                "  \"startFullyContained\" : false,%n" +
+                "  \"endFullyContained\" : false%n" +
                 "}"), json);
 
         // When 2

@@ -33,7 +33,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
-
     @Test
     public void shouldAcceptValuesInRange() throws IOException {
         // Given
@@ -190,6 +189,90 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
     }
 
     @Test
+    public void shouldAcceptValuesInStartPartiallyContained() throws IOException {
+        // Given
+        final Predicate filter = createBuilder()
+                .start(convert(1L))
+                .end(convert(10L))
+                .startInclusive(false)
+                .endInclusive(false)
+                .startFullyContained(false)
+                .endFullyContained(true)
+                .build();
+
+        final List<Tuple2<Long, Long>> values = Arrays.asList(
+                new Tuple2<>(1L, 5L),
+                new Tuple2<>(0L, 5L)
+        );
+
+        // When / Then
+        testValues(true, values, filter);
+    }
+
+    @Test
+    public void shouldRejectValuesInStartPartiallyContained() throws IOException {
+        // Given
+        final Predicate filter = createBuilder()
+                .start(convert(1L))
+                .end(convert(10L))
+                .startInclusive(false)
+                .endInclusive(false)
+                .startFullyContained(false)
+                .endFullyContained(true)
+                .build();
+
+        final List<Tuple2<Long, Long>> values = Arrays.asList(
+                new Tuple2<>(1L, 10L),
+                new Tuple2<>(5L, 10L)
+        );
+
+        // When / Then
+        testValues(false, values, filter);
+    }
+
+    @Test
+    public void shouldAcceptValuesInEndPartiallyContained() throws IOException {
+        // Given
+        final Predicate filter = createBuilder()
+                .start(convert(1L))
+                .end(convert(10L))
+                .startInclusive(false)
+                .endInclusive(false)
+                .startFullyContained(true)
+                .endFullyContained(false)
+                .build();
+
+        final List<Tuple2<Long, Long>> values = Arrays.asList(
+                new Tuple2<>(5L, 10L),
+                new Tuple2<>(5L, 11L)
+        );
+
+        // When / Then
+        testValues(true, values, filter);
+    }
+
+    @Test
+    public void shouldRejectValuesInEndPartiallyContained() throws IOException {
+        // Given
+        final Predicate filter = createBuilder()
+                .start(convert(1L))
+                .end(convert(10L))
+                .startInclusive(false)
+                .endInclusive(false)
+                .startFullyContained(true)
+                .endFullyContained(false)
+                .build();
+
+        final List<Tuple2<Long, Long>> values = Arrays.asList(
+                new Tuple2<>(1L, 5L),
+                new Tuple2<>(1L, 10L)
+        );
+
+        // When / Then
+        testValues(false, values, filter);
+    }
+
+    @Test
     public void shouldAcceptValuesInStartAndEndPartiallyContainedInclusive() throws IOException {
         // Given
         final Predicate filter = createBuilder()
@@ -255,15 +338,17 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
     }
 
     @Test
-    public void shouldJsonSerialiseAndDeserialisWithFields() throws IOException {
+    public void shouldJsonSerialiseAndDeserialisWithOtherFields() throws IOException {
         // Given
+        final T start = convert(1000L);
+        final T end = convert(1010L);
         final Predicate filter = createBuilder()
-                .start(convert(1000L))
-                .end(convert(1010L))
+                .start(start)
+                .end(end)
                 .startInclusive(false)
                 .endInclusive(false)
-                .startFullyContained(true)
-                .endFullyContained(true)
+                .startFullyContained(false)
+                .endFullyContained(false)
                 .build();
 
         // When
@@ -272,12 +357,12 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
                 "  \"class\" : \"" + getPredicateClass().getName() + "\",%n" +
-                "  \"start\" : " + getStartJson(convert(1000L)) + ",%n" +
-                "  \"end\" : " + getEndJson(convert(1010L)) + ",%n" +
+                "  \"start\" : " + getStartJson(start) + ",%n" +
+                "  \"end\" : " + getEndJson(end) + ",%n" +
                 "  \"startInclusive\" : false,%n" +
                 "  \"endInclusive\" : false,%n" +
-                "  \"startFullyContained\" : true,%n" +
-                "  \"endFullyContained\" : true%n" +
+                "  \"startFullyContained\" : false,%n" +
+                "  \"endFullyContained\" : false%n" +
                 "}"), json);
 
         // When 2
@@ -285,16 +370,18 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
 
         // Then 2
         assertNotNull(deserialisedFilter);
-        assertEquals(convert(1000L), deserialisedFilter.getStart());
-        assertEquals(convert(1010L), deserialisedFilter.getEnd());
+        assertEquals(start, deserialisedFilter.getStart());
+        assertEquals(end, deserialisedFilter.getEnd());
     }
 
     @Test
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
+        final T start = convert(1000L);
+        final T end = convert(1010L);
         final Predicate filter = createBuilder()
-                .start(convert(1000L))
-                .end(convert(1010L))
+                .start(start)
+                .end(end)
                 .build();
 
         // When
@@ -303,8 +390,8 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
                 "  \"class\" : \"" + getPredicateClass().getName() + "\",%n" +
-                "  \"start\" : " + getStartJson(convert(1000L)) + ",%n" +
-                "  \"end\" : " + getEndJson(convert(1010L)) + "%n" +
+                "  \"start\" : " + getStartJson(start) + ",%n" +
+                "  \"end\" : " + getEndJson(end) + "%n" +
                 "}"), json);
 
         // When 2
@@ -312,8 +399,8 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
 
         // Then 2
         assertNotNull(deserialisedFilter);
-        assertEquals(convert(1000L), deserialisedFilter.getStart());
-        assertEquals(convert(1010L), deserialisedFilter.getEnd());
+        assertEquals(start, deserialisedFilter.getStart());
+        assertEquals(end, deserialisedFilter.getEnd());
     }
 
     protected String getStartJson(final T value) {
