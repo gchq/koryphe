@@ -49,17 +49,17 @@ public abstract class Signature {
     /**
      * Get the input signature of a predicate.
      *
-     * @param function Function.
+     * @param predicate the predicate.
      * @return Input signature.
      */
-    public static Signature getInputSignature(final Predicate function) {
-        return createSignatureFromTypeVariable(function, Predicate.class, 0, true);
+    public static Signature getInputSignature(final Predicate predicate) {
+        return createSignatureFromTypeVariable(predicate, Predicate.class, 0, true);
     }
 
     /**
      * Get the input signature of a function.
      *
-     * @param function Function.
+     * @param function the function.
      * @return Input signature.
      */
     public static Signature getInputSignature(final Function function) {
@@ -69,7 +69,7 @@ public abstract class Signature {
     /**
      * Get the input signature of a BiFunction.
      *
-     * @param function BiFunction.
+     * @param function the BiFunction (second argument must be the same type as the output).
      * @param <F>      the type of the BiFunction
      * @param <I>      the first input type of the BiFunction
      * @param <O>      the second input type and output type of the BiFunction
@@ -77,16 +77,6 @@ public abstract class Signature {
      */
     public static <F extends BiFunction<I, O, O>, I, O> Signature getInputSignature(final F function) {
         return createSignatureFromTypeVariable(function, BiFunction.class, 0, true);
-    }
-
-    /**
-     * Get the output signature of a predicate.
-     *
-     * @param function Function.
-     * @return Output signature.
-     */
-    public static Signature getOutputSignature(final Predicate function) {
-        return createSignatureFromTypeVariable(function, Predicate.class, 1, false);
     }
 
     /**

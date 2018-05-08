@@ -260,15 +260,15 @@ public class SignatureTest {
         final CollectionConcat function = new CollectionConcat();
 
         // When
-        final Signature output = Signature.getOutputSignature(function);
-
-        // Then
-        assertTrue(output.assignable(Collection.class).isValid());
-
-        // When
         final Signature input = Signature.getInputSignature(function);
 
         // Then
         assertTrue(input.assignable(Collection.class).isValid());
+
+        // When
+        final Signature output = Signature.getOutputSignature(function);
+
+        // Then
+        assertTrue(output.assignable(Collection.class).isValid());
     }
 }
