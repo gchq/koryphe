@@ -47,7 +47,7 @@ public abstract class Signature {
     public abstract Integer getNumClasses();
 
     /**
-     * Get the input signature of a function.
+     * Get the input signature of a predicate.
      *
      * @param function Function.
      * @return Input signature.
@@ -77,6 +77,16 @@ public abstract class Signature {
      */
     public static <F extends BiFunction<I, O, O>, I, O> Signature getInputSignature(final F function) {
         return createSignatureFromTypeVariable(function, BiFunction.class, 0, true);
+    }
+
+    /**
+     * Get the output signature of a predicate.
+     *
+     * @param function Function.
+     * @return Output signature.
+     */
+    public static Signature getOutputSignature(final Predicate function) {
+        return createSignatureFromTypeVariable(function, Predicate.class, 1, false);
     }
 
     /**
@@ -113,13 +123,13 @@ public abstract class Signature {
      */
     private static Signature createSignatureFromTypeVariable(final Object input, final Class functionClass, final int typeVariableIndex, final boolean isInput) {
         TypeVariable<?> tv;
-        if (input.getClass().getTypeParameters().length > 0) {
+        if (input.getClass().getTypeParameters().length > typeVariableIndex) {
             tv = input.getClass().getTypeParameters()[typeVariableIndex];
         } else {
             tv = functionClass.getTypeParameters()[typeVariableIndex];
         }
         final Map<TypeVariable<?>, Type> typeArgs = TypeUtils.getTypeArguments(input.getClass(), functionClass);
-        Type type = typeArgs.get(tv);
+        Type type = typeArgs.containsKey(tv) ? typeArgs.get(tv) : Object.class;
         return createSignature(input, type, typeArgs, isInput);
     }
 
