@@ -255,7 +255,7 @@ public class SignatureTest {
     }
 
     @Test
-    public void test() {
+    public void ShouldCheckCollectionConcatInputAndOutput() {
         // Given
         final CollectionConcat function = new CollectionConcat();
 
@@ -264,5 +264,11 @@ public class SignatureTest {
 
         // Then
         assertTrue(output.assignable(Collection.class).isValid());
+
+        // When
+        final Signature input = Signature.getInputSignature(function);
+
+        // Then
+        assertTrue(input.assignable(Collection.class).isValid());
     }
 }
