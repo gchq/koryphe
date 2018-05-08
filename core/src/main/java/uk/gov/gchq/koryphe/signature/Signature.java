@@ -47,19 +47,19 @@ public abstract class Signature {
     public abstract Integer getNumClasses();
 
     /**
-     * Get the input signature of a function.
+     * Get the input signature of a predicate.
      *
-     * @param function Function.
+     * @param predicate the predicate.
      * @return Input signature.
      */
-    public static Signature getInputSignature(final Predicate function) {
-        return createSignatureFromTypeVariable(function, Predicate.class, 0, true);
+    public static Signature getInputSignature(final Predicate predicate) {
+        return createSignatureFromTypeVariable(predicate, Predicate.class, 0, true);
     }
 
     /**
      * Get the input signature of a function.
      *
-     * @param function Function.
+     * @param function the function.
      * @return Input signature.
      */
     public static Signature getInputSignature(final Function function) {
@@ -69,7 +69,7 @@ public abstract class Signature {
     /**
      * Get the input signature of a BiFunction.
      *
-     * @param function BiFunction.
+     * @param function the BiFunction (second argument must be the same type as the output).
      * @param <F>      the type of the BiFunction
      * @param <I>      the first input type of the BiFunction
      * @param <O>      the second input type and output type of the BiFunction
@@ -113,13 +113,13 @@ public abstract class Signature {
      */
     private static Signature createSignatureFromTypeVariable(final Object input, final Class functionClass, final int typeVariableIndex, final boolean isInput) {
         TypeVariable<?> tv;
-        if (input.getClass().getTypeParameters().length > 0) {
+        if (input.getClass().getTypeParameters().length > typeVariableIndex) {
             tv = input.getClass().getTypeParameters()[typeVariableIndex];
         } else {
             tv = functionClass.getTypeParameters()[typeVariableIndex];
         }
         final Map<TypeVariable<?>, Type> typeArgs = TypeUtils.getTypeArguments(input.getClass(), functionClass);
-        Type type = typeArgs.get(tv);
+        Type type = typeArgs.containsKey(tv) ? typeArgs.get(tv) : Object.class;
         return createSignature(input, type, typeArgs, isInput);
     }
 

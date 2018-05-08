@@ -19,11 +19,13 @@ package uk.gov.gchq.koryphe.signature;
 import org.junit.Test;
 
 import uk.gov.gchq.koryphe.ValidationResult;
+import uk.gov.gchq.koryphe.function.KorypheFunction;
 import uk.gov.gchq.koryphe.function.MockFunction;
 import uk.gov.gchq.koryphe.function.MockFunction2;
 import uk.gov.gchq.koryphe.function.MockFunction2b;
 import uk.gov.gchq.koryphe.function.MockFunction3;
 import uk.gov.gchq.koryphe.function.MockFunctionMultiParents2;
+import uk.gov.gchq.koryphe.impl.binaryoperator.CollectionConcat;
 import uk.gov.gchq.koryphe.impl.predicate.IsLessThan;
 import uk.gov.gchq.koryphe.impl.predicate.IsMoreThan;
 import uk.gov.gchq.koryphe.impl.predicate.Or;
@@ -31,6 +33,7 @@ import uk.gov.gchq.koryphe.impl.predicate.range.InRange;
 import uk.gov.gchq.koryphe.predicate.MockPredicate2False;
 import uk.gov.gchq.koryphe.predicate.MockPredicateFalse;
 import uk.gov.gchq.koryphe.predicate.MockPredicateTrue;
+import uk.gov.gchq.koryphe.tuple.function.KorypheFunction2;
 import uk.gov.gchq.koryphe.util.InvalidSignatureTestPredicate;
 
 import java.util.Collection;
@@ -212,5 +215,60 @@ public class SignatureTest {
 
         assertArrayEquals(new Class[]{Object.class}, input.getClasses());
         assertTrue(input.getNumClasses().equals(1));
+    }
+
+    @Test
+    public void shouldAllowAnyInputsForLambdaFunctions() {
+        final Function<Integer, String> toString = Object::toString;
+        final Signature input = Signature.getInputSignature(toString);
+        assertTrue(input.assignable(Integer.class).isValid());
+        assertFalse(input.assignable(Integer.class, Integer.class).isValid());
+        assertTrue(input.assignable(Object.class).isValid());
+    }
+
+    @Test
+    public void shouldAllowAnyInputsForInlineFunctions() {
+        final Function<Integer, String> toString = new KorypheFunction<Integer, String>() {
+            @Override
+            public String apply(final Integer integer) {
+                return integer.toString();
+            }
+        };
+        final Signature input = Signature.getInputSignature(toString);
+        assertTrue(input.assignable(Integer.class).isValid());
+        assertFalse(input.assignable(Integer.class, Integer.class).isValid());
+        assertFalse(input.assignable(Object.class).isValid());
+    }
+
+    @Test
+    public void shouldAllowAnyInputsForMultiLambdaFunctions() {
+        final KorypheFunction2<Integer, Long, String> toString = new KorypheFunction2<Integer, Long, String>() {
+            @Override
+            public String apply(final Integer a, final Long b) {
+                return a.toString() + b.toString();
+            }
+        };
+        final Signature input = Signature.getInputSignature(toString);
+        assertTrue(input.assignable(Integer.class, Long.class).isValid());
+        assertFalse(input.assignable(Integer.class, Integer.class).isValid());
+        assertFalse(input.assignable(Object.class).isValid());
+    }
+
+    @Test
+    public void ShouldCheckCollectionConcatInputAndOutput() {
+        // Given
+        final CollectionConcat function = new CollectionConcat();
+
+        // When
+        final Signature input = Signature.getInputSignature(function);
+
+        // Then
+        assertTrue(input.assignable(Collection.class).isValid());
+
+        // When
+        final Signature output = Signature.getOutputSignature(function);
+
+        // Then
+        assertTrue(output.assignable(Collection.class).isValid());
     }
 }
