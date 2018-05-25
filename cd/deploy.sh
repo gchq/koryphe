@@ -54,6 +54,7 @@ if [ "$TRAVIS_BRANCH" == 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; th
         git checkout gh-pages
         rm -rf uk
         mv target/site/apidocs/* .
+        git add .
         git commit -a -m "Updated javadoc - $RELEASE_VERSION"
         git push
         git checkout master
