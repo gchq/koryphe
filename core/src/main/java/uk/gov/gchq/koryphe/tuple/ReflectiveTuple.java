@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  * Reflection is expensive and this should be used for testing or as a temporary solution.
  */
 public class ReflectiveTuple implements Tuple<String> {
-    public static final String METHOD_FOUND_WITH_DIFFERENT_CASE = "There is no public reflection found for invoking field/method name: %s, but a method was found with different case: %s";
+    public static final String SELECTION_FOUND_WITH_DIFFERENT_CASE = "There is no public reflection found for invoking field/method name: %s, but a method was found with different case: %s";
     public static final String SELECTION_S_DOES_NOT_EXIST = "Selection: %s does not exist.";
     public static final String SELECTION_EXISTS_CAUSED_INVOCATION_TARGET_EXCEPTION = "selection: %s, exists but retrieving the value caused InvocationTargetException";
     private final Object item;
@@ -97,15 +97,16 @@ public class ReflectiveTuple implements Tuple<String> {
     private Optional<Method> getMethod(final Object item, final String reference) {
         Optional<Method> methodSelection;
         try {
-            methodSelection = Optional.of(item.getClass().getMethod(reference));
-        } catch (final NoSuchMethodException ignore) {
-            try {
-                methodSelection = Optional.of(item.getClass().getMethod(prefixGet(reference)));
-            } catch (final NoSuchMethodException ignore2) {
-                throw processMissingSelectionException(item.getClass(), reference);
-            }
+            final String methodName = sanitiseGetMethodName(reference);
+            methodSelection = Optional.of(item.getClass().getMethod(methodName));
+        } catch (final NoSuchMethodException ignore2) {
+            throw processMissingSelectionException(item.getClass(), reference);
         }
         return methodSelection;
+    }
+
+    private String sanitiseGetMethodName(final String reference) {
+        return reference.toLowerCase().startsWith("get") ? reference : prefixGet(reference);
     }
 
     private String prefixGet(final String trim) {
@@ -114,25 +115,32 @@ public class ReflectiveTuple implements Tuple<String> {
 
     private NoSuchElementException processMissingSelectionException(final Class<? extends Object> aClass, final String reference) {
         final String selectionLower = reference.toLowerCase();
-        final String getSelectionLower = prefixGet(reference).toLowerCase();
-        final Method[] declaredMethods = aClass.getMethods();
-        final Field[] declaredFields = aClass.getFields();
-
-        final HashSet<String> names = new HashSet<>();
-        names.addAll(Arrays.asList(declaredFields).stream().map(Field::getName).collect(Collectors.toSet()));
-        names.addAll(Arrays.asList(declaredMethods).stream().map(Method::getName).collect(Collectors.toSet()));
+        final HashSet<String> allPublicReflectionNames = getAllPublicReflectionNames(aClass);
 
         String errorString = String.format(SELECTION_S_DOES_NOT_EXIST, reference);
-        for (final String name : names) {
+
+        for (final String name : allPublicReflectionNames) {
             final String lowerName = name.toLowerCase();
-            if ((selectionLower.equals(lowerName) || getSelectionLower.equals(lowerName))) {
-                errorString = String.format(METHOD_FOUND_WITH_DIFFERENT_CASE, reference, name);
-                break;
+            if (selectionLower.equals(lowerName)) {
+                try {
+                    aClass.getMethod(reference);
+                    continue;
+                } catch (NoSuchMethodException e) {
+                    errorString = String.format(SELECTION_FOUND_WITH_DIFFERENT_CASE, reference, name);
+                    break;
+                }
             }
         }
 
         return new NoSuchElementException(errorString);
 
+    }
+
+    private HashSet<String> getAllPublicReflectionNames(final Class<? extends Object> aClass) {
+        final HashSet<String> allPublicReflectionNames = new HashSet<>();
+        allPublicReflectionNames.addAll(Arrays.asList(aClass.getFields()).stream().map(Field::getName).collect(Collectors.toSet()));
+        allPublicReflectionNames.addAll(Arrays.asList(aClass.getMethods()).stream().map(Method::getName).collect(Collectors.toSet()));
+        return allPublicReflectionNames;
     }
 
     @Override

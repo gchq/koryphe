@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.NoSuchElementException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -30,6 +31,16 @@ public class ReflectiveTupleTest {
             fail("Exception expected");
         } catch (NoSuchElementException e) {
             assertEquals(String.format(ReflectiveTuple.SELECTION_S_DOES_NOT_EXIST, FIELD_X), e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldNotFindMissingMethod() throws Exception {
+        try {
+            testObj.get("get" + FIELD_X);
+            fail("Exception expected");
+        } catch (NoSuchElementException e) {
+            assertEquals(String.format(ReflectiveTuple.SELECTION_S_DOES_NOT_EXIST, "get" + FIELD_X), e.getMessage());
         }
     }
 
@@ -69,7 +80,7 @@ public class ReflectiveTupleTest {
             testObj.get(FIELD_A.toUpperCase());
             fail("Exception expected");
         } catch (RuntimeException e) {
-            assertTrue(e.toString(), e.getMessage().contains(String.format(ReflectiveTuple.METHOD_FOUND_WITH_DIFFERENT_CASE, FIELD_A.toUpperCase(), FIELD_A)));
+            assertTrue(e.toString(), e.getMessage().contains(String.format(ReflectiveTuple.SELECTION_FOUND_WITH_DIFFERENT_CASE, FIELD_A.toUpperCase(), FIELD_A)));
         }
     }
 
@@ -79,7 +90,7 @@ public class ReflectiveTupleTest {
             testObj.get("GETMETHODA");
             fail("Exception expected");
         } catch (RuntimeException e) {
-            assertTrue(e.toString(), e.getMessage().contains(String.format(ReflectiveTuple.METHOD_FOUND_WITH_DIFFERENT_CASE, "GETMETHODA", "getMethodA")));
+            assertTrue(e.toString(), e.getMessage().contains(String.format(ReflectiveTuple.SELECTION_FOUND_WITH_DIFFERENT_CASE, "GETMETHODA", "getMethodA")));
         }
     }
 
@@ -91,6 +102,18 @@ public class ReflectiveTupleTest {
     @Test(expected = UnsupportedOperationException.class)
     public void shouldNotValues() throws Exception {
         testObj.values();
+    }
+
+    @Test
+    public void shouldNotCallQuestionableMethods() throws Exception {
+        final String methodB = "deleteAll";
+        try {
+            testObj.get(methodB);
+            fail("Exception expected");
+        } catch (RuntimeException e) {
+            assertFalse("deleteAll() should not be invoked", e.getMessage().contains(String.format(ReflectiveTuple.SELECTION_EXISTS_CAUSED_INVOCATION_TARGET_EXCEPTION, methodB)));
+            assertEquals(String.format(ReflectiveTuple.SELECTION_S_DOES_NOT_EXIST, methodB), e.getMessage());
+        }
     }
 
     private class ExampleObj {
@@ -105,6 +128,10 @@ public class ReflectiveTupleTest {
 
         private String getMethodB() {
             return methodB;
+        }
+
+        public String deleteAll() throws IllegalAccessException {
+            throw new IllegalAccessException("Should not invoke");
         }
     }
 
