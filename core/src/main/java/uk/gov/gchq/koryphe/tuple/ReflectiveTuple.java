@@ -24,6 +24,10 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * This class wraps any object and treats it as a {@link Tuple} by using reflection to call fields or getMethods for the encapsulated object.
+ * Reflection is expensive and this should be used for testing or as a temporary solution.
+ */
 public class ReflectiveTuple implements Tuple<String> {
     public static final String METHOD_FOUND_WITH_DIFFERENT_CASE = "There is no public reflection found for invoking field/method name: %s, but a method was found with different case: %s";
     public static final String SELECTION_S_DOES_NOT_EXIST = "Selection: %s does not exist.";
