@@ -20,6 +20,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -113,8 +114,9 @@ public class ReflectiveTuple implements Tuple<String> {
     }
 
     private NoSuchElementException processMissingSelectionException(final Class<? extends Object> aClass, final String reference) {
-        final String selectionLower = reference.toLowerCase();
-        final String getSelectionLower = prefixGet(reference).toLowerCase();
+        final Locale locale = Locale.getDefault();
+        final String selectionLower = reference.toLowerCase(locale);
+        final String getSelectionLower = prefixGet(reference).toLowerCase(locale);
         final Method[] declaredMethods = aClass.getMethods();
         final Field[] declaredFields = aClass.getFields();
 
@@ -124,7 +126,7 @@ public class ReflectiveTuple implements Tuple<String> {
 
         String errorString = String.format(SELECTION_S_DOES_NOT_EXIST, reference);
         for (final String name : names) {
-            final String lowerName = name.toLowerCase();
+            final String lowerName = name.toLowerCase(locale);
             if ((selectionLower.equals(lowerName) || getSelectionLower.equals(lowerName))) {
                 errorString = String.format(METHOD_FOUND_WITH_DIFFERENT_CASE, reference, name);
                 break;
