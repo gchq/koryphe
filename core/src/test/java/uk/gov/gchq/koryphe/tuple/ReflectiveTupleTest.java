@@ -3,8 +3,6 @@ package uk.gov.gchq.koryphe.tuple;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.NoSuchElementException;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -29,7 +27,7 @@ public class ReflectiveTupleTest {
         try {
             testObj.get(FIELD_X);
             fail("Exception expected");
-        } catch (NoSuchElementException e) {
+        } catch (RuntimeException e) {
             assertEquals(String.format(ReflectiveTuple.SELECTION_S_DOES_NOT_EXIST, FIELD_X), e.getMessage());
         }
     }
@@ -39,7 +37,7 @@ public class ReflectiveTupleTest {
         try {
             testObj.get("get" + FIELD_X);
             fail("Exception expected");
-        } catch (NoSuchElementException e) {
+        } catch (RuntimeException e) {
             assertEquals(String.format(ReflectiveTuple.SELECTION_S_DOES_NOT_EXIST, "get" + FIELD_X), e.getMessage());
         }
     }
@@ -54,7 +52,7 @@ public class ReflectiveTupleTest {
         try {
             testObj.get(FIELD_B);
             fail("Exception expected");
-        } catch (NoSuchElementException e) {
+        } catch (RuntimeException e) {
             assertEquals(String.format(ReflectiveTuple.SELECTION_S_DOES_NOT_EXIST, FIELD_B), e.getMessage());
         }
     }
