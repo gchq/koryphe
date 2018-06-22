@@ -20,6 +20,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -106,7 +107,7 @@ public class ReflectiveTuple implements Tuple<String> {
     }
 
     private String sanitiseGetMethodName(final String reference) {
-        return reference.toLowerCase().startsWith("get") ? reference : prefixGet(reference);
+        return reference.toLowerCase(Locale.getDefault()).startsWith("get") ? reference : prefixGet(reference);
     }
 
     private String prefixGet(final String trim) {
@@ -114,13 +115,14 @@ public class ReflectiveTuple implements Tuple<String> {
     }
 
     private NoSuchElementException processMissingSelectionException(final Class<? extends Object> aClass, final String reference) {
-        final String selectionLower = reference.toLowerCase();
+        final Locale locale = Locale.getDefault();
+        final String selectionLower = reference.toLowerCase(locale);
         final HashSet<String> allPublicReflectionNames = getAllPublicReflectionNames(aClass);
 
         String errorString = String.format(SELECTION_S_DOES_NOT_EXIST, reference);
 
         for (final String name : allPublicReflectionNames) {
-            final String lowerName = name.toLowerCase();
+            final String lowerName = name.toLowerCase(locale);
             if (selectionLower.equals(lowerName)) {
                 try {
                     aClass.getMethod(reference);
