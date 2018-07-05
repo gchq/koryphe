@@ -16,8 +16,10 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -28,6 +30,7 @@ import uk.gov.gchq.koryphe.util.DateUtil;
 import uk.gov.gchq.koryphe.util.RangeUtil;
 import uk.gov.gchq.koryphe.util.TimeUnit;
 
+import java.util.TimeZone;
 import java.util.function.Function;
 
 /**
@@ -100,6 +103,8 @@ public abstract class AbstractInTimeRangeDual<T extends Comparable<T>> extends K
     private Long endTime;
     private Long endOffsetTime;
 
+    private TimeZone timeZone;
+
     private final Function<Long, T> toT;
 
     protected AbstractInTimeRangeDual() {
@@ -111,8 +116,11 @@ public abstract class AbstractInTimeRangeDual<T extends Comparable<T>> extends K
     }
 
     public void initialise() {
-        this.startTime = timeUnit.fromMilliSeconds(DateUtil.parseTime(start));
-        this.endTime = timeUnit.fromMilliSeconds(DateUtil.parseTime(end));
+        if (null == timeZone) {
+            timeZone = DateUtil.getTimeZoneDefault();
+        }
+        this.startTime = timeUnit.fromMilliSeconds(DateUtil.parseTime(start, timeZone));
+        this.endTime = timeUnit.fromMilliSeconds(DateUtil.parseTime(end, timeZone));
         this.startOffsetTime = timeUnit.fromMilliSeconds(TimeUnit.asMilliSeconds(offsetUnit, startOffset));
         this.endOffsetTime = timeUnit.fromMilliSeconds(TimeUnit.asMilliSeconds(offsetUnit, endOffset));
     }
@@ -280,6 +288,19 @@ public abstract class AbstractInTimeRangeDual<T extends Comparable<T>> extends K
         this.offsetUnit = offsetUnit;
     }
 
+    public TimeZone getTimeZone() {
+        return timeZone;
+    }
+
+    @JsonGetter("timeZone")
+    public String getTimeZoneId() {
+        return null != timeZone ? timeZone.getID() : null;
+    }
+
+    protected void setTimeZone(final TimeZone timeZone) {
+        this.timeZone = timeZone;
+    }
+
     @JsonPOJOBuilder(withPrefix = "")
     public abstract static class BaseBuilder<
             B extends BaseBuilder<B, R, T>,
@@ -338,6 +359,17 @@ public abstract class AbstractInTimeRangeDual<T extends Comparable<T>> extends K
 
         public B timeUnit(final TimeUnit timeUnit) {
             getPredicate().setTimeUnit(timeUnit);
+            return getSelf();
+        }
+
+        public B timeZone(final TimeZone timeZone) {
+            getPredicate().setTimeZone(timeZone);
+            return getSelf();
+        }
+
+        @JsonSetter("timeZone")
+        public B timeZone(final String timeZone) {
+            getPredicate().setTimeZone(TimeZone.getTimeZone(timeZone));
             return getSelf();
         }
 

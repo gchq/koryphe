@@ -16,11 +16,13 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
+import org.junit.After;
 import org.junit.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.tuple.n.Tuple2;
 import uk.gov.gchq.koryphe.tuple.predicate.KoryphePredicate2;
+import uk.gov.gchq.koryphe.util.DateUtil;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import uk.gov.gchq.koryphe.util.TimeUnit;
 
@@ -35,6 +37,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> extends PredicateTest {
+    @After
+    public void after() {
+        System.clearProperty(DateUtil.TIME_ZONE);
+    }
+
     @Test
     public void shouldAcceptValuesInRange() throws IOException {
         // Given
@@ -54,6 +61,44 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
 
         // When / Then
         testValues(true, values, filter);
+    }
+
+    @Test
+    public void shouldSetSystemPropertyTimeZone() throws IOException {
+        // Given
+        final String timeZone = "Etc/GMT+6";
+        System.setProperty(DateUtil.TIME_ZONE, timeZone);
+
+        // When
+        final AbstractInTimeRangeDual predicate = createBuilder()
+                .start("1")
+                .end("10")
+                .startFullyContained(true)
+                .endFullyContained(true)
+                .build();
+
+        // Then
+        assertEquals(timeZone, predicate.getTimeZoneId());
+    }
+
+    @Test
+    public void shouldNotOverrideUserTimeZone() throws IOException {
+        // Given
+        final String timeZone = "Etc/GMT+6";
+        final String userTimeZone = "Etc/GMT+4";
+        System.setProperty(DateUtil.TIME_ZONE, timeZone);
+
+        // When
+        final AbstractInTimeRangeDual predicate = createBuilder()
+                .start("1")
+                .end("10")
+                .startFullyContained(true)
+                .endFullyContained(true)
+                .timeZone(userTimeZone)
+                .build();
+
+        // Then
+        assertEquals(userTimeZone, predicate.getTimeZoneId());
     }
 
     @Test
