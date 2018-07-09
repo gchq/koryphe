@@ -16,8 +16,10 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -25,6 +27,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 import uk.gov.gchq.koryphe.util.TimeUnit;
+
+import java.util.TimeZone;
 
 /**
  * <p>
@@ -114,6 +118,19 @@ public abstract class AbstractInTimeRange<T extends Comparable<T>> extends Koryp
         return predicate.getTimeUnit();
     }
 
+    public TimeZone getTimeZone() {
+        return predicate.getTimeZone();
+    }
+
+    @JsonGetter("timeZone")
+    public String getTimeZoneId() {
+        return predicate.getTimeZoneId();
+    }
+
+    protected void setTimeZone(final TimeZone timeZone) {
+        predicate.setTimeZone(timeZone);
+    }
+
     protected AbstractInTimeRangeDual<T> getPredicate() {
         return predicate;
     }
@@ -196,6 +213,18 @@ public abstract class AbstractInTimeRange<T extends Comparable<T>> extends Koryp
             predicate.getPredicate().setTimeUnit(timeUnit);
             return getSelf();
         }
+
+        public B timeZone(final TimeZone timeZone) {
+            predicate.setTimeZone(timeZone);
+            return getSelf();
+        }
+
+        @JsonSetter("timeZone")
+        public B timeZone(final String timeZone) {
+            predicate.setTimeZone(TimeZone.getTimeZone(timeZone));
+            return getSelf();
+        }
+
 
         public R build() {
             predicate.getPredicate().initialise();
