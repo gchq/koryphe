@@ -21,13 +21,17 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class DateUtilTest {
+
     @Test
     public void shouldParseTimestampInMilliseconds() throws IOException, ParseException {
         // Given
@@ -35,6 +39,18 @@ public class DateUtilTest {
 
         // When
         final Long result = DateUtil.parseTime(Long.toString(timestamp));
+
+        // Then
+        assertEquals(timestamp, (long) result);
+    }
+
+    @Test
+    public void shouldParseTimestampInMillisecondsWithTimeZone() throws IOException, ParseException {
+        // Given
+        final long timestamp = System.currentTimeMillis();
+
+        // When
+        final Long result = DateUtil.parseTime(Long.toString(timestamp), TimeZone.getTimeZone("Etc/GMT+6"));
 
         // Then
         assertEquals(timestamp, (long) result);
@@ -58,6 +74,22 @@ public class DateUtilTest {
         assertDate("2017-01-02 01:02:30", "2017/01/02 01:02:30", "yyyy-MM-dd HH:mm:ss");
         assertDate("2017-01-02 01:02:30", "2017-01-02-01:02:30", "yyyy-MM-dd HH:mm:ss");
         assertDate("2017-01-02 01:02:30.123", "2017-01-02-01:02:30.123", "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+
+    @Test
+    public void shouldParseDatesTimeZone() throws IOException, ParseException {
+        // Given
+        final String dateString = "2017-01-02 01:02:30.123";
+        final String timeZone = "Etc/GMT+6";
+
+        // When
+        final Date result = DateUtil.parse(dateString, TimeZone.getTimeZone(timeZone));
+
+        // Then
+        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        sdf.setTimeZone(TimeZone.getTimeZone(timeZone));
+        final Date expected = sdf.parse(dateString);
+        assertEquals(expected, result);
     }
 
     @Test

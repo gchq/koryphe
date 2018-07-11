@@ -134,11 +134,14 @@ public class If<I> extends KoryphePredicate<I> {
      */
     @Override
     public boolean test(final I input) {
+        boolean conditionTmp;
         if (null == condition) {
-            condition = null != predicate && predicate.test(input);
+            conditionTmp = null != predicate && predicate.test(input);
+        } else {
+            conditionTmp = condition;
         }
 
-        if (condition) {
+        if (conditionTmp) {
             return null != then && then.test(input);
         }
 

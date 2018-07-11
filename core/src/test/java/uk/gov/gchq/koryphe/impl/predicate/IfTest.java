@@ -377,4 +377,15 @@ public class IfTest extends PredicateTest {
         verify(then).test(refTuple);
         verify(otherwise, never()).test(refTuple);
     }
+
+    @Test
+    public void shouldUseCorrectInputOnEachUse() {
+        // Given
+        If filter = new If<>(new IsLessThan(2), new IsLessThan(0), new IsLessThan(4));
+
+        // When / Then
+        assertFalse(filter.test(1));
+        assertTrue(filter.test(-1));
+        assertTrue(filter.test(3));
+    }
 }
