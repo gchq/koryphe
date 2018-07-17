@@ -16,8 +16,18 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
+/**
+ * A <code>ToLong</code> is a {@link java.util.function.Function} that takes
+ * an Object and casts it to a Long.
+ * <p>
+ * The resulting object is what is returned from the method.
+ */
+@Since("1.5.0")
+@Summary("Casts input Object to a Long")
 public class ToLong extends KorypheFunction<Object, Long> {
 
     @Override

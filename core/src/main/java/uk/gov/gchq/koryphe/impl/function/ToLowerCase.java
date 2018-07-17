@@ -16,6 +16,8 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
+import org.apache.commons.lang3.StringUtils;
+
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
@@ -36,10 +38,10 @@ public class ToLowerCase extends KorypheFunction<Object, String> {
         }
 
         if (value instanceof String) {
-            ((String) value).toLowerCase();
+            StringUtils.lowerCase((String) value);
         }
 
-        return value.toString().toLowerCase();
+        return StringUtils.lowerCase(value.toString());
     }
 }
 
