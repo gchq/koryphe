@@ -78,14 +78,26 @@ public class ReflectiveTuple implements Tuple<String> {
 
     @Override
     public Object get(final String reference) {
+        requireNonNull(reference, "field reference is required");
+
         Object selection;
-        try {
-            selection = invokeMethodGet(record, reference);
-        } catch (final IllegalAccessException | NoSuchMethodException | InvocationTargetException ignored) {
+        final int index = reference.indexOf(".");
+        if (index > -1) {
+            final String referencePart = reference.substring(0, index);
+            selection = get(referencePart);
+            if (index + 1 < reference.length()) {
+                final Tuple<String> tuple = selection instanceof Tuple ? ((Tuple) selection) : new ReflectiveTuple(selection);
+                selection = tuple.get(reference.substring(index + 1, reference.length()));
+            }
+        } else {
             try {
-                selection = invokeFieldGet(record, reference);
-            } catch (final IllegalAccessException | NoSuchFieldException ignore) {
-                throw new RuntimeException(String.format(SELECTION_S_DOES_NOT_EXIST, reference));
+                selection = invokeMethodGet(record, reference);
+            } catch (final IllegalAccessException | NoSuchMethodException | InvocationTargetException ignored) {
+                try {
+                    selection = invokeFieldGet(record, reference);
+                } catch (final IllegalAccessException | NoSuchFieldException ignore) {
+                    throw new RuntimeException(String.format(SELECTION_S_DOES_NOT_EXIST, reference));
+                }
             }
         }
         return selection;
@@ -93,13 +105,26 @@ public class ReflectiveTuple implements Tuple<String> {
 
     @Override
     public void put(final String reference, final Object value) {
-        try {
-            invokeMethodPut(record, reference, value);
-        } catch (final IllegalAccessException | NoSuchMethodException | InvocationTargetException ignored) {
+        requireNonNull(reference, "field reference is required");
+        final int index = reference.indexOf(".");
+        if (index > -1) {
+            final String referencePart = reference.substring(0, index);
+            if (index + 1 < reference.length()) {
+                final Object nestedField = get(referencePart);
+                final Tuple<String> tuple = nestedField instanceof Tuple ? ((Tuple) nestedField) : new ReflectiveTuple(nestedField);
+                tuple.put(reference.substring(index + 1, reference.length()), value);
+            } else {
+                put(referencePart, value);
+            }
+        } else {
             try {
-                invokeFieldPut(record, reference, value);
-            } catch (final IllegalAccessException | NoSuchFieldException ignore) {
-                throw new RuntimeException(String.format(SELECTION_S_DOES_NOT_EXIST, reference));
+                invokeMethodPut(record, reference, value);
+            } catch (final IllegalAccessException | NoSuchMethodException | InvocationTargetException ignored) {
+                try {
+                    invokeFieldPut(record, reference, value);
+                } catch (final IllegalAccessException | NoSuchFieldException ignore) {
+                    throw new RuntimeException(String.format(SELECTION_S_DOES_NOT_EXIST, reference));
+                }
             }
         }
     }
