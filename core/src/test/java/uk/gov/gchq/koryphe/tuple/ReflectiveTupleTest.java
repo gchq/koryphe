@@ -41,6 +41,7 @@ public class ReflectiveTupleTest {
     private static final String FIELD_B = "fieldB";
     private static final String FIELD_A = "fieldA";
     private static final String METHOD_B = "methodB";
+    private static final String NESTED_FIELD = "nestedField." + FIELD_A;
 
     private ReflectiveTuple testObj;
 
@@ -76,6 +77,56 @@ public class ReflectiveTupleTest {
     @Test
     public void shouldFindPublicField() throws Exception {
         assertEquals("fa", testObj.get(FIELD_A));
+    }
+
+    @Test
+    public void shouldNotFindPublicFieldIfSubfieldNameIsBlank() throws Exception {
+        testObj = new ReflectiveTuple(new ExampleNestedObj1());
+
+        try {
+            //when
+            testObj.get("nestedField.");
+            fail("Exception expected");
+        } catch (final IllegalArgumentException e) {
+            //then
+            assertEquals("nested field reference is required", e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldNotFindPublicFieldWithDotAtStart() throws Exception {
+        try {
+            //when
+            testObj.get("." + FIELD_A);
+            fail("Exception expected");
+        } catch (final IllegalArgumentException e) {
+            //then
+            assertEquals("field reference is required", e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldNotFindPublicFieldWith2Dots() throws Exception {
+        // Given
+        testObj = new ReflectiveTuple(new ExampleNestedObj1());
+
+        try {
+            //when
+            testObj.get("nestedField.." + FIELD_A);
+            fail("Exception expected");
+        } catch (final IllegalArgumentException e) {
+            //then
+            assertEquals("field reference is required", e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldGetNestedField() throws Exception {
+        // Given
+        testObj = new ReflectiveTuple(new ExampleNestedObj1());
+
+        // When/Then
+        assertEquals("fa", testObj.get(NESTED_FIELD));
     }
 
     @Test
@@ -146,6 +197,47 @@ public class ReflectiveTupleTest {
     }
 
     @Test
+    public void shouldNotPutFieldIfSubfieldIsBlank() throws Exception {
+        testObj = new ReflectiveTuple(new ExampleNestedObj1());
+
+        try {
+            //when
+            testObj.put("nestedField.", "changed");
+            fail("Exception expected");
+        } catch (final IllegalArgumentException e) {
+            //then
+            assertEquals("nested field reference is required", e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldNotPutFieldWithDotAtStart() throws Exception {
+        try {
+            //when
+            testObj.put("." + FIELD_A, "changed");
+            fail("Exception expected");
+        } catch (final IllegalArgumentException e) {
+            //then
+            assertEquals("field reference is required", e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldNotPutFieldWith2Dots() throws Exception {
+        // Given
+        testObj = new ReflectiveTuple(new ExampleNestedObj1());
+
+        try {
+            //when
+            testObj.put("nestedField.." + FIELD_A, "changed");
+            fail("Exception expected");
+        } catch (final IllegalArgumentException e) {
+            //then
+            assertEquals("field reference is required", e.getMessage());
+        }
+    }
+
+    @Test
     public void shouldNotPutMethodWithWrongParam() throws Exception {
         //given
         final ExampleObj3 record = new ExampleObj3();
@@ -173,6 +265,19 @@ public class ReflectiveTupleTest {
             //then
             assertEquals(String.format(ReflectiveTuple.SELECTION_S_DOES_NOT_EXIST, "fieldC"), e.getMessage());
         }
+    }
+
+    @Test
+    public void shouldPutNestedField() throws Exception {
+        //given
+        final ExampleNestedObj1 record = new ExampleNestedObj1();
+        testObj = new ReflectiveTuple(record);
+
+        //when
+        testObj.put(NESTED_FIELD, "changed");
+
+        //then
+        assertEquals("changed", record.getNestedField().fieldA);
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -313,6 +418,18 @@ public class ReflectiveTupleTest {
         private ExampleObj3 fieldC(final String fieldC) {
             this.fieldC = fieldC;
             return this;
+        }
+    }
+
+    private class ExampleNestedObj1 {
+        private ExampleObj nestedField = new ExampleObj();
+
+        public ExampleObj getNestedField() {
+            return nestedField;
+        }
+
+        public void setNestedField(final ExampleObj nestedField) {
+            this.nestedField = nestedField;
         }
     }
 }

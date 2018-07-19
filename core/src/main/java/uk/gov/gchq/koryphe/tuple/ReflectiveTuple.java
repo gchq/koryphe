@@ -78,14 +78,34 @@ public class ReflectiveTuple implements Tuple<String> {
 
     @Override
     public Object get(final String reference) {
+        requireNonNull(reference, "field reference is required");
+
+        if (reference.isEmpty()) {
+            throw new IllegalArgumentException("field reference is required");
+        }
+
         Object selection;
-        try {
-            selection = invokeMethodGet(record, reference);
-        } catch (final IllegalAccessException | NoSuchMethodException | InvocationTargetException ignored) {
+        final int index = reference.indexOf(".");
+        if (index > -1) {
+            final String referencePart = reference.substring(0, index);
+            selection = get(referencePart);
+            final boolean hasNestedField = index + 1 < reference.length();
+            if (!hasNestedField) {
+                throw new IllegalArgumentException("nested field reference is required");
+            } else {
+                final Tuple<String> selectionAsTuple = selection instanceof Tuple ? ((Tuple) selection) : new ReflectiveTuple(selection);
+                final String subReference = reference.substring(index + 1, reference.length());
+                selection = selectionAsTuple.get(subReference);
+            }
+        } else {
             try {
-                selection = invokeFieldGet(record, reference);
-            } catch (final IllegalAccessException | NoSuchFieldException ignore) {
-                throw new RuntimeException(String.format(SELECTION_S_DOES_NOT_EXIST, reference));
+                selection = invokeMethodGet(record, reference);
+            } catch (final IllegalAccessException | NoSuchMethodException | InvocationTargetException ignored) {
+                try {
+                    selection = invokeFieldGet(record, reference);
+                } catch (final IllegalAccessException | NoSuchFieldException ignore) {
+                    throw new RuntimeException(String.format(SELECTION_S_DOES_NOT_EXIST, reference));
+                }
             }
         }
         return selection;
@@ -93,13 +113,30 @@ public class ReflectiveTuple implements Tuple<String> {
 
     @Override
     public void put(final String reference, final Object value) {
-        try {
-            invokeMethodPut(record, reference, value);
-        } catch (final IllegalAccessException | NoSuchMethodException | InvocationTargetException ignored) {
+        requireNonNull(reference, "field reference is required");
+        if (reference.isEmpty()) {
+            throw new IllegalArgumentException("field reference is required");
+        }
+        final int index = reference.indexOf(".");
+        if (index > -1) {
+            final String referencePart = reference.substring(0, index);
+            final boolean hasNestedField = index + 1 < reference.length();
+            if (!hasNestedField) {
+                throw new IllegalArgumentException("nested field reference is required");
+            }
+            final Object nestedField = get(referencePart);
+            final Tuple<String> selectionAsTuple = nestedField instanceof Tuple ? ((Tuple) nestedField) : new ReflectiveTuple(nestedField);
+            final String subReference = reference.substring(index + 1, reference.length());
+            selectionAsTuple.put(subReference, value);
+        } else {
             try {
-                invokeFieldPut(record, reference, value);
-            } catch (final IllegalAccessException | NoSuchFieldException ignore) {
-                throw new RuntimeException(String.format(SELECTION_S_DOES_NOT_EXIST, reference));
+                invokeMethodPut(record, reference, value);
+            } catch (final IllegalAccessException | NoSuchMethodException | InvocationTargetException ignored) {
+                try {
+                    invokeFieldPut(record, reference, value);
+                } catch (final IllegalAccessException | NoSuchFieldException ignore) {
+                    throw new RuntimeException(String.format(SELECTION_S_DOES_NOT_EXIST, reference));
+                }
             }
         }
     }
