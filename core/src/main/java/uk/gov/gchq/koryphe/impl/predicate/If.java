@@ -25,6 +25,7 @@ import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.tuple.predicate.IntegerTupleAdaptedPredicate;
+import uk.gov.gchq.koryphe.tuple.predicate.TupleAdaptedPredicate;
 
 import java.util.function.Predicate;
 
@@ -58,13 +59,13 @@ public class If<I> extends KoryphePredicate<I> {
 
     private Boolean condition;
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class", defaultImpl = TupleAdaptedPredicate.class)
     private Predicate<? super I> predicate;
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class", defaultImpl = TupleAdaptedPredicate.class)
     private Predicate<? super I> then;
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class", defaultImpl = TupleAdaptedPredicate.class)
     private Predicate<? super I> otherwise;
 
     public If() {
