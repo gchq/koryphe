@@ -80,8 +80,44 @@ public class ReflectiveTupleTest {
     }
 
     @Test
-    public void shouldFindPublicFieldWithDot() throws Exception {
-        assertEquals("fa", testObj.get(FIELD_A + "."));
+    public void shouldNotFindPublicFieldIfSubfieldNameIsBlank() throws Exception {
+        testObj = new ReflectiveTuple(new ExampleNestedObj1());
+
+        try {
+            //when
+            testObj.get("nestedField.");
+            fail("Exception expected");
+        } catch (final IllegalArgumentException e) {
+            //then
+            assertEquals("nested field reference is required", e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldNotFindPublicFieldWithDotAtStart() throws Exception {
+        try {
+            //when
+            testObj.get("." + FIELD_A);
+            fail("Exception expected");
+        } catch (final IllegalArgumentException e) {
+            //then
+            assertEquals("field reference is required", e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldNotFindPublicFieldWith2Dots() throws Exception {
+        // Given
+        testObj = new ReflectiveTuple(new ExampleNestedObj1());
+
+        try {
+            //when
+            testObj.get("nestedField.." + FIELD_A);
+            fail("Exception expected");
+        } catch (final IllegalArgumentException e) {
+            //then
+            assertEquals("field reference is required", e.getMessage());
+        }
     }
 
     @Test
@@ -161,14 +197,44 @@ public class ReflectiveTupleTest {
     }
 
     @Test
-    public void shouldPutMethodWithDot() throws Exception {
-        //given
-        final ExampleObj3 record = new ExampleObj3();
-        testObj = new ReflectiveTuple(record);
-        //when
-        testObj.put("fieldB.", "changed");
-        //then
-        assertEquals("changed", record.fieldB);
+    public void shouldNotPutFieldIfSubfieldIsBlank() throws Exception {
+        testObj = new ReflectiveTuple(new ExampleNestedObj1());
+
+        try {
+            //when
+            testObj.put("nestedField.", "changed");
+            fail("Exception expected");
+        } catch (final IllegalArgumentException e) {
+            //then
+            assertEquals("nested field reference is required", e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldNotPutFieldWithDotAtStart() throws Exception {
+        try {
+            //when
+            testObj.put("." + FIELD_A, "changed");
+            fail("Exception expected");
+        } catch (final IllegalArgumentException e) {
+            //then
+            assertEquals("field reference is required", e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldNotPutFieldWith2Dots() throws Exception {
+        // Given
+        testObj = new ReflectiveTuple(new ExampleNestedObj1());
+
+        try {
+            //when
+            testObj.put("nestedField.." + FIELD_A, "changed");
+            fail("Exception expected");
+        } catch (final IllegalArgumentException e) {
+            //then
+            assertEquals("field reference is required", e.getMessage());
+        }
     }
 
     @Test

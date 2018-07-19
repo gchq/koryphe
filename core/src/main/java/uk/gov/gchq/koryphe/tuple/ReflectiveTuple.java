@@ -80,14 +80,22 @@ public class ReflectiveTuple implements Tuple<String> {
     public Object get(final String reference) {
         requireNonNull(reference, "field reference is required");
 
+        if (reference.isEmpty()) {
+            throw new IllegalArgumentException("field reference is required");
+        }
+
         Object selection;
         final int index = reference.indexOf(".");
         if (index > -1) {
             final String referencePart = reference.substring(0, index);
             selection = get(referencePart);
-            if (index + 1 < reference.length()) {
-                final Tuple<String> tuple = selection instanceof Tuple ? ((Tuple) selection) : new ReflectiveTuple(selection);
-                selection = tuple.get(reference.substring(index + 1, reference.length()));
+            final boolean hasNestedField = index + 1 < reference.length();
+            if (!hasNestedField) {
+                throw new IllegalArgumentException("nested field reference is required");
+            } else {
+                final Tuple<String> selectionAsTuple = selection instanceof Tuple ? ((Tuple) selection) : new ReflectiveTuple(selection);
+                final String subReference = reference.substring(index + 1, reference.length());
+                selection = selectionAsTuple.get(subReference);
             }
         } else {
             try {
@@ -106,16 +114,20 @@ public class ReflectiveTuple implements Tuple<String> {
     @Override
     public void put(final String reference, final Object value) {
         requireNonNull(reference, "field reference is required");
+        if (reference.isEmpty()) {
+            throw new IllegalArgumentException("field reference is required");
+        }
         final int index = reference.indexOf(".");
         if (index > -1) {
             final String referencePart = reference.substring(0, index);
-            if (index + 1 < reference.length()) {
-                final Object nestedField = get(referencePart);
-                final Tuple<String> tuple = nestedField instanceof Tuple ? ((Tuple) nestedField) : new ReflectiveTuple(nestedField);
-                tuple.put(reference.substring(index + 1, reference.length()), value);
-            } else {
-                put(referencePart, value);
+            final boolean hasNestedField = index + 1 < reference.length();
+            if (!hasNestedField) {
+                throw new IllegalArgumentException("nested field reference is required");
             }
+            final Object nestedField = get(referencePart);
+            final Tuple<String> selectionAsTuple = nestedField instanceof Tuple ? ((Tuple) nestedField) : new ReflectiveTuple(nestedField);
+            final String subReference = reference.substring(index + 1, reference.length());
+            selectionAsTuple.put(subReference, value);
         } else {
             try {
                 invokeMethodPut(record, reference, value);
