@@ -49,6 +49,16 @@ public class Regex extends KoryphePredicate<String> {
         this.controlValue = controlValue;
     }
 
+    public Regex regex(final String controlValue) {
+        this.controlValue = Pattern.compile(controlValue);
+        return this;
+    }
+
+    public Regex regex(final Pattern controlValue) {
+        this.controlValue = controlValue;
+        return this;
+    }
+
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
     @JsonProperty("value")
     public Pattern getControlValue() {

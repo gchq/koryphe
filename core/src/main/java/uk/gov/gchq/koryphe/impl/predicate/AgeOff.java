@@ -48,6 +48,11 @@ public class AgeOff extends KoryphePredicate<Long> {
         this.ageOffTime = ageOffTime;
     }
 
+    public AgeOff ageOffTime(final long ageOffTime) {
+        this.ageOffTime = ageOffTime;
+        return this;
+    }
+
     @Override
     public boolean test(final Long input) {
         return null != input && (System.currentTimeMillis() - input) < ageOffTime;

@@ -51,6 +51,11 @@ public class PredicateComposite<I, C extends Predicate<I>> extends Composite<C> 
         super(predicates);
     }
 
+    public PredicateComposite predicates(final List<C> predicates) {
+        super.setComponents(predicates);
+        return this;
+    }
+
     @JsonProperty("predicates")
     public List<C> getComponents() {
         return super.getComponents();

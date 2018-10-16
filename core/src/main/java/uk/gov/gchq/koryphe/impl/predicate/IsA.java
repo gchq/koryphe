@@ -58,6 +58,16 @@ public class IsA extends KoryphePredicate<Object> {
         setType(type);
     }
 
+    public IsA type(final Class<?> type) {
+        this.type = type;
+        return this;
+    }
+
+    public IsA type(final String type) {
+        setType(type);
+        return this;
+    }
+
     /**
      * @param type Name of the control class.
      */

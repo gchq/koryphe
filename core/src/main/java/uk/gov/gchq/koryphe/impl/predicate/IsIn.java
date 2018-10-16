@@ -47,11 +47,21 @@ public class IsIn extends KoryphePredicate<Object> {
     }
 
     public IsIn(final Collection<Object> controlData) {
-        this.allowedValues = new HashSet<>(controlData);
+        this.allowedValues = Sets.newHashSet(controlData);
     }
 
     public IsIn(final Object... controlData) {
         this.allowedValues = Sets.newHashSet(controlData);
+    }
+
+    public IsIn allowedValues(final Collection<Object> controlData) {
+        this.allowedValues = Sets.newHashSet(controlData);
+        return this;
+    }
+
+    public IsIn allowedValues(final Object... controlData) {
+        this.allowedValues = Sets.newHashSet(controlData);
+        return this;
     }
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)

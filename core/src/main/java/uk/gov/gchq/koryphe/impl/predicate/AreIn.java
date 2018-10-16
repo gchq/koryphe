@@ -53,6 +53,16 @@ public class AreIn extends KoryphePredicate<Collection<?>> {
         this.allowedValues = Sets.newHashSet(allowedValues);
     }
 
+    public AreIn allowedValues(final Collection<?> allowedValues) {
+        this.allowedValues = allowedValues;
+        return this;
+    }
+
+    public AreIn allowedValues(final Object... allowedValues) {
+        this.allowedValues = Sets.newHashSet(allowedValues);
+        return this;
+    }
+
     @JsonIgnore
     public Collection<?> getValues() {
         return allowedValues;

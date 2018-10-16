@@ -49,6 +49,11 @@ public class And<I> extends PredicateComposite<I, Predicate<I>> {
         super((List) predicates);
     }
 
+    public And predicates(final Predicate<?>... predicates) {
+        super.predicates((List) Lists.newArrayList(predicates));
+        return this;
+    }
+
     @Override
     public boolean test(final I input) {
         if (components == null || components.isEmpty()) {

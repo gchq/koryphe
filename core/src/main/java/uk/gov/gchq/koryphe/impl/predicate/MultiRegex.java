@@ -49,6 +49,11 @@ public class MultiRegex extends KoryphePredicate<String> {
         setPatterns(patterns);
     }
 
+    public MultiRegex patterns(final Pattern[] patterns) {
+        setPatterns(patterns);
+        return this;
+    }
+
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
     @JsonProperty("value")
     public Pattern[] getPatterns() {

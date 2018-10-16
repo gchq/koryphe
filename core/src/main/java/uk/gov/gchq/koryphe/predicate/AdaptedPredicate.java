@@ -48,6 +48,16 @@ public class AdaptedPredicate<I, PI> extends InputAdapted<I, PI> implements Pred
         setPredicate(predicate);
     }
 
+    public AdaptedPredicate inputAdapter(final Function<I, PI> inputAdapter) {
+        setInputAdapter(inputAdapter);
+        return this;
+    }
+
+    public AdaptedPredicate predicate(final Predicate<PI> predicate) {
+        setPredicate(predicate);
+        return this;
+    }
+
     /**
      * Apply the Predicate by adapting the input.
      *

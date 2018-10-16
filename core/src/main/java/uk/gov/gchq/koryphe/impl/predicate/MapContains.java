@@ -43,6 +43,11 @@ public class MapContains extends KoryphePredicate<Map> {
         this.key = key;
     }
 
+    public MapContains key(final String key) {
+        this.key = key;
+        return this;
+    }
+
     public String getKey() {
         return key;
     }

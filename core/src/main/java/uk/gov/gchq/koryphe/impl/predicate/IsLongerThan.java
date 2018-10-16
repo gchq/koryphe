@@ -58,6 +58,16 @@ public class IsLongerThan extends KoryphePredicate<Object> implements InputValid
         this.orEqualTo = orEqualTo;
     }
 
+    public IsLongerThan minLength(final int minLength) {
+        setMinLength(minLength);
+        return this;
+    }
+
+    public IsLongerThan orEqualTo(final boolean orEqualTo) {
+        this.orEqualTo = orEqualTo;
+        return this;
+    }
+
     public int getMinLength() {
         return minLength;
     }

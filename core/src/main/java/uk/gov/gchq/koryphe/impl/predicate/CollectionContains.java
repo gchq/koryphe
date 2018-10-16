@@ -44,6 +44,11 @@ public class CollectionContains extends KoryphePredicate<Collection<?>> {
         this.value = value;
     }
 
+    public CollectionContains value(final Object value) {
+        this.value = value;
+        return this;
+    }
+
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
     public Object getValue() {
         return value;

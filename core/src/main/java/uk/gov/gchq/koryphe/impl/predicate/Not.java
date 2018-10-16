@@ -50,6 +50,11 @@ public class Not<I> extends KoryphePredicate<I> implements InputValidator {
         this.predicate = predicate;
     }
 
+    public Not predicate(final Predicate<I> predicate) {
+        this.predicate = predicate;
+        return this;
+    }
+
     public void setPredicate(final Predicate<I> predicate) {
         this.predicate = predicate;
     }

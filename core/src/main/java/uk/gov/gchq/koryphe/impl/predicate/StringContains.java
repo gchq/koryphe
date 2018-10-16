@@ -49,6 +49,16 @@ public class StringContains extends KoryphePredicate<String> {
         this.ignoreCase = ignoreCase;
     }
 
+    public StringContains value(final String value) {
+        this.value = value;
+        return this;
+    }
+
+    public StringContains ignoreCase(final boolean ignoreCase) {
+        this.ignoreCase = ignoreCase;
+        return this;
+    }
+
     public String getValue() {
         return value;
     }

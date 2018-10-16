@@ -80,7 +80,7 @@ public abstract class AbstractInTimeRange<T extends Comparable<T>> extends Koryp
         this.predicate = predicate;
     }
 
-    protected AbstractInTimeRange predicate(final AbstractInTimeRangeDual<T> predicate) {
+    public AbstractInTimeRange predicate(final AbstractInTimeRangeDual<T> predicate) {
         if (null == predicate) {
             this.predicate = predicate;
         } else {

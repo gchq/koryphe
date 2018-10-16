@@ -123,6 +123,26 @@ public class If<I> extends KoryphePredicate<I> {
         this.otherwise = otherwise;
     }
 
+    public If predicate(final Predicate<? super I> predicate) {
+        this.predicate = predicate;
+        return this;
+    }
+
+    public If then(final Predicate<? super I> then) {
+        this.then = then;
+        return this;
+    }
+
+    public If otherwise(final Predicate<? super I> otherwise) {
+        this.otherwise = otherwise;
+        return this;
+    }
+
+    public If condition(final boolean condition) {
+        this.condition = condition;
+        return this;
+    }
+
     /**
      * If the condition is not being used or has not been set,
      * then the provided predicate will test the input (assuming it is also not null).

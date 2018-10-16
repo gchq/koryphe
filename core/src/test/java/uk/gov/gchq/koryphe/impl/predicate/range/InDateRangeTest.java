@@ -16,6 +16,10 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
+import org.junit.Test;
+
+import uk.gov.gchq.koryphe.util.TimeUnit;
+
 import java.util.Date;
 
 public class InDateRangeTest extends AbstractInTimeRangeTest<Date> {
@@ -27,5 +31,10 @@ public class InDateRangeTest extends AbstractInTimeRangeTest<Date> {
     @Override
     protected InDateRange.Builder createBuilder() {
         return new InDateRange.Builder();
+    }
+
+    @Test
+    public void test() {
+        InDateRange inDateRange = new InDateRange.Builder().timeUnit(TimeUnit.DAY).build();
     }
 }
