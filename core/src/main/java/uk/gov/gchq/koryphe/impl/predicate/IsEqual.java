@@ -43,6 +43,11 @@ public class IsEqual extends KoryphePredicate<Object> {
         this.controlValue = controlValue;
     }
 
+    public IsEqual value(final Object controlValue) {
+        this.controlValue = controlValue;
+        return this;
+    }
+
     @JsonProperty("value")
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
     public Object getControlValue() {

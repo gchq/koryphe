@@ -52,6 +52,16 @@ public class IsLessThan extends KoryphePredicate<Comparable> implements InputVal
         this.orEqualTo = orEqualTo;
     }
 
+    public IsLessThan value(final Comparable controlValue) {
+        this.controlValue = controlValue;
+        return this;
+    }
+
+    public IsLessThan orEqualTo(final boolean orEqualTo) {
+        this.orEqualTo = orEqualTo;
+        return this;
+    }
+
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
     @JsonProperty("value")
     public Comparable getControlValue() {

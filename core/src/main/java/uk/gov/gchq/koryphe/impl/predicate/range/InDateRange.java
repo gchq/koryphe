@@ -79,6 +79,14 @@ public class InDateRange extends AbstractInTimeRange<Date> {
         super(new InDateRangeDual());
     }
 
+    public InDateRange time(final TimeUnit timeUnit) {
+        if (!TimeUnit.MILLISECOND.equals(timeUnit)) {
+            throw new IllegalArgumentException("timeUnit must be set to " + TimeUnit.MILLISECOND);
+        }
+        return this;
+    }
+
+
     public static class Builder extends BaseBuilder<Builder, InDateRange, Date> {
         public Builder() {
             super(new InDateRange());

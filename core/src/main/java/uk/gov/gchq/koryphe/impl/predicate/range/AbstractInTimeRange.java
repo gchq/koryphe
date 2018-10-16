@@ -74,10 +74,19 @@ import java.util.TimeZone;
  * You can use a space, '-', '/', '_', ':', '|', or '.' to separate the parts.
  */
 public abstract class AbstractInTimeRange<T extends Comparable<T>> extends KoryphePredicate<T> {
-    private final AbstractInTimeRangeDual<T> predicate;
+    private AbstractInTimeRangeDual<T> predicate = null;
 
     protected AbstractInTimeRange(final AbstractInTimeRangeDual<T> predicate) {
         this.predicate = predicate;
+    }
+
+    protected AbstractInTimeRange predicate(final AbstractInTimeRangeDual<T> predicate) {
+        if (null == predicate) {
+            this.predicate = predicate;
+        } else {
+            throw new IllegalArgumentException("The predicate has already been set");
+        }
+        return this;
     }
 
     @Override

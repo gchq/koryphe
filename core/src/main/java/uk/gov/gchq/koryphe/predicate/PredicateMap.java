@@ -46,6 +46,16 @@ public class PredicateMap<T> extends KoryphePredicate<Map<?, T>> {
         this.key = key;
     }
 
+    public PredicateMap key(final Object key) {
+        this.key = key;
+        return this;
+    }
+
+    public PredicateMap predicate(final Predicate<? super T> predicate) {
+        this.predicate = predicate;
+        return this;
+    }
+
     @Override
     public boolean test(final Map<?, T> map) {
         if (null == predicate) {
