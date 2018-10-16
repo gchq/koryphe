@@ -87,7 +87,7 @@ public class PredicateLibrary {
         return new Exists();
     }
 
-    public static If iff() {
+    public static If _if() {
         return new If();
     }
 
