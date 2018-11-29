@@ -16,6 +16,8 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
@@ -29,6 +31,7 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
 @Since("1.5.0")
 @Summary("Returns a set value from a given Object")
 public class SetValue extends KorypheFunction<Object, Object> {
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
     private Object value;
 
     public SetValue() {
