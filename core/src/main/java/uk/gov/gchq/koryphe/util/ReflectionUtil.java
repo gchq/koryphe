@@ -17,7 +17,8 @@
 package uk.gov.gchq.koryphe.util;
 
 import com.google.common.collect.Sets;
-import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ScanResult;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
@@ -29,6 +30,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * Reflection utilities. Contains methods such as getting sub classes.
@@ -104,22 +106,23 @@ public final class ReflectionUtil {
 
             final Set<Class> newSubClasses = new HashSet<>();
             if (clazz.isInterface()) {
-                getScanner().matchClassesImplementing(clazz, c -> {
-                    if (isPublicConcrete(c)) {
-                        newSubClasses.add(c);
-                    }
-                }).scan();
+                newSubClasses.addAll(getScannerResult()
+                        .getClassesImplementing(clazz.getName())
+                        .loadClasses()
+                        .stream()
+                        .filter(ReflectionUtil::isPublicConcrete)
+                        .collect(Collectors.toSet()));
             } else {
-                getScanner().matchSubclassesOf(clazz, c -> {
-                    if (isPublicConcrete(c)) {
-                        newSubClasses.add(c);
-                    }
-                }).scan();
+                newSubClasses.addAll(getScannerResult()
+                        .getSubclasses(clazz.getName())
+                        .loadClasses()
+                        .stream()
+                        .filter(ReflectionUtil::isPublicConcrete)
+                        .collect(Collectors.toSet()));
             }
             subClasses = Collections.unmodifiableSet(newSubClasses);
             subclassesCache.put(clazz, subClasses);
         }
-
         return subClasses;
     }
 
@@ -134,7 +137,7 @@ public final class ReflectionUtil {
         if (null == annoClasses) {
             updateReflectionPackages();
             annoClasses = new HashSet<>();
-            getScanner().matchClassesWithAnnotation(annoClass, annoClasses::add).scan();
+            annoClasses.addAll(getScannerResult().getClassesWithAnnotation(annoClass.getName()).loadClasses());
             annoClasses = Collections.unmodifiableSet(annoClasses);
             subclassesCache.put(annoClass, annoClasses);
         }
@@ -240,7 +243,7 @@ public final class ReflectionUtil {
         return Collections.unmodifiableSet(packages);
     }
 
-    private static FastClasspathScanner getScanner() {
-        return new FastClasspathScanner(packages.toArray(new String[packages.size()]));
+    private static ScanResult getScannerResult() {
+        return new ClassGraph().enableAllInfo().whitelistPackages(packages.toArray(new String[packages.size()])).scan();
     }
 }
