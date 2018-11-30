@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,10 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.ValidationResult;
+import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 import uk.gov.gchq.koryphe.signature.InputValidator;
 import uk.gov.gchq.koryphe.signature.Signature;
 
@@ -34,7 +37,9 @@ import java.util.function.Predicate;
  * @param <I> Type of input to be validated
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
-public class Not<I> implements Predicate<I>, InputValidator {
+@Since("1.0.0")
+@Summary("Returns the inverse of a predicate")
+public class Not<I> extends KoryphePredicate<I> implements InputValidator {
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
     private Predicate<I> predicate;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
 /**
@@ -23,10 +25,13 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
  * an {@link Integer} and returns the result of multiplying this integer by a pre-configured
  * value.
  */
+@Since("1.0.0")
+@Summary("Multiplies an integer by a provided integer")
 public class MultiplyBy extends KorypheFunction<Integer, Integer> {
     private int by = 1;
 
-    public MultiplyBy() { }
+    public MultiplyBy() {
+    }
 
     public MultiplyBy(final int by) {
         setBy(by);

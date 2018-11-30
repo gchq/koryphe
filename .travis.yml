@@ -10,9 +10,6 @@ addons:
     packages:
       - oracle-java8-installer
 env:
-  matrix:
-    - RELEASE=true
-
   global:
     - secure: MIHMC0DQerTxi52gOz2tJmdauD/6IyKtSTdML7v9AkSIZk7P5wqtwVfHNbqxOVVizGojcOTxq+a/uDRl/WxIx7GJDrQKU2OCH7lWg85fLxYxkkyMjrXeXFyEhkh1qMkvJe6JujiqemlOe9JpFfWK5DgT5h8DOcQGVB6eIjXuD2mG58u280R+v6lA8u9Ks0CcnpEl37+QlhwQI+HZbtjL/zq2oJWqH3JemrhtxGNBB/JGbFaf6n6gy+mM1zrvU/XODr3/wyrgZ+YVRI2YbBm99r7DM/haFm+nuMjTO48VGSTJqXt1mSu9Rhu66zsgOPK9hk2zwXOQW+/QGTrNHO8G8nVs8WsQ3HfjwvjkhG741t/Zf/Hpi4ZOdteaza/L5LrVCd5wLmzPgfsx5bNDvFyHfy1s0nOQ9O6M+7gV2i/1ObPNTIhmnRsU/7/7Vl+XHPi8lBobU1xcVdQBYQjRzmmodBxqQv+XBtK7ezCl87Zy053GbMf6NZxbR4Q3V4SpwjLw6j/dFe0kaCK+ZR/hOtSf4mZCUIj40zQ+0qWnng+XVrYDi+ykjRahq3fXKGKWmHp5bN9c8F0tzeuJa9Xnw9oBvYmuti8dDQJhlF8ePsSGLGw6ddaB7FsQ3zAHoNYTNRUQMJ2rfpr0BnGyWzIt73ozoml3em2OopjXKFAqCcgLZn4=
     - secure: Wzga+VfYMdHUW/dVJRlFiuZfw6YXSQ2SM/+Prgl+1+izeVnOBoqpPcW59+ADwjpq3+vKuQrCaDZwyq/ctMTb3GStgxv61BztC+gsf/tRUqWDy6ab53mG1p/Je1h5+2dvEEQjSyVVm85d1hYTPCeC6L6Lx2/QbW8rPIEam3r4QbuYO9iVba/DTTgTxrmPNLU1tGpOspswBw0MvJk21SGb5r2SPVmW/lPHAmbWmfwnAh14yu9QrqOayyldwl60c1AeKzP2r5WqXjztlncAMbMgBmYT16hyiNRfp33Zwb9T36vX8MYRnxUuRE90e9CiqC23vvO0YMuLSirexxnosXvg4ca63ULP4vnx5edTsNLBEZuZxnfDUQb7SRvdxKjNk+VozeheAeURyviQEXMxO+Y0ld5Ij/XgGFltd6EObvOgD6EBelZPuEbIAyXnKaquTNiVmuKBjh9fRVJimxvZeMYT+HkdfqKMRF4smFDJWWbPiN+9xW//BhFRgW9ddN0tH86hpU/QSG6jwlQsaMeKnnAAng2WlQDakIFigF7nqAifITdhn+0qPkM7azOl8TBwwniel1rU6KJZYGhvMG8J34J5JT6Qef4vGHBP46sjQShmZCuJLRcgH9nMsC/TsTCssGvWt+RQ9YOys/lh8dDYAl3vxhVMzxsrIfovfHxaZU9Nv3M=
@@ -27,5 +24,4 @@ script:
 after_success: travis_wait 45 ./cd/after_success.sh
 
 before_cache:
-  - rm -rf $HOME/.m2/repository/uk/gov/gchq/gaffer
   - rm -rf $HOME/.m2/repository/uk/gov/gchq/koryphe

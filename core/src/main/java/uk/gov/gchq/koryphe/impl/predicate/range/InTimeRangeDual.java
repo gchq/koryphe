@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,11 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 
 /**
  * <p>
@@ -52,6 +56,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
  * System.currentTimeMillis() + offset.
  * </p>
  * <p>
+ * By default checks are carried out assuming the data will be in milliseconds.
+ * If this is not the case you can change the time unit using the timeUnit property.
+ * </p>
+ * <p>
  * You can configure the start and end time strings using one of the following formats:
  * </p>
  * <ul>
@@ -66,7 +74,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
  *
  * @see Builder
  */
+@JsonPropertyOrder(value = {"start", "startOffset", "end", "endOffset", "startInclusive", "endInclusive", "timeUnit", "offsetUnit"}, alphabetic = true)
 @JsonDeserialize(builder = InTimeRangeDual.Builder.class)
+@Since("1.1.0")
+@Summary("Checks if the start and end timestamps are within a provided date range")
 public class InTimeRangeDual extends AbstractInTimeRangeDual<Long> {
     public static class Builder extends BaseBuilder<Builder, InTimeRangeDual, Long> {
         public Builder() {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package uk.gov.gchq.koryphe.util;
 
 import static uk.gov.gchq.koryphe.util.DateUtil.DAYS_TO_MILLISECONDS;
 import static uk.gov.gchq.koryphe.util.DateUtil.HOURS_TO_MILLISECONDS;
+import static uk.gov.gchq.koryphe.util.DateUtil.MICROSECONDS_TO_MILLISECONDS;
 import static uk.gov.gchq.koryphe.util.DateUtil.MINUTES_TO_MILLISECONDS;
 import static uk.gov.gchq.koryphe.util.DateUtil.SECONDS_TO_MILLISECONDS;
 
@@ -29,11 +30,12 @@ public enum TimeUnit {
     HOUR(HOURS_TO_MILLISECONDS),
     MINUTE(MINUTES_TO_MILLISECONDS),
     SECOND(SECONDS_TO_MILLISECONDS),
-    MILLISECOND(1L);
+    MILLISECOND(1),
+    MICROSECOND(MICROSECONDS_TO_MILLISECONDS);
 
-    private final long conversionFactor;
+    private final double conversionFactor;
 
-    TimeUnit(final long conversionFactor) {
+    TimeUnit(final double conversionFactor) {
         this.conversionFactor = conversionFactor;
     }
 
@@ -48,6 +50,10 @@ public enum TimeUnit {
         return (null != timeUnit ? timeUnit : DAY).asMilliSeconds(time);
     }
 
+    public static Long fromMilliSeconds(final TimeUnit timeUnit, final Long time) {
+        return (null != timeUnit ? timeUnit : DAY).fromMilliSeconds(time);
+    }
+
     /**
      * Converts a unit of time to milliseconds. If the time is null then null is returned.
      *
@@ -55,6 +61,10 @@ public enum TimeUnit {
      * @return the time in milliseconds
      */
     public Long asMilliSeconds(final Long time) {
-        return null != time ? time * conversionFactor : null;
+        return null != time ? (long) (time * conversionFactor) : null;
+    }
+
+    public Long fromMilliSeconds(final Long time) {
+        return null != time ? (long) (time / conversionFactor) : null;
     }
 }

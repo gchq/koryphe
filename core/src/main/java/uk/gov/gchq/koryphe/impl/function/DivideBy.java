@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 import uk.gov.gchq.koryphe.tuple.n.Tuple2;
 
@@ -23,13 +25,16 @@ import uk.gov.gchq.koryphe.tuple.n.Tuple2;
  * A <code>DivideBy</code> is a {@link java.util.function.Function} that takes in
  * an {@link Integer} and returns the result of dividing this integer by a pre-configured
  * value.
- *
+ * <p>
  * The resulting object is a {@link Tuple2} containing the quotient and remainder.
  */
+@Since("1.0.0")
+@Summary("Takes in an integer and returns the result of dividing this by a pre-configured value.")
 public class DivideBy extends KorypheFunction<Integer, Tuple2<Integer, Integer>> {
     private int by = 1;
 
-    public DivideBy() { }
+    public DivideBy() {
+    }
 
     public DivideBy(final int by) {
         setBy(by);

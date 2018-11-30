@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,9 @@ package uk.gov.gchq.koryphe.function;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -29,6 +32,8 @@ import java.util.function.Function;
  * @param <I> Input type
  * @param <O> Output type
  */
+@Since("1.0.0")
+@Summary("Applies a function to each value in a map")
 public class FunctionMap<K, I, O> extends KorypheFunction<Map<K, I>, Map<K, O>> {
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
     private Function<I, O> function;

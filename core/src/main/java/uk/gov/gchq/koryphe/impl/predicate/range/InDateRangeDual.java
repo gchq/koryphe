@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,12 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
+import uk.gov.gchq.koryphe.util.TimeUnit;
 
 import java.util.Date;
 
@@ -68,15 +73,26 @@ import java.util.Date;
  *
  * @see Builder
  */
+@JsonPropertyOrder(value = {"start", "startOffset", "end", "endOffset", "startInclusive", "endInclusive", "offsetUnit"}, alphabetic = true)
 @JsonDeserialize(builder = InDateRangeDual.Builder.class)
+@Since("1.1.0")
+@Summary("Checks if the start and end dates are within a provided date range")
 public class InDateRangeDual extends AbstractInTimeRangeDual<Date> {
-    InDateRangeDual() {
+    public InDateRangeDual() {
         super(Date::new);
     }
 
     public static class Builder extends BaseBuilder<Builder, InDateRangeDual, Date> {
         public Builder() {
             super(new InDateRangeDual());
+        }
+
+        @Override
+        public Builder timeUnit(final TimeUnit timeUnit) {
+            if (!TimeUnit.MILLISECOND.equals(timeUnit)) {
+                throw new IllegalArgumentException("timeUnit must be set to " + TimeUnit.MILLISECOND);
+            }
+            return this;
         }
     }
 }

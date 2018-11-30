@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,16 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 /**
  * An <code>Exists</code> is a {@link java.util.function.Predicate} that simply checks the input object
  * is not null.
  */
+@Since("1.0.0")
+@Summary("Checks the input exists")
 public class Exists extends KoryphePredicate<Object> {
     @Override
     public boolean test(final Object input) {

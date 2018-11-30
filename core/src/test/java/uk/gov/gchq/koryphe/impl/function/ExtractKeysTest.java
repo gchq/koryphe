@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class ExtractKeysTest extends FunctionTest {
@@ -91,17 +92,16 @@ public class ExtractKeysTest extends FunctionTest {
     }
 
     @Test
-    public void shouldThrowExceptionForNullInput() {
+    public void shouldReturnNullForNullInput() {
         // Given
         final ExtractKeys<String, String> function = new ExtractKeys<>();
-        final Map<String, String> input = new HashMap<>();
+        final Map<String, String> input = null;
 
-        // When / Then
-        try {
-            function.apply(input);
-        } catch (final IllegalArgumentException e) {
-            assertTrue(e.getMessage().contains("Input cannot be null"));
-        }
+        // When
+        final Iterable result = function.apply(input);
+
+        // Then
+        assertNull(result);
     }
 
 }

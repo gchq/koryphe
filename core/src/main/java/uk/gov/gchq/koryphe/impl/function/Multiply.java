@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,16 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.tuple.function.KorypheFunction2;
 
 /**
  * A <code>Multiply</code> is a {@link java.util.function.Function} that takes in
  * two {@link Integer}s and returns the result of multiplying the first by the second.
  */
+@Since("1.0.0")
+@Summary("Multiplies 2 integers")
 public class Multiply extends KorypheFunction2<Integer, Integer, Integer> {
     @Override
     public Integer apply(final Integer input1, final Integer input2) {

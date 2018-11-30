@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,16 @@
 
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
 
 /**
  * A <code>First</code> is a {@link KorypheBinaryOperator} that assumes the
  * value will never change and just returns the first non null value it gets.
  */
+@Since("1.0.0")
+@Summary("Returns the first non-null value")
 public class First extends KorypheBinaryOperator<Object> {
     @Override
     protected Object _apply(final Object a, final Object b) {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 import java.util.Map;
@@ -30,6 +32,8 @@ import java.util.function.Predicate;
  * An <code>MapContainsPredicate</code> is a {@link Predicate} that checks
  * whether a {@link Map} contains a key that matches a given predicate.
  */
+@Since("1.0.0")
+@Summary("Checks if a map contains a key that matches a predicate")
 public class MapContainsPredicate extends KoryphePredicate<Map> {
     private Predicate keyPredicate;
 

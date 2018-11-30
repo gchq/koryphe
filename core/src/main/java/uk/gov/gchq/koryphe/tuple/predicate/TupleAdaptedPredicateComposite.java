@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,8 @@ package uk.gov.gchq.koryphe.tuple.predicate;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.predicate.PredicateComposite;
 import uk.gov.gchq.koryphe.tuple.Tuple;
 
@@ -30,6 +32,8 @@ import java.util.function.Predicate;
  *
  * @param <R> Reference type used by tuples
  */
+@Since("1.0.0")
+@Summary("Applies multiple predicates and adapts the input")
 public class TupleAdaptedPredicateComposite<R> extends PredicateComposite<Tuple<R>, TupleAdaptedPredicate<R, ? extends Object>> {
     @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
     public List<TupleAdaptedPredicate<R, ? extends Object>> getComponents() {

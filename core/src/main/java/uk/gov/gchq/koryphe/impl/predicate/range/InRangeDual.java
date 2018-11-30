@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
@@ -23,6 +24,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.tuple.predicate.KoryphePredicate2;
 import uk.gov.gchq.koryphe.util.RangeUtil;
 
@@ -52,15 +55,18 @@ import uk.gov.gchq.koryphe.util.RangeUtil;
  *
  * @see Builder
  */
+@JsonPropertyOrder(value = {"start", "end", "startInclusive", "endInclusive"}, alphabetic = true)
 @JsonDeserialize(builder = InRangeDual.Builder.class)
+@Since("1.1.0")
+@Summary("Checks if the start and end comparables are within a provided range")
 public class InRangeDual<T extends Comparable<T>> extends KoryphePredicate2<Comparable<T>, Comparable<T>> {
     private T start;
     private T end;
     private Boolean startInclusive;
     private Boolean endInclusive;
 
-    InRangeDual() {
-    }
+    private Boolean startFullyContained;
+    private Boolean endFullyContained;
 
     public void initialise() {
         if (null != getStart() && null != getEnd()
@@ -71,7 +77,12 @@ public class InRangeDual<T extends Comparable<T>> extends KoryphePredicate2<Comp
 
     @Override
     public boolean test(final Comparable<T> startValue, final Comparable<T> endValue) {
-        return RangeUtil.inRange(startValue, endValue, start, end, startInclusive, endInclusive);
+        return RangeUtil.inRange(
+                startValue, endValue,
+                start, end,
+                startInclusive, endInclusive,
+                startFullyContained, endFullyContained
+        );
     }
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
@@ -92,6 +103,14 @@ public class InRangeDual<T extends Comparable<T>> extends KoryphePredicate2<Comp
         return endInclusive;
     }
 
+    public Boolean isStartFullyContained() {
+        return startFullyContained;
+    }
+
+    public Boolean isEndFullyContained() {
+        return endFullyContained;
+    }
+
     protected void setStart(final T start) {
         this.start = start;
     }
@@ -106,6 +125,14 @@ public class InRangeDual<T extends Comparable<T>> extends KoryphePredicate2<Comp
 
     protected void setEndInclusive(final Boolean endInclusive) {
         this.endInclusive = endInclusive;
+    }
+
+    protected void setStartFullyContained(final Boolean startFullyContained) {
+        this.startFullyContained = startFullyContained;
+    }
+
+    protected void setEndFullyContained(final Boolean endFullyContained) {
+        this.endFullyContained = endFullyContained;
     }
 
     @Override
@@ -124,6 +151,8 @@ public class InRangeDual<T extends Comparable<T>> extends KoryphePredicate2<Comp
                 .append(end, otherPredicate.end)
                 .append(startInclusive, otherPredicate.startInclusive)
                 .append(endInclusive, otherPredicate.endInclusive)
+                .append(startFullyContained, otherPredicate.startFullyContained)
+                .append(endFullyContained, otherPredicate.endFullyContained)
                 .isEquals();
     }
 
@@ -135,6 +164,8 @@ public class InRangeDual<T extends Comparable<T>> extends KoryphePredicate2<Comp
                 .append(end)
                 .append(startInclusive)
                 .append(endInclusive)
+                .append(startFullyContained)
+                .append(endFullyContained)
                 .toHashCode();
     }
 
@@ -145,6 +176,8 @@ public class InRangeDual<T extends Comparable<T>> extends KoryphePredicate2<Comp
                 .append("end", end)
                 .append("startInclusive", startInclusive)
                 .append("endInclusive", endInclusive)
+                .append("startFullyContained", startFullyContained)
+                .append("endFullyContained", endFullyContained)
                 .toString();
     }
 
@@ -173,6 +206,16 @@ public class InRangeDual<T extends Comparable<T>> extends KoryphePredicate2<Comp
 
         public B endInclusive(final boolean endInclusive) {
             predicate.setEndInclusive(endInclusive);
+            return getSelf();
+        }
+
+        public B startFullyContained(final boolean startFullyContained) {
+            predicate.setStartFullyContained(startFullyContained);
+            return getSelf();
+        }
+
+        public B endFullyContained(final boolean endFullyContained) {
+            predicate.setEndFullyContained(endFullyContained);
             return getSelf();
         }
 

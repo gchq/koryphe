@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
 
 import java.util.Collections;
@@ -35,6 +37,8 @@ import java.util.regex.Pattern;
  * The default separator is a comma, you can set a custom separator
  * using setSeparator(String).
  */
+@Since("1.0.0")
+@Summary("Concatenates 2 strings and omits duplicates")
 public class StringDeduplicateConcat extends KorypheBinaryOperator<String> {
 
     private static final String DEFAULT_SEPARATOR = ",";

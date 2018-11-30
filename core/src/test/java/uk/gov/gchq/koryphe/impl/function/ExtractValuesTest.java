@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import java.util.function.Function;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -92,16 +93,15 @@ public class ExtractValuesTest extends FunctionTest {
     }
 
     @Test
-    public void shouldThrowExceptionForNullInput() {
+    public void shouldReturnNullForNullInput() {
         // Given
         final ExtractValues<String, String> function = new ExtractValues<>();
         final Map<String, String> input = null;
 
-        // When / Then
-        try {
-            function.apply(input);
-        } catch (final IllegalArgumentException e) {
-            assertTrue(e.getMessage().contains("Input cannot be null"));
-        }
+        // When
+        final Iterable result = function.apply(input);
+
+        // Then
+        assertNull(result);
     }
 }

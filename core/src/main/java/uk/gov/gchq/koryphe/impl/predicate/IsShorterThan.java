@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,31 +20,42 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.ValidationResult;
+import uk.gov.gchq.koryphe.impl.function.Length;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 import uk.gov.gchq.koryphe.signature.InputValidator;
 
-import java.util.Collection;
 import java.util.Map;
 
 /**
  * An <code>IsShorterThan</code> is a {@link java.util.function.Predicate} that checks that the input
  * object has a length less than a maximum length. There is also an orEqualTo flag that can be set to allow
- * the input object length to be less than or equal to the maximum length.
+ * the input length to be less than or equal to the maximum length.
  * <p>
  * Allowed object types are {@link String}s, arrays, {@link java.util.Collection}s and {@link java.util.Map}s.
  * Additional object types can easily be added by modifying the getLength(Object) method.
  */
+@Since("1.0.0")
+@Summary("Checks if the length of an input is more than than a value")
 public class IsShorterThan extends KoryphePredicate<Object> implements InputValidator {
     private int maxLength;
     private boolean orEqualTo;
+
+    private final Length delegate = new Length();
 
     // Default constructor for serialisation
     public IsShorterThan() {
     }
 
     public IsShorterThan(final int maxLength) {
-        this.maxLength = maxLength;
+        this(maxLength, false);
+    }
+
+    public IsShorterThan(final int maxLength, final boolean orEqualTo) {
+        setMaxLength(maxLength);
+        this.orEqualTo = orEqualTo;
     }
 
     public int getMaxLength() {
@@ -53,6 +64,11 @@ public class IsShorterThan extends KoryphePredicate<Object> implements InputVali
 
     public void setMaxLength(final int maxLength) {
         this.maxLength = maxLength;
+        if (maxLength < Integer.MAX_VALUE) {
+            delegate.setMaxLength(maxLength + 1);
+        } else {
+            delegate.setMaxLength(null);
+        }
     }
 
     public boolean isOrEqualTo() {
@@ -77,20 +93,7 @@ public class IsShorterThan extends KoryphePredicate<Object> implements InputVali
     }
 
     private int getLength(final Object value) {
-        final int length;
-        if (value instanceof String) {
-            length = ((String) value).length();
-        } else if (value instanceof Object[]) {
-            length = ((Object[]) value).length;
-        } else if (value instanceof Collection) {
-            length = ((Collection) value).size();
-        } else if (value instanceof Map) {
-            length = ((Map) value).size();
-        } else {
-            throw new IllegalArgumentException("Could not determine the size of the provided value");
-        }
-
-        return length;
+        return delegate.apply(value);
     }
 
     @Override
@@ -103,12 +106,12 @@ public class IsShorterThan extends KoryphePredicate<Object> implements InputVali
 
         if (!String.class.isAssignableFrom(arguments[0])
                 && !Object[].class.isAssignableFrom(arguments[0])
-                && !Collection.class.isAssignableFrom(arguments[0])
+                && !Iterable.class.isAssignableFrom(arguments[0])
                 && !Map.class.isAssignableFrom(arguments[0])) {
             result.addError("Input class " + arguments[0].getName() + " must be one of the following: "
                     + String.class.getName() + ", "
                     + Object[].class.getName() + ", "
-                    + Collection.class.getName() + ", "
+                    + Iterable.class.getName() + ", "
                     + Map.class.getName());
         }
 

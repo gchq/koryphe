@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +69,54 @@ public class IsShorterThanTest extends PredicateTest {
 
         // When
         final boolean accepted = filter.test("123456");
+
+        // Then
+        assertFalse(accepted);
+    }
+
+    @Test
+    public void shouldAcceptTheIterableValueWhenEqualTo() {
+        // Given
+        final IsShorterThan filter = new IsShorterThan(5, true);
+
+        // When
+        final boolean accepted = filter.test(Collections.nCopies(5, "item"));
+
+        // Then
+        assertTrue(accepted);
+    }
+
+    @Test
+    public void shouldRejectTheIterableValueWhenNotEqualTo() {
+        // Given
+        final IsShorterThan filter = new IsShorterThan(5, false);
+
+        // When
+        final boolean accepted = filter.test(Collections.nCopies(5, "item"));
+
+        // Then
+        assertFalse(accepted);
+    }
+
+    @Test
+    public void shouldAcceptTheIterableValueWhenLessThan() {
+        // Given
+        final IsShorterThan filter = new IsShorterThan(5, true);
+
+        // When
+        final boolean accepted = filter.test(Collections.nCopies(4, "item"));
+
+        // Then
+        assertTrue(accepted);
+    }
+
+    @Test
+    public void shouldRejectTheIterableValueWhenMoreThan() {
+        // Given
+        final IsShorterThan filter = new IsShorterThan(5);
+
+        // When
+        final boolean accepted = filter.test(Collections.nCopies(6, "item"));
 
         // Then
         assertFalse(accepted);

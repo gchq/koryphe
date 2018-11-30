@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.ValidationResult;
 import uk.gov.gchq.koryphe.signature.InputValidator;
 import uk.gov.gchq.koryphe.tuple.predicate.KoryphePredicate2;
@@ -24,6 +26,8 @@ import uk.gov.gchq.koryphe.tuple.predicate.KoryphePredicate2;
  * An <code>IsXMoreThanY</code> is a {@link java.util.function.BiPredicate} that checks that the first input
  * {@link Comparable} is more than the second input {@link Comparable}.
  */
+@Since("1.0.0")
+@Summary("Checks the first comparable is more than the second comparable")
 public class IsXMoreThanY extends KoryphePredicate2<Comparable, Comparable> implements InputValidator {
     @Override
     public boolean test(final Comparable input1, final Comparable input2) {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,9 @@ package uk.gov.gchq.koryphe.binaryoperator;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
+
 import java.util.Map;
 import java.util.function.BinaryOperator;
 
@@ -27,6 +30,8 @@ import java.util.function.BinaryOperator;
  * @param <K> Type of key
  * @param <T> Input/output type
  */
+@Since("1.0.0")
+@Summary("Merges 2 maps by applying a binary operator to each of the values")
 public class BinaryOperatorMap<K, T> extends KorypheBinaryOperator<Map<K, T>> {
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
     private BinaryOperator<? super T> binaryOperator;

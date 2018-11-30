@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,9 @@ import uk.gov.gchq.koryphe.example.binaryoperator.TupleAggregationProductExample
 import uk.gov.gchq.koryphe.example.binaryoperator.TupleCompositeAggregationExample;
 import uk.gov.gchq.koryphe.example.function.DivideByExample;
 import uk.gov.gchq.koryphe.example.function.DivideExample;
+import uk.gov.gchq.koryphe.example.function.ExtractKeysExample;
+import uk.gov.gchq.koryphe.example.function.ExtractValueExample;
+import uk.gov.gchq.koryphe.example.function.ExtractValuesExample;
 import uk.gov.gchq.koryphe.example.function.FirstItemExample;
 import uk.gov.gchq.koryphe.example.function.LastItemExample;
 import uk.gov.gchq.koryphe.example.function.MultiplyByExample;
@@ -60,6 +63,10 @@ public final class RunAll {
         (new FirstItemExample()).execute();
         (new NthItemExample()).execute();
         (new LastItemExample()).execute();
+
+        (new ExtractKeysExample()).execute();
+        (new ExtractValueExample()).execute();
+        (new ExtractValuesExample()).execute();
 
         (new IterableConcatExample()).execute();
         (new IterableFunctionExample()).execute();

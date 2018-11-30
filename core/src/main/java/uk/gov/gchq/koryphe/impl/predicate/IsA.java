@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,17 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
+import uk.gov.gchq.koryphe.serialisation.json.SimpleClassNameIdResolver;
 
 /**
  * An <code>IsA</code> {@link java.util.function.Predicate} tests whether an input {@link Object} is an
  * instance of a given control {@link Class}.
  */
+@Since("1.0.0")
+@Summary("Checks if an input is an instance of a class")
 public class IsA extends KoryphePredicate<Object> {
     private Class<?> type;
 
@@ -58,7 +63,7 @@ public class IsA extends KoryphePredicate<Object> {
      */
     public void setType(final String type) {
         try {
-            this.type = Class.forName(type);
+            this.type = Class.forName(SimpleClassNameIdResolver.getClassName(type));
         } catch (final ClassNotFoundException e) {
             throw new IllegalArgumentException("Could not load class for given type: " + type);
         }

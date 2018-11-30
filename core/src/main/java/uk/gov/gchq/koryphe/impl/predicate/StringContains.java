@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,14 +20,18 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 /**
- * A <code>StringContains</code> is a {@link java.util.function.Predicate} that checks whether a provided {@link String}
+ * A <code>StringContains</code> is a {@link java.util.function.Predicate} that checks if a provided {@link String}
  * contains some {@link String} value.
  * The {@link java.util.function.Predicate} is case-sensitive by default, this can be changed with
  * <code>setIgnoreCase(true)</code>.
  */
+@Since("1.0.0")
+@Summary("Checks if a string contains some value")
 public class StringContains extends KoryphePredicate<String> {
     private String value;
     private boolean ignoreCase;

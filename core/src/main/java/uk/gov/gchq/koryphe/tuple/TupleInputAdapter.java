@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,9 @@ package uk.gov.gchq.koryphe.tuple;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
+
 import java.util.Arrays;
 import java.util.function.Function;
 
@@ -25,6 +28,8 @@ import java.util.function.Function;
  * @param <R>  The type of reference used by tuples.
  * @param <FI> The adapted input type.
  */
+@Since("1.0.0")
+@Summary("Extracts items from a tuple")
 public class TupleInputAdapter<R, FI> implements Function<Tuple<R>, FI> {
     private R[] selection;
 

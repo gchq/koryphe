@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,9 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
+
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -29,6 +32,8 @@ import java.util.function.Predicate;
  * value from a map using the provided key and passes the value to a provided
  * {@link java.util.function.Predicate}.
  */
+@Since("1.0.0")
+@Summary("Extracts a value from a map then applies the predicate to it")
 public class PredicateMap<T> extends KoryphePredicate<Map<?, T>> {
     private Predicate<? super T> predicate;
     private Object key;

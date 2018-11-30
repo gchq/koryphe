@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,10 +26,10 @@ import java.util.function.Function;
 /**
  * An {@link Adapted} {@link Function}.
  *
- * @param <I> Input type
+ * @param <I>  Input type
  * @param <FI> Adapted input type for function
  * @param <FO> Function output to be adapted
- * @param <O> Output type
+ * @param <O>  Output type
  */
 public abstract class AdaptedFunction<I, FI, FO, O> extends Adapted<I, FI, FO, O, I> implements Function<I, O> {
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")

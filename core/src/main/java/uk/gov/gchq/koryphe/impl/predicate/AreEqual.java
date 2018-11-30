@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,16 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.tuple.predicate.KoryphePredicate2;
 
 /**
  * An <code>AreEqual</code> is a {@link java.util.function.BiPredicate} that returns true if the two input objects
  * are equal.
  */
+@Since("1.0.0")
+@Summary("Returns true if the two inputs are equal")
 public class AreEqual extends KoryphePredicate2<Object, Object> {
     /**
      * @param input1 input 1

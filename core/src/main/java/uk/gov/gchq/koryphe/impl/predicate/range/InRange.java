@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
@@ -23,6 +24,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 /**
@@ -47,11 +50,14 @@ import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
  *
  * @see Builder
  */
+@JsonPropertyOrder(value = {"start", "end", "startInclusive", "endInclusive"}, alphabetic = true)
 @JsonDeserialize(builder = InRange.Builder.class)
+@Since("1.1.0")
+@Summary("Checks if a comparable is within a provided range")
 public class InRange<T extends Comparable<T>> extends KoryphePredicate<T> {
     private final InRangeDual<T> predicate;
 
-    InRange() {
+    public InRange() {
         predicate = new InRangeDual<>();
     }
 

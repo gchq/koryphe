@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,10 +22,18 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 import java.util.regex.Pattern;
 
+/**
+ * A {@link Regex} is a {@link KoryphePredicate} that returns true if an input
+ * string matches a supplied regex pattern, false otherwise.
+ */
+@Since("1.0.0")
+@Summary("Checks if a string matches a pattern")
 public class Regex extends KoryphePredicate<String> {
     private Pattern controlValue;
 

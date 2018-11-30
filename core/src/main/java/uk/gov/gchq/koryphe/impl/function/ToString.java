@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
 import java.util.Arrays;
@@ -23,8 +25,9 @@ import java.util.Arrays;
  * A <code>ToString</code> is a {@link java.util.function.Function} that takes in
  * an object (null or otherwise), and calls toString on it.
  */
-public class ToString extends KorypheFunction {
-
+@Since("1.0.0")
+@Summary("Calls ToString on an object")
+public class ToString extends KorypheFunction<Object, String> {
     @Override
     public String apply(final Object o) {
         if (null == o) {

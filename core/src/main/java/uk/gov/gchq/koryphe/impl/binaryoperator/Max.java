@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
 
 /**
@@ -23,6 +25,8 @@ import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
  * {@link Comparable}s and calculates the maximum comparable. It assumes that all the input comparables
  * are compatible and can be compared against each other.
  */
+@Since("1.0.0")
+@Summary("Calculates the max value")
 public class Max extends KorypheBinaryOperator<Comparable> {
     @Override
     protected Comparable _apply(final Comparable a, final Comparable b) {

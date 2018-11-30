@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,8 @@ package uk.gov.gchq.koryphe.impl.function;
 import com.google.common.collect.Iterables;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 import uk.gov.gchq.koryphe.util.CloseableUtil;
 
@@ -25,6 +27,8 @@ import uk.gov.gchq.koryphe.util.CloseableUtil;
  * A {@code Size} is a {@link KorypheFunction} which returns the size of a provided
  * {@link Iterable}.
  */
+@Since("1.1.0")
+@Summary("Calculates the size of an iterable")
 public class Size extends KorypheFunction<Iterable, Integer> {
     @Override
     @SuppressFBWarnings(value = "DE_MIGHT_IGNORE", justification = "Any exceptions are to be ignored")

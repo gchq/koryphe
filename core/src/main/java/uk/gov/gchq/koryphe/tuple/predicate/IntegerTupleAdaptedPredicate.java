@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,11 @@
 
 package uk.gov.gchq.koryphe.tuple.predicate;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.ValidationResult;
 import uk.gov.gchq.koryphe.signature.InputValidator;
 import uk.gov.gchq.koryphe.signature.Signature;
@@ -27,6 +30,9 @@ import java.util.Collections;
 import java.util.function.Predicate;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+@JsonPropertyOrder(value = {"class", "selection", "predicate"}, alphabetic = true)
+@Since("1.0.0")
+@Summary("Applies a predicate and adapts an input integer tuple")
 public class IntegerTupleAdaptedPredicate extends TupleAdaptedPredicate<Integer, Object> implements InputValidator {
     public IntegerTupleAdaptedPredicate() {
     }

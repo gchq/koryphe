@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,26 +16,23 @@
 
 package uk.gov.gchq.koryphe.binaryoperator;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.AssumptionViolatedException;
 import org.junit.Test;
+
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
+import uk.gov.gchq.koryphe.util.JsonSerialiser;
+import uk.gov.gchq.koryphe.util.SummaryUtil;
+import uk.gov.gchq.koryphe.util.VersionUtil;
 
 import java.io.IOException;
 import java.util.function.BinaryOperator;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assume.assumeTrue;
 
 public abstract class BinaryOperatorTest {
-    private static final ObjectMapper MAPPER = createObjectMapper();
-
-    private static ObjectMapper createObjectMapper() {
-        final ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
-        return mapper;
-    }
-
     protected abstract BinaryOperator getInstance();
 
     protected abstract Class<? extends BinaryOperator> getFunctionClass();
@@ -44,11 +41,11 @@ public abstract class BinaryOperatorTest {
     public abstract void shouldJsonSerialiseAndDeserialise() throws IOException;
 
     protected String serialise(Object object) throws IOException {
-        return MAPPER.writeValueAsString(object);
+        return JsonSerialiser.serialise(object);
     }
 
     protected BinaryOperator deserialise(String json) throws IOException {
-        return MAPPER.readValue(json, getFunctionClass());
+        return JsonSerialiser.deserialise(json, getFunctionClass());
     }
 
     @Test
@@ -94,5 +91,37 @@ public abstract class BinaryOperatorTest {
 
         // Then
         assertNotEquals(instance, null);
+    }
+
+    @Test
+    public void shouldHaveSinceAnnotation() {
+        // Given
+        final BinaryOperator instance = getInstance();
+
+        // When
+        final Since annotation = instance.getClass().getAnnotation(Since.class);
+
+        // Then
+        if (null == annotation || null == annotation.value()) {
+            throw new AssumptionViolatedException("Missing Since annotation on class " + instance.getClass().getName());
+        }
+        assumeTrue(annotation.value() + " is not a valid value string.",
+                VersionUtil.validateVersionString(annotation.value()));
+    }
+
+    @Test
+    public void shouldHaveSummaryAnnotation() {
+        // Given
+        final BinaryOperator instance = getInstance();
+
+        // When
+        final Summary annotation = instance.getClass().getAnnotation(Summary.class);
+
+        // Then
+        if (null == annotation || null == annotation.value()) {
+            throw new AssumptionViolatedException("Missing Summary annotation on class " + instance.getClass().getName());
+        }
+        assumeTrue(annotation.value() + " is not a valid value string.",
+                SummaryUtil.validateSummaryString(annotation.value()));
     }
 }

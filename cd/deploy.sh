@@ -6,7 +6,7 @@ repoName="Koryphe"
 repoId="koryphe"
 artifactId="koryphe"
 
-if [ "$RELEASE" == 'true' ] && [ "$TRAVIS_BRANCH" == 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; then
+if [ "$TRAVIS_BRANCH" == 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; then
     git checkout master
     mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version
     POM_VERSION=`mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version | grep -v '\['`
@@ -54,6 +54,7 @@ if [ "$RELEASE" == 'true' ] && [ "$TRAVIS_BRANCH" == 'master' ] && [ "$TRAVIS_PU
         git checkout gh-pages
         rm -rf uk
         mv target/site/apidocs/* .
+        git add .
         git commit -a -m "Updated javadoc - $RELEASE_VERSION"
         git push
         git checkout master
@@ -93,10 +94,10 @@ if [ "$RELEASE" == 'true' ] && [ "$TRAVIS_BRANCH" == 'master' ] && [ "$TRAVIS_PU
 
         if [ "$MODULES" == '' ]; then
             echo "Running command: mvn -q deploy -P sign,build-extras,quick --settings cd/mvnsettings.xml -B"
-            mvn deploy -P sign,build-extras,quick --settings cd/mvnsettings.xml -B
+            mvn deploy -P sign,build-extras,quick,ossrh-release --settings cd/mvnsettings.xml -B
         else
             echo "Running command: mvn -q deploy -P sign,build-extras,quick --settings cd/mvnsettings.xml -B -pl $MODULES"
-            mvn deploy -P sign,build-extras,quick --settings cd/mvnsettings.xml -B -pl $MODULES
+            mvn deploy -P sign,build-extras,quick,ossrh-release --settings cd/mvnsettings.xml -B -pl $MODULES
         fi
     fi
 fi

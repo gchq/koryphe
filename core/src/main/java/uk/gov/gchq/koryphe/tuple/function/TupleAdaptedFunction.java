@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,10 @@
 package uk.gov.gchq.koryphe.tuple.function;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.AdaptedFunction;
 import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.tuple.TupleInputAdapter;
@@ -35,6 +38,9 @@ import java.util.function.Function;
  * @see TupleInputAdapter
  * @see TupleOutputAdapter
  */
+@JsonPropertyOrder(value = {"class", "selection", "function", "projection"}, alphabetic = true)
+@Since("1.0.0")
+@Summary("Applies a function and adapts the input/output")
 public class TupleAdaptedFunction<R, FI, FO> extends AdaptedFunction<Tuple<R>, FI, FO, Tuple<R>> {
     /**
      * Default - for serialisation.

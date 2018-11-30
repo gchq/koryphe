@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,19 +47,19 @@ public abstract class Signature {
     public abstract Integer getNumClasses();
 
     /**
-     * Get the input signature of a function.
+     * Get the input signature of a predicate.
      *
-     * @param function Function.
+     * @param predicate the predicate.
      * @return Input signature.
      */
-    public static Signature getInputSignature(final Predicate function) {
-        return createSignatureFromTypeVariable(function, Predicate.class, 0, true);
+    public static Signature getInputSignature(final Predicate predicate) {
+        return createSignatureFromTypeVariable(predicate, Predicate.class, 0, true);
     }
 
     /**
      * Get the input signature of a function.
      *
-     * @param function Function.
+     * @param function the function.
      * @return Input signature.
      */
     public static Signature getInputSignature(final Function function) {
@@ -69,7 +69,7 @@ public abstract class Signature {
     /**
      * Get the input signature of a BiFunction.
      *
-     * @param function BiFunction.
+     * @param function the BiFunction (second argument must be the same type as the output).
      * @param <F>      the type of the BiFunction
      * @param <I>      the first input type of the BiFunction
      * @param <O>      the second input type and output type of the BiFunction
@@ -112,14 +112,28 @@ public abstract class Signature {
      * @return Signature of the type variable.
      */
     private static Signature createSignatureFromTypeVariable(final Object input, final Class functionClass, final int typeVariableIndex, final boolean isInput) {
-        TypeVariable<?> tv = functionClass.getTypeParameters()[typeVariableIndex];
+        TypeVariable<?> tv;
+        if (input.getClass().getTypeParameters().length > typeVariableIndex) {
+            tv = input.getClass().getTypeParameters()[typeVariableIndex];
+        } else {
+            tv = functionClass.getTypeParameters()[typeVariableIndex];
+        }
         final Map<TypeVariable<?>, Type> typeArgs = TypeUtils.getTypeArguments(input.getClass(), functionClass);
-        Type type = typeArgs.get(tv);
+        Type type = typeArgs.containsKey(tv) ? typeArgs.get(tv) : Object.class;
         return createSignature(input, type, typeArgs, isInput);
     }
 
     private static Signature createSignature(final Object input, final Type type, final Map<TypeVariable<?>, Type> typeArgs, final boolean isInput) {
-        final Class clazz = getTypeClass(type, typeArgs);
+        Class clazz = null;
+        if (input.getClass().getTypeParameters().length > 0) {
+            TypeVariable<?>[] inputClassTypeParameters = input.getClass().getTypeParameters();
+            Type[] inputClassTypeParameterBounds = inputClassTypeParameters[0].getBounds();
+            if (inputClassTypeParameterBounds.length > 0) {
+                clazz = getTypeClass(inputClassTypeParameterBounds[0], typeArgs);
+            }
+        } else {
+            clazz = getTypeClass(type, typeArgs);
+        }
 
         if (Tuple.class.isAssignableFrom(clazz)) {
             final TypeVariable[] tupleTypes = getTypeClass(type, typeArgs).getTypeParameters();
@@ -139,7 +153,7 @@ public abstract class Signature {
 
     protected static Class getTypeClass(final Type type, final Map<TypeVariable<?>, Type> typeArgs) {
         Type rawType = type;
-        if (type instanceof ParameterizedType) {
+        if (rawType instanceof ParameterizedType) {
             rawType = ((ParameterizedType) type).getRawType();
         }
 
@@ -154,8 +168,13 @@ public abstract class Signature {
                 return getTypeClass(t, typeArgs);
             }
         }
-        // cannot resolve - default to UnknownGenericType;
-        return UnknownGenericType.class;
+
+        try {
+            return Class.forName(rawType.getTypeName());
+        } catch (final ClassNotFoundException e) {
+            // cannot resolve - default to UnknownGenericType;
+            return UnknownGenericType.class;
+        }
     }
 
     public static class UnknownGenericType {

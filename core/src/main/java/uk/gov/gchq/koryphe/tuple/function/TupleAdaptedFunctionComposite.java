@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,8 @@ package uk.gov.gchq.koryphe.tuple.function;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.FunctionComposite;
 import uk.gov.gchq.koryphe.tuple.Tuple;
 
@@ -30,6 +32,8 @@ import java.util.function.Function;
  *
  * @param <R> Reference type used by tuples
  */
+@Since("1.0.0")
+@Summary("Applies multiple functions and adapts the input/outputs")
 public class TupleAdaptedFunctionComposite<R>
         extends FunctionComposite<Tuple<R>, Tuple<R>, TupleAdaptedFunction<R, ? extends Object, ? extends Object>> {
     @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,6 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -129,7 +128,7 @@ public class NotTest extends PredicateTest {
         assertFalse(input.assignable(Integer.class).isValid());
         assertFalse(input.assignable(Double.class, Integer.class).isValid());
 
-        assertArrayEquals(new Class[]{Signature.UnknownGenericType.class}, input.getClasses());
-        assertNull(input.getNumClasses());
+        assertArrayEquals(new Class[]{Object.class}, input.getClasses());
+        assertEquals(1, (int) input.getNumClasses());
     }
 }

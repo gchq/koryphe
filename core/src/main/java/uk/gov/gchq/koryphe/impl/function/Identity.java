@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2017-2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,16 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
 /**
  * An <code>Identity</code> is a {@link java.util.function.Function} which takes
  * a single object as an input, and simply returns that object.
  */
+@Since("1.0.0")
+@Summary("Returns the input value")
 public class Identity extends KorypheFunction<Object, Object> {
     @Override
     public Object apply(final Object input) {
