@@ -72,4 +72,25 @@ public class SetValueTest extends FunctionTest {
         // Then 2
         assertNotNull(deserialisedMethod);
     }
+
+    @Test
+    public void shouldSerialiseAndDeserialiseLong() throws IOException {
+        // Given
+        final SetValue function = new SetValue(1L);
+
+        // When
+        final String json = JsonSerialiser.serialise(function);
+
+        // Then
+        JsonSerialiser.assertEquals(String.format("{%n" +
+                "  \"class\" : \"uk.gov.gchq.koryphe.impl.function.SetValue\",%n" +
+                "  \"value\" : {\"java.lang.Long\" : 1}%n" +
+                "}"), json);
+
+        // When 2
+        final SetValue deserialisedFunction = JsonSerialiser.deserialise(json, SetValue.class);
+
+        // Then 2
+        assertEquals(1L, deserialisedFunction.getValue());
+    }
 }
