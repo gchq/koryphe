@@ -27,7 +27,7 @@ import java.util.Collection;
  * intersects 2 collections. It calls {@link Collection#retainAll(Collection)}.
  */
 @Since("1.6.0")
-@Summary("Concatenates collections together.")
+@Summary("Returns items common to both collections")
 public class CollectionIntersect<T> extends KorypheBinaryOperator<Collection<T>> {
     @Override
     protected Collection<T> _apply(final Collection<T> a, final Collection<T> b) {
