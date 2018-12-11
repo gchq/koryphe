@@ -29,24 +29,25 @@ import java.util.function.Predicate;
 import static java.util.Objects.nonNull;
 
 /**
- * A {@code MapRemoveIf} is a {@link java.util.function.Function} that removes
+ * A {@code MapFilter} is a {@link java.util.function.Function} that filters
  * items from a {@link Map} based on a {@link java.util.function.Predicate}.
  * You can provide a key predicate, value predicate and keyValuePredicate.
- * If one or more of the predicates return true then an entry will be removed.
+ * All predicates must return true for the entry to be valid and kept.
+ * If a prdicate is not provided then it will default to returning true.
  */
 @Since("1.6.0")
 @Summary("Removes map entries based on a predicate")
-public class MapRemoveIf<K, V> extends KorypheFunction<Map<K, V>, Map<K, V>> {
+public class MapFilter<K, V> extends KorypheFunction<Map<K, V>, Map<K, V>> {
     private Predicate<K> keyPredicate = null;
     private Predicate<V> valuePredicate = null;
     private KoryphePredicate2<K, V> keyValuePredicate = null;
 
-    private Predicate<Map.Entry<K, V>> combinedPredicate = null;
+    private Predicate<Map.Entry<K, V>> removeIfPredicate = null;
 
     @Override
     public Map<K, V> apply(final Map<K, V> map) {
-        if (nonNull(map) && nonNull(combinedPredicate)) {
-            map.entrySet().removeIf(combinedPredicate);
+        if (nonNull(map) && nonNull(removeIfPredicate)) {
+            map.entrySet().removeIf(removeIfPredicate);
         }
         return map;
     }
@@ -56,13 +57,13 @@ public class MapRemoveIf<K, V> extends KorypheFunction<Map<K, V>, Map<K, V>> {
         return keyPredicate;
     }
 
-    public MapRemoveIf<K, V> keyPredicate(final Predicate keyPredicate) {
+    public MapFilter<K, V> keyPredicate(final Predicate keyPredicate) {
         return setKeyPredicate(keyPredicate);
     }
 
-    public MapRemoveIf<K, V> setKeyPredicate(final Predicate<K> keyPredicate) {
+    public MapFilter<K, V> setKeyPredicate(final Predicate<K> keyPredicate) {
         this.keyPredicate = keyPredicate;
-        updateCombinedPredicate();
+        updateRemoveIfPredicate();
         return this;
     }
 
@@ -71,13 +72,13 @@ public class MapRemoveIf<K, V> extends KorypheFunction<Map<K, V>, Map<K, V>> {
         return valuePredicate;
     }
 
-    public MapRemoveIf<K, V> valuePredicate(final Predicate valuePredicate) {
+    public MapFilter<K, V> valuePredicate(final Predicate valuePredicate) {
         return setValuePredicate(valuePredicate);
     }
 
-    public MapRemoveIf<K, V> setValuePredicate(final Predicate<V> valuePredicate) {
+    public MapFilter<K, V> setValuePredicate(final Predicate<V> valuePredicate) {
         this.valuePredicate = valuePredicate;
-        updateCombinedPredicate();
+        updateRemoveIfPredicate();
         return this;
     }
 
@@ -86,27 +87,28 @@ public class MapRemoveIf<K, V> extends KorypheFunction<Map<K, V>, Map<K, V>> {
         return keyValuePredicate;
     }
 
-    public MapRemoveIf<K, V> keyValuePredicate(final KoryphePredicate2 keyValuePredicate) {
+    public MapFilter<K, V> keyValuePredicate(final KoryphePredicate2 keyValuePredicate) {
         return setKeyValuePredicate(keyValuePredicate);
     }
 
-    public MapRemoveIf<K, V> setKeyValuePredicate(final KoryphePredicate2<K, V> keyValuePredicate) {
+    public MapFilter<K, V> setKeyValuePredicate(final KoryphePredicate2<K, V> keyValuePredicate) {
         this.keyValuePredicate = keyValuePredicate;
-        updateCombinedPredicate();
+        updateRemoveIfPredicate();
         return this;
     }
 
-    private void updateCombinedPredicate() {
-        combinedPredicate = (e) -> false;
-
+    private void updateRemoveIfPredicate() {
+        Predicate<Map.Entry<K, V>> filter = (e) -> true;
         if (nonNull(keyValuePredicate)) {
-            combinedPredicate = combinedPredicate.or((e) -> keyValuePredicate.test(e.getKey(), e.getValue()));
+            filter = filter.and((e) -> keyValuePredicate.test(e.getKey(), e.getValue()));
         }
         if (nonNull(valuePredicate)) {
-            combinedPredicate = combinedPredicate.or((e) -> valuePredicate.test(e.getValue()));
+            filter = filter.and((e) -> valuePredicate.test(e.getValue()));
         }
         if (nonNull(keyPredicate)) {
-            combinedPredicate = combinedPredicate.or((e) -> keyPredicate.test(e.getKey()));
+            filter = filter.and((e) -> keyPredicate.test(e.getKey()));
         }
+
+        removeIfPredicate = filter.negate();
     }
 }

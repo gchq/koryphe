@@ -34,7 +34,7 @@ import java.util.function.Function;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class MapRemoveIfTest extends FunctionTest {
+public class MapFilterTest extends FunctionTest {
 
     @Test
     public void shouldApplyKeyPredicate() {
@@ -45,8 +45,8 @@ public class MapRemoveIfTest extends FunctionTest {
         map.put(3, 30);
 
         final Function<Map<Integer, Integer>, Map<Integer, Integer>> predicate =
-                new MapRemoveIf<Integer, Integer>()
-                        .keyPredicate(new IsMoreThan(1));
+                new MapFilter<Integer, Integer>()
+                        .keyPredicate(new IsLessThan(2));
 
 
         // When
@@ -67,8 +67,8 @@ public class MapRemoveIfTest extends FunctionTest {
         map.put(3, 30);
 
         final Function<Map<Integer, Integer>, Map<Integer, Integer>> predicate =
-                new MapRemoveIf<Integer, Integer>()
-                        .valuePredicate(new IsMoreThan(10));
+                new MapFilter<Integer, Integer>()
+                        .valuePredicate(new IsLessThan(20));
 
 
         // When
@@ -86,10 +86,10 @@ public class MapRemoveIfTest extends FunctionTest {
         final Map<Integer, Integer> map = new HashMap<>();
         map.put(1, 1);
         map.put(2, 20);
-        map.put(3, 3);
+        map.put(3, 30);
 
         final Function<Map<Integer, Integer>, Map<Integer, Integer>> predicate =
-                new MapRemoveIf<Integer, Integer>()
+                new MapFilter<Integer, Integer>()
                         .keyValuePredicate(new AreEqual());
 
 
@@ -98,7 +98,7 @@ public class MapRemoveIfTest extends FunctionTest {
 
         // Then
         final Map<Integer, Integer> expectedMap = new HashMap<>();
-        expectedMap.put(2, 20);
+        expectedMap.put(1, 1);
         assertEquals(expectedMap, map);
     }
 
@@ -114,8 +114,8 @@ public class MapRemoveIfTest extends FunctionTest {
         map.put(60, 600);
 
         final Function<Map<Integer, Integer>, Map<Integer, Integer>> predicate =
-                new MapRemoveIf<Integer, Integer>()
-                        .keyPredicate(new IsIn(4))
+                new MapFilter<Integer, Integer>()
+                        .keyPredicate(new IsIn(1))
                         .valuePredicate(new IsLessThan(40))
                         .keyValuePredicate(new AreEqual());
 
@@ -124,13 +124,13 @@ public class MapRemoveIfTest extends FunctionTest {
 
         // Then
         final Map<Integer, Integer> expectedMap = new HashMap<>();
-        expectedMap.put(60, 600);
+        expectedMap.put(1, 1);
         assertEquals(expectedMap, map);
     }
 
     @Override
-    protected MapRemoveIf<Object, Object> getInstance() {
-        return new MapRemoveIf<>()
+    protected MapFilter<Object, Object> getInstance() {
+        return new MapFilter<>()
                 .keyPredicate(new Not<>(new IsA(String.class)))
                 .valuePredicate(new IsMoreThan(1))
                 .keyValuePredicate(new AreEqual());
@@ -138,27 +138,27 @@ public class MapRemoveIfTest extends FunctionTest {
 
     @Override
     protected Class<? extends Function> getFunctionClass() {
-        return MapRemoveIf.class;
+        return MapFilter.class;
     }
 
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
-        final MapRemoveIf predicate = getInstance();
+        final MapFilter predicate = getInstance();
 
         // When
         final String json = JsonSerialiser.serialise(predicate);
 
         // Then
         JsonSerialiser.assertEquals("{" +
-                "\"class\":\"uk.gov.gchq.koryphe.impl.function.MapRemoveIf\"," +
+                "\"class\":\"uk.gov.gchq.koryphe.impl.function.MapFilter\"," +
                 "\"keyPredicate\":{\"class\":\"uk.gov.gchq.koryphe.impl.predicate.Not\",\"predicate\":{\"class\":\"uk.gov.gchq.koryphe.impl.predicate.IsA\",\"type\":\"java.lang.String\"}}," +
                 "\"valuePredicate\":{\"class\":\"uk.gov.gchq.koryphe.impl.predicate.IsMoreThan\",\"orEqualTo\":false,\"value\":1}," +
                 "\"keyValuePredicate\":{\"class\":\"uk.gov.gchq.koryphe.impl.predicate.AreEqual\"}" +
                 "}", json);
 
         // When 2
-        final MapRemoveIf deserialised = JsonSerialiser.deserialise(json, MapRemoveIf.class);
+        final MapFilter deserialised = JsonSerialiser.deserialise(json, MapFilter.class);
 
         // Then 2
         assertNotNull(deserialised);
