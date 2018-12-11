@@ -18,6 +18,7 @@ package uk.gov.gchq.koryphe.util;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Iterators;
 
+import uk.gov.gchq.koryphe.impl.predicate.And;
 import uk.gov.gchq.koryphe.iterable.CloseableIterable;
 import uk.gov.gchq.koryphe.iterable.CloseableIterator;
 
@@ -26,6 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * An {@code IterableUtil} is a utility class providing capabilities for:
@@ -38,6 +40,48 @@ import java.util.function.Function;
 public final class IterableUtil {
     private IterableUtil() {
         // Empty
+    }
+
+    /**
+     * Filters items out of an iterable.
+     * If the predicate returns false then an item is not valid and is removed.
+     *
+     * @param iterable  the items to filter
+     * @param predicate the predicate to apply
+     * @param <T>       the type of the items in the iterable
+     * @return the lazily filtered iterable
+     */
+    public static <T> CloseableIterable<T> filter(final Iterable<T> iterable, final Predicate predicate) {
+        if (null == predicate) {
+            throw new IllegalArgumentException("Predicate cannot be null");
+        }
+        return filter(iterable, Collections.singletonList(predicate));
+    }
+
+    /**
+     * Filters items out of an iterable.
+     * If any predicate returns false then an item is not valid and is removed.
+     *
+     * @param iterable   the items to filter
+     * @param predicates the predicates to apply
+     * @param <T>        the type of the items in the iterable
+     * @return the lazily filtered iterable
+     */
+    public static <T> CloseableIterable<T> filter(final Iterable<T> iterable, final List<Predicate> predicates) {
+        if (null == iterable) {
+            return null;
+        }
+
+        if (null == predicates) {
+            throw new IllegalArgumentException("List of predicates cannot be null");
+        }
+
+        for (final Predicate predicate : predicates) {
+            if (null == predicate) {
+                throw new IllegalArgumentException("Predicates list cannot contain a null predicate");
+            }
+        }
+        return new FilteredIterable<>(iterable, predicates);
     }
 
     public static <I_ITEM, O_ITEM> CloseableIterable<O_ITEM> map(final Iterable<I_ITEM> iterable, final Function function) {
@@ -117,6 +161,85 @@ public final class IterableUtil {
             } catch (final ClassCastException c) {
                 throw new IllegalArgumentException("The input/output types of the functions were incompatible", c);
             }
+        }
+
+        @Override
+        public void close() {
+            CloseableUtil.close(iterator);
+        }
+    }
+
+    private static class FilteredIterable<T> implements CloseableIterable<T> {
+        private final Iterable<T> iterable;
+        private final List<Predicate> predicates;
+
+        FilteredIterable(final Iterable<T> iterable, final List<Predicate> predicates) {
+            this.iterable = iterable;
+            this.predicates = predicates;
+        }
+
+        @Override
+        public CloseableIterator<T> iterator() {
+            return new FilteredIterator<>(iterable.iterator(), predicates);
+        }
+
+        @Override
+        public void close() {
+            CloseableUtil.close(iterable);
+        }
+    }
+
+    private static class FilteredIterator<T> implements CloseableIterator<T> {
+        private final Iterator<? extends T> iterator;
+        private final And<T> andPredicate;
+
+        FilteredIterator(final Iterator<T> iterator, final List<Predicate> predicates) {
+            this.iterator = iterator;
+            this.andPredicate = new And<>(predicates);
+        }
+
+        private T nextElement;
+        private Boolean hasNext;
+
+        @Override
+        public boolean hasNext() {
+            if (null == hasNext) {
+                while (iterator.hasNext()) {
+                    final T possibleNext = iterator.next();
+                    if (andPredicate.test(possibleNext)) {
+                        nextElement = possibleNext;
+                        hasNext = true;
+                        return true;
+                    }
+                }
+                hasNext = false;
+                nextElement = null;
+            }
+
+            final boolean hasNextResult = Boolean.TRUE.equals(hasNext);
+            if (!hasNextResult) {
+                close();
+            }
+
+            return hasNextResult;
+        }
+
+        @Override
+        public T next() {
+            if ((null == hasNext) && (!hasNext())) {
+                throw new NoSuchElementException("Reached the end of the iterator");
+            }
+
+            final T elementToReturn = nextElement;
+            nextElement = null;
+            hasNext = null;
+
+            return elementToReturn;
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("Cannot call remove on a " + getClass().getSimpleName());
         }
 
         @Override
