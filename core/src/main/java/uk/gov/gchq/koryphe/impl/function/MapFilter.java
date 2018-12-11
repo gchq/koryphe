@@ -33,10 +33,10 @@ import static java.util.Objects.nonNull;
  * items from a {@link Map} based on a {@link java.util.function.Predicate}.
  * You can provide a key predicate, value predicate and keyValuePredicate.
  * All predicates must return true for the entry to be valid and kept.
- * If a prdicate is not provided then it will default to returning true.
+ * If a predicate is not provided then it will default to returning true.
  */
 @Since("1.6.0")
-@Summary("Removes map entries based on a predicate")
+@Summary("Filters map entries based on a predicate")
 public class MapFilter<K, V> extends KorypheFunction<Map<K, V>, Map<K, V>> {
     private Predicate<K> keyPredicate = null;
     private Predicate<V> valuePredicate = null;
