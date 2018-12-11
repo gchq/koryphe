@@ -41,11 +41,11 @@ public class MapRemoveIf<K, V> extends KorypheFunction<Map<K, V>, Map<K, V>> {
     private Predicate<V> valuePredicate = null;
     private KoryphePredicate2<K, V> keyValuePredicate = null;
 
-    private Predicate<Map.Entry<K, V>> combinedPredicate;
+    private Predicate<Map.Entry<K, V>> combinedPredicate = null;
 
     @Override
     public Map<K, V> apply(final Map<K, V> map) {
-        if (nonNull(map)) {
+        if (nonNull(map) && nonNull(combinedPredicate)) {
             map.entrySet().removeIf(combinedPredicate);
         }
         return map;
