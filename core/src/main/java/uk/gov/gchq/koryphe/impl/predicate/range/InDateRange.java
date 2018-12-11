@@ -16,6 +16,7 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
@@ -72,6 +73,7 @@ import java.util.Date;
  */
 @JsonPropertyOrder(value = {"start", "startOffset", "end", "endOffset", "startInclusive", "endInclusive", "offsetUnit"}, alphabetic = true)
 @JsonDeserialize(builder = InDateRange.Builder.class)
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @Since("1.1.0")
 @Summary("Checks if a date is within a provided date range")
 public class InDateRange extends AbstractInTimeRange<Date> {

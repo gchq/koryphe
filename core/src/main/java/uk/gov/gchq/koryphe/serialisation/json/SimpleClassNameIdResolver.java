@@ -22,6 +22,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.TypeIdResolver;
 import com.fasterxml.jackson.databind.jsontype.impl.ClassNameIdResolver;
 
+import java.io.IOException;
+
 /**
  * <p>A {@code SimpleClassNameIdResolver} is a {@link TypeIdResolver} that allows
  * simple class names to be used as type ids, rather than needing to provide the
@@ -143,13 +145,13 @@ public class SimpleClassNameIdResolver implements TypeIdResolver {
     }
 
     @Override
-    public JavaType typeFromId(final String id) {
-        return defaultResolver.typeFromId(getClassName(id, baseType));
+    public JavaType typeFromId(final DatabindContext context, final String id) throws IOException {
+        return defaultResolver.typeFromId(context, getClassName(id, baseType));
     }
 
     @Override
-    public JavaType typeFromId(final DatabindContext context, final String id) {
-        return defaultResolver.typeFromId(context, getClassName(id, baseType));
+    public String getDescForKnownTypeIds() {
+        return defaultResolver.getDescForKnownTypeIds();
     }
 
     @Override

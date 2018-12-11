@@ -16,6 +16,7 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.junit.After;
 import org.junit.Test;
 
