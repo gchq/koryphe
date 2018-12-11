@@ -29,6 +29,8 @@ import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 
 public class IterableFilterTest extends FunctionTest {
 
@@ -46,6 +48,39 @@ public class IterableFilterTest extends FunctionTest {
 
         // Then
         assertEquals(Arrays.asList(2, 3), Lists.newArrayList(result));
+    }
+
+    @Test
+    public void shouldSkipNullPredicate() {
+        // Given
+        final List<Integer> items = Arrays.asList(1, 2, 3);
+
+        final IterableFilter<Integer> predicate =
+                new IterableFilter<Integer>()
+                        .predicate(null);
+
+        // When
+        final Iterable<Integer> result = predicate.apply(items);
+
+        // Then
+        assertEquals(Arrays.asList(1, 2, 3), Lists.newArrayList(result));
+        assertSame(items, result);
+    }
+
+    @Test
+    public void shouldReturnNullForNullPredicate() {
+        // Given
+        final List<Integer> items = null;
+
+        final IterableFilter<Integer> predicate =
+                new IterableFilter<Integer>()
+                        .predicate(new IsMoreThan(1));
+
+        // When
+        final Iterable<Integer> result = predicate.apply(items);
+
+        // Then
+        assertNull(result);
     }
 
     @Override
