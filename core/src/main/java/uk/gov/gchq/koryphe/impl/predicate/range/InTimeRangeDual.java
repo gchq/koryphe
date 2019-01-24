@@ -16,6 +16,7 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
@@ -76,6 +77,7 @@ import uk.gov.gchq.koryphe.Summary;
  */
 @JsonPropertyOrder(value = {"start", "startOffset", "end", "endOffset", "startInclusive", "endInclusive", "timeUnit", "offsetUnit"}, alphabetic = true)
 @JsonDeserialize(builder = InTimeRangeDual.Builder.class)
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @Since("1.1.0")
 @Summary("Checks if the start and end timestamps are within a provided date range")
 public class InTimeRangeDual extends AbstractInTimeRangeDual<Long> {
