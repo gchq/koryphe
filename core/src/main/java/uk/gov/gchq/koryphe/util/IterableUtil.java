@@ -16,7 +16,6 @@
 package uk.gov.gchq.koryphe.util;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.common.collect.Iterators;
 
 import uk.gov.gchq.koryphe.impl.predicate.And;
 import uk.gov.gchq.koryphe.iterable.CloseableIterable;
@@ -273,7 +272,7 @@ public final class IterableUtil {
 
     private static class ChainedIterator<T> implements CloseableIterator<T> {
         private final Iterator<? extends Iterable<? extends T>> iterablesIterator;
-        private Iterator<? extends T> currentIterator = Iterators.emptyIterator();
+        private Iterator<? extends T> currentIterator = Collections.emptyIterator();
 
         ChainedIterator(final Iterator<? extends Iterable<? extends T>> iterablesIterator) {
             this.iterablesIterator = iterablesIterator;
