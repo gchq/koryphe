@@ -81,7 +81,7 @@ public class IsIn extends KoryphePredicate<Object> {
 
     @Override
     public boolean test(final Object input) {
-        return allowedValues.contains(input);
+        return null != allowedValues && allowedValues.contains(input);
     }
 
     @Override
