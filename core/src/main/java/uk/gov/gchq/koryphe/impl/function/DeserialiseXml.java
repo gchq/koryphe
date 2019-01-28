@@ -31,7 +31,7 @@ import static java.util.Objects.isNull;
 @Since("1.6.0")
 @Summary("Parses an XML document into multiple Maps")
 @JsonPropertyOrder(alphabetic = true)
-public class XmlToMap extends KorypheFunction<String, Map<String, Object>> implements Serializable {
+public class DeserialiseXml extends KorypheFunction<String, Map<String, Object>> implements Serializable {
     private static final long serialVersionUID = -6302491770456683336L;
 
     @Override

@@ -29,35 +29,35 @@ import java.util.function.Function;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-public class XmlToMapTest extends FunctionTest {
+public class DeserialiseXmlTest extends FunctionTest {
     @Override
     protected Function getInstance() {
-        return new XmlToMap();
+        return new DeserialiseXml();
     }
 
     @Override
     protected Class<? extends Function> getFunctionClass() {
-        return XmlToMap.class;
+        return DeserialiseXml.class;
     }
 
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
-        final XmlToMap function = new XmlToMap();
+        final DeserialiseXml function = new DeserialiseXml();
 
         // When
         final String json = JsonSerialiser.serialise(function);
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "   \"class\" : \"uk.gov.gchq.koryphe.impl.function.XmlToMap\"%n" +
+                "   \"class\" : \"uk.gov.gchq.koryphe.impl.function.DeserialiseXml\"%n" +
                 "}"), json);
     }
 
     @Test
     public void shouldParseXml() {
         // Given
-        final XmlToMap function = new XmlToMap();
+        final DeserialiseXml function = new DeserialiseXml();
         final String input = "<root><element1><element2>value1</element2></element1><element1><element2>value2</element2></element1></root>";
 
         // When
@@ -78,7 +78,7 @@ public class XmlToMapTest extends FunctionTest {
     @Test
     public void shouldReturnNullForNullInput() {
         // Given
-        final XmlToMap function = new XmlToMap();
+        final DeserialiseXml function = new DeserialiseXml();
         final String input = null;
 
         // When
