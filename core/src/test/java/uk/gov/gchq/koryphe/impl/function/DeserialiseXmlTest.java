@@ -58,14 +58,17 @@ public class DeserialiseXmlTest extends FunctionTest {
     public void shouldParseXml() {
         // Given
         final DeserialiseXml function = new DeserialiseXml();
-        final String input = "<root><element1><element2>value1</element2></element1><element1><element2>value2</element2></element1></root>";
+        final String input = "<root><element1><element2 attr=\"attr1\">value1</element2></element1><element1><element2>value2</element2></element1></root>";
 
         // When
         Map<String, Object> result = function.apply(input);
 
         // Then
         Map<String, Object> element2aMap = new HashMap<>();
-        element2aMap.put("element2", "value1");
+        Map<String, Object> element2aAttrContentMap = new HashMap<>();
+        element2aAttrContentMap.put("attr", "attr1");
+        element2aAttrContentMap.put("content", "value1");
+        element2aMap.put("element2", element2aAttrContentMap);
         Map<String, Object> element2bMap = new HashMap<>();
         element2bMap.put("element2", "value2");
         HashMap<Object, Object> element1Map = new HashMap<>();
