@@ -46,14 +46,13 @@ import static java.util.Objects.isNull;
 @JsonPropertyOrder(value = {"header", "firstRow", "delimiter", "quoted", "quoteChar"},
         alphabetic = true)
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-public class ParseCsv extends KorypheFunction<String, Iterable<Map<String, Object>>> implements Serializable {
+public class CsvToMaps extends KorypheFunction<String, Iterable<Map<String, Object>>> implements Serializable {
     private static final long serialVersionUID = 891938487168606844L;
     private List<String> header = new ArrayList<>();
     private int firstRow = 0;
     private char delimiter = ',';
     private boolean quoted = false;
     private char quoteChar = '\"';
-    private boolean skipInvalid = false;
 
     @Override
     public Iterable<Map<String, Object>> apply(final String csv) {
@@ -104,36 +103,18 @@ public class ParseCsv extends KorypheFunction<String, Iterable<Map<String, Objec
         this.firstRow = firstRow;
     }
 
-    public ParseCsv firstRow(final int firstRow) {
+    public CsvToMaps firstRow(final int firstRow) {
         this.firstRow = firstRow;
         return this;
     }
 
-    public ParseCsv header(final String... header) {
+    public CsvToMaps header(final String... header) {
         Collections.addAll(this.header, header);
         return this;
     }
 
-    public ParseCsv header(final Collection<String> header) {
+    public CsvToMaps header(final Collection<String> header) {
         this.header.addAll(header);
-        return this;
-    }
-
-    public boolean isSkipInvalid() {
-        return skipInvalid;
-    }
-
-    public void setSkipInvalid(final boolean skipInvalid) {
-        this.skipInvalid = skipInvalid;
-    }
-
-    public ParseCsv skipInvalid() {
-        this.skipInvalid = true;
-        return this;
-    }
-
-    public ParseCsv skipInvalid(final boolean skipInvalid) {
-        this.skipInvalid = skipInvalid;
         return this;
     }
 
@@ -145,7 +126,7 @@ public class ParseCsv extends KorypheFunction<String, Iterable<Map<String, Objec
         this.delimiter = delimiter;
     }
 
-    public ParseCsv delimiter(final char delimiter) {
+    public CsvToMaps delimiter(final char delimiter) {
         this.delimiter = delimiter;
         return this;
     }
@@ -158,12 +139,12 @@ public class ParseCsv extends KorypheFunction<String, Iterable<Map<String, Objec
         this.quoted = quoted;
     }
 
-    public ParseCsv quoted() {
+    public CsvToMaps quoted() {
         this.quoted = true;
         return this;
     }
 
-    public ParseCsv quoted(final boolean quoted) {
+    public CsvToMaps quoted(final boolean quoted) {
         this.quoted = quoted;
         return this;
     }
@@ -176,7 +157,7 @@ public class ParseCsv extends KorypheFunction<String, Iterable<Map<String, Objec
         this.quoteChar = quoteChar;
     }
 
-    public ParseCsv quoteChar(final char quoteChar) {
+    public CsvToMaps quoteChar(final char quoteChar) {
         this.quoteChar = quoteChar;
         return this;
     }
