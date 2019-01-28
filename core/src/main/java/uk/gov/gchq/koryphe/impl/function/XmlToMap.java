@@ -17,18 +17,13 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.google.common.collect.Lists;
+import org.json.XML;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import static java.util.Objects.isNull;
@@ -38,19 +33,13 @@ import static java.util.Objects.isNull;
 @JsonPropertyOrder(alphabetic = true)
 public class XmlToMap extends KorypheFunction<String, Map<String, Object>> implements Serializable {
     private static final long serialVersionUID = -6302491770456683336L;
-    private static final XmlMapper MAPPER = new XmlMapper();
-    private static final TypeReference<LinkedHashMap<String, Object>> TYPE_REFERENCE = new TypeReference<LinkedHashMap<String, Object>>() {
-    };
+
     @Override
     public Map<String, Object> apply(final String xml) {
         if (isNull(xml)) {
             return null;
         }
 
-        try {
-            return MAPPER.readValue(xml, TYPE_REFERENCE);
-        } catch (final IOException e) {
-            throw new RuntimeException("Failed to parse xml string into maps", e);
-        }
+        return XML.toJSONObject(xml).toMap();
     }
 }

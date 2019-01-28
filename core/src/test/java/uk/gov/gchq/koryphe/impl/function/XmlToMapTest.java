@@ -29,8 +29,7 @@ import java.util.function.Function;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-public class XmlToMapTest extends FunctionTest
-{
+public class XmlToMapTest extends FunctionTest {
     @Override
     protected Function getInstance() {
         return new XmlToMap();
@@ -65,15 +64,15 @@ public class XmlToMapTest extends FunctionTest
         Map<String, Object> result = function.apply(input);
 
         // Then
-        Map<String, Object> expectedMap1 = new HashMap<>();
-        expectedMap1.put("element2", "value1");
-        Map<String, Object> expectedMap2 = new HashMap<>();
-        expectedMap1.put("element2", "value2");
+        Map<String, Object> element2aMap = new HashMap<>();
+        element2aMap.put("element2", "value1");
+        Map<String, Object> element2bMap = new HashMap<>();
+        element2bMap.put("element2", "value2");
+        HashMap<Object, Object> element1Map = new HashMap<>();
+        element1Map.put("element1", Arrays.asList(element2aMap, element2bMap));
         HashMap<Object, Object> rootMap = new HashMap<>();
-        rootMap.put()
-        assertEquals(Arrays.asList(
-                expectedMap1, expectedMap2
-        ), result);
+        rootMap.put("root", element1Map);
+        assertEquals(rootMap, result);
     }
 
     @Test
