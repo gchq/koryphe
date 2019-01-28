@@ -51,6 +51,9 @@ public class MapTuple<R> implements Tuple<R> {
 
     @Override
     public Object get(final R reference) {
+        if (THIS.equals(reference)) {
+            return this;
+        }
         return values.get(reference);
     }
 

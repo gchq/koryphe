@@ -24,6 +24,8 @@ import java.util.Iterator;
  * @param <R> The type of reference used by the underlying data structure to access data values.
  */
 public interface Tuple<R> extends Iterable<Object> {
+    String THIS = "THIS";
+
     /**
      * Put a value into this <code>Tuple</code> with the given reference.
      *

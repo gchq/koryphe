@@ -84,6 +84,10 @@ public class ReflectiveTuple implements Tuple<String> {
             throw new IllegalArgumentException("field reference is required");
         }
 
+        if (THIS.equals(reference)) {
+            return this;
+        }
+
         Object selection;
         final int index = reference.indexOf(".");
         if (index > -1) {

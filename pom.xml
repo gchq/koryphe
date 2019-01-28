@@ -29,6 +29,7 @@
 
         <checkstyle.plugin.version>2.17</checkstyle.plugin.version>
         <commons-lang3.version>3.3.2</commons-lang3.version>
+        <commons-csv.version>1.4</commons-csv.version>
         <compiler.plugin.verson>2.3.2</compiler.plugin.verson>
         <findbugs.plugin.version>3.0.3</findbugs.plugin.version>
         <gpg.plugin.version>1.6</gpg.plugin.version>
@@ -126,6 +127,11 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-csv</artifactId>
+            <version>${commons-csv.version}</version>
         </dependency>
 
         <!-- Test Dependencies -->
