@@ -25,6 +25,8 @@ import uk.gov.gchq.koryphe.composite.Composite;
 import java.util.List;
 import java.util.function.Function;
 
+import static java.util.Objects.nonNull;
+
 /**
  * A {@link Composite} {@link Function} that applies each function in turn, supplying the result of each function
  * as the input of the next, and returning the result of the last function.
@@ -61,9 +63,11 @@ public class FunctionComposite<I, O, C extends Function> extends Composite<C> im
     @Override
     public O apply(final I input) {
         Object result = input;
-        for (final Function function : this.components) {
-            // Assume the output of one is the input of the next
-            result = function.apply(result);
+        if (nonNull(components)) {
+            for (final Function function : this.components) {
+                // Assume the output of one is the input of the next
+                result = function.apply(result);
+            }
         }
         return (O) result;
     }
