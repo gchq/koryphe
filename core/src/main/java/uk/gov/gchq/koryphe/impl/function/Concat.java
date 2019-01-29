@@ -35,6 +35,13 @@ public class Concat extends KorypheFunction2<Object, Object, String> {
     private static final String DEFAULT_SEPARATOR = ",";
     private String separator = DEFAULT_SEPARATOR;
 
+    public Concat() {
+    }
+
+    public Concat(final String separator) {
+        this.separator = separator;
+    }
+
     @Override
     public String apply(final Object input1, final Object input2) {
         if (null == input1) {
