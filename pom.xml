@@ -40,7 +40,7 @@
         <scm.plugin.version>1.1</scm.plugin.version>
         <source.plugin.version>2.4</source.plugin.version>
         <surefire.plugin.version>2.19.1</surefire.plugin.version>
-        <class-path-scanner.version>2.10.0</class-path-scanner.version>
+        <classgraph.version>4.4.12</classgraph.version>
 
         <!-- Define SCM properties for use with Release Plugin -->
         <scm.url>
@@ -105,7 +105,7 @@
         <dependency>
             <groupId>io.github.classgraph</groupId>
             <artifactId>classgraph</artifactId>
-            <version>4.4.12</version>
+            <version>${classgraph.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
