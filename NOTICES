@@ -10,14 +10,14 @@ Apache Commons Lang3 (org.apache.commons:commons-lang3:3.4):
 - Apache License, Version 2.0
 
 
-FasterXML Jackson (com.fasterxml.jackson.core:jackson-annotations:2.6.5,
-                   com.fasterxml.jackson.core:jackson-core:2.6.5,
-                   com.fasterxml.jackson.core:jackson-databind:2.6.5):
+FasterXML Jackson (com.fasterxml.jackson.core:jackson-annotations:2.9.7,
+                   com.fasterxml.jackson.core:jackson-core:2.9.7,
+                   com.fasterxml.jackson.core:jackson-databind:2.9.7):
 
 - Apache License, Version 2.0
 
 
-Guava (com.google.guava:guava:13.0.1):
+Guava (com.google.guava:guava:27.0.1-jre):
 
 - Apache License, Version 2.0
 
@@ -32,7 +32,7 @@ Mockito (org.mockito:mockito-all:1.9.5):
 - MIT License
 
 
-SLF4J (org.slf4j:slf4j-api:1.7.5):
+SLF4J (org.slf4j:slf4j-api:1.7.25):
 
 - MIT License
 
@@ -62,6 +62,6 @@ Maven war plugin (org.apache.maven.plugins:maven-war-plugin:3.0.0):
 - Apache License, Version 2.0
 
 
-FastClasspathScanner (io.github.lukehutch:fast-classpath-scanner:2.10.0)
+Classgraph (io.github.classgraph:classgraph:4.4.12)
 
 - MIT License
