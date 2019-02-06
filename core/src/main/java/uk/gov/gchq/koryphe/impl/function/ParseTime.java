@@ -82,7 +82,7 @@ public class ParseTime extends KorypheFunction<String, Long> {
 
     @JsonGetter("timeZone")
     public String getTimeZoneAsString() {
-        return timeZone.getID();
+        return nonNull(timeZone) ? timeZone.getID() : null;
     }
 
     @JsonSetter

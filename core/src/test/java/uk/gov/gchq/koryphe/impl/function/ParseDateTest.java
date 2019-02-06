@@ -47,9 +47,12 @@ public class ParseDateTest extends FunctionTest {
 
         // When
         final String json = JsonSerialiser.serialise(function);
+        final ParseDate deserialised = JsonSerialiser.deserialise(json, ParseDate.class);
 
         // Then
         JsonSerialiser.assertEquals("{\"class\":\"uk.gov.gchq.koryphe.impl.function.ParseDate\",\"format\":\"yyyy dd\",\"timeZone\":\"GMT\"}", json);
+        assertEquals(function.getFormat(), deserialised.getFormat());
+        assertEquals(function.getTimeZone(), deserialised.getTimeZone());
     }
 
     @Test

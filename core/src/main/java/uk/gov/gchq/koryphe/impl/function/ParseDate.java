@@ -15,6 +15,9 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
@@ -26,6 +29,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 /**
  * Parses a date string and returns the {@link Date}.
@@ -35,6 +39,10 @@ import static java.util.Objects.isNull;
 public class ParseDate extends KorypheFunction<String, Date> {
     private String format;
     private TimeZone timeZone;
+
+    public ParseDate() {
+        setTimeZone((TimeZone) null);
+    }
 
     @Override
     public Date apply(final String dateString) {
@@ -70,15 +78,22 @@ public class ParseDate extends KorypheFunction<String, Date> {
         return timeZone;
     }
 
+    @JsonGetter("timeZone")
+    public String getTimeZoneAsString() {
+        return nonNull(timeZone) ? timeZone.getID() : null;
+    }
+
+    @JsonSetter
     public void setTimeZone(final String timeZone) {
-        setTimeZone(TimeZone.getTimeZone(timeZone));
+        setTimeZone(nonNull(timeZone) ? TimeZone.getTimeZone(timeZone) : null);
     }
 
     public void setTimeZone(final TimeZone timeZone) {
         if (isNull(timeZone)) {
             this.timeZone = DateUtil.getTimeZoneDefault();
+        } else {
+            this.timeZone = timeZone;
         }
-        this.timeZone = timeZone;
     }
 
     public ParseDate timeZone(final String timeZone) {
