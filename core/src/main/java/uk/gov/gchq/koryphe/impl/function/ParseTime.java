@@ -54,7 +54,9 @@ public class ParseTime extends KorypheFunction<String, Long> {
                 time = DateUtil.parseTime(dateString, timeZone);
             } else {
                 final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
-                simpleDateFormat.setTimeZone(timeZone);
+                if (nonNull(timeZone)) {
+                    simpleDateFormat.setTimeZone(timeZone);
+                }
                 time = simpleDateFormat.parse(dateString).getTime();
             }
             return timeUnit.fromMilliSeconds(time);

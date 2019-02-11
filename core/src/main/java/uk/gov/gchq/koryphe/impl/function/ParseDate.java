@@ -52,7 +52,9 @@ public class ParseDate extends KorypheFunction<String, Date> {
                 date = DateUtil.parse(dateString, timeZone);
             } else {
                 final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
-                simpleDateFormat.setTimeZone(timeZone);
+                if (nonNull(timeZone)) {
+                    simpleDateFormat.setTimeZone(timeZone);
+                }
                 date = simpleDateFormat.parse(dateString);
             }
             return date;

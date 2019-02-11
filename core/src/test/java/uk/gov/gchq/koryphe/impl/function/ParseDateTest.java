@@ -69,6 +69,19 @@ public class ParseDateTest extends FunctionTest {
     }
 
     @Test
+    public void shouldParseDateWithFormat() throws ParseException {
+        // Given
+        final ParseDate function = new ParseDate().format("yyyy-MM hh:mm:ss.SSS");
+        final String input = "2000-01 03:04:05.006";
+
+        // When
+        Date result = function.apply(input);
+
+        // Then
+        assertEquals(new SimpleDateFormat("yyyy-MM hh:mm:ss.SSS").parse(input), result);
+    }
+
+    @Test
     public void shouldReturnNullForNullInput() {
         // Given
         final ParseDate function = new ParseDate();

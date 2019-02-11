@@ -23,6 +23,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
@@ -62,6 +63,19 @@ public class ParseTimeTest extends FunctionTest {
 
         // Then
         assertEquals(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS").parse(input).getTime(), result);
+    }
+
+    @Test
+    public void shouldParseTimeWithFormat() throws ParseException {
+        // Given
+        final ParseTime function = new ParseTime().format("yyyy-MM hh:mm:ss.SSS");
+        final String input = "2000-01 03:04:05.006";
+
+        // When
+        long result = function.apply(input);
+
+        // Then
+        assertEquals(new SimpleDateFormat("yyyy-MM hh:mm:ss.SSS").parse(input).getTime(), result);
     }
 
     @Test
