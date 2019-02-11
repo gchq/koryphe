@@ -72,6 +72,6 @@ Maven war plugin (org.apache.maven.plugins:maven-war-plugin:3.0.0):
 - Apache License, Version 2.0
 
 
-Classgraph (io.github.classgraph:classgraph:4.4.12)
+Fast Classpath Scanner (io.github.lukehutch:fast-classpath-scanner:2.10.0):
 
 - MIT License
