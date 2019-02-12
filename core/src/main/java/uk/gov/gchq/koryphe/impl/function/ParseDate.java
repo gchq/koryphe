@@ -46,6 +46,10 @@ public class ParseDate extends KorypheFunction<String, Date> {
 
     @Override
     public Date apply(final String dateString) {
+        if (isNull(dateString)) {
+            return null;
+        }
+
         try {
             final Date date;
             if (isNull(format)) {

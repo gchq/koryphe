@@ -48,6 +48,10 @@ public class ParseTime extends KorypheFunction<String, Long> {
 
     @Override
     public Long apply(final String dateString) {
+        if (isNull(dateString)) {
+            return null;
+        }
+
         try {
             final Long time;
             if (isNull(format)) {
