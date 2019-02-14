@@ -30,6 +30,7 @@
         <checkstyle.plugin.version>2.17</checkstyle.plugin.version>
         <commons-lang3.version>3.3.2</commons-lang3.version>
         <commons-csv.version>1.4</commons-csv.version>
+        <commons-codec.version>1.6</commons-codec.version>
         <org.json-version>20180813</org.json-version>
         <compiler.plugin.verson>2.3.2</compiler.plugin.verson>
         <findbugs.plugin.version>3.0.3</findbugs.plugin.version>
@@ -134,6 +135,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
             <version>${commons-csv.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>${commons-codec.version}</version>
         </dependency>
 
         <!-- Test Dependencies -->

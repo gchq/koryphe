@@ -15,6 +15,11 @@ Apache Commons CSV (org.apache.commons:commons-csv:1.4):
 - Apache Licence, Version 2.0
 
 
+Apache Commons Codec (commons-codec:commons-codec:1.6):
+
+- Apache Licence, Version 2.0
+
+
 FasterXML Jackson (com.fasterxml.jackson.core:jackson-annotations:2.9.7,
                    com.fasterxml.jackson.core:jackson-core:2.9.7,
                    com.fasterxml.jackson.core:jackson-databind:2.9.7):
