@@ -30,7 +30,7 @@ import static java.util.Objects.isNull;
  * a Base 64 encoded byte[] and decodes it into a byte[].
  */
 @Since("1.7.0")
-@Summary("Decodes a base64 encoded string")
+@Summary("Decodes a base64 encoded byte array")
 public class Base64Decode extends KorypheFunction<byte[], byte[]> {
     @SuppressFBWarnings(value = "PZLA_PREFER_ZERO_LENGTH_ARRAYS", justification = "Returning null means the input was null")
     @Override
