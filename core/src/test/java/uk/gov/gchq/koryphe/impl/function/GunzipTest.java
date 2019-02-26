@@ -16,59 +16,67 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.apache.commons.codec.binary.Base64;
 import org.junit.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.function.Function;
+import java.util.zip.GZIPOutputStream;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-public class Base64DecodeTest extends FunctionTest {
+public class GunzipTest extends FunctionTest {
     @Override
     protected Function getInstance() {
-        return new Base64Decode();
+        return new Gunzip();
     }
 
     @Override
     protected Class<? extends Function> getFunctionClass() {
-        return Base64Decode.class;
+        return Gunzip.class;
     }
 
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
-        final Base64Decode function = new Base64Decode();
+        final Gunzip function = new Gunzip();
 
         // When
         final String json = JsonSerialiser.serialise(function);
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.function.Base64Decode\"" +
+                "  \"class\" : \"uk.gov.gchq.koryphe.impl.function.Gunzip\"" +
                 "}"), json);
 
         // When 2
-        final Base64Decode deserialisedMethod = JsonSerialiser.deserialise(json, Base64Decode.class);
+        final Gunzip deserialisedMethod = JsonSerialiser.deserialise(json, Gunzip.class);
 
         // Then 2
         assertNotNull(deserialisedMethod);
     }
 
     @Test
-    public void shouldDecodeBase64() {
+    public void shouldUncompressString() throws IOException {
         // Given
-        final Base64Decode function = new Base64Decode();
-        byte[] input = "test string".getBytes();
-        final byte[] base64 = Base64.encodeBase64(input);
+        final Gunzip function = new Gunzip();
+        final byte[] input = "test string".getBytes();
+        final byte[] gzip;
+        try (final ByteArrayOutputStream out = new ByteArrayOutputStream();
+             final GZIPOutputStream gzipOut = new GZIPOutputStream(out)) {
+            gzipOut.write(input);
+            gzipOut.flush();
+            gzipOut.close();
+            gzip = out.toByteArray();
+        }
 
         // When
-        final byte[] result = function.apply(base64);
+        final byte[] result = function.apply(gzip);
 
         // Then
         assertArrayEquals(input, result);
@@ -77,7 +85,7 @@ public class Base64DecodeTest extends FunctionTest {
     @Test
     public void shouldReturnNullForNullInput() {
         // Given
-        final Base64Decode function = new Base64Decode();
+        final Gunzip function = new Gunzip();
         byte[] input = null;
 
         // When

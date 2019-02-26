@@ -21,6 +21,8 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
@@ -52,6 +54,32 @@ public class ToStringTest extends FunctionTest {
 
         // Then
         assertEquals("[test, string]", output);
+    }
+
+    @Test
+    public void shouldHandleByteArrayWithUtf8Charset() {
+        // Given
+        final ToString ts = new ToString(StandardCharsets.UTF_8);
+        final byte[] bytes = "test string".getBytes(StandardCharsets.UTF_8);
+
+        // When
+        String output = ts.apply(bytes);
+
+        // Then
+        assertEquals("test string", output);
+    }
+
+    @Test
+    public void shouldHandleByteArrayWithUtf16Charset() {
+        // Given
+        final ToString ts = new ToString(StandardCharsets.UTF_16);
+        final byte[] bytes = "test string".getBytes(StandardCharsets.UTF_16);
+
+        // When
+        String output = ts.apply(bytes);
+
+        // Then
+        assertEquals("test string", output);
     }
 
     @Test

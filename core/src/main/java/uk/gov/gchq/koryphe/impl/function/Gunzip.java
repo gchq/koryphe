@@ -17,32 +17,40 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.IOUtils;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.zip.GZIPInputStream;
+
 import static java.util.Objects.isNull;
 
 /**
- * A <code>Base64Decode</code> is a {@link java.util.function.Function} that takes
- * a Base 64 encoded byte[] and decodes it into a byte[].
+ * A <code>Gunzip</code> is a {@link java.util.function.Function} that takes
+ * a byte[] of gzipped data and decompresses it.
  */
 @Since("1.7.0")
-@Summary("Decodes a base64 encoded string")
-public class Base64Decode extends KorypheFunction<byte[], byte[]> {
+@Summary("Decompresses gzipped data")
+public class Gunzip extends KorypheFunction<byte[], byte[]> {
     @SuppressFBWarnings(value = "PZLA_PREFER_ZERO_LENGTH_ARRAYS", justification = "Returning null means the input was null")
     @Override
-    public byte[] apply(final byte[] base64Encoded) {
-        if (isNull(base64Encoded)) {
+    public byte[] apply(final byte[] compressed) {
+        if (isNull(compressed)) {
             return null;
         }
 
-        if (base64Encoded.length == 0) {
+        if (compressed.length == 0) {
             return new byte[0];
         }
 
-        return Base64.decodeBase64(base64Encoded);
+        try (final GZIPInputStream gzipStream = new GZIPInputStream(new ByteArrayInputStream(compressed))) {
+            return IOUtils.toByteArray(gzipStream);
+        } catch (final IOException e) {
+            throw new RuntimeException("Failed to decompress provided gzipped string", e);
+        }
     }
 }

@@ -31,6 +31,7 @@
         <commons-lang3.version>3.3.2</commons-lang3.version>
         <commons-csv.version>1.4</commons-csv.version>
         <commons-codec.version>1.6</commons-codec.version>
+        <commons-io.version>2.4</commons-io.version>
         <org.json-version>20180813</org.json-version>
         <compiler.plugin.verson>2.3.2</compiler.plugin.verson>
         <findbugs.plugin.version>3.0.3</findbugs.plugin.version>
@@ -125,6 +126,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang3.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>

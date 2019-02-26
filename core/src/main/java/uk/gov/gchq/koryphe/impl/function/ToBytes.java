@@ -19,52 +19,49 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.google.common.base.Charsets;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
 import java.nio.charset.Charset;
-import java.util.Arrays;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 /**
- * A <code>ToString</code> is a {@link java.util.function.Function} that takes in
- * an object (null or otherwise), and calls toString on it.
+ * A <code>ToBytes</code> is a {@link java.util.function.Function} that takes in
+ * a string and extracts the bytes using the provided charset.
  */
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-@Since("1.0.0")
-@Summary("Calls ToString on an object")
-public class ToString extends KorypheFunction<Object, String> {
+@Since("1.7.0")
+@Summary("Extracts the bytes from a string")
+public class ToBytes extends KorypheFunction<String, byte[]> {
     public static final Charset DEFAULT_CHARSET = Charsets.UTF_8;
 
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     private Charset charset;
 
-    public ToString() {
+    public ToBytes() {
         setCharset(DEFAULT_CHARSET);
     }
 
-    public ToString(final String charsetString) {
+    public ToBytes(final String charsetString) {
         setCharset(Charset.forName(charsetString));
     }
 
-    public ToString(final Charset charset) {
+    public ToBytes(final Charset charset) {
         setCharset(charset);
     }
 
+    @SuppressFBWarnings(value = "PZLA_PREFER_ZERO_LENGTH_ARRAYS", justification = "Returning null means the input was null")
     @Override
-    public String apply(final Object o) {
-        if (null == o) {
+    public byte[] apply(final String string) {
+        if (isNull(string)) {
             return null;
         }
-        if (o instanceof byte[]) {
-            return new String(((byte[]) o), charset);
-        }
-        if (o instanceof Object[]) {
-            return Arrays.toString((Object[]) o);
-        }
-        return String.valueOf(o);
+        return string.getBytes(charset);
     }
 
     public Charset getCharset() {
