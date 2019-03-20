@@ -33,12 +33,12 @@ public class LookUpInMap<K, V> extends KorypheFunction<K, V> {
         // Required for serialisation
     }
 
-    public LookUpInMap(Map<K, V> lookUpMap) {
+    public LookUpInMap(final Map<K, V> lookUpMap) {
         this.lookUpMap = lookUpMap;
     }
 
     @Override
-    public V apply(K key) {
+    public V apply(final K key) {
         return lookUpMap.get(key);
     }
 
@@ -46,7 +46,7 @@ public class LookUpInMap<K, V> extends KorypheFunction<K, V> {
         return lookUpMap;
     }
 
-    public void setLookUpMap(Map<K, V> lookUpMap) {
+    public void setLookUpMap(final Map<K, V> lookUpMap) {
         this.lookUpMap = lookUpMap;
     }
 }
