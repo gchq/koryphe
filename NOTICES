@@ -25,9 +25,9 @@ Apache Commons IO (commons-io:commons-io:2.4):
 - Apache Licence, Version 2.0
 
 
-FasterXML Jackson (com.fasterxml.jackson.core:jackson-annotations:2.9.7,
-                   com.fasterxml.jackson.core:jackson-core:2.9.7,
-                   com.fasterxml.jackson.core:jackson-databind:2.9.7):
+FasterXML Jackson (com.fasterxml.jackson.core:jackson-annotations:2.6.5,
+                   com.fasterxml.jackson.core:jackson-core:2.6.5,
+                   com.fasterxml.jackson.core:jackson-databind:2.6.5):
 
 - Apache License, Version 2.0
 
