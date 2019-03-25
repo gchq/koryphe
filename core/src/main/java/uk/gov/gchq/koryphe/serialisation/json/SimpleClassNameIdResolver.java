@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2018 Crown Copyright
+ * Copyright 2017-2019 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,6 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.TypeIdResolver;
 import com.fasterxml.jackson.databind.jsontype.impl.ClassNameIdResolver;
-
-import java.io.IOException;
 
 /**
  * <p>A {@code SimpleClassNameIdResolver} is a {@link TypeIdResolver} that allows
@@ -145,13 +143,13 @@ public class SimpleClassNameIdResolver implements TypeIdResolver {
     }
 
     @Override
-    public JavaType typeFromId(final DatabindContext context, final String id) throws IOException {
-        return defaultResolver.typeFromId(context, getClassName(id, baseType));
+    public JavaType typeFromId(final String id) {
+        return defaultResolver.typeFromId(getClassName(id, baseType));
     }
 
     @Override
-    public String getDescForKnownTypeIds() {
-        return defaultResolver.getDescForKnownTypeIds();
+    public JavaType typeFromId(final DatabindContext context, final String id) {
+        return defaultResolver.typeFromId(context, getClassName(id, baseType));
     }
 
     @Override

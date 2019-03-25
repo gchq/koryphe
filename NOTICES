@@ -1,4 +1,4 @@
-Copyright 2017 Crown Copyright
+Copyright 2017-2019 Crown Copyright
 
 Koryphe is built using maven. This process will automatically pull in dependencies. We list Koryphe's dependencies,
 and their licenses, below. For information on the dependencies of these dependencies, see the websites of the
@@ -17,7 +17,7 @@ FasterXML Jackson (com.fasterxml.jackson.core:jackson-annotations:2.6.5,
 - Apache License, Version 2.0
 
 
-Guava (com.google.guava:guava:13.0.1):
+Guava (com.google.guava:guava:27.0.1-jre):
 
 - Apache License, Version 2.0
 
@@ -32,7 +32,7 @@ Mockito (org.mockito:mockito-all:1.9.5):
 - MIT License
 
 
-SLF4J (org.slf4j:slf4j-api:1.7.5):
+SLF4J (org.slf4j:slf4j-api:1.7.25):
 
 - MIT License
 
@@ -62,6 +62,6 @@ Maven war plugin (org.apache.maven.plugins:maven-war-plugin:3.0.0):
 - Apache License, Version 2.0
 
 
-FastClasspathScanner (io.github.lukehutch:fast-classpath-scanner:2.10.0)
+Fast Classpath Scanner (io.github.lukehutch:fast-classpath-scanner:2.10.0):
 
 - MIT License
