@@ -32,7 +32,7 @@ import static java.util.Objects.isNull;
  * and it isn't null then 'new TheProvidedClassName(object)' is called. Otherwise
  * the no-arg constructor is used.
  */
-@Since("1.6.0")
+@Since("1.7.0")
 @Summary("Creates a new object of the given type")
 public class CreateObject extends KorypheFunction<Object, Object> {
 
