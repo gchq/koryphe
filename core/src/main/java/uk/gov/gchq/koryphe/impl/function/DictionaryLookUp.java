@@ -22,31 +22,31 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
 import java.util.Map;
 
 /**
- * A {@link LookUpInMap} is a {@link KorypheFunction} that takes a key and using a parameterised map returns a value.
+ * A {@link DictionaryLookUp} is a {@link KorypheFunction} that takes a key and using a dictionary returns a value.
  */
-@Since("1.6.1")
-@Summary("Looks up a value in a parameterised map")
-public class LookUpInMap<K, V> extends KorypheFunction<K, V> {
-    Map<K, V> lookUpMap;
+@Since("1.7.0")
+@Summary("Looks up a value in a map")
+public class DictionaryLookUp<K, V> extends KorypheFunction<K, V> {
+    Map<K, V> dictionary;
 
-    public LookUpInMap() {
+    public DictionaryLookUp() {
         // Required for serialisation
     }
 
-    public LookUpInMap(final Map<K, V> lookUpMap) {
-        this.lookUpMap = lookUpMap;
+    public DictionaryLookUp(final Map<K, V> dictionary) {
+        this.dictionary = dictionary;
     }
 
     @Override
     public V apply(final K key) {
-        return lookUpMap.get(key);
+        return dictionary.get(key);
     }
 
-    public Map<K, V> getLookUpMap() {
-        return lookUpMap;
+    public Map<K, V> getDictionary() {
+        return dictionary;
     }
 
-    public void setLookUpMap(final Map<K, V> lookUpMap) {
-        this.lookUpMap = lookUpMap;
+    public void setDictionary(final Map<K, V> dictionary) {
+        this.dictionary = dictionary;
     }
 }

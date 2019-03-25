@@ -18,7 +18,9 @@ package uk.gov.gchq.koryphe.impl.function;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import uk.gov.gchq.koryphe.function.FunctionTest;
@@ -28,47 +30,65 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public class LookUpInMapTest extends FunctionTest {
+public class DictionaryLookUpTest extends FunctionTest {
 
-    private Map<String, Integer> lookUpMap = new HashMap<>();;
-    private LookUpInMap<String, Integer> lookUpInMap;
+    private Map<String, Integer> dictionary = new HashMap<>();;
+    private DictionaryLookUp<String, Integer> dictionaryLookUp;
 
     @Before
     public void setup() {
-        lookUpMap.put("one", 1);
-        lookUpMap.put("two", 2);
-        lookUpInMap = new LookUpInMap<>(lookUpMap);
+        dictionary.put("one", 1);
+        dictionary.put("two", 2);
+        dictionaryLookUp = new DictionaryLookUp<>(dictionary);
     }
 
     @Test
-    public void apply() {
-        assertEquals(1, (int)lookUpInMap.apply("one"));
-        assertEquals(2, (int)lookUpInMap.apply("two"));
+    public void lookUpExistingValueInDictionary() {
+        assertEquals(1, (int) dictionaryLookUp.apply("one"));
+        assertEquals(2, (int) dictionaryLookUp.apply("two"));
+    }
+
+    @Test
+    public void lookUpNullInDictionary() {
+        assertNull(dictionaryLookUp.apply(null));
+    }
+
+    @Test
+    public void lookUpNotFoundInDictionary() {
+        assertNull(dictionaryLookUp.apply("three"));
+    }
+
+    @Test
+    public void lookUpWithoutDictionary() {
+        try {
+            new DictionaryLookUp<>().apply("four");
+            Assert.fail("expected NullPointerException");
+        } catch (NullPointerException e) {}
     }
 
     @Override
     protected Function getInstance() {
-        return new LookUpInMap();
+        return new DictionaryLookUp();
     }
 
     @Override
     protected Class<? extends Function> getFunctionClass() {
-        return LookUpInMap.class;
+        return DictionaryLookUp.class;
     }
 
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // When
-        final String json = JsonSerialiser.serialise(lookUpInMap);
+        final String json = JsonSerialiser.serialise(dictionaryLookUp);
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "   \"class\" : \"uk.gov.gchq.koryphe.impl.function.LookUpInMap\"," +
-                "   \"lookUpMap\" : {\"one\" : 1, \"two\" : 2}" +
+                "   \"class\" : \"uk.gov.gchq.koryphe.impl.function.DictionaryLookUp\"," +
+                "   \"dictionary\" : {\"one\" : 1, \"two\" : 2}" +
                 "}"), json);
 
         // When 2
-        final LookUpInMap deserialised = JsonSerialiser.deserialise(json, LookUpInMap.class);
+        final DictionaryLookUp deserialised = JsonSerialiser.deserialise(json, DictionaryLookUp.class);
 
         // Then
         assertNotNull(deserialised);
