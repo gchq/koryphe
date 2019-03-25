@@ -30,50 +30,52 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public class DictionaryLookUpTest extends FunctionTest {
+public class DictionaryLookupTest extends FunctionTest {
 
     private Map<String, Integer> dictionary = new HashMap<>();;
-    private DictionaryLookUp<String, Integer> dictionaryLookUp;
+    private DictionaryLookup<String, Integer> dictionaryLookUp;
 
     @Before
     public void setup() {
         dictionary.put("one", 1);
         dictionary.put("two", 2);
-        dictionaryLookUp = new DictionaryLookUp<>(dictionary);
+        dictionaryLookUp = new DictionaryLookup<>(dictionary);
     }
 
     @Test
-    public void lookUpExistingValueInDictionary() {
+    public void shouldReturnExistingValueInDictionary() {
         assertEquals(1, (int) dictionaryLookUp.apply("one"));
         assertEquals(2, (int) dictionaryLookUp.apply("two"));
     }
 
     @Test
-    public void lookUpNullInDictionary() {
+    public void shouldReturnNullIfNullKeyIsSupplied() {
         assertNull(dictionaryLookUp.apply(null));
     }
 
     @Test
-    public void lookUpNotFoundInDictionary() {
+    public void shouldReturnNullIfItemDoesntExistInDictionary() {
         assertNull(dictionaryLookUp.apply("three"));
     }
 
     @Test
-    public void lookUpWithoutDictionary() {
+    public void shouldThrowExceptionIfDictionaryIsSetToNull() {
         try {
-            new DictionaryLookUp<>().apply("four");
-            Assert.fail("expected NullPointerException");
-        } catch (NullPointerException e) {}
+            new DictionaryLookup<>().apply("four");
+            Assert.fail("expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            assertEquals("The uk.gov.gchq.koryphe.impl.function.DictionaryLookup KorypheFunction has not been provided with a dictionary", e.getMessage());
+        }
     }
 
     @Override
     protected Function getInstance() {
-        return new DictionaryLookUp();
+        return new DictionaryLookup();
     }
 
     @Override
     protected Class<? extends Function> getFunctionClass() {
-        return DictionaryLookUp.class;
+        return DictionaryLookup.class;
     }
 
     @Override
@@ -83,12 +85,12 @@ public class DictionaryLookUpTest extends FunctionTest {
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "   \"class\" : \"uk.gov.gchq.koryphe.impl.function.DictionaryLookUp\"," +
+                "   \"class\" : \"uk.gov.gchq.koryphe.impl.function.DictionaryLookup\"," +
                 "   \"dictionary\" : {\"one\" : 1, \"two\" : 2}" +
                 "}"), json);
 
         // When 2
-        final DictionaryLookUp deserialised = JsonSerialiser.deserialise(json, DictionaryLookUp.class);
+        final DictionaryLookup deserialised = JsonSerialiser.deserialise(json, DictionaryLookup.class);
 
         // Then
         assertNotNull(deserialised);

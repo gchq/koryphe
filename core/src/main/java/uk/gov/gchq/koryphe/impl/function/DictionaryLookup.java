@@ -22,23 +22,26 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
 import java.util.Map;
 
 /**
- * A {@link DictionaryLookUp} is a {@link KorypheFunction} that takes a key and using a dictionary returns a value.
+ * A {@link DictionaryLookup} is a {@link KorypheFunction} that takes a key and using a dictionary returns a value.
  */
 @Since("1.7.0")
 @Summary("Looks up a value in a map")
-public class DictionaryLookUp<K, V> extends KorypheFunction<K, V> {
+public class DictionaryLookup<K, V> extends KorypheFunction<K, V> {
     Map<K, V> dictionary;
 
-    public DictionaryLookUp() {
+    public DictionaryLookup() {
         // Required for serialisation
     }
 
-    public DictionaryLookUp(final Map<K, V> dictionary) {
+    public DictionaryLookup(final Map<K, V> dictionary) {
         this.dictionary = dictionary;
     }
 
     @Override
     public V apply(final K key) {
+        if (dictionary == null) {
+            throw new IllegalArgumentException("The " + DictionaryLookup.class.getName() + " KorypheFunction has not been provided with a dictionary");
+        }
         return dictionary.get(key);
     }
 
