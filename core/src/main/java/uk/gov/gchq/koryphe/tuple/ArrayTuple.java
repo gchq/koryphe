@@ -16,6 +16,7 @@
 
 package uk.gov.gchq.koryphe.tuple;
 
+import com.google.common.collect.Iterables;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -39,6 +40,10 @@ public class ArrayTuple implements Tuple<Integer> {
     @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "This class is designed to simply wrap an object array.")
     public ArrayTuple(final Object... values) {
         this.values = values;
+    }
+
+    public ArrayTuple(final Iterable<?> values) {
+        this(Iterables.toArray(values, Object.class));
     }
 
     /**
