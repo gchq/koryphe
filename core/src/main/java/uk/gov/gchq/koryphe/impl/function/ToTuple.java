@@ -34,7 +34,7 @@ import static java.util.Objects.isNull;
  * A <code>ToTuple</code> is a {@link java.util.function.Function} that takes
  * an object and converts it into a {@link Tuple} for follow on processing.
  */
-@Since("1.7.0")
+@Since("1.8.0")
 @Summary("Converts an Object into a Tuple")
 public class ToTuple extends KorypheFunction<Object, Tuple<?>> {
     @Override
