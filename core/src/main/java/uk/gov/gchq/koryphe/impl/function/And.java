@@ -35,7 +35,7 @@ import java.util.function.Function;
  * @param <O> Type of output
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
-@Since("1.6.0")
+@Since("1.8.0")
 @Summary("Applies the given functions consecutively")
 public class And<I, O> extends FunctionComposite<I, O, Function<I, O>> {
     public And() {

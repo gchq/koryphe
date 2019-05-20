@@ -34,7 +34,7 @@ import static java.util.Objects.nonNull;
  * So if you start with an input value of int 1 and then increment it with a double 2.0.
  * The result will be a double 3.0.
  */
-@Since("1.6.0")
+@Since("1.8.0")
 @Summary("Adds a given number to the input")
 public class Increment extends KorypheFunction<Number, Number> {
     private Number increment;

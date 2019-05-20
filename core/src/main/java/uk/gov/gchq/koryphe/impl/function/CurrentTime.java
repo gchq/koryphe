@@ -25,7 +25,7 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
  * returns the current time in milliseconds.
  * It takes no arguments.
  */
-@Since("1.6.0")
+@Since("1.8.0")
 @Summary("Returns the current time in milliseconds")
 public class CurrentTime extends KorypheFunction<Object, Long> {
     @Override

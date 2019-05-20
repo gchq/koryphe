@@ -34,7 +34,7 @@ import static java.util.Objects.nonNull;
 /**
  * Parses a date string and returns the timestamp as a {@link Long}.
  */
-@Since("1.6.0")
+@Since("1.8.0")
 @Summary("Parses a date string into a timestamp")
 public class ParseTime extends KorypheFunction<String, Long> {
     private String format;

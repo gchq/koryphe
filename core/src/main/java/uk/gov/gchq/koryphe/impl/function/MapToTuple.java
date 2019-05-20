@@ -27,7 +27,7 @@ import uk.gov.gchq.koryphe.tuple.Tuple;
 import java.io.Serializable;
 import java.util.Map;
 
-@Since("1.6.0")
+@Since("1.8.0")
 @Summary("Converts a Map to a Tuple")
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class MapToTuple<K> extends KorypheFunction<Map<K, Object>, Tuple<K>> implements Serializable {

@@ -27,7 +27,7 @@ import java.util.Date;
  * returns the current {@link Date}.
  * It takes no arguments.
  */
-@Since("1.6.0")
+@Since("1.8.0")
 @Summary("Returns the current date")
 public class CurrentDate extends KorypheFunction<Object, Date> {
     @Override

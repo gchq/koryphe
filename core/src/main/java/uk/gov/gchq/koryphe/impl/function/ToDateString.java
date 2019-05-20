@@ -29,7 +29,7 @@ import static java.util.Objects.isNull;
  * A <code>ToDateString</code> is a {@link java.util.function.Function} that
  * converts a {@link Date} into a {@link String} using the provided format.
  */
-@Since("1.6.0")
+@Since("1.8.0")
 @Summary("Converts a date to a string")
 public class ToDateString extends KorypheFunction<Date, String> {
     private String format;

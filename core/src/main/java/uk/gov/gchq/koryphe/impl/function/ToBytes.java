@@ -35,7 +35,7 @@ import static java.util.Objects.nonNull;
  * a string and extracts the bytes using the provided charset.
  */
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-@Since("1.7.0")
+@Since("1.8.0")
 @Summary("Extracts the bytes from a string")
 public class ToBytes extends KorypheFunction<String, byte[]> {
     public static final Charset DEFAULT_CHARSET = Charsets.UTF_8;

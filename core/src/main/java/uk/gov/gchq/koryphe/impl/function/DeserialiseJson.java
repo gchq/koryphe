@@ -30,7 +30,7 @@ import java.io.Serializable;
 
 import static java.util.Objects.isNull;
 
-@Since("1.6.0")
+@Since("1.8.0")
 @Summary("Parses a JSON string in java objects")
 @JsonPropertyOrder(alphabetic = true)
 @JsonInclude(value = JsonInclude.Include.NON_DEFAULT)

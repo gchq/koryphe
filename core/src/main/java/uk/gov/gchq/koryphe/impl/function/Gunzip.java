@@ -33,7 +33,7 @@ import static java.util.Objects.isNull;
  * A <code>Gunzip</code> is a {@link java.util.function.Function} that takes
  * a byte[] of gzipped data and decompresses it.
  */
-@Since("1.7.0")
+@Since("1.8.0")
 @Summary("Decompresses gzipped data")
 public class Gunzip extends KorypheFunction<byte[], byte[]> {
     @SuppressFBWarnings(value = "PZLA_PREFER_ZERO_LENGTH_ARRAYS", justification = "Returning null means the input was null")

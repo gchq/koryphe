@@ -28,7 +28,7 @@ import java.util.Map;
 
 import static java.util.Objects.isNull;
 
-@Since("1.6.0")
+@Since("1.8.0")
 @Summary("Parses an XML document into multiple Maps")
 @JsonPropertyOrder(alphabetic = true)
 public class DeserialiseXml extends KorypheFunction<String, Map<String, Object>> implements Serializable {

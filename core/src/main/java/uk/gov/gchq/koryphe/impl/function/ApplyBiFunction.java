@@ -36,7 +36,7 @@ import static java.util.Objects.nonNull;
  * @param <R> Type of output
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
-@Since("1.6.0")
+@Since("1.8.0")
 @Summary("Applies the given BiFunction")
 public class ApplyBiFunction<T, U, R> extends KorypheFunction2<T, U, R> {
     private BiFunction<T, U, R> function;

@@ -41,7 +41,7 @@ import java.util.Map;
 
 import static java.util.Objects.isNull;
 
-@Since("1.6.0")
+@Since("1.8.0")
 @Summary("Parses CSV lines into Maps")
 @JsonPropertyOrder(value = {"header", "firstRow", "delimiter", "quoted", "quoteChar"},
         alphabetic = true)
