@@ -15,6 +15,9 @@
  */
 package uk.gov.gchq.koryphe.tuple;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -252,5 +255,29 @@ public class ReflectiveTuple implements Tuple<String> {
             }
             return accessibleObjectMap.put(reference, accessibleObject);
         }
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        final ReflectiveTuple objects = (ReflectiveTuple) o;
+
+        return new EqualsBuilder()
+                .append(record, objects.record)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(7, 37)
+                .append(record)
+                .toHashCode();
     }
 }
