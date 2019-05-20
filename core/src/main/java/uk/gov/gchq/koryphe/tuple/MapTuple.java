@@ -16,6 +16,8 @@
 
 package uk.gov.gchq.koryphe.tuple;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.HashMap;
@@ -77,5 +79,29 @@ public class MapTuple<R> implements Tuple<R> {
         return new ToStringBuilder(this)
                 .append("values", values)
                 .build();
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        final MapTuple<?> mapTuple = (MapTuple<?>) o;
+
+        return new EqualsBuilder()
+                .append(values, mapTuple.values)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(11, 31)
+                .append(values)
+                .toHashCode();
     }
 }
