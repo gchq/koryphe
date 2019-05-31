@@ -136,7 +136,7 @@ public class ParseTime extends KorypheFunction<String, Long> {
         return this;
     }
 
-    public ParseTime timeZone(final TimeUnit timeUnit) {
+    public ParseTime timeUnit(final TimeUnit timeUnit) {
         setTimeUnit(timeUnit);
         return this;
     }
