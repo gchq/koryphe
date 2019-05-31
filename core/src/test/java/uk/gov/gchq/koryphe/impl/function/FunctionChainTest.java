@@ -27,21 +27,21 @@ import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
 
-public class AndTest extends FunctionTest {
+public class FunctionChainTest extends FunctionTest {
     @Override
     protected Function getInstance() {
-        return new And();
+        return new FunctionChain();
     }
 
     @Override
     protected Class<? extends Function> getFunctionClass() {
-        return And.class;
+        return FunctionChain.class;
     }
 
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
-        final And function = new And.Builder<>()
+        final FunctionChain function = new FunctionChain.Builder<>()
                 .execute(new Integer[]{1}, new ToUpperCase(), new Integer[]{2})
                 .execute(new Integer[]{2}, new ToSet(), new Integer[]{3})
                 .build();
@@ -62,7 +62,7 @@ public class AndTest extends FunctionTest {
     @Test
     public void shouldApplyAllTupleFunctions() {
         // Given
-        final And function = new And.Builder<>()
+        final FunctionChain function = new FunctionChain.Builder<>()
                 .execute(new Integer[]{0}, new ToUpperCase(), new Integer[]{1})
                 .execute(new Integer[]{1}, new ToSet(), new Integer[]{2})
                 .build();
@@ -78,7 +78,7 @@ public class AndTest extends FunctionTest {
     @Test
     public void shouldApplyAllFunctions() {
         // Given
-        final And function = new And(new ToUpperCase(), new ToSet());
+        final FunctionChain function = new FunctionChain(new ToUpperCase(), new ToSet());
         final String input = "someString";
 
         // When
@@ -91,7 +91,7 @@ public class AndTest extends FunctionTest {
     @Test
     public void shouldReturnInputWhenNoFunctions() {
         // Given
-        final And function = new And();
+        final FunctionChain function = new FunctionChain();
         function.setComponents(null);
         final String input = "someString";
 
