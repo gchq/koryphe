@@ -37,16 +37,16 @@ import java.util.function.Function;
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
 @Since("1.8.0")
 @Summary("Applies the given functions consecutively")
-public class And<I, O> extends FunctionComposite<I, O, Function<I, O>> {
-    public And() {
+public class FunctionChain<I, O> extends FunctionComposite<I, O, Function<I, O>> {
+    public FunctionChain() {
         super();
     }
 
-    public And(final Function... functions) {
+    public FunctionChain(final Function... functions) {
         this(Lists.newArrayList(functions));
     }
 
-    public And(final List<Function> functions) {
+    public FunctionChain(final List<Function> functions) {
         super((List) functions);
     }
 
@@ -73,8 +73,8 @@ public class And<I, O> extends FunctionComposite<I, O, Function<I, O>> {
             return this;
         }
 
-        public And<I, O> build() {
-            return new And<>(new ArrayList<>(components));
+        public FunctionChain<I, O> build() {
+            return new FunctionChain<>(new ArrayList<>(components));
         }
     }
 }
