@@ -29,12 +29,30 @@ public class AdaptedPredicateTest {
 
     @Test
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
+        // Given
         final AdaptedPredicate original = new AdaptedPredicate(new ToString(), new IsEqual("3"));
 
+        // When
         final String serialised = JsonSerialiser.serialise(original);
 
+        // Then
+        String expected = "{" +
+                    "\"class\":\"uk.gov.gchq.koryphe.predicate.AdaptedPredicate\"," +
+                    "\"inputAdapter\":{" +
+                        "\"class\":\"uk.gov.gchq.koryphe.impl.function.ToString\"" +
+                    "}," +
+                    "\"predicate\":{" +
+                        "\"class\":\"uk.gov.gchq.koryphe.impl.predicate.IsEqual\"," +
+                        "\"value\":\"3\"" +
+                    "}" +
+                "}";
+
+        assertEquals(expected, serialised);
+
+        // When
         final AdaptedPredicate deserialised = JsonSerialiser.deserialise(serialised, AdaptedPredicate.class);
 
+        // Then
         assertEquals(original.getPredicate().getClass(), deserialised.getPredicate().getClass());
         assertEquals(original.getInputAdapter().getClass(), deserialised.getInputAdapter().getClass());
         assertEquals(((IsEqual) original.getPredicate()).getControlValue(), ((IsEqual) deserialised.getPredicate()).getControlValue());
