@@ -16,6 +16,8 @@
 
 package uk.gov.gchq.koryphe.adapted;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.util.function.Function;
 
 /**
@@ -36,6 +38,7 @@ public class InputAdapted<I, AI> {
         return inputAdapter;
     }
 
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
     public void setInputAdapter(final Function<I, AI> inputAdapter) {
         this.inputAdapter = inputAdapter;
     }
