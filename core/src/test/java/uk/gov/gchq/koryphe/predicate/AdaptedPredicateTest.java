@@ -37,7 +37,6 @@ public class AdaptedPredicateTest {
 
         // Then
         String expected = "{" +
-                    "\"class\":\"uk.gov.gchq.koryphe.predicate.AdaptedPredicate\"," +
                     "\"inputAdapter\":{" +
                         "\"class\":\"uk.gov.gchq.koryphe.impl.function.ToString\"" +
                     "}," +
