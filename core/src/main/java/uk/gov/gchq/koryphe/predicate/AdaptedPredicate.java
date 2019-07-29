@@ -33,9 +33,9 @@ import java.util.function.Predicate;
  */
 @Since("1.0.0")
 @Summary("Applies a predicate and adapts the input")
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
 public class AdaptedPredicate<I, PI> extends InputAdapted<I, PI> implements Predicate<I> {
 
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
     protected Predicate<PI> predicate;
 
     /**
@@ -60,7 +60,6 @@ public class AdaptedPredicate<I, PI> extends InputAdapted<I, PI> implements Pred
         return null == predicate || predicate.test(adaptInput(input));
     }
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
     public Predicate<PI> getPredicate() {
         return predicate;
     }
