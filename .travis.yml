@@ -5,6 +5,7 @@ cache:
 jdk:
   - oraclejdk8
 sudo: false
+dist: trusty
 addons:
   apt:
     packages:
