@@ -53,8 +53,8 @@ public class FunctionChainTest extends FunctionTest {
         JsonSerialiser.assertEquals("{" +
                 "\"class\":\"uk.gov.gchq.koryphe.impl.function.FunctionChain\"," +
                 "\"functions\":[" +
-                "{\"class\":\"uk.gov.gchq.koryphe.tuple.function.TupleAdaptedFunctionComposite\",\"functions\":[{\"selection\":[1],\"function\":{\"class\":\"uk.gov.gchq.koryphe.impl.function.ToUpperCase\"},\"projection\":[2]}]}," +
-                "{\"class\":\"uk.gov.gchq.koryphe.tuple.function.TupleAdaptedFunctionComposite\",\"functions\":[{\"selection\":[2],\"function\":{\"class\":\"uk.gov.gchq.koryphe.impl.function.ToSet\"},\"projection\":[3]}]}" +
+                "{\"class\":\"uk.gov.gchq.koryphe.tuple.function.TupleAdaptedFunction\",\"selection\":[1],\"function\":{\"class\":\"uk.gov.gchq.koryphe.impl.function.ToUpperCase\"},\"projection\":[2]}," +
+                "{\"class\":\"uk.gov.gchq.koryphe.tuple.function.TupleAdaptedFunction\",\"selection\":[2],\"function\":{\"class\":\"uk.gov.gchq.koryphe.impl.function.ToSet\"},\"projection\":[3]}" +
                 "]" +
                 "}", json);
     }
