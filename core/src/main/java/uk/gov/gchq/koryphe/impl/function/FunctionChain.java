@@ -22,7 +22,7 @@ import com.google.common.collect.Lists;
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.FunctionComposite;
-import uk.gov.gchq.koryphe.tuple.function.TupleAdaptedFunctionComposite;
+import uk.gov.gchq.koryphe.tuple.function.TupleAdaptedFunction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,11 +64,7 @@ public class FunctionChain<I, O> extends FunctionComposite<I, O, Function<I, O>>
 
         public <R> Builder<I, O> execute(final R[] selection, final Function function, final R[] projection) {
             components.add(
-                    new TupleAdaptedFunctionComposite.Builder()
-                            .select(selection)
-                            .execute(function)
-                            .project(projection)
-                            .build()
+                    new TupleAdaptedFunction(selection, function, projection)
             );
             return this;
         }

@@ -55,6 +55,12 @@ public class TupleAdaptedFunction<R, FI, FO> extends AdaptedFunction<Tuple<R>, F
         setFunction(function);
     }
 
+    public TupleAdaptedFunction(final R[] selection, final Function<FI, FO> function, final R[] projection) {
+        this(function);
+        setSelection(selection);
+        setProjection(projection);
+    }
+
     public R[] getSelection() {
         return getInputAdapter().getSelection();
     }
