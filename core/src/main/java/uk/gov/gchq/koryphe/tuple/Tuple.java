@@ -23,6 +23,7 @@ import java.util.Iterator;
  *
  * @param <R> The type of reference used by the underlying data structure to access data values.
  */
+@JsonDeserialize(as = MapTuple.class)
 public interface Tuple<R> extends Iterable<Object> {
     String THIS = "THIS";
 
