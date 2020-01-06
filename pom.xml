@@ -34,7 +34,7 @@
         <commons-io.version>2.4</commons-io.version>
         <org.json-version>20180813</org.json-version>
         <compiler.plugin.verson>2.3.2</compiler.plugin.verson>
-        <findbugs.plugin.version>3.0.3</findbugs.plugin.version>
+        <findbugs.plugin.version>3.0.5</findbugs.plugin.version>
         <gpg.plugin.version>1.6</gpg.plugin.version>
         <jacoco.plugin.version>0.7.7.201606060606</jacoco.plugin.version>
         <jar.plugin.version>2.4</jar.plugin.version>
