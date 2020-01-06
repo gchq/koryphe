@@ -34,7 +34,7 @@ import static java.util.Objects.nonNull;
  *
  * @param <I_ITEM> the type of object in the iterable
  */
-@Since("1.8.2")
+@Since("1.8.3")
 @Summary("Combines the items in an iterable into a single item based on the supplied operator.")
 public class IterableFlatten<I_ITEM> extends KorypheFunction<Iterable<I_ITEM>, I_ITEM> {
 

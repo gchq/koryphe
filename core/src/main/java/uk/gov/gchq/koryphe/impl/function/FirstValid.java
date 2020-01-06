@@ -35,7 +35,7 @@ import static uk.gov.gchq.koryphe.util.IterableUtil.filter;
  *
  * @param <I_ITEM> the type of objects in the iterable
  */
-@Since("1.8.2")
+@Since("1.8.3")
 @Summary("Provides the first valid item from an iterable based on a predicate.")
 public class FirstValid<I_ITEM> extends KorypheFunction<Iterable<I_ITEM>, I_ITEM> {
     private Predicate predicate = null;

@@ -20,7 +20,7 @@ import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
-@Since("1.8.2")
+@Since("1.8.3")
 @Summary("Replace all portions of a string which match a regular expression.")
 public class StringRegexReplace extends KorypheFunction<String, String> {
 

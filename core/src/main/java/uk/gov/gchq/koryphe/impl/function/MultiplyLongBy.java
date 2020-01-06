@@ -25,7 +25,7 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
  * an {@link Long} and returns the result of multiplying this long by a pre-configured
  * value.
  */
-@Since("1.8.2")
+@Since("1.8.3")
 @Summary("Multiplies a long by a provided long")
 public class MultiplyLongBy extends KorypheFunction<Long, Long> {
     private long by = 1L;

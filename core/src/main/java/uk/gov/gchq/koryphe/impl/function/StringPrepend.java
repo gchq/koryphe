@@ -22,7 +22,7 @@ import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
-@Since("1.8.2")
+@Since("1.8.3")
 @Summary("Prepends a string with the provided prefix.")
 public class StringPrepend extends KorypheFunction<String, String> {
 

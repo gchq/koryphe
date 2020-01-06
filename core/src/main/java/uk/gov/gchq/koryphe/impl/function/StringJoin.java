@@ -31,7 +31,7 @@ import uk.gov.gchq.koryphe.util.IterableUtil;
  *
  * @param <I_ITEM> the type of object contained in the iterable
  */
-@Since("1.8.2")
+@Since("1.8.3")
 @Summary("Joins together all strings in an iterable using the supplied delimiter.")
 public class StringJoin<I_ITEM> extends KorypheFunction<Iterable<I_ITEM>, String> {
 

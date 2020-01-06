@@ -24,7 +24,7 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
  * A {@link StringTruncate} is a {@link java.util.function.Function} which removes any trailing and leading whitespace
  * from an input {@link String}.
  */
-@Since("1.8.2")
+@Since("1.8.3")
 @Summary("Truncates a string, with optional ellipses.")
 public class StringTruncate extends KorypheFunction<String, String> {
     private static final String ELLIPSES = "...";

@@ -23,7 +23,7 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
 /**
  * A {@code DefaultIfEmpty} is a {@link java.util.function.Function} which supplies a default value if the input is null.
  */
-@Since("1.8.2")
+@Since("1.8.3")
 @Summary("Provides a default value if the input is null.")
 public class DefaultIfNull extends KorypheFunction<Object, Object> {
 

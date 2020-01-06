@@ -28,7 +28,7 @@ import static java.util.Objects.nonNull;
  * <p>
  * The {@link Length} function is used to determine the length of each item in the iterable.
  */
-@Since("1.8.2")
+@Since("1.8.3")
 @Summary("Returns the longest item in the provided iterable.")
 public class IterableLongest extends KorypheFunction<Iterable<?>, Object> {
 

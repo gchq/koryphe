@@ -26,7 +26,7 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
  * A {@code StringAppend} is a {@link java.util.function.Function} which takes a input {@link String} and returns the
  * same string, appended with a suffix.
  */
-@Since("1.8.2")
+@Since("1.8.3")
 @Summary("Appends a provided suffix to a string.")
 public class StringAppend extends KorypheFunction<String, String> {
 

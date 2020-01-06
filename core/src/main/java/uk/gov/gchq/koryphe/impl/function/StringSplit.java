@@ -29,7 +29,7 @@ import java.util.List;
  * A {@code StringSplit} is a {@link java.util.function.Function} which splits a {@link String} based on a supplied
  * delimiter.
  */
-@Since("1.8.2")
+@Since("1.8.3")
 @Summary("Split a string using the provided regular expression.")
 public class StringSplit extends KorypheFunction<String, List<String>> {
 

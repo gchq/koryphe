@@ -24,7 +24,7 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
  * A {@code DefaultIfEmpty} is a {@link java.util.function.Function} which supplies a default value if an input
  * is empty.
  */
-@Since("1.8.2")
+@Since("1.8.3")
 @Summary("Provides a default value if the input is empty.")
 public class DefaultIfEmpty extends KorypheFunction<Object, Object> {
 

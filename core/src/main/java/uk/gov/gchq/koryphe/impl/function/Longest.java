@@ -20,7 +20,7 @@ import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.tuple.function.KorypheFunction2;
 
-@Since("1.8.2")
+@Since("1.8.3")
 @Summary("Determines which of two input objects is the longest.")
 public class Longest<T> extends KorypheFunction2<T, T, T> {
 

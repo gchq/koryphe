@@ -22,7 +22,7 @@ import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
-@Since("1.8.2")
+@Since("1.8.3")
 @Summary("Trims all whitespace around a string.")
 public class StringTrim extends KorypheFunction<String, String> {
 
