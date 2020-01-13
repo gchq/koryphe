@@ -29,6 +29,7 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
 public class DefaultIfEmpty extends KorypheFunction<Object, Object> {
 
     private Object defaultValue;
+    private Length delegate = new Length();
 
     public DefaultIfEmpty() {
     }
@@ -39,9 +40,11 @@ public class DefaultIfEmpty extends KorypheFunction<Object, Object> {
 
     @Override
     public Object apply(final Object iterable) {
-        final Length length = new Length();
+        if (null == iterable) {
+            return null;
+        }
 
-        return (length.apply(iterable) == 0) ? defaultValue : iterable;
+        return (delegate.apply(iterable) == 0) ? defaultValue : iterable;
     }
 
     public Object getDefaultValue() {

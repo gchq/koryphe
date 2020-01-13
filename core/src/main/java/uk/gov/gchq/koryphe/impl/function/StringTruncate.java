@@ -21,8 +21,8 @@ import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
 /**
- * A {@link StringTruncate} is a {@link java.util.function.Function} which removes any trailing and leading whitespace
- * from an input {@link String}.
+ * A {@link StringTruncate} is a {@link java.util.function.Function} which truncates an input {@link String} to a
+ * specified length, optionally appending ellipsis characters to denote that the string was truncated.
  */
 @Since("1.8.3")
 @Summary("Truncates a string, with optional ellipses.")

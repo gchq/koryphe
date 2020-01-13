@@ -22,6 +22,10 @@ import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
+/**
+ * A {@code StringPrepend} is a {@link java.util.function.Function} which takes a input {@link String} and returns the
+ * same string, prepended with a prefix.
+ */
 @Since("1.8.3")
 @Summary("Prepends a string with the provided prefix.")
 public class StringPrepend extends KorypheFunction<String, String> {

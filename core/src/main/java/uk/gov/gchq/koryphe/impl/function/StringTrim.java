@@ -22,6 +22,10 @@ import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
+/**
+ * A {@code StringTrim} is a {@link java.util.function.Function} which takes a {@link String} and removes all leading
+ * and trailing whitespace characters.
+ */
 @Since("1.8.3")
 @Summary("Trims all whitespace around a string.")
 public class StringTrim extends KorypheFunction<String, String> {

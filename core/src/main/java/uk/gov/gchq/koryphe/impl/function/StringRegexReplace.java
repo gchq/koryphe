@@ -20,6 +20,13 @@ import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
+/**
+ * A {@code StringRegexReplace} is a {@link java.util.function.Function} which takes an input string and applies the
+ * provided regular expression to find matching substrings to replace. It then replaces all of these matches with the
+ * provided replacement string.
+ *
+ * @see StringReplace
+ */
 @Since("1.8.3")
 @Summary("Replace all portions of a string which match a regular expression.")
 public class StringRegexReplace extends KorypheFunction<String, String> {

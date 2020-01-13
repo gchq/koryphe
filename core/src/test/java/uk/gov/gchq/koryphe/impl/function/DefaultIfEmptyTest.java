@@ -28,6 +28,7 @@ import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class DefaultIfEmptyTest extends FunctionTest {
     private final static String DEFAULT_VALUE = "default";
@@ -40,6 +41,18 @@ public class DefaultIfEmptyTest extends FunctionTest {
     @Override
     protected Class<? extends Function> getFunctionClass() {
         return DefaultIfEmpty.class;
+    }
+
+    @Test
+    public void shouldHandleNullInput() {
+        // Given
+        final DefaultIfEmpty function = new DefaultIfEmpty();
+
+        // When
+        final Object result = function.apply(null);
+
+        // Then
+        assertNull(result);
     }
 
     @Override

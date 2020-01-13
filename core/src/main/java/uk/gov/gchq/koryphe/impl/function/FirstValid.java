@@ -30,7 +30,7 @@ import static java.util.Objects.nonNull;
 import static uk.gov.gchq.koryphe.util.IterableUtil.filter;
 
 /**
- * A {@code FirstItem} is a {@link java.util.function.Function} that returns the first item from a provided input
+ * A {@code FirstValid} is a {@link java.util.function.Function} that returns the first item from a provided input
  * Iterable which matches the provided {@link Predicate}
  *
  * @param <I_ITEM> the type of objects in the iterable

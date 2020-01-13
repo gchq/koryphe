@@ -24,6 +24,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+/**
+ * A {@code StringRegexSplit} is a {@link java.util.function.Function} which splits an input string based on the
+ * provided regular expression.
+ *
+ * @see StringSplit
+ */
 @Since("1.8.3")
 @Summary("Split a string using the provided regular expression.")
 public class StringRegexSplit extends KorypheFunction<String, List<String>> {

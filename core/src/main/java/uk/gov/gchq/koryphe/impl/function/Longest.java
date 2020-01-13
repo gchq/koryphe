@@ -20,6 +20,10 @@ import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.tuple.function.KorypheFunction2;
 
+/**
+ * A {@code Longest} is a {@link java.util.function.Function} which takes two inputs and returns the longest of the two.
+ * @param <T> the type of input objects
+ */
 @Since("1.8.3")
 @Summary("Determines which of two input objects is the longest.")
 public class Longest<T> extends KorypheFunction2<T, T, T> {
