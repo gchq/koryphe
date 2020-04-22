@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Crown Copyright
+ * Copyright 2020 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
  * A {@code StringTrim} is a {@link java.util.function.Function} which takes a {@link String} and removes all leading
  * and trailing whitespace characters.
  */
-@Since("1.8.3")
+@Since("1.9.0")
 @Summary("Trims all whitespace around a string.")
 public class StringTrim extends KorypheFunction<String, String> {
 

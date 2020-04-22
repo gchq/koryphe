@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Crown Copyright
+ * Copyright 2020 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ import static uk.gov.gchq.koryphe.util.IterableUtil.filter;
  *
  * @param <I_ITEM> the type of objects in the iterable
  */
-@Since("1.8.3")
+@Since("1.9.0")
 @Summary("Provides the first valid item from an iterable based on a predicate.")
 public class FirstValid<I_ITEM> extends KorypheFunction<Iterable<I_ITEM>, I_ITEM> {
     private Predicate predicate = null;

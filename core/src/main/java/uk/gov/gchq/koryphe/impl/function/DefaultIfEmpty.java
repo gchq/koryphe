@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Crown Copyright
+ * Copyright 2020 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
  * A {@code DefaultIfEmpty} is a {@link java.util.function.Function} which supplies a default value if an input
  * is empty.
  */
-@Since("1.8.3")
+@Since("1.9.0")
 @Summary("Provides a default value if the input is empty.")
 public class DefaultIfEmpty extends KorypheFunction<Object, Object> {
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Crown Copyright
+ * Copyright 2020 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
 /**
  * A {@code DefaultIfNull} is a {@link java.util.function.Function} which supplies a default value if the input is null.
  */
-@Since("1.8.3")
+@Since("1.9.0")
 @Summary("Provides a default value if the input is null.")
 public class DefaultIfNull extends KorypheFunction<Object, Object> {
 

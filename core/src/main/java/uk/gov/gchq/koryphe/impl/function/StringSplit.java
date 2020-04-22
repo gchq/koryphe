@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Crown Copyright
+ * Copyright 2020 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ import java.util.List;
  * A {@code StringSplit} is a {@link java.util.function.Function} which splits a {@link String} based on a supplied
  * delimiter.
  */
-@Since("1.8.3")
+@Since("1.9.0")
 @Summary("Split a string using the provided regular expression.")
 public class StringSplit extends KorypheFunction<String, List<String>> {
 

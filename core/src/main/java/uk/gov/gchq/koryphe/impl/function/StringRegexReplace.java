@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Crown Copyright
+ * Copyright 2020 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
  *
  * @see StringReplace
  */
-@Since("1.8.3")
+@Since("1.9.0")
 @Summary("Replace all portions of a string which match a regular expression.")
 public class StringRegexReplace extends KorypheFunction<String, String> {
 

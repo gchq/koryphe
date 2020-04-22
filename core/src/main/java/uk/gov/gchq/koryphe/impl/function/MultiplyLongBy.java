@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Crown Copyright
+ * Copyright 2020 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
  * an {@link Long} and returns the result of multiplying this long by a pre-configured
  * value.
  */
-@Since("1.8.3")
+@Since("1.9.0")
 @Summary("Multiplies a long by a provided long")
 public class MultiplyLongBy extends KorypheFunction<Long, Long> {
     private long by = 1L;

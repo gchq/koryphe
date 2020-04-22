@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Crown Copyright
+ * Copyright 2020 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ import static java.util.Objects.nonNull;
  *
  * @param <I_ITEM> the type of object in the iterable
  */
-@Since("1.8.3")
+@Since("1.9.0")
 @Summary("Combines the items in an iterable into a single item based on the supplied operator.")
 public class IterableFlatten<I_ITEM> extends KorypheFunction<Iterable<I_ITEM>, I_ITEM> {
 
