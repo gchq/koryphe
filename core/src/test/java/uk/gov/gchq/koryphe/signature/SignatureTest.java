@@ -277,7 +277,6 @@ public class SignatureTest {
 
     @Test
     public void shouldCheckApplyBiFunctionTypes() {
-
         final ApplyBiFunction applyBiFunction = new ApplyBiFunction(new Sum());
         final Signature signature = Signature.getInputSignature(applyBiFunction);
 
@@ -291,7 +290,6 @@ public class SignatureTest {
 
     @Test
     public void shouldCheckApplyBiFunctionTypesForInlineBiFunction() {
-
         final BiFunction<Long, Double, String> inlineBiFunction = new BiFunction<Long, Double, String>() {
             @Override
             public String apply(final Long l, final Double d) {

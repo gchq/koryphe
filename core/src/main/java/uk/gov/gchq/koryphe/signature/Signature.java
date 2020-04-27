@@ -116,7 +116,6 @@ public abstract class Signature {
      * @return Signature of the type variable.
      */
     private static Signature createSignatureFromTypeVariable(final Object input, final Class functionClass, final int typeVariableIndex, final boolean isInput) {
-
         TypeVariable<?> tv;
 
         if (KorypheFunctionN.class.isAssignableFrom(input.getClass())) {
@@ -141,7 +140,6 @@ public abstract class Signature {
     }
 
     private static Map<TypeVariable<?>, Type> createInputToWrappedBiFunctionTypeArgMapping(final Object input, final Map<TypeVariable<?>, Type> typeArgs, final Map<TypeVariable<?>, Type> wrappedBiFunctionTypeArgs) {
-
         final Map<String, TypeVariable> inputTypeVariableMap = new HashMap<>();
 
         for (final Type type : typeArgs.values()) {
@@ -167,7 +165,6 @@ public abstract class Signature {
     }
 
     private static Map<TypeVariable<?>, Type> getWrappedBiFunctionTypeArgMapping(final WrappedBiFunction input) {
-
         final BiFunction wrappedBiFunction = input.getFunction();
         final Map<TypeVariable<?>, Type> wrappedBiFunctionTypeMap = TypeUtils.getTypeArguments(wrappedBiFunction.getClass(), BiFunction.class);
 
@@ -181,7 +178,6 @@ public abstract class Signature {
     }
 
     private static Class<?> getClassFrom(final GenericDeclaration genericDeclaration) {
-
         if (genericDeclaration instanceof Class) {
             return Class.class.cast(genericDeclaration);
         }
@@ -192,17 +188,13 @@ public abstract class Signature {
         Class clazz = null;
 
         if (KorypheFunctionN.class.isAssignableFrom(input.getClass())) {
-
             clazz = getTypeClass(type, typeArgs);
-
         } else if (input.getClass().getTypeParameters().length > 0) {
-
             TypeVariable<?>[] inputClassTypeParameters = input.getClass().getTypeParameters();
             Type[] inputClassTypeParameterBounds = inputClassTypeParameters[0].getBounds();
             if (inputClassTypeParameterBounds.length > 0) {
                 clazz = getTypeClass(inputClassTypeParameterBounds[0], typeArgs);
             }
-
         } else {
             clazz = getTypeClass(type, typeArgs);
         }
@@ -224,7 +216,6 @@ public abstract class Signature {
     }
 
     protected static Class getTypeClass(final Type type, final Map<TypeVariable<?>, Type> typeArgs) {
-
         Type rawType = type;
         if (rawType instanceof ParameterizedType) {
             rawType = ((ParameterizedType) type).getRawType();
