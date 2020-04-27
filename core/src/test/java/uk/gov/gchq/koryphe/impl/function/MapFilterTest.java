@@ -142,6 +142,16 @@ public class MapFilterTest extends FunctionTest {
     }
 
     @Override
+    protected Class[] getExpectedSignatureInputClasses() {
+        return new Class[] { Map.class };
+    }
+
+    @Override
+    protected Class[] getExpectedSignatureOutputClasses() {
+        return new Class[] { Map.class };
+    }
+
+    @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
         final MapFilter predicate = getInstance();

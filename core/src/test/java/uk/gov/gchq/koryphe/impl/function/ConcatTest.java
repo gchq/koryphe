@@ -106,4 +106,14 @@ public class ConcatTest extends FunctionTest {
     protected Class<Concat> getFunctionClass() {
         return Concat.class;
     }
+
+    @Override
+    protected Class[] getExpectedSignatureInputClasses() {
+        return new Class[] { Object.class, Object.class };
+    }
+
+    @Override
+    protected Class[] getExpectedSignatureOutputClasses() {
+        return new Class[] { String.class };
+    }
 }

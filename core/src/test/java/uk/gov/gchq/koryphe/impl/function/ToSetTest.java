@@ -25,6 +25,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
@@ -105,6 +106,16 @@ public class ToSetTest extends FunctionTest {
     @Override
     protected Class<? extends Function> getFunctionClass() {
         return ToSet.class;
+    }
+
+    @Override
+    protected Class[] getExpectedSignatureInputClasses() {
+        return new Class[] { Object.class };
+    }
+
+    @Override
+    protected Class[] getExpectedSignatureOutputClasses() {
+        return new Class[] { Set.class };
     }
 
     @Override

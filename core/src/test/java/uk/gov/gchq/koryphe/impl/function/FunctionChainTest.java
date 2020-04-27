@@ -39,6 +39,16 @@ public class FunctionChainTest extends FunctionTest {
     }
 
     @Override
+    protected Class[] getExpectedSignatureInputClasses() {
+        return new Class[] { Object.class };
+    }
+
+    @Override
+    protected Class[] getExpectedSignatureOutputClasses() {
+        return new Class[] { Function.class };
+    }
+
+    @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
         final FunctionChain function = new FunctionChain.Builder<>()

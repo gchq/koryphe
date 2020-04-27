@@ -25,6 +25,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -106,6 +107,16 @@ public class ToListTest extends FunctionTest {
     @Override
     protected Class<? extends Function> getFunctionClass() {
         return ToList.class;
+    }
+
+    @Override
+    protected Class[] getExpectedSignatureInputClasses() {
+        return new Class[] { Object.class };
+    }
+
+    @Override
+    protected Class[] getExpectedSignatureOutputClasses() {
+        return new Class[] { List.class };
     }
 
     @Override

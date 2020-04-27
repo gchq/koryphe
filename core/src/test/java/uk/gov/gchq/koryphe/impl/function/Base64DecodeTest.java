@@ -41,6 +41,16 @@ public class Base64DecodeTest extends FunctionTest {
     }
 
     @Override
+    protected Class[] getExpectedSignatureInputClasses() {
+        return new Class[] { byte[].class };
+    }
+
+    @Override
+    protected Class[] getExpectedSignatureOutputClasses() {
+        return new Class[] { byte[].class };
+    }
+
+    @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
         final Base64Decode function = new Base64Decode();

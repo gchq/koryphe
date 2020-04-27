@@ -93,4 +93,14 @@ public class DivideByTest extends FunctionTest {
     protected Class<DivideBy> getFunctionClass() {
         return DivideBy.class;
     }
+
+    @Override
+    protected Class[] getExpectedSignatureInputClasses() {
+        return new Class[] { Integer.class };
+    }
+
+    @Override
+    protected Class[] getExpectedSignatureOutputClasses() {
+        return new Class[] { Integer.class, Integer.class };
+    }
 }

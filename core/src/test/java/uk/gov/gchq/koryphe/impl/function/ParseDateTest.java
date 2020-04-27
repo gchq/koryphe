@@ -41,6 +41,16 @@ public class ParseDateTest extends FunctionTest {
     }
 
     @Override
+    protected Class[] getExpectedSignatureInputClasses() {
+        return new Class[] { String.class };
+    }
+
+    @Override
+    protected Class[] getExpectedSignatureOutputClasses() {
+        return new Class[] { Date.class };
+    }
+
+    @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
         final ParseDate function = new ParseDate().format("yyyy dd").timeZone("GMT");
