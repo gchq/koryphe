@@ -48,6 +48,17 @@ public class LengthTest extends FunctionTest {
     }
 
     @Override
+    protected Class[] getExpectedSignatureInputClasses() {
+        // Must be one of String, Object[], Iterable or Map to pass InputValidation
+        return new Class[] { String.class };
+    }
+
+    @Override
+    protected Class[] getExpectedSignatureOutputClasses() {
+        return new Class[] { Integer.class };
+    }
+
+    @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
         final Length function = new Length();

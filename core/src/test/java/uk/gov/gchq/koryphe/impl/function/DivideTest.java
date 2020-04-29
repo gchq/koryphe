@@ -90,4 +90,14 @@ public class DivideTest extends FunctionTest {
     protected Class<Divide> getFunctionClass() {
         return Divide.class;
     }
+
+    @Override
+    protected Class[] getExpectedSignatureInputClasses() {
+        return new Class[] { Integer.class, Integer.class };
+    }
+
+    @Override
+    protected Class[] getExpectedSignatureOutputClasses() {
+        return new Class[] { Integer.class, Integer.class };
+    }
 }

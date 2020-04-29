@@ -63,6 +63,16 @@ public class ToBytesTest extends FunctionTest {
         return ToBytes.class;
     }
 
+    @Override
+    protected Class[] getExpectedSignatureInputClasses() {
+        return new Class[] { String.class };
+    }
+
+    @Override
+    protected Class[] getExpectedSignatureOutputClasses() {
+        return new Class[] { byte[].class };
+    }
+
     @Test
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given

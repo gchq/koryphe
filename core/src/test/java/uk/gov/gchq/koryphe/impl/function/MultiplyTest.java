@@ -89,4 +89,14 @@ public class MultiplyTest extends FunctionTest {
     protected Class<Multiply> getFunctionClass() {
         return Multiply.class;
     }
+
+    @Override
+    protected Class[] getExpectedSignatureInputClasses() {
+        return new Class[] { Integer.class, Integer.class };
+    }
+
+    @Override
+    protected Class[] getExpectedSignatureOutputClasses() {
+        return new Class[] { Integer.class };
+    }
 }

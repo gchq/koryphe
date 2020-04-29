@@ -31,12 +31,22 @@ import static org.junit.Assert.assertNull;
 public class ApplyBiFunctionTest extends FunctionTest {
     @Override
     protected Function getInstance() {
-        return new ApplyBiFunction();
+        return new ApplyBiFunction(new Sum());
     }
 
     @Override
     protected Class<? extends Function> getFunctionClass() {
         return ApplyBiFunction.class;
+    }
+
+    @Override
+    protected Class[] getExpectedSignatureInputClasses() {
+        return new Class[]{Long.class, Long.class};
+    }
+
+    @Override
+    protected Class[] getExpectedSignatureOutputClasses() {
+        return new Class[]{Long.class};
     }
 
     @Override

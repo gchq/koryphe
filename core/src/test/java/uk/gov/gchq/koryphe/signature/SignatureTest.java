@@ -26,6 +26,8 @@ import uk.gov.gchq.koryphe.function.MockFunction2b;
 import uk.gov.gchq.koryphe.function.MockFunction3;
 import uk.gov.gchq.koryphe.function.MockFunctionMultiParents2;
 import uk.gov.gchq.koryphe.impl.binaryoperator.CollectionConcat;
+import uk.gov.gchq.koryphe.impl.binaryoperator.Sum;
+import uk.gov.gchq.koryphe.impl.function.ApplyBiFunction;
 import uk.gov.gchq.koryphe.impl.predicate.IsLessThan;
 import uk.gov.gchq.koryphe.impl.predicate.IsMoreThan;
 import uk.gov.gchq.koryphe.impl.predicate.Or;
@@ -38,6 +40,7 @@ import uk.gov.gchq.koryphe.util.InvalidSignatureTestPredicate;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -270,5 +273,37 @@ public class SignatureTest {
 
         // Then
         assertTrue(output.assignable(Collection.class).isValid());
+    }
+
+    @Test
+    public void shouldCheckApplyBiFunctionTypes() {
+        final ApplyBiFunction applyBiFunction = new ApplyBiFunction(new Sum());
+        final Signature signature = Signature.getInputSignature(applyBiFunction);
+
+        assertTrue(signature.assignable(Integer.class, Integer.class).isValid());
+        assertTrue(signature.assignable(Long.class, Long.class).isValid());
+
+        assertFalse(signature.assignable(Integer.class).isValid());
+        assertFalse(signature.assignable(Integer.class, Integer.class, Integer.class).isValid());
+        assertFalse(signature.assignable(String.class, String.class).isValid());
+    }
+
+    @Test
+    public void shouldCheckApplyBiFunctionTypesForInlineBiFunction() {
+        final BiFunction<Long, Double, String> inlineBiFunction = new BiFunction<Long, Double, String>() {
+            @Override
+            public String apply(final Long l, final Double d) {
+                return Long.toString(l).concat(Double.toString(d));
+            }
+        };
+
+        final ApplyBiFunction applyBiFunction = new ApplyBiFunction(inlineBiFunction);
+        final Signature signature = Signature.getInputSignature(applyBiFunction);
+
+        assertTrue(signature.assignable(Long.class, Double.class).isValid());
+
+        assertFalse(signature.assignable(Long.class).isValid());
+        assertFalse(signature.assignable(Integer.class, Double.class, String.class).isValid());
+        assertFalse(signature.assignable(Double.class, Long.class).isValid());
     }
 }

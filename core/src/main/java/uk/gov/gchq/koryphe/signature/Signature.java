@@ -19,12 +19,16 @@ package uk.gov.gchq.koryphe.signature;
 import org.apache.commons.lang3.reflect.TypeUtils;
 
 import uk.gov.gchq.koryphe.ValidationResult;
+import uk.gov.gchq.koryphe.function.WrappedBiFunction;
 import uk.gov.gchq.koryphe.tuple.Tuple;
+import uk.gov.gchq.koryphe.tuple.function.KorypheFunctionN;
 
+import java.lang.reflect.GenericDeclaration;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -113,19 +117,79 @@ public abstract class Signature {
      */
     private static Signature createSignatureFromTypeVariable(final Object input, final Class functionClass, final int typeVariableIndex, final boolean isInput) {
         TypeVariable<?> tv;
-        if (input.getClass().getTypeParameters().length > typeVariableIndex) {
+
+        if (KorypheFunctionN.class.isAssignableFrom(input.getClass())) {
+            tv = KorypheFunctionN.class.getTypeParameters()[typeVariableIndex];
+        } else if (input.getClass().getTypeParameters().length > typeVariableIndex) {
             tv = input.getClass().getTypeParameters()[typeVariableIndex];
         } else {
             tv = functionClass.getTypeParameters()[typeVariableIndex];
         }
+
         final Map<TypeVariable<?>, Type> typeArgs = TypeUtils.getTypeArguments(input.getClass(), functionClass);
+
+        if (WrappedBiFunction.class.isAssignableFrom(input.getClass())) {
+            final Map<TypeVariable<?>, Type> wrappedBiFunctionTypeArgs = getWrappedBiFunctionTypeArgMapping((WrappedBiFunction) input);
+            final Map<TypeVariable<?>, Type> inputToWrappedBiFunctionTypeArgs = createInputToWrappedBiFunctionTypeArgMapping(input, typeArgs, wrappedBiFunctionTypeArgs);
+            typeArgs.putAll(inputToWrappedBiFunctionTypeArgs);
+        }
+
         Type type = typeArgs.containsKey(tv) ? typeArgs.get(tv) : Object.class;
+
         return createSignature(input, type, typeArgs, isInput);
+    }
+
+    private static Map<TypeVariable<?>, Type> createInputToWrappedBiFunctionTypeArgMapping(final Object input, final Map<TypeVariable<?>, Type> typeArgs, final Map<TypeVariable<?>, Type> wrappedBiFunctionTypeArgs) {
+        final Map<String, TypeVariable> inputTypeVariableMap = new HashMap<>();
+
+        for (final Type type : typeArgs.values()) {
+            if (TypeVariable.class.isAssignableFrom(type.getClass())) {
+                final TypeVariable typeVariable = TypeVariable.class.cast(type);
+                if (input.getClass().equals(getClassFrom(typeVariable.getGenericDeclaration()))) {
+                    inputTypeVariableMap.put(typeVariable.getName(), typeVariable);
+                }
+            }
+        }
+
+        final Map<TypeVariable<?>, Type> inputToWrappedBiFunctionTypeArgMapping = new HashMap<>(inputTypeVariableMap.size());
+
+        for (final Map.Entry<TypeVariable<?>, Type> wrappedBiFunctionEntry : wrappedBiFunctionTypeArgs.entrySet()) {
+            if (inputTypeVariableMap.containsKey(wrappedBiFunctionEntry.getKey().getName())) {
+                final TypeVariable<?> inputTypeVariable = inputTypeVariableMap.get(wrappedBiFunctionEntry.getKey().getName());
+                final Type wrappedBiFunctionType = wrappedBiFunctionEntry.getValue();
+                inputToWrappedBiFunctionTypeArgMapping.put(inputTypeVariable, wrappedBiFunctionType);
+            }
+        }
+
+        return inputToWrappedBiFunctionTypeArgMapping;
+    }
+
+    private static Map<TypeVariable<?>, Type> getWrappedBiFunctionTypeArgMapping(final WrappedBiFunction input) {
+        final BiFunction wrappedBiFunction = input.getFunction();
+        final Map<TypeVariable<?>, Type> wrappedBiFunctionTypeMap = TypeUtils.getTypeArguments(wrappedBiFunction.getClass(), BiFunction.class);
+
+        final Map<TypeVariable<?>, Type> mapping = new HashMap<>();
+        for (final Map.Entry<TypeVariable<?>, Type> entry : wrappedBiFunctionTypeMap.entrySet()) {
+            if (BiFunction.class.equals(getClassFrom(entry.getKey().getGenericDeclaration()))) {
+                mapping.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return mapping;
+    }
+
+    private static Class<?> getClassFrom(final GenericDeclaration genericDeclaration) {
+        if (genericDeclaration instanceof Class) {
+            return Class.class.cast(genericDeclaration);
+        }
+        return Object.class;
     }
 
     private static Signature createSignature(final Object input, final Type type, final Map<TypeVariable<?>, Type> typeArgs, final boolean isInput) {
         Class clazz = null;
-        if (input.getClass().getTypeParameters().length > 0) {
+
+        if (KorypheFunctionN.class.isAssignableFrom(input.getClass())) {
+            clazz = getTypeClass(type, typeArgs);
+        } else if (input.getClass().getTypeParameters().length > 0) {
             TypeVariable<?>[] inputClassTypeParameters = input.getClass().getTypeParameters();
             Type[] inputClassTypeParameterBounds = inputClassTypeParameters[0].getBounds();
             if (inputClassTypeParameterBounds.length > 0) {
@@ -160,7 +224,6 @@ public abstract class Signature {
         if (rawType instanceof Class) {
             return (Class) rawType;
         }
-
 
         if (rawType instanceof TypeVariable) {
             final Type t = typeArgs.get(rawType);

@@ -106,6 +106,16 @@ public class CallMethodTest extends FunctionTest {
         return CallMethod.class;
     }
 
+    @Override
+    protected Class[] getExpectedSignatureInputClasses() {
+        return new Class[] { Object.class };
+    }
+
+    @Override
+    protected Class[] getExpectedSignatureOutputClasses() {
+        return new Class[] { Object.class };
+    }
+
     // Test method for use when testing the CallMethod function
     public int testMethod() {
         return 5;
