@@ -45,7 +45,7 @@ public class FunctionChainTest extends FunctionTest {
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Function.class };
+        return new Class[] { Object.class };
     }
 
     @Override

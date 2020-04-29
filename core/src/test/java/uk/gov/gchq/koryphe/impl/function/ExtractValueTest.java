@@ -48,7 +48,7 @@ public class ExtractValueTest extends FunctionTest {
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Integer.class };
+        return new Class[] { Object.class };
     }
 
     @Override
