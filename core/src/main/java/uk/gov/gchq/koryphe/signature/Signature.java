@@ -145,7 +145,7 @@ public abstract class Signature {
     }
 
     private static Signature createSignature(final Object input, final Type type, final Map<TypeVariable<?>, Type> typeArgs, final boolean isInput) {
-        Class clazz = getTypeClass(type, typeArgs);
+        final Class clazz = getTypeClass(type, typeArgs);
 
         if (TupleN.class.isAssignableFrom(clazz)) {
             final TypeVariable[] tupleTypes = getTypeClass(type, typeArgs).getTypeParameters();
