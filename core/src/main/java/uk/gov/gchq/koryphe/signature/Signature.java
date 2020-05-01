@@ -17,13 +17,17 @@
 package uk.gov.gchq.koryphe.signature;
 
 import org.apache.commons.lang3.reflect.TypeUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import uk.gov.gchq.koryphe.ValidationResult;
 import uk.gov.gchq.koryphe.function.WrappedBiFunction;
-import uk.gov.gchq.koryphe.tuple.Tuple;
-import uk.gov.gchq.koryphe.tuple.function.KorypheFunctionN;
+import uk.gov.gchq.koryphe.tuple.n.TupleN;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.GenericDeclaration;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
@@ -33,11 +37,19 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
+
+import static java.lang.String.format;
 
 /**
  * A <code>Signature</code> is the type metadata for the input or output of a {@link java.util.function.Function}.
  */
 public abstract class Signature {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Signature.class);
+
+    private static final boolean INPUT_SIGNATURE = true;
+    private static final boolean OUTPUT_SIGNATURE = false;
+
     /**
      * Tests whether this <code>Signature</code> is compatible with the types supplied.
      *
@@ -57,7 +69,7 @@ public abstract class Signature {
      * @return Input signature.
      */
     public static Signature getInputSignature(final Predicate predicate) {
-        return createSignatureFromTypeVariable(predicate, Predicate.class, 0, true);
+        return createSignatureFromTypeVariable(predicate, Predicate.class, INPUT_SIGNATURE);
     }
 
     /**
@@ -67,7 +79,7 @@ public abstract class Signature {
      * @return Input signature.
      */
     public static Signature getInputSignature(final Function function) {
-        return createSignatureFromTypeVariable(function, Function.class, 0, true);
+        return createSignatureFromTypeVariable(function, Function.class, INPUT_SIGNATURE);
     }
 
     /**
@@ -80,7 +92,7 @@ public abstract class Signature {
      * @return Input signature
      */
     public static <F extends BiFunction<I, O, O>, I, O> Signature getInputSignature(final F function) {
-        return createSignatureFromTypeVariable(function, BiFunction.class, 0, true);
+        return createSignatureFromTypeVariable(function, BiFunction.class, INPUT_SIGNATURE);
     }
 
     /**
@@ -90,7 +102,7 @@ public abstract class Signature {
      * @return Output signature.
      */
     public static Signature getOutputSignature(final Function function) {
-        return createSignatureFromTypeVariable(function, Function.class, 1, false);
+        return createSignatureFromTypeVariable(function, Function.class, OUTPUT_SIGNATURE);
     }
 
     /**
@@ -103,29 +115,55 @@ public abstract class Signature {
      * @return Output signature
      */
     public static <F extends BiFunction<I, O, O>, I, O> Signature getOutputSignature(final F function) {
-        return createSignatureFromTypeVariable(function, BiFunction.class, 2, false);
+        return createSignatureFromTypeVariable(function, BiFunction.class, OUTPUT_SIGNATURE);
     }
 
-    /**
-     * Create a <code>Signature</code> for the type variable at the given index.
-     *
-     * @param input             Function to create signature for.
-     * @param functionClass     The input class
-     * @param typeVariableIndex 0 for I or 1 for O.
-     * @param isInput           if true then it is an input signature otherwise it is an output signature
-     * @return Signature of the type variable.
-     */
-    private static Signature createSignatureFromTypeVariable(final Object input, final Class functionClass, final int typeVariableIndex, final boolean isInput) {
-        TypeVariable<?> tv;
+    private static Signature createSignatureFromTypeVariable(final Object input, final Class functionClass, final boolean isInput) {
+        final Map<TypeVariable<?>, Type> typeArgs = createTypeArgsFor(input, functionClass);
+        final Method targetMethod = getTargetedMethodIn(functionClass);
+        final Type targetMethodType = isInput ? targetMethod.getGenericParameterTypes()[0] : targetMethod.getGenericReturnType();
+        final Type inputType = mapTargetMethodTypeToRequiredType(targetMethodType, typeArgs);
 
-        if (KorypheFunctionN.class.isAssignableFrom(input.getClass())) {
-            tv = KorypheFunctionN.class.getTypeParameters()[typeVariableIndex];
-        } else if (input.getClass().getTypeParameters().length > typeVariableIndex) {
-            tv = input.getClass().getTypeParameters()[typeVariableIndex];
-        } else {
-            tv = functionClass.getTypeParameters()[typeVariableIndex];
+        return createSignature(input, inputType, typeArgs, isInput);
+    }
+
+    private static Method getTargetedMethodIn(final Class<?> clazz) {
+        try {
+            if (Stream.of(clazz.getAnnotations()).map(Annotation::annotationType).noneMatch(FunctionalInterface.class::equals)) {
+                throw new IllegalArgumentException(format("Unable to determine target method for %s; it is not a %s.", clazz, FunctionalInterface.class));
+            }
+            for (final Method method : clazz.getDeclaredMethods()) {
+                if (Modifier.isAbstract(method.getModifiers())) {
+                    return clazz.getMethod(method.getName(), method.getParameterTypes());
+                }
+            }
+        } catch (final NoSuchMethodException exception) {
+            throw new IllegalArgumentException(format("Could not determine target method in %s.", clazz), exception);
         }
 
+        throw new IllegalArgumentException(format("Could not determine target method in %s.", clazz));
+    }
+
+    private static Signature createSignature(final Object input, final Type type, final Map<TypeVariable<?>, Type> typeArgs, final boolean isInput) {
+        Class clazz = getTypeClass(type, typeArgs);
+
+        if (TupleN.class.isAssignableFrom(clazz)) {
+            final TypeVariable[] tupleTypes = getTypeClass(type, typeArgs).getTypeParameters();
+            final Map<TypeVariable<?>, Type> classTypeArgs = TypeUtils.getTypeArguments(type, clazz);
+            Collection<? extends Type> types = TypeUtils.getTypeArguments(type, clazz).values();
+            Class[] classes = new Class[types.size()];
+            int i = 0;
+            for (final TypeVariable tupleType : tupleTypes) {
+                classes[i++] = getTypeClass(classTypeArgs.get(tupleType), typeArgs);
+            }
+
+            return new TupleSignature(input, clazz, classes, isInput);
+        }
+
+        return new SingletonSignature(input, clazz, isInput);
+    }
+
+    private static Map<TypeVariable<?>, Type> createTypeArgsFor(final Object input, final Class<?> functionClass) {
         final Map<TypeVariable<?>, Type> typeArgs = TypeUtils.getTypeArguments(input.getClass(), functionClass);
 
         if (WrappedBiFunction.class.isAssignableFrom(input.getClass())) {
@@ -134,9 +172,7 @@ public abstract class Signature {
             typeArgs.putAll(inputToWrappedBiFunctionTypeArgs);
         }
 
-        Type type = typeArgs.containsKey(tv) ? typeArgs.get(tv) : Object.class;
-
-        return createSignature(input, type, typeArgs, isInput);
+        return typeArgs;
     }
 
     private static Map<TypeVariable<?>, Type> createInputToWrappedBiFunctionTypeArgMapping(final Object input, final Map<TypeVariable<?>, Type> typeArgs, final Map<TypeVariable<?>, Type> wrappedBiFunctionTypeArgs) {
@@ -184,35 +220,22 @@ public abstract class Signature {
         return Object.class;
     }
 
-    private static Signature createSignature(final Object input, final Type type, final Map<TypeVariable<?>, Type> typeArgs, final boolean isInput) {
-        Class clazz = null;
-
-        if (KorypheFunctionN.class.isAssignableFrom(input.getClass())) {
-            clazz = getTypeClass(type, typeArgs);
-        } else if (input.getClass().getTypeParameters().length > 0) {
-            TypeVariable<?>[] inputClassTypeParameters = input.getClass().getTypeParameters();
-            Type[] inputClassTypeParameterBounds = inputClassTypeParameters[0].getBounds();
-            if (inputClassTypeParameterBounds.length > 0) {
-                clazz = getTypeClass(inputClassTypeParameterBounds[0], typeArgs);
-            }
+    private static Type mapTargetMethodTypeToRequiredType(final Type targetMethodType, final Map<TypeVariable<?>, Type> typeArgs) {
+        if (targetMethodType instanceof ParameterizedType || targetMethodType instanceof Class) {
+            return targetMethodType;
         } else {
-            clazz = getTypeClass(type, typeArgs);
-        }
-
-        if (Tuple.class.isAssignableFrom(clazz)) {
-            final TypeVariable[] tupleTypes = getTypeClass(type, typeArgs).getTypeParameters();
-            final Map<TypeVariable<?>, Type> classTypeArgs = TypeUtils.getTypeArguments(type, clazz);
-            Collection<? extends Type> types = TypeUtils.getTypeArguments(type, clazz).values();
-            Class[] classes = new Class[types.size()];
-            int i = 0;
-            for (final TypeVariable tupleType : tupleTypes) {
-                classes[i++] = getTypeClass(classTypeArgs.get(tupleType), typeArgs);
+            if (targetMethodType instanceof TypeVariable) {
+                return typeArgs.containsKey(targetMethodType)
+                        ? mapTargetMethodTypeToRequiredType(typeArgs.get(targetMethodType), typeArgs)
+                        : getBoundedDefaultType((TypeVariable) targetMethodType);
             }
-
-            return new TupleSignature(input, clazz, classes, isInput);
         }
+        return targetMethodType;
+    }
 
-        return new SingletonSignature(input, clazz, isInput);
+    private static Type getBoundedDefaultType(final TypeVariable typeVariable) {
+        final Type[] bounds = typeVariable.getBounds();
+        return (bounds.length > 0) ? bounds[0] : Object.class;
     }
 
     protected static Class getTypeClass(final Type type, final Map<TypeVariable<?>, Type> typeArgs) {
@@ -243,3 +266,4 @@ public abstract class Signature {
     public static class UnknownGenericType {
     }
 }
+
