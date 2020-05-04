@@ -35,19 +35,14 @@ import uk.gov.gchq.koryphe.impl.predicate.range.InRange;
 import uk.gov.gchq.koryphe.predicate.MockPredicate2False;
 import uk.gov.gchq.koryphe.predicate.MockPredicateFalse;
 import uk.gov.gchq.koryphe.predicate.MockPredicateTrue;
-import uk.gov.gchq.koryphe.tuple.MapTuple;
-import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.tuple.function.KorypheFunction2;
 import uk.gov.gchq.koryphe.util.InvalidSignatureTestPredicate;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -310,80 +305,5 @@ public class SignatureTest {
         assertFalse(signature.assignable(Long.class).isValid());
         assertFalse(signature.assignable(Integer.class, Double.class, String.class).isValid());
         assertFalse(signature.assignable(Double.class, Long.class).isValid());
-    }
-
-    @Test
-    public void shouldGenerateInputSignatureUsingTupleClassWhenNotAssignableToTupleN() {
-        final Function<TestTuple, String> fromTestTuple = new KorypheFunction<TestTuple, String>() {
-            @Override
-            public String apply(final TestTuple r) {
-                return "something";
-            }
-        };
-
-        final Signature signature = Signature.getInputSignature(fromTestTuple);
-        assertTrue(signature.assignable(TestTuple.class).isValid());
-        assertFalse(signature.assignable(Object.class).isValid());
-    }
-
-    @Test
-    public void shouldGenerateOutputSignatureUsingTupleClassWhenNotNotAssignableToTupleN() {
-        final Function<String, TestTuple> toTestTuple = new KorypheFunction<String, TestTuple>() {
-            @Override
-            public TestTuple apply(final String s) {
-                return new TestTuple();
-            }
-        };
-
-        final Signature signature = Signature.getOutputSignature(toTestTuple);
-        assertTrue(signature.assignable(TestTuple.class).isValid());
-        assertFalse(signature.assignable(Object.class).isValid());
-    }
-
-    @Test
-    public void shouldGenerateInputSignatureUsingMapTupleClass() {
-        final Function<MapTuple<String>, String> fromMapTuple = new KorypheFunction<MapTuple<String>, String>() {
-            @Override
-            public String apply(final MapTuple<String> t) {
-                return "anything";
-            }
-        };
-
-        final Signature signature = Signature.getInputSignature(fromMapTuple);
-        assertTrue(signature.assignable(MapTuple.class).isValid());
-        assertFalse(signature.assignable(Object.class).isValid());
-    }
-
-    @Test
-    public void shouldGenerateOutputSignatureUsingMapTupleClass() {
-        final Function<String, MapTuple<String>> toMapTuple = new KorypheFunction<String, MapTuple<String>>() {
-            @Override
-            public MapTuple<String> apply(final String s) {
-                return new MapTuple<>();
-            }
-        };
-
-        final Signature signature = Signature.getOutputSignature(toMapTuple);
-        assertTrue(signature.assignable(MapTuple.class).isValid());
-        assertFalse(signature.assignable(Object.class).isValid());
-    }
-
-    private static class TestTuple implements Tuple<String> {
-        private Map<String, Object> values = new HashMap<>();
-
-        @Override
-        public void put(final String reference, final Object value) {
-            values.put(reference, value);
-        }
-
-        @Override
-        public Object get(final String reference) {
-            return values.get(reference);
-        }
-
-        @Override
-        public Iterable<Object> values() {
-            return values.values();
-        }
     }
 }
