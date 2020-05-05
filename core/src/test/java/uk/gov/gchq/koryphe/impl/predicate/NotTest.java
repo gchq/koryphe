@@ -25,7 +25,6 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.function.Predicate;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -127,8 +126,5 @@ public class NotTest extends PredicateTest {
         assertTrue(input.assignable(Double.class, Double.class).isValid());
         assertFalse(input.assignable(Integer.class).isValid());
         assertFalse(input.assignable(Double.class, Integer.class).isValid());
-
-        assertArrayEquals(new Class[]{Object.class}, input.getClasses());
-        assertEquals(1, (int) input.getNumClasses());
     }
 }
