@@ -94,4 +94,14 @@ public class MultiplyLongByTest extends FunctionTest {
     protected Class<MultiplyLongBy> getFunctionClass() {
         return MultiplyLongBy.class;
     }
+
+    @Override
+    protected Class[] getExpectedSignatureInputClasses() {
+        return new Class[]{ Long.class };
+    }
+
+    @Override
+    protected Class[] getExpectedSignatureOutputClasses() {
+        return new Class[]{ Long.class };
+    }
 }

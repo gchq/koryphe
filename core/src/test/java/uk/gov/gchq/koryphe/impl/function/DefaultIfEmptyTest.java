@@ -43,6 +43,16 @@ public class DefaultIfEmptyTest extends FunctionTest {
         return DefaultIfEmpty.class;
     }
 
+    @Override
+    protected Class[] getExpectedSignatureInputClasses() {
+        return new Class[]{ Object.class };
+    }
+
+    @Override
+    protected Class[] getExpectedSignatureOutputClasses() {
+        return new Class[]{ Object.class };
+    }
+
     @Test
     public void shouldHandleNullInput() {
         // Given

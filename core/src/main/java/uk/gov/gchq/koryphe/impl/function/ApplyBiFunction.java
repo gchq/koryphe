@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
+import uk.gov.gchq.koryphe.function.WrappedBiFunction;
 import uk.gov.gchq.koryphe.tuple.function.KorypheFunction2;
 
 import java.util.function.BiFunction;
@@ -38,7 +39,7 @@ import static java.util.Objects.nonNull;
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
 @Since("1.8.0")
 @Summary("Applies the given BiFunction")
-public class ApplyBiFunction<T, U, R> extends KorypheFunction2<T, U, R> {
+public class ApplyBiFunction<T, U, R> extends KorypheFunction2<T, U, R> implements WrappedBiFunction<T, U, R> {
     private BiFunction<T, U, R> function;
 
     public ApplyBiFunction() {
@@ -53,6 +54,7 @@ public class ApplyBiFunction<T, U, R> extends KorypheFunction2<T, U, R> {
         return nonNull(function) ? function.apply(t, u) : null;
     }
 
+    @Override
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
     public BiFunction<T, U, R> getFunction() {
         return function;

@@ -64,6 +64,18 @@ public class StringAppendTest extends FunctionTest {
         assertEquals("Hello!", result);
     }
 
+    @Test
+    public void shouldHandleUnsetSuffix() {
+        // Given
+        final StringAppend function = new StringAppend();
+
+        // When
+        final String result = function.apply("Hello");
+
+        // Then
+        assertEquals("Hello", result); // right now result is Hellonull
+    }
+
     @Override
     protected StringAppend getInstance() {
         return new StringAppend();
@@ -72,6 +84,16 @@ public class StringAppendTest extends FunctionTest {
     @Override
     protected Class<? extends StringAppend> getFunctionClass() {
         return StringAppend.class;
+    }
+
+    @Override
+    protected Class[] getExpectedSignatureInputClasses() {
+        return new Class[]{ String.class };
+    }
+
+    @Override
+    protected Class[] getExpectedSignatureOutputClasses() {
+        return new Class[]{ String.class };
     }
 
     @Override

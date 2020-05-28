@@ -53,6 +53,16 @@ public class IterableLongestTest extends FunctionTest {
         return IterableLongest.class;
     }
 
+    @Override
+    protected Class[] getExpectedSignatureInputClasses() {
+        return new Class[]{ Iterable.class };
+    }
+
+    @Override
+    protected Class[] getExpectedSignatureOutputClasses() {
+        return new Class[]{ Object.class };
+    }
+
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
         final IterableLongest function = new IterableLongest();

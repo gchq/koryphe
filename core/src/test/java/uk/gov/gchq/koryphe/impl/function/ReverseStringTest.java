@@ -65,4 +65,14 @@ public class ReverseStringTest extends FunctionTest {
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
 
     }
+
+    @Override
+    protected Class[] getExpectedSignatureInputClasses() {
+        return new Class[]{ String.class };
+    }
+
+    @Override
+    protected Class[] getExpectedSignatureOutputClasses() {
+        return new Class[]{ String.class };
+    }
 }

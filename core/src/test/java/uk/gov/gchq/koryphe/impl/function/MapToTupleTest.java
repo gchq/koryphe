@@ -13,83 +13,77 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
 import org.junit.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
+import uk.gov.gchq.koryphe.tuple.MapTuple;
+import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
-import static org.hamcrest.core.IsCollectionContaining.hasItems;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
 
-public class StringRegexSplitTest extends FunctionTest {
-    @Test
-    public void shouldHandleNullInput() {
-        // Given
-        final StringRegexSplit function = new StringRegexSplit();
-
-        // When
-        final List<String> result = function.apply(null);
-
-        // Then
-        assertNull(result);
-    }
+public class MapToTupleTest extends FunctionTest {
 
     @Test
-    public void shouldSplitString() {
+    public void shouldConvertMapIntoMapTuple() {
         // Given
-        final StringRegexSplit function = new StringRegexSplit(",");
-        final String input = "first,second,third";
+        final MapToTuple function = new MapToTuple();
+        Map<String, Object> input = new HashMap<>();
+        input.put("A", 1);
+        input.put("B", 2);
+        input.put("C", 3);
 
         // When
-        final List<String> result = function.apply(input);
+        Tuple output = function.apply(input);
 
         // Then
-        assertThat(result, hasItems("first", "second", "third"));
+        assertEquals(new MapTuple<>(input), output);
     }
 
     @Override
-    protected StringRegexSplit getInstance() {
-        return new StringRegexSplit();
+    protected Function getInstance() {
+        return new MapToTuple<String>();
     }
 
     @Override
-    protected Class<? extends StringRegexSplit> getFunctionClass() {
-        return StringRegexSplit.class;
+    protected Class<? extends Function> getFunctionClass() {
+        return MapToTuple.class;
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[]{ String.class };
+        return new Class[]{Map.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[]{ List.class };
+        return new Class[]{Tuple.class};
     }
 
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
-        final StringRegexSplit function = new StringRegexSplit(",");
+        final MapToTuple function = new MapToTuple();
 
         // When
         final String json = JsonSerialiser.serialise(function);
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.function.StringRegexSplit\",%n" +
-                "  \"regex\" : \",\"%n" +
+                "  \"class\" : \"uk.gov.gchq.koryphe.impl.function.MapToTuple\"" +
                 "}"), json);
 
         // When 2
-        final StringRegexSplit deserialisedMethod = JsonSerialiser.deserialise(json, StringRegexSplit.class);
+        final MapToTuple deserialisedMethod = JsonSerialiser.deserialise(json, MapToTuple.class);
 
         // Then 2
         assertNotNull(deserialisedMethod);

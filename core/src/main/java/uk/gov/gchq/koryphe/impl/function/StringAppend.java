@@ -45,6 +45,10 @@ public class StringAppend extends KorypheFunction<String, String> {
             return null;
         }
 
+        if (null == suffix) {
+            return value;
+        }
+
         return value + suffix;
     }
 

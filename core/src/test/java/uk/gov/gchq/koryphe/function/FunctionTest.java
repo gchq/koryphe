@@ -23,6 +23,7 @@ import org.junit.Test;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
+import uk.gov.gchq.koryphe.signature.Signature;
 import uk.gov.gchq.koryphe.util.SummaryUtil;
 import uk.gov.gchq.koryphe.util.VersionUtil;
 
@@ -31,6 +32,7 @@ import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 
 public abstract class FunctionTest {
@@ -46,6 +48,10 @@ public abstract class FunctionTest {
     protected abstract Function getInstance();
 
     protected abstract Class<? extends Function> getFunctionClass();
+
+    protected abstract Class[] getExpectedSignatureInputClasses();
+
+    protected abstract Class[] getExpectedSignatureOutputClasses();
 
     @Test
     public abstract void shouldJsonSerialiseAndDeserialise() throws IOException;
@@ -133,5 +139,29 @@ public abstract class FunctionTest {
         }
         assumeTrue(annotation.value() + " is not a valid value string.",
                 SummaryUtil.validateSummaryString(annotation.value()));
+    }
+
+    @Test
+    public void shouldGenerateExpectedInputSignature() {
+        // Given
+        final Function function = getInstance();
+
+        // When
+        final Signature signature = Signature.getInputSignature(function);
+
+        // Then
+        assertTrue(signature.assignable(getExpectedSignatureInputClasses()).isValid());
+    }
+
+    @Test
+    public void shouldGenerateExpectedOutputSignature() {
+        // Given
+        final Function function = getInstance();
+
+        // When
+        final Signature signature = Signature.getOutputSignature(function);
+
+        // Then
+        assertTrue(signature.assignable(getExpectedSignatureOutputClasses()).isValid());
     }
 }

@@ -15,7 +15,6 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
-import com.google.common.collect.Lists;
 import org.junit.Test;
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.impl.predicate.IsMoreThan;
@@ -86,6 +85,16 @@ public class FirstValidTest extends FunctionTest {
     @Override
     protected Class<? extends Function> getFunctionClass() {
         return FirstValid.class;
+    }
+
+    @Override
+    protected Class[] getExpectedSignatureInputClasses() {
+        return new Class[]{ Iterable.class };
+    }
+
+    @Override
+    protected Class[] getExpectedSignatureOutputClasses() {
+        return new Class[]{ Object.class };
     }
 
     @Override
