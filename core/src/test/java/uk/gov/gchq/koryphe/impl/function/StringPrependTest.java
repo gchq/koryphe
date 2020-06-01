@@ -50,7 +50,17 @@ public class StringPrependTest extends FunctionTest {
         // Then
         assertEquals("Hello", result);
     }
+    @Test
+    public void shouldHandleUnsetSuffix() {
+        // Given
+        final StringPrepend function = new StringPrepend();
 
+        // When
+        final String result = function.apply("Hello");
+
+        // Then
+        assertEquals("Hello", result);
+    }
     @Test
     public void shouldPrependInputWithString() {
         // Given
