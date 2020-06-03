@@ -45,7 +45,7 @@ public class StringPrepend extends KorypheFunction<String, String> {
             return null;
         }
         if (null == prefix) {
-            return input
+            return input;
         }
         return prefix + input;
     }
