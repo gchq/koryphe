@@ -38,7 +38,7 @@ public class ToLowerCase extends KorypheFunction<Object, String> {
         }
 
         if (value instanceof String) {
-            StringUtils.lowerCase((String) value);
+            return StringUtils.lowerCase((String) value);
         }
 
         return StringUtils.lowerCase(value.toString());
