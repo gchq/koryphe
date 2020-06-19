@@ -27,19 +27,46 @@ import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class ToLowerCaseTest extends FunctionTest {
     private static final String TEST_STRING = "TEST STRING";
 
     @Test
-    public void shouldLowerCaseInput() {
+    public void shouldLowerCaseInputString() {
         // Given
-        final ToLowerCase function = new ToLowerCase();
+        final Function function = getInstance();
 
         // When
-        Object output = function.apply(TEST_STRING);
+        final Object output = function.apply(TEST_STRING);
 
+        // Then
         assertEquals(StringUtils.lowerCase(TEST_STRING), output);
+    }
+
+    @Test
+    public void shouldLowerCaseInputObject() {
+        // Given
+        final Function function = getInstance();
+        final ToLowerCaseTestObject input = new ToLowerCaseTestObject();
+
+        // When
+        final Object output = function.apply(input);
+
+        // Then
+        assertEquals(StringUtils.lowerCase(input.getClass().getSimpleName().toUpperCase()), output);
+    }
+
+    @Test
+    public void shouldHandleNullInput() {
+        // Given
+        final Function function = getInstance();
+
+        // When
+        Object output = function.apply(null);
+
+        // Then
+        assertNull(output);
     }
 
     @Override
@@ -80,5 +107,13 @@ public class ToLowerCaseTest extends FunctionTest {
 
         // Then 2
         assertNotNull(deserialisedMethod);
+    }
+
+    public final static class ToLowerCaseTestObject {
+
+        @Override
+        public String toString() {
+            return this.getClass().getSimpleName().toUpperCase();
+        }
     }
 }
