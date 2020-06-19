@@ -34,9 +34,9 @@ public class ToLowerCaseTest extends FunctionTest {
     private static final String TEST_STRING = "TEST STRING";
 
     @Test
-    public void shouldLowerCaseInput() {
+    public void shouldLowerCaseInputString() {
         // Given
-        final ToLowerCase function = new ToLowerCase();
+        final Function function = getInstance();
 
         // When
         final Object output = function.apply(TEST_STRING);
@@ -46,12 +46,25 @@ public class ToLowerCaseTest extends FunctionTest {
     }
 
     @Test
-    public void shouldReturnNullWhenValueIsNull() {
+    public void shouldLowerCaseInputObject() {
         // Given
-        final ToLowerCase function = new ToLowerCase();
+        final Function function = getInstance();
+        final ToLowerCaseTestObject input = new ToLowerCaseTestObject();
 
         // When
-        final Object output = function.apply(null);
+        final Object output = function.apply(input);
+
+        // Then
+        assertEquals(StringUtils.lowerCase(input.getClass().getSimpleName().toUpperCase()), output);
+    }
+
+    @Test
+    public void shouldHandleNullInput() {
+        // Given
+        final Function function = getInstance();
+
+        // When
+        Object output = function.apply(null);
 
         // Then
         assertNull(output);
@@ -77,6 +90,7 @@ public class ToLowerCaseTest extends FunctionTest {
         return new Class[] {String.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -95,5 +109,13 @@ public class ToLowerCaseTest extends FunctionTest {
 
         // Then 2
         assertNotNull(deserialisedMethod);
+    }
+
+    public final static class ToLowerCaseTestObject {
+
+        @Override
+        public String toString() {
+            return this.getClass().getSimpleName().toUpperCase();
+        }
     }
 }

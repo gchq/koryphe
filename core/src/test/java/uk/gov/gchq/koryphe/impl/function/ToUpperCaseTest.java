@@ -1,4 +1,4 @@
-package uk.gov.gchq.koryphe.impl.function;/*
+/*
  * Copyright 2018-2020 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +13,8 @@ package uk.gov.gchq.koryphe.impl.function;/*
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package uk.gov.gchq.koryphe.impl.function;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
@@ -32,9 +34,9 @@ public class ToUpperCaseTest extends FunctionTest {
     private static final String TEST_STRING = "test string";
 
     @Test
-    public void shouldUpperCaseInput() {
+    public void shouldUpperCaseInputString() {
         // Given
-        final ToUpperCase function = new ToUpperCase();
+        final Function function = getInstance();
 
         // When
         final Object output = function.apply(TEST_STRING);
@@ -44,12 +46,25 @@ public class ToUpperCaseTest extends FunctionTest {
     }
 
     @Test
-    public void shouldReturnNullWhenValueIsNull() {
+    public void shouldUpperCaseInputObject() {
         // Given
-        final ToUpperCase function = new ToUpperCase();
+        final Function function = getInstance();
+        final ToUpperCaseTestObject input = new ToUpperCaseTestObject();
 
         // When
-        final Object output = function.apply(null);
+        final Object output = function.apply(input);
+
+        // Then
+        assertEquals(StringUtils.upperCase(input.getClass().getSimpleName().toLowerCase()), output);
+    }
+
+    @Test
+    public void shouldHandleNullInput() {
+        // Given
+        final Function function = getInstance();
+
+        // When
+        Object output = function.apply(null);
 
         // Then
         assertNull(output);
@@ -94,5 +109,13 @@ public class ToUpperCaseTest extends FunctionTest {
 
         // Then 2
         assertNotNull(deserialisedMethod);
+    }
+
+    private final static class ToUpperCaseTestObject {
+
+        @Override
+        public String toString() {
+            return this.getClass().getSimpleName().toLowerCase();
+        }
     }
 }
