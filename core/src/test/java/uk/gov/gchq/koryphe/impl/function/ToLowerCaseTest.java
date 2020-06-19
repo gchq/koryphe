@@ -17,7 +17,7 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -25,10 +25,12 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ToLowerCaseTest extends FunctionTest {
+
     private static final String TEST_STRING = "TEST STRING";
 
     @Test
@@ -37,9 +39,22 @@ public class ToLowerCaseTest extends FunctionTest {
         final ToLowerCase function = new ToLowerCase();
 
         // When
-        Object output = function.apply(TEST_STRING);
+        final Object output = function.apply(TEST_STRING);
 
+        // Then
         assertEquals(StringUtils.lowerCase(TEST_STRING), output);
+    }
+
+    @Test
+    public void shouldReturnNullWhenValueIsNull() {
+        // Given
+        final ToLowerCase function = new ToLowerCase();
+
+        // When
+        final Object output = function.apply(null);
+
+        // Then
+        assertNull(output);
     }
 
     @Override
@@ -54,12 +69,12 @@ public class ToLowerCaseTest extends FunctionTest {
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { String.class };
+        return new Class[] {String.class};
     }
 
     @Override

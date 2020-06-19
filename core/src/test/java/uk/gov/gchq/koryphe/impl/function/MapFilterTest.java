@@ -15,7 +15,7 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.impl.predicate.AreEqual;
@@ -31,8 +31,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class MapFilterTest extends FunctionTest {
 
@@ -47,7 +47,6 @@ public class MapFilterTest extends FunctionTest {
         final Function<Map<Integer, Integer>, Map<Integer, Integer>> predicate =
                 new MapFilter<Integer, Integer>()
                         .keyPredicate(new IsLessThan(2));
-
 
         // When
         predicate.apply(map);
@@ -70,7 +69,6 @@ public class MapFilterTest extends FunctionTest {
                 new MapFilter<Integer, Integer>()
                         .valuePredicate(new IsLessThan(20));
 
-
         // When
         predicate.apply(map);
 
@@ -91,7 +89,6 @@ public class MapFilterTest extends FunctionTest {
         final Function<Map<Integer, Integer>, Map<Integer, Integer>> predicate =
                 new MapFilter<Integer, Integer>()
                         .keyValuePredicate(new AreEqual());
-
 
         // When
         predicate.apply(map);
@@ -151,6 +148,7 @@ public class MapFilterTest extends FunctionTest {
         return new Class[] { Map.class };
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given

@@ -15,7 +15,7 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -26,8 +26,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ParseDateTest extends FunctionTest {
     @Override
@@ -42,14 +42,15 @@ public class ParseDateTest extends FunctionTest {
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { String.class };
+        return new Class[] {String.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Date.class };
+        return new Class[] {Date.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -72,7 +73,7 @@ public class ParseDateTest extends FunctionTest {
         final String input = "2000-01-02 03:04:05.006";
 
         // When
-        Date result = function.apply(input);
+        final Date result = function.apply(input);
 
         // Then
         assertEquals(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS").parse(input), result);
@@ -85,7 +86,7 @@ public class ParseDateTest extends FunctionTest {
         final String input = "2000-01 03:04:05.006";
 
         // When
-        Date result = function.apply(input);
+        final Date result = function.apply(input);
 
         // Then
         assertEquals(new SimpleDateFormat("yyyy-MM hh:mm:ss.SSS").parse(input), result);
@@ -95,10 +96,9 @@ public class ParseDateTest extends FunctionTest {
     public void shouldReturnNullForNullInput() {
         // Given
         final ParseDate function = new ParseDate();
-        final String input = null;
 
         // When
-        Object result = function.apply(input);
+        final Object result = function.apply(null);
 
         // Then
         assertNull(result);

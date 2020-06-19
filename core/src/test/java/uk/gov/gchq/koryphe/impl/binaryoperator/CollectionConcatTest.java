@@ -1,6 +1,6 @@
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.binaryoperator.BinaryOperatorTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -12,10 +12,11 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.TreeSet;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CollectionConcatTest extends BinaryOperatorTest {
+
     @Test
     public void shouldConcatArraysTogether() {
         // Given
@@ -41,19 +42,18 @@ public class CollectionConcatTest extends BinaryOperatorTest {
         treeSet2.add("string3");
         treeSet2.add("string2");
 
-        final TreeSet<String> expectedResult = new TreeSet<>();
-        expectedResult.add("string1");
-        expectedResult.add("string2");
-        expectedResult.add("string3");
-
-        CollectionConcat<String> aggregator = new CollectionConcat<>();
+        final CollectionConcat<String> aggregator = new CollectionConcat<>();
 
         // When
         final Collection<String> result = aggregator.apply(treeSet1, treeSet2);
 
         // Then
-        assertEquals(TreeSet.class, result.getClass());
+        final TreeSet<String> expectedResult = new TreeSet<>();
+        expectedResult.add("string1");
+        expectedResult.add("string2");
+        expectedResult.add("string3");
         assertEquals(expectedResult, result);
+        assertEquals(TreeSet.class, result.getClass());
     }
 
     @Test
@@ -66,19 +66,18 @@ public class CollectionConcatTest extends BinaryOperatorTest {
         hashSet2.add(2);
         hashSet2.add(3);
 
-        final HashSet<Integer> expectedResult = new HashSet<>();
-        expectedResult.add(1);
-        expectedResult.add(2);
-        expectedResult.add(3);
-
         CollectionConcat<Integer> aggregator = new CollectionConcat<>();
 
         // When
         final Collection<Integer> result = aggregator.apply(hashSet1, hashSet2);
 
         // Then
-        assertEquals(HashSet.class, result.getClass());
+        final HashSet<Integer> expectedResult = new HashSet<>();
+        expectedResult.add(1);
+        expectedResult.add(2);
+        expectedResult.add(3);
         assertEquals(expectedResult, result);
+        assertEquals(HashSet.class, result.getClass());
     }
 
     @Test

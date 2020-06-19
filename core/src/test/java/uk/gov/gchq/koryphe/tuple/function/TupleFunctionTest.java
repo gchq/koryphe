@@ -16,7 +16,7 @@
 
 package uk.gov.gchq.koryphe.tuple.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.MockFunction;
 import uk.gov.gchq.koryphe.tuple.Tuple;
@@ -28,14 +28,15 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 public class TupleFunctionTest {
+
     @Test
     public void testSingleFunctionTransformation() {
         String input1 = "input1";

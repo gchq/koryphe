@@ -16,22 +16,22 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.tuple.n.Tuple2;
 import uk.gov.gchq.koryphe.util.DateUtil;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.TimeZone;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class InDateRangeDualTest extends AbstractInTimeRangeDualTest<Date> {
 
     @Test
-    public void shouldTestValuesInRangeWithTimeZone() throws IOException {
+    public void shouldTestValuesInRangeWithTimeZone() {
         // Given
         final String timeZone = "Etc/GMT+6";
         final InDateRangeDual filter = new InDateRangeDual.Builder()

@@ -16,8 +16,7 @@
 
 package uk.gov.gchq.koryphe.predicate;
 
-import org.junit.AssumptionViolatedException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
@@ -28,11 +27,13 @@ import uk.gov.gchq.koryphe.util.VersionUtil;
 import java.io.IOException;
 import java.util.function.Predicate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public abstract class PredicateTest {
+
     protected abstract Predicate getInstance();
 
     protected abstract Class<? extends Predicate> getPredicateClass();
@@ -102,11 +103,10 @@ public abstract class PredicateTest {
         final Since annotation = instance.getClass().getAnnotation(Since.class);
 
         // Then
-        if (null == annotation || null == annotation.value()) {
-            throw new AssumptionViolatedException("Missing Since annotation on class " + instance.getClass().getName());
-        }
-        assumeTrue(annotation.value() + " is not a valid value string.",
-                VersionUtil.validateVersionString(annotation.value()));
+        assertNotNull(annotation, "Missing Since annotation on class " + instance.getClass().getName());
+        assertNotNull(annotation.value(), "Missing Since annotation on class " + instance.getClass().getName());
+        assumeTrue(VersionUtil.validateVersionString(annotation.value()),
+                annotation.value() + " is not a valid value string.");
     }
 
     @Test
@@ -118,10 +118,9 @@ public abstract class PredicateTest {
         final Summary annotation = instance.getClass().getAnnotation(Summary.class);
 
         // Then
-        if (null == annotation || null == annotation.value()) {
-            throw new AssumptionViolatedException("Missing Summary annotation on class " + instance.getClass().getName());
-        }
-        assumeTrue(annotation.value() + " is not a valid value string.",
-                SummaryUtil.validateSummaryString(annotation.value()));
+        assertNotNull(annotation, "Missing Summary annotation on class " + instance.getClass().getName());
+        assertNotNull(annotation.value(), "Missing Summary annotation on class " + instance.getClass().getName());
+        assumeTrue(SummaryUtil.validateSummaryString(annotation.value()),
+                annotation.value() + " is not a valid value string.");
     }
 }

@@ -3,7 +3,8 @@ package uk.gov.gchq.koryphe.impl.function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
@@ -13,7 +14,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class LongestTest extends FunctionTest {
 
@@ -21,11 +26,9 @@ public class LongestTest extends FunctionTest {
     public void shouldHandleNullInputs() {
         // Given
         final Longest function = getInstance();
-        final Object input1 = null;
-        final Object input2 = null;
 
         // When
-        final Object result = function.apply(input1, input2);
+        final Object result = function.apply(null, null);
 
         // Then
         assertNull(result);
@@ -39,12 +42,8 @@ public class LongestTest extends FunctionTest {
         final Object input2 = new Concat();
 
         // When / Then
-        try {
-            function.apply(input1, input2);
-            fail("Exception expected");
-        } catch (final IllegalArgumentException e) {
-            assertTrue(e.getMessage().contains("Could not determine the size of the provided value"));
-        }
+        final Exception exception = assertThrows(IllegalArgumentException.class, () -> function.apply(input1, input2));
+        assertEquals("Could not determine the size of the provided value", exception.getMessage());
     }
 
     @Test
@@ -106,12 +105,12 @@ public class LongestTest extends FunctionTest {
     @Test
     public void shouldReturnLongestMapInput() {
         // Given
-        final Longest<Map<String,String>> function = new Longest<>();
-        final Map<String,String> input1 = new HashMap<>();
-        final Map<String,String> input2 = Maps.asMap(Sets.newHashSet("1"), k -> k);
+        final Longest<Map<String, String>> function = new Longest<>();
+        final Map<String, String> input1 = new HashMap<>();
+        final Map<String, String> input2 = Maps.asMap(Sets.newHashSet("1"), k -> k);
 
         // When
-        final Map<String,String> result = function.apply(input1, input2);
+        final Map<String, String> result = function.apply(input1, input2);
 
         // Then
         assertEquals(input2, result);
@@ -129,14 +128,15 @@ public class LongestTest extends FunctionTest {
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[]{ Object.class, Object.class };
+        return new Class[] {Object.class, Object.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[]{ Object.class };
+        return new Class[] {Object.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given

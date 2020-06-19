@@ -16,8 +16,8 @@
 
 package uk.gov.gchq.koryphe.predicate;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.impl.predicate.IsA;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -27,10 +27,10 @@ import java.util.Date;
 import java.util.Map;
 import java.util.function.Predicate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -38,6 +38,7 @@ import static org.mockito.Mockito.mock;
  * Tests the MapFilter class can be used to mapFilter {@code FreqMap} frequencies.
  */
 public class PredicateMapTest extends PredicateTest {
+
     private static final String KEY1 = "key1";
     private static final Date DATE_KEY = new Date();
     private static final String VALUE1 = "value1";
@@ -45,7 +46,7 @@ public class PredicateMapTest extends PredicateTest {
     private Map<String, String> map;
     private Predicate<String> predicate;
 
-    @Before
+    @BeforeEach
     public void setup() {
         predicate = mock(Predicate.class);
 

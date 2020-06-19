@@ -15,7 +15,7 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -30,11 +30,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LengthTest extends FunctionTest {
     @Override
@@ -50,14 +50,15 @@ public class LengthTest extends FunctionTest {
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
         // Must be one of String, Object[], Iterable or Map to pass InputValidation
-        return new Class[] { String.class };
+        return new Class[] {String.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Integer.class };
+        return new Class[] {Integer.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -82,10 +83,9 @@ public class LengthTest extends FunctionTest {
     public void shouldReturnZeroForNullInputValue() {
         // Given
         final Length function = new Length();
-        final Object input = null;
 
         // When
-        final Integer result = function.apply(input);
+        final Integer result = function.apply(null);
 
         // Then
         assertEquals(new Integer(0), result);
@@ -103,20 +103,20 @@ public class LengthTest extends FunctionTest {
         // Then
         assertEquals(new Integer(10), result);
     }
-    
+
     @Test
     public void shouldReturnLengthForObjectArrayInput() {
         // Given
         final Length function = new Length();
         final Object[] input = new Object[5];
-        
+
         // When
         final Integer result = function.apply(input);
-        
+
         // Then
         assertEquals(new Integer(5), result);
     }
-    
+
     @Test
     public void shouldReturnLengthForListInput() {
         // Given
@@ -126,14 +126,14 @@ public class LengthTest extends FunctionTest {
         input.add(7.2);
         input.add("test");
         input.add("string");
-        
+
         // When
         final Integer result = function.apply(input);
-        
+
         // Then
         assertEquals(new Integer(4), result);
     }
-    
+
     @Test
     public void shouldReturnLengthForSetInput() {
         // Given
@@ -142,14 +142,14 @@ public class LengthTest extends FunctionTest {
         input.add(2.718);
         input.add(3.142);
         input.add("constants");
-        
+
         // When
         final Integer result = function.apply(input);
-        
+
         // Then
         assertEquals(new Integer(3), result);
     }
-    
+
     @Test
     public void shouldReturnLengthForMapInput() {
         // Given
@@ -159,29 +159,25 @@ public class LengthTest extends FunctionTest {
         input.put("three", "four");
         input.put("five", "six");
         input.put("seven", "eight");
-        
+
         // When
         final Integer result = function.apply(input);
-        
+
         // Then
         assertEquals(new Integer(4), result);
     }
-    
+
     @Test
     public void shouldThrowExceptionForIncompatibleInputType() {
         // Given
         final Length function = new Length();
         final Concat input = new Concat();
-        
+
         // When / Then
-        try {
-            function.apply(input);
-            fail("Exception expected");
-        } catch (final IllegalArgumentException e) {
-            assertTrue(e.getMessage().contains("Could not determine the size of the provided value"));
-        }
+        final Exception exception = assertThrows(IllegalArgumentException.class, () -> function.apply(input));
+        assertEquals("Could not determine the size of the provided value", exception.getMessage());
     }
-    
+
     @Test
     public void shouldCheckInputClass() {
         final Length function = new Length();

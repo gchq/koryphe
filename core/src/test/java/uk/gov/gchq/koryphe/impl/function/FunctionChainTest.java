@@ -16,7 +16,7 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import com.google.common.collect.Sets;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.tuple.ArrayTuple;
@@ -25,7 +25,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FunctionChainTest extends FunctionTest {
     @Override
@@ -40,20 +40,21 @@ public class FunctionChainTest extends FunctionTest {
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
         final FunctionChain function = new FunctionChain.Builder<>()
-                .execute(new Integer[]{1}, new ToUpperCase(), new Integer[]{2})
-                .execute(new Integer[]{2}, new ToSet(), new Integer[]{3})
+                .execute(new Integer[] {1}, new ToUpperCase(), new Integer[] {2})
+                .execute(new Integer[] {2}, new ToSet(), new Integer[] {3})
                 .build();
 
         // When
@@ -73,8 +74,8 @@ public class FunctionChainTest extends FunctionTest {
     public void shouldApplyAllTupleFunctions() {
         // Given
         final FunctionChain function = new FunctionChain.Builder<>()
-                .execute(new Integer[]{0}, new ToUpperCase(), new Integer[]{1})
-                .execute(new Integer[]{1}, new ToSet(), new Integer[]{2})
+                .execute(new Integer[] {0}, new ToUpperCase(), new Integer[] {1})
+                .execute(new Integer[] {1}, new ToSet(), new Integer[] {2})
                 .build();
         final ArrayTuple input = new ArrayTuple("someString", null, null);
 

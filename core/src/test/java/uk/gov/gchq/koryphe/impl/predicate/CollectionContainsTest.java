@@ -16,8 +16,8 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.CustomObj;
@@ -29,19 +29,20 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CollectionContainsTest extends PredicateTest {
+
     private static final CustomObj VALUE1 = new CustomObj();
     private static final String VALUE2 = "value2";
 
     private final List<Object> list = new ArrayList<>();
     private final Set<Object> set = new HashSet<>();
 
-    @Before
+    @BeforeEach
     public void setup() {
         list.add(VALUE1);
         set.add(VALUE1);

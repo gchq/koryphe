@@ -1,7 +1,7 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import com.google.common.collect.Lists;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -10,9 +10,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class IterableLongestTest extends FunctionTest {
 
@@ -20,10 +20,9 @@ public class IterableLongestTest extends FunctionTest {
     public void shouldHandleNullInput() {
         // Given
         final IterableLongest function = getInstance();
-        final Iterable input = null;
 
         // When
-        final Object result = function.apply(input);
+        final Object result = function.apply(null);
 
         // Then
         assertNull(result);
@@ -41,7 +40,6 @@ public class IterableLongestTest extends FunctionTest {
         // Then
         assertEquals("abc", result);
     }
-
 
     @Override
     protected IterableLongest getInstance() {
@@ -63,6 +61,7 @@ public class IterableLongestTest extends FunctionTest {
         return new Class[]{ Object.class };
     }
 
+    @Test
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
         final IterableLongest function = new IterableLongest();

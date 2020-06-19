@@ -17,7 +17,7 @@
 package uk.gov.gchq.koryphe.util;
 
 import com.google.common.collect.Lists;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.iterable.CloseableIterable;
 
@@ -26,11 +26,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IterableUtilTest {
 
@@ -167,13 +167,11 @@ public class IterableUtilTest {
         final int start = 3;
         final int end = 1;
 
-        // When / Then
-        try {
-            IterableUtil.limit(values, start, end, false);
-            fail("Exception expected");
-        } catch (final IllegalArgumentException e) {
-            assertNotNull(e.getMessage());
-        }
+        // When
+        final Exception exception = assertThrows(IllegalArgumentException.class, () -> IterableUtil.limit(values, start, end, false));
+
+        // Then
+        assertEquals("The start pointer must be less than the end pointer.", exception.getMessage());
     }
 
     @Test
@@ -188,15 +186,12 @@ public class IterableUtilTest {
         final CloseableIterable<Integer> limitedValues = IterableUtil.limit(values, start, end, truncate);
 
         // Then
-        try {
+        final Exception exception = assertThrows(NoSuchElementException.class, () -> {
             for (final Integer i : limitedValues) {
                 // Do nothing
             }
-            fail("Exception expected");
-        } catch (final Exception e) {
-            assertEquals("Limit of " + end + " exceeded.", e
-                    .getMessage());
-        }
+        });
+        assertEquals("Limit of " + end + " exceeded.", exception.getMessage());
     }
 
     @Test

@@ -16,9 +16,9 @@
 
 package uk.gov.gchq.koryphe.serialisation.json;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
@@ -31,15 +31,15 @@ import uk.gov.gchq.koryphe.util.ReflectionUtil;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SimpleClassNameIdResolverTest {
 
-    @Before
-    @After
+    @BeforeEach
+    @AfterEach
     public void before() {
         SimpleClassNameCache.setUseFullNameForSerialisation(true);
         SimpleClassNameCache.reset();
@@ -176,20 +176,18 @@ public class SimpleClassNameIdResolverTest {
     }
 
     @Test
-    public void shouldThrowExceptionIfMultipleClassesWithTheSameName() throws IOException {
+    public void shouldThrowExceptionIfMultipleClassesWithTheSameName() {
         // Given
         SimpleClassNameCache.addSimpleClassNames(true, TestCustomObj.class);
 
         // When / Then
-        try {
-            JsonSerialiser.deserialise("{\"class\":\"TestCustomObjImpl\"}", TestCustomObj.class);
-            fail("Exception expected");
-        } catch (final Exception e) {
-            assertTrue(e.getMessage(),
-                    e.getMessage().contains("Multiple TestCustomObjImpl classes exist")
-                            && e.getMessage().contains(TestCustomObjImpl.class.getName())
-                            && e.getMessage().contains(uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomObjImpl.class.getName()));
-        }
+        final Exception exception = assertThrows(IllegalArgumentException.class, () ->
+                JsonSerialiser.deserialise("{\"class\":\"TestCustomObjImpl\"}", TestCustomObj.class));
+
+        assertTrue(exception.getMessage().contains("Multiple TestCustomObjImpl classes exist")
+                        && exception.getMessage().contains(TestCustomObjImpl.class.getName())
+                        && exception.getMessage().contains(uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomObjImpl.class.getName()),
+                exception.getMessage());
     }
 
     @Test

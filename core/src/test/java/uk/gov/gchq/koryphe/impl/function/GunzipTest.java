@@ -16,7 +16,7 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -26,11 +26,12 @@ import java.io.IOException;
 import java.util.function.Function;
 import java.util.zip.GZIPOutputStream;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class GunzipTest extends FunctionTest {
+
     @Override
     protected Function getInstance() {
         return new Gunzip();
@@ -51,6 +52,7 @@ public class GunzipTest extends FunctionTest {
         return new Class[] { byte[].class };
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -96,10 +98,9 @@ public class GunzipTest extends FunctionTest {
     public void shouldReturnNullForNullInput() {
         // Given
         final Gunzip function = new Gunzip();
-        byte[] input = null;
 
         // When
-        final byte[] result = function.apply(input);
+        final byte[] result = function.apply(null);
 
         // Then
         assertNull(result);

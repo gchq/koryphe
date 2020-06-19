@@ -19,9 +19,8 @@ package uk.gov.gchq.koryphe.util;
 import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 public class InvalidSignatureTestPredicate<T extends String> extends KoryphePredicate<T> {
-
-        @Override
-        public boolean test(final T t) {
-            return true;
-        }
+    @Override
+    public boolean test(final T t) {
+        return true;
+    }
 }

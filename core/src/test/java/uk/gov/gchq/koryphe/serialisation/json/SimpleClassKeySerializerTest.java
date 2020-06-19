@@ -18,9 +18,9 @@ package uk.gov.gchq.koryphe.serialisation.json;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.google.common.primitives.UnsignedLong;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.impl.predicate.IsA;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -33,9 +33,9 @@ import static org.mockito.Mockito.verify;
 
 public class SimpleClassKeySerializerTest {
 
-    @Before
-    @After
-    public void before() {
+    @BeforeEach
+    @AfterEach
+    public void beforeAndAfter() {
         SimpleClassNameCache.setUseFullNameForSerialisation(true);
         SimpleClassNameCache.reset();
         JsonSerialiser.resetMapper();
@@ -44,7 +44,7 @@ public class SimpleClassKeySerializerTest {
     }
 
     @Test
-    public void shouldSerialiseToSimpleClassName() throws IOException, ClassNotFoundException {
+    public void shouldSerialiseToSimpleClassName() throws IOException {
         // Given
         SimpleClassNameCache.setUseFullNameForSerialisation(false);
         final SimpleClassKeySerializer serialiser = new SimpleClassKeySerializer();
@@ -59,7 +59,7 @@ public class SimpleClassKeySerializerTest {
     }
 
     @Test
-    public void shouldSerialiseToFullClassName() throws IOException, ClassNotFoundException {
+    public void shouldSerialiseToFullClassName() throws IOException {
         // Given
         SimpleClassNameCache.setUseFullNameForSerialisation(true);
         final SimpleClassKeySerializer serialiser = new SimpleClassKeySerializer();
@@ -74,7 +74,7 @@ public class SimpleClassKeySerializerTest {
     }
 
     @Test
-    public void shouldSerialiseToFullClassNameWhenUnknown() throws IOException, ClassNotFoundException {
+    public void shouldSerialiseToFullClassNameWhenUnknown() throws IOException {
         // Given
         SimpleClassNameCache.setUseFullNameForSerialisation(false);
         final SimpleClassKeySerializer serialiser = new SimpleClassKeySerializer();

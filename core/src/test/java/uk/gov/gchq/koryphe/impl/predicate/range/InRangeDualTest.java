@@ -16,7 +16,7 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.tuple.n.Tuple2;
@@ -29,12 +29,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
+
     @Test
-    public void shouldAcceptValuesInRange() throws IOException {
+    public void shouldAcceptValuesInRange() {
         // Given
         final Predicate filter = createBuilder()
                 .start(convert(1L))
@@ -55,7 +56,7 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
     }
 
     @Test
-    public void shouldAcceptValuesInUpperUnboundedRange() throws IOException {
+    public void shouldAcceptValuesInUpperUnboundedRange() {
         // Given
         final Predicate filter = createBuilder()
                 .start(convert(1L))
@@ -77,7 +78,7 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
     }
 
     @Test
-    public void shouldAcceptValuesInLowerUnboundedRange() throws IOException {
+    public void shouldAcceptValuesInLowerUnboundedRange() {
         // Given
         final Predicate filter = createBuilder()
                 .end(convert(10L))
@@ -99,7 +100,7 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
     }
 
     @Test
-    public void shouldRejectNullValue() throws IOException {
+    public void shouldRejectNullValue() {
         // Given
         final Predicate filter = createBuilder()
                 .start(convert(1L))
@@ -119,7 +120,7 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
     }
 
     @Test
-    public void shouldRejectValuesNotInRange() throws IOException {
+    public void shouldRejectValuesNotInRange() {
         // Given
         final Predicate filter = createBuilder()
                 .start(convert(1L))
@@ -142,7 +143,7 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
     }
 
     @Test
-    public void shouldRejectValuesNotInExclusiveRange() throws IOException {
+    public void shouldRejectValuesNotInExclusiveRange() {
         // Given
         final Predicate filter = createBuilder()
                 .start(convert(1L))
@@ -167,7 +168,7 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
     }
 
     @Test
-    public void shouldAcceptValuesInStartAndEndPartiallyContained() throws IOException {
+    public void shouldAcceptValuesInStartAndEndPartiallyContained() {
         // Given
         final Predicate filter = createBuilder()
                 .start(convert(1L))
@@ -189,7 +190,7 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
     }
 
     @Test
-    public void shouldAcceptValuesInStartPartiallyContained() throws IOException {
+    public void shouldAcceptValuesInStartPartiallyContained() {
         // Given
         final Predicate filter = createBuilder()
                 .start(convert(1L))
@@ -210,7 +211,7 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
     }
 
     @Test
-    public void shouldRejectValuesInStartPartiallyContained() throws IOException {
+    public void shouldRejectValuesInStartPartiallyContained() {
         // Given
         final Predicate filter = createBuilder()
                 .start(convert(1L))
@@ -231,7 +232,7 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
     }
 
     @Test
-    public void shouldAcceptValuesInEndPartiallyContained() throws IOException {
+    public void shouldAcceptValuesInEndPartiallyContained() {
         // Given
         final Predicate filter = createBuilder()
                 .start(convert(1L))
@@ -252,7 +253,7 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
     }
 
     @Test
-    public void shouldRejectValuesInEndPartiallyContained() throws IOException {
+    public void shouldRejectValuesInEndPartiallyContained() {
         // Given
         final Predicate filter = createBuilder()
                 .start(convert(1L))
@@ -273,7 +274,7 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
     }
 
     @Test
-    public void shouldAcceptValuesInStartAndEndPartiallyContainedInclusive() throws IOException {
+    public void shouldAcceptValuesInStartAndEndPartiallyContainedInclusive() {
         // Given
         final Predicate filter = createBuilder()
                 .start(convert(1L))
@@ -296,7 +297,7 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
     }
 
     @Test
-    public void shouldRejectValuesInStartAndEndPartiallyContained() throws IOException {
+    public void shouldRejectValuesInStartAndEndPartiallyContained() {
         // Given
         final Predicate filter = createBuilder()
                 .start(convert(1L))
@@ -317,7 +318,7 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
     }
 
     @Test
-    public void shouldRejectValuesInStartAndEndPartiallyContainedInclusive() throws IOException {
+    public void shouldRejectValuesInStartAndEndPartiallyContainedInclusive() {
         // Given
         final Predicate filter = createBuilder()
                 .start(convert(1L))
@@ -444,7 +445,7 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
 
         // Then
         for (int i = 0; i < values.size(); i++) {
-            assertEquals("Failed for value: " + values.get(i), expectedResult, results.get(i));
+            assertEquals(expectedResult, results.get(i), "Failed for value: " + values.get(i));
         }
     }
 }

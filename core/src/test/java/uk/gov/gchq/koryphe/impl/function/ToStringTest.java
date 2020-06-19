@@ -15,19 +15,18 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ToStringTest extends FunctionTest {
 
@@ -37,7 +36,7 @@ public class ToStringTest extends FunctionTest {
         final ToString ts = new ToString();
 
         // When
-        String output = ts.apply("test string");
+        final String output = ts.apply("test string");
 
         // Then
         assertEquals("test string", output);
@@ -47,10 +46,10 @@ public class ToStringTest extends FunctionTest {
     public void shouldHandleArray() {
         // Given
         final ToString ts = new ToString();
-        final String[] testArray = new String[]{"test", "string"};
+        final String[] testArray = new String[] {"test", "string"};
 
         // When
-        String output = ts.apply(testArray);
+        final String output = ts.apply(testArray);
 
         // Then
         assertEquals("[test, string]", output);
@@ -63,7 +62,7 @@ public class ToStringTest extends FunctionTest {
         final byte[] bytes = "test string".getBytes(StandardCharsets.UTF_8);
 
         // When
-        String output = ts.apply(bytes);
+        final String output = ts.apply(bytes);
 
         // Then
         assertEquals("test string", output);
@@ -76,7 +75,7 @@ public class ToStringTest extends FunctionTest {
         final byte[] bytes = "test string".getBytes(StandardCharsets.UTF_16);
 
         // When
-        String output = ts.apply(bytes);
+        final String output = ts.apply(bytes);
 
         // Then
         assertEquals("test string", output);
@@ -88,7 +87,7 @@ public class ToStringTest extends FunctionTest {
         final ToString ts = new ToString();
 
         // When
-        String output = ts.apply(null);
+        final String output = ts.apply(null);
 
         // Then
         assertNull(output);
@@ -106,12 +105,12 @@ public class ToStringTest extends FunctionTest {
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { String.class };
+        return new Class[] {String.class};
     }
 
     @Test

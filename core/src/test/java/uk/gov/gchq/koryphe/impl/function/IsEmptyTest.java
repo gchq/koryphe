@@ -16,7 +16,7 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import com.google.common.collect.Sets;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -25,9 +25,11 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IsEmptyTest extends FunctionTest {
     @Override
@@ -42,14 +44,15 @@ public class IsEmptyTest extends FunctionTest {
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Iterable.class };
+        return new Class[] {Iterable.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Boolean.class };
+        return new Class[] {Boolean.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -113,13 +116,9 @@ public class IsEmptyTest extends FunctionTest {
     public void shouldThrowExceptionForNullInput() {
         // Given
         final IsEmpty function = new IsEmpty();
-        final Iterable input = null;
 
         // When / Then
-        try {
-            function.apply(input);
-        } catch (final IllegalArgumentException e) {
-            assertTrue(e.getMessage().contains("Input cannot be null"));
-        }
+        final Exception exception = assertThrows(IllegalArgumentException.class, () -> function.apply(null));
+        assertEquals("Input cannot be null", exception.getMessage());
     }
 }

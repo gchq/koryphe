@@ -16,7 +16,7 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import com.google.common.collect.Lists;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -26,11 +26,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class DefaultIfEmptyTest extends FunctionTest {
+
     private final static String DEFAULT_VALUE = "default";
 
     @Override
@@ -45,12 +46,12 @@ public class DefaultIfEmptyTest extends FunctionTest {
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[]{ Object.class };
+        return new Class[] {Object.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[]{ Object.class };
+        return new Class[] {Object.class};
     }
 
     @Test
@@ -65,6 +66,7 @@ public class DefaultIfEmptyTest extends FunctionTest {
         assertNull(result);
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -95,7 +97,7 @@ public class DefaultIfEmptyTest extends FunctionTest {
         final Object result = defaultIfEmpty.apply(Collections.emptyList());
 
         // Then
-        assertEquals(result, DEFAULT_VALUE);
+        assertEquals(DEFAULT_VALUE, result);
     }
 
     @Test
@@ -108,6 +110,6 @@ public class DefaultIfEmptyTest extends FunctionTest {
         final Object result = defaultIfEmpty.apply(iterable);
 
         // Then
-        assertEquals(result, iterable);
+        assertEquals(iterable, result);
     }
 }

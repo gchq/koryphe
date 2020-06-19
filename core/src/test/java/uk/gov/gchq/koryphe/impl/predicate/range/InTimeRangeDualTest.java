@@ -16,19 +16,18 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.tuple.n.Tuple2;
 import uk.gov.gchq.koryphe.util.TimeUnit;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
 public class InTimeRangeDualTest extends AbstractInTimeRangeDualTest<Long> {
 
     @Test
-    public void shouldAcceptValuesInRangeUsingMicroseconds() throws IOException {
+    public void shouldAcceptValuesInRangeUsingMicroseconds() {
         // Given
         final InTimeRangeDual filter = createBuilderWithTimeOffsets()
                 .start("1")
@@ -50,7 +49,7 @@ public class InTimeRangeDualTest extends AbstractInTimeRangeDualTest<Long> {
     }
 
     @Test
-    public void shouldAcceptValuesInRangeUsingSeconds() throws IOException {
+    public void shouldAcceptValuesInRangeUsingSeconds() {
         // Given
         final InTimeRangeDual filter = createBuilderWithTimeOffsets()
                 .start("1000")
@@ -72,7 +71,7 @@ public class InTimeRangeDualTest extends AbstractInTimeRangeDualTest<Long> {
     }
 
     @Test
-    public void shouldAcceptValuesInRangeUsingMinutes() throws IOException {
+    public void shouldAcceptValuesInRangeUsingMinutes() {
         // Given
         final InTimeRangeDual filter = createBuilderWithTimeOffsets()
                 .start("60000")
@@ -94,7 +93,7 @@ public class InTimeRangeDualTest extends AbstractInTimeRangeDualTest<Long> {
     }
 
     @Test
-    public void shouldAcceptValuesInRangeUsingHours() throws IOException {
+    public void shouldAcceptValuesInRangeUsingHours() {
         // Given
         final InTimeRangeDual filter = createBuilderWithTimeOffsets()
                 .start("3600000")
@@ -116,7 +115,7 @@ public class InTimeRangeDualTest extends AbstractInTimeRangeDualTest<Long> {
     }
 
     @Test
-    public void shouldAcceptValuesInRangeUsingDays() throws IOException {
+    public void shouldAcceptValuesInRangeUsingDays() {
         // Given
         final InTimeRangeDual filter = createBuilderWithTimeOffsets()
                 .start("86400000")
@@ -138,7 +137,7 @@ public class InTimeRangeDualTest extends AbstractInTimeRangeDualTest<Long> {
     }
 
     @Test
-    public void shouldAcceptValuesInRangeWithOffsetUsingMicroseconds() throws IOException {
+    public void shouldAcceptValuesInRangeWithOffsetUsingMicroseconds() {
         // Given
         final InTimeRangeDual filter = createBuilderWithTimeOffsets()
                 .start("1")
@@ -163,7 +162,7 @@ public class InTimeRangeDualTest extends AbstractInTimeRangeDualTest<Long> {
     }
 
     @Test
-    public void shouldRejectValuesInRangeWithOffsetUsingMicroseconds() throws IOException {
+    public void shouldRejectValuesInRangeWithOffsetUsingMicroseconds() {
         // Given
         final InTimeRangeDual filter = createBuilderWithTimeOffsets()
                 .start("1")

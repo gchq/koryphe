@@ -15,14 +15,15 @@
  */
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.binaryoperator.BinaryOperatorTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class StringDeduplicateConcatTest extends BinaryOperatorTest {
 
@@ -64,7 +65,6 @@ public class StringDeduplicateConcatTest extends BinaryOperatorTest {
 
     @Test
     public void shouldHandleNullSubstrings() {
-
         // Given
         final StringDeduplicateConcat sdc = new StringDeduplicateConcat();
 
@@ -84,7 +84,7 @@ public class StringDeduplicateConcatTest extends BinaryOperatorTest {
         String doubleNull = sdc.apply(null, null);
 
         // Then 3
-        assertEquals(null, doubleNull);
+        assertNull(doubleNull);
     }
 
     @Test

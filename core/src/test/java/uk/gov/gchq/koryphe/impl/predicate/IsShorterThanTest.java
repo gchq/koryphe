@@ -16,7 +16,7 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -28,13 +28,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IsShorterThanTest extends PredicateTest {
+
     @Test
     public void shouldSetAndGetMaxLength() {
         // Given
@@ -140,12 +141,7 @@ public class IsShorterThanTest extends PredicateTest {
         final IsShorterThan filter = new IsShorterThan(5);
 
         // When / Then
-        try {
-            filter.test(4);
-            fail("Exception expected");
-        } catch (final IllegalArgumentException e) {
-            assertNotNull(e);
-        }
+        assertThrows(IllegalArgumentException.class, () -> filter.test(4));
     }
 
     @Test
@@ -174,8 +170,10 @@ public class IsShorterThanTest extends PredicateTest {
 
     @Test
     public void shouldCheckInputClass() {
+        // When
         final IsShorterThan predicate = new IsShorterThan(10);
 
+        // Then
         assertTrue(predicate.isInputValid(String.class).isValid());
         assertTrue(predicate.isInputValid(Object[].class).isValid());
         assertTrue(predicate.isInputValid(Integer[].class).isValid());

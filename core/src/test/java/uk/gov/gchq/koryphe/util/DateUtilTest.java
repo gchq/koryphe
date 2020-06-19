@@ -17,23 +17,21 @@
 package uk.gov.gchq.koryphe.util;
 
 import org.apache.commons.lang3.time.DateUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DateUtilTest {
 
     @Test
-    public void shouldParseTimestampInMilliseconds() throws IOException, ParseException {
+    public void shouldParseTimestampInMilliseconds() {
         // Given
         final long timestamp = System.currentTimeMillis();
 
@@ -45,7 +43,7 @@ public class DateUtilTest {
     }
 
     @Test
-    public void shouldParseTimestampInMillisecondsWithTimeZone() throws IOException, ParseException {
+    public void shouldParseTimestampInMillisecondsWithTimeZone() {
         // Given
         final long timestamp = System.currentTimeMillis();
 
@@ -57,7 +55,7 @@ public class DateUtilTest {
     }
 
     @Test
-    public void shouldParseDates() throws IOException, ParseException {
+    public void shouldParseDates() throws ParseException {
         // When / Then
         assertDate("2017-01", "2017-01", "yyyy-MM");
         assertDate("2017-01", "2017 01", "yyyy-MM");
@@ -77,7 +75,7 @@ public class DateUtilTest {
     }
 
     @Test
-    public void shouldParseDatesTimeZone() throws IOException, ParseException {
+    public void shouldParseDatesTimeZone() throws ParseException {
         // Given
         final String dateString = "2017-01-02 01:02:30.123";
         final String timeZone = "Etc/GMT+6";
@@ -93,17 +91,21 @@ public class DateUtilTest {
     }
 
     @Test
-    public void shouldNotParseInvalidDate() throws IOException, ParseException {
-        // When / Then
-        try {
-            DateUtil.parse("2017/1");
-            fail("Exception expected");
-        } catch (final IllegalArgumentException e) {
-            assertTrue(e.getMessage(), e.getMessage().contains("The provided date string 2017/1 could not be parsed"));
-        }
+    public void shouldNotParseInvalidDate() {
+        // When
+        final Exception exception = assertThrows(IllegalArgumentException.class, () -> DateUtil.parse("2017/1"));
+
+        // Then
+        final String expected = "The provided date string 2017/1 could not be parsed. Please use a timestamp in " +
+                "milliseconds or one of the following formats: [yyyy/MM, yyyy/MM/dd, yyyy/MM/dd HH, yyyy/MM/dd HH:mm, " +
+                "yyyy/MM/dd HH:mm:ss, yyyy/MM/dd HH:mm:ss.SSS]. You can use a space, '-', '/', '_', ':', '|', or '.' " +
+                "to separate the parts.";
+        assertEquals(expected, exception.getMessage());
     }
 
     private void assertDate(final String expected, final String testDate, final String format) throws ParseException {
-        assertEquals("Failed to parse date: " + testDate, DateUtils.parseDate(expected, Locale.getDefault(), format), DateUtil.parse(testDate));
+        final Date expectedDate = DateUtils.parseDate(expected, Locale.getDefault(), format);
+
+        assertEquals(expectedDate, DateUtil.parse(testDate), "Failed to parse date: " + testDate);
     }
 }

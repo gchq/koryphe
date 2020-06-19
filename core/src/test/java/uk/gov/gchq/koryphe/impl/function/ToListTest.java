@@ -18,7 +18,7 @@ package uk.gov.gchq.koryphe.impl.function;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -29,19 +29,19 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 public class ToListTest extends FunctionTest {
+
     @Test
     public void shouldConvertNullToList() {
         // Given
         final ToList function = new ToList();
-        final Object value = null;
 
         // When
-        Object result = function.apply(value);
+        final Object result = function.apply(null);
 
         // Then
         assertEquals(Lists.newArrayList((Object) null), result);
@@ -54,7 +54,7 @@ public class ToListTest extends FunctionTest {
         final Object value = "value1";
 
         // When
-        Object result = function.apply(value);
+        final Object result = function.apply(value);
 
         // Then
         assertEquals(Lists.newArrayList(value), result);
@@ -64,10 +64,10 @@ public class ToListTest extends FunctionTest {
     public void shouldConvertArrayToList() {
         // Given
         final ToList function = new ToList();
-        final Object value = new String[]{"value1", "value2"};
+        final Object value = new String[] {"value1", "value2"};
 
         // When
-        Object result = function.apply(value);
+        final Object result = function.apply(value);
 
         // Then
         assertEquals(Lists.newArrayList((Object[]) value), result);
@@ -77,13 +77,13 @@ public class ToListTest extends FunctionTest {
     public void shouldConvertSetToList() {
         // Given
         final ToList function = new ToList();
-        final Object value = Sets.newLinkedHashSet(Arrays.asList("value1", "value2"));
+        final Set<String> value = Sets.newLinkedHashSet(Arrays.asList("value1", "value2"));
 
         // When
-        Object result = function.apply(value);
+        final Object result = function.apply(value);
 
         // Then
-        assertEquals(Lists.newArrayList((Set) value), result);
+        assertEquals(Lists.newArrayList(value), result);
     }
 
     @Test
@@ -93,7 +93,7 @@ public class ToListTest extends FunctionTest {
         final Object value = Lists.newArrayList("value1", "value2");
 
         // When
-        Object result = function.apply(value);
+        final Object result = function.apply(value);
 
         // Then
         assertSame(value, result);
@@ -111,14 +111,15 @@ public class ToListTest extends FunctionTest {
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { List.class };
+        return new Class[] {List.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given

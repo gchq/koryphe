@@ -15,7 +15,7 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.impl.binaryoperator.Sum;
@@ -25,8 +25,8 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ApplyBiFunctionTest extends FunctionTest {
     @Override
@@ -41,14 +41,15 @@ public class ApplyBiFunctionTest extends FunctionTest {
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[]{Long.class, Long.class};
+        return new Class[] {Long.class, Long.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[]{Long.class};
+        return new Class[] {Long.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -68,7 +69,7 @@ public class ApplyBiFunctionTest extends FunctionTest {
         final Tuple2<Number, Number> input = new Tuple2<>(1, 2);
 
         // When
-        Number result = function.apply(input);
+        final Number result = function.apply(input);
 
         // Then
         assertEquals(3, result);
@@ -81,7 +82,7 @@ public class ApplyBiFunctionTest extends FunctionTest {
         final Tuple2<Number, Number> input = new Tuple2<>(1, 2);
 
         // When
-        Object result = function.apply(input);
+        final Object result = function.apply(input);
 
         // Then
         assertNull(result);

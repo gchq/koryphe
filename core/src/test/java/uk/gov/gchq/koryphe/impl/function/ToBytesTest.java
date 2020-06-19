@@ -15,7 +15,7 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -24,9 +24,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ToBytesTest extends FunctionTest {
 
@@ -36,18 +36,19 @@ public class ToBytesTest extends FunctionTest {
         final ToBytes ts = new ToBytes(StandardCharsets.UTF_16);
 
         // When
-        byte[] output = ts.apply("test string");
+        final byte[] output = ts.apply("test string");
 
         // Then
         assertArrayEquals("test string".getBytes(StandardCharsets.UTF_16), output);
     }
+
     @Test
     public void shouldHandleNullObject() {
         // Given
         final ToBytes ts = new ToBytes();
 
         // When
-        byte[] output = ts.apply(null);
+        final byte[] output = ts.apply(null);
 
         // Then
         assertNull(output);
@@ -65,12 +66,12 @@ public class ToBytesTest extends FunctionTest {
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { String.class };
+        return new Class[] {String.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { byte[].class };
+        return new Class[] {byte[].class};
     }
 
     @Test
