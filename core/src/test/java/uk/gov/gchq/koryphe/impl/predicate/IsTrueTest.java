@@ -16,18 +16,19 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IsTrueTest extends PredicateTest {
+
     @Test
     public void shouldAcceptTheValueWhenTrue() {
         // Given
@@ -58,7 +59,7 @@ public class IsTrueTest extends PredicateTest {
         final IsTrue filter = new IsTrue();
 
         // When
-        boolean accepted = filter.test((Boolean) null);
+        boolean accepted = filter.test(null);
 
         // Then
         assertFalse(accepted);

@@ -16,17 +16,17 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.util.TimeUnit;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
 public class InTimeRangeTest extends AbstractInTimeRangeTest<Long> {
+
     @Test
-    public void shouldAcceptValuesInRangeUsingMicroseconds() throws IOException {
+    public void shouldAcceptValuesInRangeUsingMicroseconds() {
         // Given
         final InTimeRange filter = createBuilder()
                 .start("1")
@@ -43,7 +43,7 @@ public class InTimeRangeTest extends AbstractInTimeRangeTest<Long> {
     }
 
     @Test
-    public void shouldAcceptValuesInRangeUsingSeconds() throws IOException {
+    public void shouldAcceptValuesInRangeUsingSeconds() {
         // Given
         final InTimeRange filter = createBuilder()
                 .start("1000")
@@ -60,7 +60,7 @@ public class InTimeRangeTest extends AbstractInTimeRangeTest<Long> {
     }
 
     @Test
-    public void shouldAcceptValuesInRangeUsingMinutes() throws IOException {
+    public void shouldAcceptValuesInRangeUsingMinutes() {
         // Given
         final InTimeRange filter = createBuilder()
                 .start("60000")
@@ -77,7 +77,7 @@ public class InTimeRangeTest extends AbstractInTimeRangeTest<Long> {
     }
 
     @Test
-    public void shouldAcceptValuesInRangeUsingHours() throws IOException {
+    public void shouldAcceptValuesInRangeUsingHours() {
         // Given
         final InTimeRange filter = createBuilder()
                 .start("3600000")
@@ -94,7 +94,7 @@ public class InTimeRangeTest extends AbstractInTimeRangeTest<Long> {
     }
 
     @Test
-    public void shouldAcceptValuesInRangeUsingDays() throws IOException {
+    public void shouldAcceptValuesInRangeUsingDays() {
         // Given
         final InTimeRange filter = createBuilder()
                 .start("86400000")
@@ -111,7 +111,7 @@ public class InTimeRangeTest extends AbstractInTimeRangeTest<Long> {
     }
 
     @Test
-    public void shouldAcceptValuesInRangeWithOffsetUsingMicroseconds() throws IOException {
+    public void shouldAcceptValuesInRangeWithOffsetUsingMicroseconds() {
         // Given
         final InTimeRange filter = createBuilder()
                 .start("1")
@@ -131,7 +131,7 @@ public class InTimeRangeTest extends AbstractInTimeRangeTest<Long> {
     }
 
     @Test
-    public void shouldRejectValuesInRangeWithOffsetUsingMicroseconds() throws IOException {
+    public void shouldRejectValuesInRangeWithOffsetUsingMicroseconds() {
         // Given
         final InTimeRange filter = createBuilder()
                 .start("1")

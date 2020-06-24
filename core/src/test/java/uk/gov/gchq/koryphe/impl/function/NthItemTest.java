@@ -15,7 +15,7 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -24,10 +24,10 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class NthItemTest extends FunctionTest {
 
@@ -51,6 +51,7 @@ public class NthItemTest extends FunctionTest {
         return new Class[] { Object.class };
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -83,7 +84,7 @@ public class NthItemTest extends FunctionTest {
 
         // Then
         assertNotNull(result);
-        assertEquals(new Integer(3), result);
+        assertEquals(3, result);
     }
 
     @Test
@@ -117,10 +118,7 @@ public class NthItemTest extends FunctionTest {
         final NthItem<Integer> function = new NthItem<>();
 
         // When / Then
-        try {
-            function.apply(null);
-        } catch (final IllegalArgumentException e) {
-            assertTrue(e.getMessage().contains("Input cannot be null"));
-        }
+        final Exception exception = assertThrows(IllegalArgumentException.class, () -> function.apply(null));
+        assertEquals("Input cannot be null", exception.getMessage());
     }
 }

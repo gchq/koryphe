@@ -15,7 +15,7 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -23,11 +23,10 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ParseTimeTest extends FunctionTest {
     @Override
@@ -50,6 +49,7 @@ public class ParseTimeTest extends FunctionTest {
         return new Class[] { Long.class };
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -92,10 +92,9 @@ public class ParseTimeTest extends FunctionTest {
     public void shouldReturnNullForNullInput() {
         // Given
         final ParseTime function = new ParseTime();
-        final String input = null;
 
         // When
-        Object result = function.apply(input);
+        final Object result = function.apply(null);
 
         // Then
         assertNull(result);

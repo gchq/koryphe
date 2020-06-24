@@ -16,33 +16,41 @@
 
 package uk.gov.gchq.koryphe.tuple;
 
-import org.junit.Test;
+import com.google.common.collect.Iterables;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ArrayTupleTest {
+
     @Test
-    public void testConstructors() {
-        // test size constructor
-        int size = 3;
-        ArrayTuple tuple = new ArrayTuple(size);
+    public void testConstructorsSize() {
+        // Test size constructor
+        // When
+        final ArrayTuple tuple = new ArrayTuple(3);
+
+        // Then
+        for (Object value : tuple) {
+            assertNull(value, "Found unexpected non-null value");
+        }
+        assertEquals(3, Iterables.size(tuple), "Found unexpected number of values");
+    }
+
+    @Test
+    public void testInitialArrayConstructors() {
+        // Test initial array constructor
+        // Given
+        final Object[] initialValues = new String[] {"a", "b", "c", "d", "e"};
+
+        // When
+        final ArrayTuple tuple = new ArrayTuple(initialValues);
+
         int i = 0;
         for (Object value : tuple) {
+            assertEquals(initialValues[i], value, "Found unexpected tuple value");
             i++;
-            if (value != null) fail("Found unexpected non-null value");
         }
-        assertEquals("Found unexpected number of values", size, i);
-
-
-        // test initial array constructor
-        Object[] initialValues = new String[]{"a", "b", "c", "d", "e"};
-        tuple = new ArrayTuple(initialValues);
-        i = 0;
-        for (Object value : tuple) {
-            assertEquals("Found unexpected tuple value", value, initialValues[i]);
-            i ++;
-        }
-        assertEquals("Found unexpected number of values", initialValues.length, i);
+        assertEquals(initialValues.length, Iterables.size(tuple), "Found unexpected number of values");
     }
 }

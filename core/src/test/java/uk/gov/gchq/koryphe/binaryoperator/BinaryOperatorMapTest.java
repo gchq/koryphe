@@ -1,16 +1,17 @@
 package uk.gov.gchq.koryphe.binaryoperator;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BinaryOperator;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 public class BinaryOperatorMapTest {
+
     @Test
     public void testMapAggregation() {
         int inA = 1;

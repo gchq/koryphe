@@ -16,7 +16,7 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -24,10 +24,10 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MultiRegexTest extends PredicateTest {
 
@@ -96,8 +96,7 @@ public class MultiRegexTest extends PredicateTest {
         Pattern[] patterns = new Pattern[2];
         patterns[0] = Pattern.compile("NOTHING");
         patterns[1] = Pattern.compile("[t,T].*[t,T]");
-        MultiRegex multi = new MultiRegex(patterns);
-        return multi;
+        return new MultiRegex(patterns);
     }
 
     @Override

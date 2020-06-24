@@ -15,7 +15,7 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -24,11 +24,11 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FirstItemTest extends FunctionTest {
     @Override
@@ -43,14 +43,15 @@ public class FirstItemTest extends FunctionTest {
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Iterable.class };
+        return new Class[] {Iterable.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -81,7 +82,7 @@ public class FirstItemTest extends FunctionTest {
 
         // Then
         assertNotNull(result);
-        assertEquals(new Integer(1), result);
+        assertEquals(1, result);
     }
 
     @Test
@@ -115,11 +116,7 @@ public class FirstItemTest extends FunctionTest {
         final FirstItem<String> function = new FirstItem<>();
 
         // When / Then
-        try {
-            function.apply(null);
-            fail("Exception expected");
-        } catch (final IllegalArgumentException e) {
-            assertTrue(e.getMessage().contains("Input cannot be null"));
-        }
+        final Exception exception = assertThrows(IllegalArgumentException.class, () -> function.apply(null));
+        assertTrue(exception.getMessage().contains("Input cannot be null"));
     }
 }

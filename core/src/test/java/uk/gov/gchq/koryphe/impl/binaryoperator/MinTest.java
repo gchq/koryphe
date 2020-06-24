@@ -16,23 +16,24 @@
 
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.binaryoperator.BinaryOperatorTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MinTest extends BinaryOperatorTest {
+
     private Comparable state;
 
-    @Before
+    @BeforeEach
     public void before() {
         state = null;
     }
@@ -70,25 +71,25 @@ public class MinTest extends BinaryOperatorTest {
         final Min min = new Min();
 
         // When 1
-        state = min.apply(1l, state);
+        state = min.apply(1L, state);
 
         // Then 1
         assertTrue(state instanceof Long);
-        assertEquals(1l, state);
+        assertEquals(1L, state);
 
         // When 2
-        state = min.apply(2l, state);
+        state = min.apply(2L, state);
 
         // Then 2
         assertTrue(state instanceof Long);
-        assertEquals(1l, state);
+        assertEquals(1L, state);
 
         // When 3
-        state = min.apply(3l, state);
+        state = min.apply(3L, state);
 
         // Then 3
         assertTrue(state instanceof Long);
-        assertEquals(1l, state);
+        assertEquals(1L, state);
     }
 
     @Test
@@ -128,18 +129,10 @@ public class MinTest extends BinaryOperatorTest {
         state = min.apply(5, state);
 
         // When 2
-        try {
-            state = min.apply(2l, state);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThrows(ClassCastException.class, () -> state = min.apply(2L, state));
 
         // When 3
-        try {
-            state = min.apply(2.1d, state);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThrows(ClassCastException.class, () -> state = min.apply(2.1d, state));
 
         // Then 3
         assertTrue(state instanceof Integer);

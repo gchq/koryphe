@@ -18,65 +18,54 @@ package uk.gov.gchq.koryphe.util;
 
 import com.google.common.collect.Sets;
 import com.google.common.primitives.UnsignedLong;
+import org.hamcrest.Matcher;
 import org.hamcrest.core.IsCollectionContaining;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.serialisation.json.obj.first.TestCustomNumber;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ReflectionUtilTest {
-    @Before
-    @After
+
+    @BeforeEach
+    @AfterEach
     public void cleanUp() {
         ReflectionUtil.resetReflectionPackages();
         ReflectionUtil.resetReflectionCache();
     }
 
     @Test
-    public void shouldReturnUnmodifiableClasses() throws IOException {
+    public void shouldReturnUnmodifiableClasses() {
         // Given
         final Set<Class> subclasses = ReflectionUtil.getSubTypes(Number.class);
 
         // When / Then
-        try {
-            subclasses.add(String.class);
-            fail("Exception expected");
-        } catch (final UnsupportedOperationException e) {
-            assertNotNull(e);
-        }
+        assertThrows(UnsupportedOperationException.class, () -> subclasses.add(String.class));
     }
 
     @Test
-    public void shouldReturnUnmodifiableSimpleClassNames() throws IOException {
+    public void shouldReturnUnmodifiableSimpleClassNames() {
         // Given
         final Map<String, Set<Class>> simpleClassNames = ReflectionUtil.getSimpleClassNames(Number.class);
 
         // When / Then
-        try {
-            simpleClassNames.put("test", new HashSet<>());
-            fail("Exception expected");
-        } catch (final UnsupportedOperationException e) {
-            assertNotNull(e);
-        }
+        assertThrows(UnsupportedOperationException.class, () -> simpleClassNames.put("test", new HashSet<>()));
     }
 
-
     @Test
-    public void shouldCacheSubclasses() throws IOException {
+    public void shouldCacheSubclasses() {
         // Given
         final Set<Class> subclasses = ReflectionUtil.getSubTypes(Number.class);
 
@@ -88,7 +77,7 @@ public class ReflectionUtilTest {
     }
 
     @Test
-    public void shouldCacheSimpleNames() throws IOException {
+    public void shouldCacheSimpleNames() {
         // Given
         final Map<String, Set<Class>> simpleClassNames = ReflectionUtil.getSimpleClassNames(Number.class);
 
@@ -100,89 +89,81 @@ public class ReflectionUtilTest {
     }
 
     @Test
-    public void shouldReturnSubclasses() throws IOException {
+    public void shouldReturnSubclasses() {
         // When
         final Set<Class> subclasses = ReflectionUtil.getSubTypes(Number.class);
 
         // Then
-        assertEquals(
-                Sets.newHashSet(
-                        TestCustomNumber.class,
-                        uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class
-                ),
-                subclasses
+        final HashSet<Class<? extends Number>> expected = Sets.newHashSet(
+                TestCustomNumber.class, uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class
         );
+        assertEquals(expected, subclasses);
         assertFalse(subclasses.contains(UnsignedLong.class));
     }
 
     @Test
-    public void shouldReturnSimpleClassNames() throws IOException {
+    public void shouldReturnSimpleClassNames() {
         // When
         final Map<String, Set<Class>> simpleClassNames = ReflectionUtil.getSimpleClassNames(Number.class);
 
         // Then
-        assertEquals(
-                Sets.newHashSet(
-                        TestCustomNumber.class,
-                        uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class
-                ),
-                simpleClassNames.get(TestCustomNumber.class.getSimpleName())
+        final HashSet<Class<? extends Number>> expected = Sets.newHashSet(
+                TestCustomNumber.class,
+                uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class
         );
+        assertEquals(expected, simpleClassNames.get(TestCustomNumber.class.getSimpleName()));
         assertFalse(simpleClassNames.containsKey(UnsignedLong.class.getSimpleName()));
     }
 
     @Test
-    public void shouldReturnSubclassesWithExtraClassesInPath() throws IOException {
+    public void shouldReturnSubclassesWithExtraClassesInPath() {
         // When
         ReflectionUtil.addReflectionPackages(UnsignedLong.class.getPackage().getName());
         final Set<Class> subclasses = ReflectionUtil.getSubTypes(Number.class);
 
         // Then
-        assertThat(subclasses,
-                IsCollectionContaining.hasItems(
-                        TestCustomNumber.class,
-                        uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class,
-                        UnsignedLong.class
-                )
+        final Matcher<Iterable<Class>> matcher = IsCollectionContaining.hasItems(
+                TestCustomNumber.class,
+                uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class,
+                UnsignedLong.class
         );
+        assertThat(subclasses, matcher);
     }
 
     @Test
-    public void shouldReturnSimpleClassNamesWithExtraClassesInPath() throws IOException {
+    public void shouldReturnSimpleClassNamesWithExtraClassesInPath() {
         // When
         ReflectionUtil.addReflectionPackages(UnsignedLong.class.getPackage().getName());
         final Map<String, Set<Class>> simpleClassNames = ReflectionUtil.getSimpleClassNames(Number.class);
 
         // Then
-        assertEquals(
-                Sets.newHashSet(
-                        TestCustomNumber.class,
-                        uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class
-                ),
-                simpleClassNames.get(TestCustomNumber.class.getSimpleName())
+        final HashSet<Class<? extends Number>> expected1 = Sets.newHashSet(
+                TestCustomNumber.class,
+                uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class
         );
+        assertEquals(expected1, simpleClassNames.get(TestCustomNumber.class.getSimpleName()));
         assertEquals(Collections.singleton(UnsignedLong.class), simpleClassNames.get(UnsignedLong.class.getSimpleName()));
 
-        final Set<String> expected = Sets.newHashSet(ReflectionUtil.DEFAULT_PACKAGES);
-        expected.add(UnsignedLong.class.getPackage().getName());
-        assertEquals(expected, ReflectionUtil.getReflectionPackages());
+        final Set<String> expected2 = Sets.newHashSet(ReflectionUtil.DEFAULT_PACKAGES);
+        expected2.add(UnsignedLong.class.getPackage().getName());
+        assertEquals(expected2, ReflectionUtil.getReflectionPackages());
     }
 
     @Test
-    public void shouldReturnSimpleClassNamesWithExtraClassesInPathWithTrailingDot() throws IOException {
+    public void shouldReturnSimpleClassNamesWithExtraClassesInPathWithTrailingDot() {
         // When
         ReflectionUtil.addReflectionPackages(UnsignedLong.class.getPackage().getName() + ".");
-        final Map<String, Set<Class>> simpleClassNames = ReflectionUtil.getSimpleClassNames(Number.class);
 
         // Then
-        assertEquals(
-                Sets.newHashSet(
-                        TestCustomNumber.class,
-                        uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class
-                ),
-                simpleClassNames.get(TestCustomNumber.class.getSimpleName())
+        final Map<String, Set<Class>> simpleClassNames = ReflectionUtil.getSimpleClassNames(Number.class);
+
+        final HashSet<Class<? extends Number>> expected1 = Sets.newHashSet(
+                TestCustomNumber.class,
+                uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class
         );
+        assertEquals(expected1, simpleClassNames.get(TestCustomNumber.class.getSimpleName()));
         assertEquals(Collections.singleton(UnsignedLong.class), simpleClassNames.get(UnsignedLong.class.getSimpleName()));
+
         final Set<String> expected = Sets.newHashSet(ReflectionUtil.DEFAULT_PACKAGES);
         expected.add(UnsignedLong.class.getPackage().getName());
         assertEquals(expected, ReflectionUtil.getReflectionPackages());

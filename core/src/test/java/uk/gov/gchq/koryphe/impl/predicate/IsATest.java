@@ -16,18 +16,20 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IsATest {
+
     @Test
     public void shouldAcceptTheValueWhenSameClass() {
         // Given
@@ -89,13 +91,13 @@ public class IsATest {
         assertEquals(predicate.getType(), type);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void shouldThrowExceptionIfInvalidClassNameProvided() {
         // Given
         final String type = "java.util.String";
 
         // When
-        final IsA predicate = new IsA(type);
+        assertThrows(IllegalArgumentException.class, () -> new IsA(type));
     }
 
     @Test

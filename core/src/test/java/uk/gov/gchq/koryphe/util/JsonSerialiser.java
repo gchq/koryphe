@@ -19,7 +19,7 @@ package uk.gov.gchq.koryphe.util;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 import uk.gov.gchq.koryphe.serialisation.json.SimpleClassNameIdResolver;
 
@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.Map;
 
 public class JsonSerialiser {
+
     private static final ObjectMapper BASIC__MAPPER = new ObjectMapper();
     private static ObjectMapper mapper = createObjectMapper();
 
@@ -53,12 +54,12 @@ public class JsonSerialiser {
         return mapper.readValue(json, typeReference);
     }
 
-
     public static void assertEquals(final String expectedJson, final String actualJson) {
         try {
             final Map expectedSchemaMap = BASIC__MAPPER.readValue(expectedJson, Map.class);
             final Map actualSchemaMap = BASIC__MAPPER.readValue(actualJson, Map.class);
-            Assert.assertEquals(expectedSchemaMap, actualSchemaMap);
+            Assertions.assertEquals(expectedSchemaMap, actualSchemaMap);
+
         } catch (final IOException e) {
             throw new AssertionError(expectedJson + "is not equal to " + actualJson, e);
         }

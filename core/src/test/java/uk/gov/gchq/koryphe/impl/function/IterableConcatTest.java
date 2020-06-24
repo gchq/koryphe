@@ -17,7 +17,7 @@ package uk.gov.gchq.koryphe.impl.function;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -27,10 +27,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IterableConcatTest extends FunctionTest {
     @Override
@@ -45,14 +45,15 @@ public class IterableConcatTest extends FunctionTest {
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Iterable.class };
+        return new Class[] {Iterable.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Iterable.class };
+        return new Class[] {Iterable.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -92,15 +93,10 @@ public class IterableConcatTest extends FunctionTest {
     public void shouldHandleNullInputIterable() {
         // Given
         final IterableConcat<Integer> function = new IterableConcat<>();
-        final Iterable<Iterable<Integer>> input = null;
 
         // When / Then
-        try {
-            function.apply(input);
-            fail("Exception expected");
-        } catch (final IllegalArgumentException e) {
-            assertTrue(e.getMessage().contains("iterables are required"));
-        }
+        final Exception exception = assertThrows(IllegalArgumentException.class, () -> function.apply(null));
+        assertEquals("iterables are required", exception.getMessage());
     }
 
     @Test
@@ -128,8 +124,6 @@ public class IterableConcatTest extends FunctionTest {
         final Iterable<Integer> results = function.apply(input);
 
         // Then
-        assertEquals(
-                Arrays.asList(1, 2, null, 4, 5, null, 7),
-                Lists.newArrayList(results));
+        assertEquals(Arrays.asList(1, 2, null, 4, 5, null, 7), Lists.newArrayList(results));
     }
 }

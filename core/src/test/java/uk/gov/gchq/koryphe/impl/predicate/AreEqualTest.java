@@ -16,56 +16,64 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AreEqualTest extends PredicateTest {
 
     @Test
     public void shouldAcceptTheWhenEqualValues() {
-
+        // Given
         final AreEqual equals = new AreEqual();
 
+        // When
         boolean accepted = equals.test("test", "test");
 
+        // Then
         assertTrue(accepted);
     }
 
     @Test
     public void shouldAcceptWhenAllNull() {
-
+        // Given
         final AreEqual equals = new AreEqual();
 
+        // When
         boolean accepted = equals.test(null, null);
 
+        // Then
         assertTrue(accepted);
     }
 
     @Test
     public void shouldRejectWhenOneIsNull() {
-
+        // Given
         final AreEqual equals = new AreEqual();
 
+        // When
         boolean accepted = equals.test(null, "test");
 
+        // Then
         assertFalse(accepted);
     }
 
     @Test
     public void shouldRejectWhenNotEqual() {
-
+        // Given
         final AreEqual equals = new AreEqual();
 
+        // When
         boolean accepted = equals.test("test", "test2");
 
+        // Then
         assertFalse(accepted);
     }
 

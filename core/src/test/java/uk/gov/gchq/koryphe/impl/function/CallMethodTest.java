@@ -16,7 +16,7 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -27,21 +27,22 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 public class CallMethodTest extends FunctionTest {
+
     private static final String TEST_METHOD = "testMethod";
 
     @Test
-    public void shouldCallMethod() throws Exception {
+    public void shouldCallMethod() {
         // Given
         final CallMethod function = new CallMethod(TEST_METHOD);
 
         // When
-        Object output = function.apply(this);
+        final Object output = function.apply(this);
 
         // Then
         assertEquals(5, output);
@@ -74,6 +75,7 @@ public class CallMethodTest extends FunctionTest {
         assertEquals(5, output2);
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -108,12 +110,12 @@ public class CallMethodTest extends FunctionTest {
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
     // Test method for use when testing the CallMethod function

@@ -16,26 +16,29 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class DictionaryLookupTest extends FunctionTest {
 
-    private Map<String, Integer> dictionary = new HashMap<>();;
+    private Map<String, Integer> dictionary = new HashMap<>();
+    ;
     private DictionaryLookup<String, Integer> dictionaryLookUp;
 
-    @Before
+    @BeforeEach
     public void setup() {
         dictionary.put("one", 1);
         dictionary.put("two", 2);
@@ -60,12 +63,10 @@ public class DictionaryLookupTest extends FunctionTest {
 
     @Test
     public void shouldThrowExceptionIfDictionaryIsSetToNull() {
-        try {
-            new DictionaryLookup<>().apply("four");
-            Assert.fail("expected IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            assertEquals("The uk.gov.gchq.koryphe.impl.function.DictionaryLookup KorypheFunction has not been provided with a dictionary", e.getMessage());
-        }
+        final Exception exception = assertThrows(IllegalArgumentException.class, () -> new DictionaryLookup<>().apply("four"));
+
+        final String expected = "The uk.gov.gchq.koryphe.impl.function.DictionaryLookup KorypheFunction has not been provided with a dictionary";
+        assertEquals(expected, exception.getMessage());
     }
 
     @Override
@@ -80,14 +81,15 @@ public class DictionaryLookupTest extends FunctionTest {
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // When

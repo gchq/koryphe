@@ -16,17 +16,19 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class MultiplyByTest extends FunctionTest {
+
     @Test
     public void shouldMultiplyBy2() {
         // Given
@@ -35,6 +37,7 @@ public class MultiplyByTest extends FunctionTest {
         // When
         int output = function.apply(4);
 
+        // Then
         assertEquals(8, output);
     }
 
@@ -46,6 +49,7 @@ public class MultiplyByTest extends FunctionTest {
         // When
         int output = function.apply(9);
 
+        // Then
         assertEquals(9, output);
     }
 
@@ -57,9 +61,11 @@ public class MultiplyByTest extends FunctionTest {
         // When
         Integer output = function.apply(null);
 
-        assertEquals(null, output);
+        // Then
+        assertNull(output);
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given

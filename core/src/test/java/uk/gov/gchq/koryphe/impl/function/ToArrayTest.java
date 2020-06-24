@@ -18,7 +18,7 @@ package uk.gov.gchq.koryphe.impl.function;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -27,22 +27,22 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 public class ToArrayTest extends FunctionTest {
+
     @Test
     public void shouldConvertNullToArray() {
         // Given
         final ToArray function = new ToArray();
-        final Object value = null;
 
         // When
-        Object[] result = function.apply(value);
+        final Object[] result = function.apply(null);
 
         // Then
-        assertArrayEquals(new Object[]{null}, result);
+        assertArrayEquals(new Object[] {null}, result);
     }
 
     @Test
@@ -52,10 +52,10 @@ public class ToArrayTest extends FunctionTest {
         final Object value = "value1";
 
         // When
-        Object[] result = function.apply(value);
+        final Object[] result = function.apply(value);
 
         // Then
-        assertArrayEquals(new Object[]{value}, result);
+        assertArrayEquals(new Object[] {value}, result);
     }
 
     @Test
@@ -65,10 +65,10 @@ public class ToArrayTest extends FunctionTest {
         final Object value = Lists.newArrayList("value1", "value2");
 
         // When
-        Object[] result = function.apply(value);
+        final Object[] result = function.apply(value);
 
         // Then
-        assertArrayEquals(new Object[]{"value1", "value2"}, result);
+        assertArrayEquals(new Object[] {"value1", "value2"}, result);
     }
 
     @Test
@@ -78,20 +78,20 @@ public class ToArrayTest extends FunctionTest {
         final Object value = Sets.newLinkedHashSet(Arrays.asList("value1", "value2"));
 
         // When
-        Object[] result = function.apply(value);
+        final Object[] result = function.apply(value);
 
         // Then
-        assertArrayEquals(new Object[]{"value1", "value2"}, result);
+        assertArrayEquals(new Object[] {"value1", "value2"}, result);
     }
 
     @Test
     public void shouldReturnAGivenArray() {
         // Given
         final ToArray function = new ToArray();
-        final Object value = new Object[]{"value1"};
+        final Object value = new Object[] {"value1"};
 
         // When
-        Object[] result = function.apply(value);
+        final Object[] result = function.apply(value);
 
         // Then
         assertSame(value, result);
@@ -109,14 +109,15 @@ public class ToArrayTest extends FunctionTest {
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Object[].class };
+        return new Class[] {Object[].class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given

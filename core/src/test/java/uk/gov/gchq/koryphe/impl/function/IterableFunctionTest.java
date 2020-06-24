@@ -17,27 +17,22 @@ package uk.gov.gchq.koryphe.impl.function;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
-import uk.gov.gchq.koryphe.iterable.CloseableIterable;
-import uk.gov.gchq.koryphe.util.IterableUtil;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Function;
 
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IterableFunctionTest extends FunctionTest {
     @Override
@@ -52,14 +47,15 @@ public class IterableFunctionTest extends FunctionTest {
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Iterable.class };
+        return new Class[] {Iterable.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Iterable.class };
+        return new Class[] {Iterable.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -156,6 +152,7 @@ public class IterableFunctionTest extends FunctionTest {
         // When
         final Object result = function.apply(null);
 
+        // Then
         assertNull(result);
     }
 
@@ -178,11 +175,8 @@ public class IterableFunctionTest extends FunctionTest {
         final IterableFunction<Integer, Integer> function = new IterableFunction<>(functions);
 
         // When / Then
-        try {
-            function.apply(Arrays.asList(1, 2, 3));
-        } catch (final IllegalArgumentException e) {
-            assertTrue(e.getMessage().contains("List of functions cannot be null"));
-        }
+        final Exception exception = assertThrows(IllegalArgumentException.class, () -> function.apply(Arrays.asList(1, 2, 3)));
+        assertEquals("List of functions cannot be null", exception.getMessage());
     }
 
     @Test
@@ -195,10 +189,7 @@ public class IterableFunctionTest extends FunctionTest {
         final IterableFunction<Integer, Integer> function = new IterableFunction<>(functions);
 
         // When / Then
-        try {
-            function.apply(Arrays.asList(1, 2, 3));
-        } catch (final IllegalArgumentException e) {
-            assertTrue(e.getMessage().contains("Functions list cannot contain a null function"));
-        }
+        final Exception exception = assertThrows(IllegalArgumentException.class, () -> function.apply(Arrays.asList(1, 2, 3)));
+        assertEquals("Functions list cannot contain a null function", exception.getMessage());
     }
 }

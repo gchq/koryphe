@@ -15,7 +15,7 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -26,8 +26,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class DeserialiseJsonTest extends FunctionTest {
     @Override
@@ -42,14 +42,15 @@ public class DeserialiseJsonTest extends FunctionTest {
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { String.class };
+        return new Class[] {String.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -79,19 +80,18 @@ public class DeserialiseJsonTest extends FunctionTest {
         element2aMap.put("value", "value1");
         Map<String, Object> element2bMap = new HashMap<>();
         element2bMap.put("value", "value2");
-        HashMap<Object, Object> rootMap = new HashMap<>();
-        rootMap.put("elements", Arrays.asList(element2aMap, element2bMap));
-        assertEquals(rootMap, result);
+        HashMap<Object, Object> expectedRootMap = new HashMap<>();
+        expectedRootMap.put("elements", Arrays.asList(element2aMap, element2bMap));
+        assertEquals(expectedRootMap, result);
     }
 
     @Test
     public void shouldReturnNullForNullInput() {
         // Given
         final DeserialiseJson function = new DeserialiseJson();
-        final String input = null;
 
         // When
-        Object result = function.apply(input);
+        Object result = function.apply(null);
 
         // Then
         assertNull(result);

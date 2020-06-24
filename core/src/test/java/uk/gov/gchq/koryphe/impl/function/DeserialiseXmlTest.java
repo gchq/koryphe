@@ -15,7 +15,7 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -26,8 +26,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class DeserialiseXmlTest extends FunctionTest {
     @Override
@@ -42,14 +42,15 @@ public class DeserialiseXmlTest extends FunctionTest {
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { String.class };
+        return new Class[] {String.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Map.class };
+        return new Class[] {Map.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -83,19 +84,18 @@ public class DeserialiseXmlTest extends FunctionTest {
         element2bMap.put("element2", "value2");
         HashMap<Object, Object> element1Map = new HashMap<>();
         element1Map.put("element1", Arrays.asList(element2aMap, element2bMap));
-        HashMap<Object, Object> rootMap = new HashMap<>();
-        rootMap.put("root", element1Map);
-        assertEquals(rootMap, result);
+        HashMap<Object, Object> expectedRootMap = new HashMap<>();
+        expectedRootMap.put("root", element1Map);
+        assertEquals(expectedRootMap, result);
     }
 
     @Test
     public void shouldReturnNullForNullInput() {
         // Given
         final DeserialiseXml function = new DeserialiseXml();
-        final String input = null;
 
         // When
-        Map<String, Object> result = function.apply(input);
+        Map<String, Object> result = function.apply(null);
 
         // Then
         assertNull(result);

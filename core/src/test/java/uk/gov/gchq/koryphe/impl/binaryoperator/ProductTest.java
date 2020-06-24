@@ -16,23 +16,24 @@
 
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.binaryoperator.BinaryOperatorTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ProductTest extends BinaryOperatorTest {
+
     private Number state;
 
-    @Before
+    @BeforeEach
     public void before() {
         state = null;
     }
@@ -112,22 +113,14 @@ public class ProductTest extends BinaryOperatorTest {
         assertEquals(2, state);
 
         // When 2
-        try {
-            state = product.apply(2.7d, state);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThrows(ClassCastException.class, () -> state = product.apply(2.7d, state));
 
         // Then 2
         assertTrue(state instanceof Integer);
         assertEquals(2, state);
 
         // When 3
-        try {
-            state = product.apply(1l, state);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThrows(ClassCastException.class, () -> state = product.apply(1L, state));
 
         // Then 3
         assertTrue(state instanceof Integer);
@@ -140,60 +133,52 @@ public class ProductTest extends BinaryOperatorTest {
         final Product product = new Product();
 
         // When 1
-        state = product.apply(2l, state);
+        state = product.apply(2L, state);
 
         // Then 1
         assertTrue(state instanceof Long);
-        assertEquals(2l, state);
+        assertEquals(2L, state);
 
         // When 2
-        state = product.apply(1l, state);
+        state = product.apply(1L, state);
 
         // Then 2
         assertTrue(state instanceof Long);
-        assertEquals(2l, state);
+        assertEquals(2L, state);
 
         // When 3
-        state = product.apply(3l, state);
+        state = product.apply(3L, state);
 
         // Then 3
         assertTrue(state instanceof Long);
-        assertEquals(6l, state);
+        assertEquals(6L, state);
     }
 
     @Test
     public void testAggregateInLongModeMixedInput() {
         // Given
         final Product product = new Product();
-        state = 1l;
+        state = 1L;
 
         // When 1
-        try {
-            state = product.apply(1, state);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThrows(ClassCastException.class, () -> state = product.apply(1, state));
 
         // Then 1
-        assertEquals(1l, state);
+        assertEquals(1L, state);
 
         // When 2
-        state = product.apply(3l, state);
+        state = product.apply(3L, state);
 
         // Then 2
         assertTrue(state instanceof Long);
-        assertEquals(3l, state);
+        assertEquals(3L, state);
 
         // When 3
-        try {
-            state = product.apply(2.5d, state);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThrows(ClassCastException.class, () -> state = product.apply(2.5d, state));
 
         // Then 3
         assertTrue(state instanceof Long);
-        assertEquals(3l, state);
+        assertEquals(3L, state);
     }
 
     @Test
@@ -257,21 +242,13 @@ public class ProductTest extends BinaryOperatorTest {
         state = 1d;
 
         // When 1
-        try {
-            state = product.apply(1, state);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThrows(ClassCastException.class, () -> state = product.apply(1, state));
 
         // Then 1
         assertEquals(1d, state);
 
         // When 2
-        try {
-            state = product.apply(3l, state);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThrows(ClassCastException.class, () -> state = product.apply(3L, state));
 
         // Then 2
         assertEquals(1d, state);
@@ -298,22 +275,14 @@ public class ProductTest extends BinaryOperatorTest {
         assertEquals(2, state);
 
         // When 2
-        try {
-            state = product.apply(3l, state);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThrows(ClassCastException.class, () -> state = product.apply(3L, state));
 
         // Then 2
         assertTrue(state instanceof Integer);
         assertEquals(2, state);
 
         // When 3
-        try {
-            state = product.apply(2.1d, state);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThrows(ClassCastException.class, () -> state = product.apply(2.1d, state));
 
         // Then 3
         assertTrue(state instanceof Integer);
@@ -324,36 +293,28 @@ public class ProductTest extends BinaryOperatorTest {
     public void testAggregateInAutoModeLongInputFirst() {
         // Given
         final Product product = new Product();
-        state = 1l;
+        state = 1L;
 
         // When 1
-        state = product.apply(2l, state);
+        state = product.apply(2L, state);
 
         // Then 1
         assertTrue(state instanceof Long);
-        assertEquals(2l, state);
+        assertEquals(2L, state);
 
         // When 2
-        try {
-            state = product.apply(3, state);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThrows(ClassCastException.class, () -> state = product.apply(3, state));
 
         // Then 2
         assertTrue(state instanceof Long);
-        assertEquals(2l, state);
+        assertEquals(2L, state);
 
         // When 3
-        try {
-            state = product.apply(2.1d, state);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThrows(ClassCastException.class, () -> state = product.apply(2.1d, state));
 
         // Then 3
         assertTrue(state instanceof Long);
-        assertEquals(2l, state);
+        assertEquals(2L, state);
     }
 
     @Test
@@ -370,22 +331,14 @@ public class ProductTest extends BinaryOperatorTest {
         assertEquals(1.1d, state);
 
         // When 2
-        try {
-            state = product.apply(2, state);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThrows(ClassCastException.class, () -> state = product.apply(2, state));
 
         // Then 2
         assertTrue(state instanceof Double);
         assertEquals(1.1d, state);
 
         // When 3
-        try {
-            state = product.apply(1l, state);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThrows(ClassCastException.class, () -> state = product.apply(1L, state));
 
         // Then 3
         assertTrue(state instanceof Double);

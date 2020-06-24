@@ -15,7 +15,8 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.impl.predicate.IsMoreThan;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -25,7 +26,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class FirstValidTest extends FunctionTest {
 
@@ -58,20 +61,18 @@ public class FirstValidTest extends FunctionTest {
         final Integer result = predicate.apply(items);
 
         // Then
-        assertEquals(null, result);
+        assertNull(result);
     }
 
     @Test
     public void shouldReturnNullForNullPredicate() {
         // Given
-        final List<Integer> items = null;
-
         final FirstValid<Integer> predicate =
                 new FirstValid<Integer>()
                         .predicate(new IsMoreThan(1));
 
         // When
-        final Integer result = predicate.apply(items);
+        final Integer result = predicate.apply(null);
 
         // Then
         assertNull(result);
@@ -89,14 +90,15 @@ public class FirstValidTest extends FunctionTest {
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[]{ Iterable.class };
+        return new Class[] {Iterable.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[]{ Object.class };
+        return new Class[] {Object.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given

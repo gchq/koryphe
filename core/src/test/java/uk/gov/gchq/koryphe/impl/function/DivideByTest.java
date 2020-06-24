@@ -16,7 +16,7 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.tuple.n.Tuple2;
@@ -24,10 +24,11 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class DivideByTest extends FunctionTest {
+
     @Test
     public void shouldDivideBy2() {
         // Given
@@ -61,7 +62,7 @@ public class DivideByTest extends FunctionTest {
         assertEquals(new Tuple2<>(9, 0), output);
     }
 
-
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -96,11 +97,11 @@ public class DivideByTest extends FunctionTest {
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Integer.class };
+        return new Class[] {Integer.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Integer.class, Integer.class };
+        return new Class[] {Integer.class, Integer.class};
     }
 }

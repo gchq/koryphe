@@ -16,7 +16,7 @@
 
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.binaryoperator.BinaryOperatorTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -29,10 +29,11 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.TreeSet;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CollectionIntersectTest extends BinaryOperatorTest {
+
     @Test
     public void shouldIntersectArraysTogether() {
         // Given
@@ -76,7 +77,7 @@ public class CollectionIntersectTest extends BinaryOperatorTest {
         final TreeSet<String> expectedResult = new TreeSet<>();
         expectedResult.add("string1");
 
-        CollectionIntersect<String> aggregator = new CollectionIntersect<>();
+        final CollectionIntersect<String> aggregator = new CollectionIntersect<>();
 
         // When
         final Collection<String> result = aggregator.apply(treeSet1, treeSet2);
@@ -96,16 +97,15 @@ public class CollectionIntersectTest extends BinaryOperatorTest {
         hashSet2.add(1);
         hashSet2.add(2);
 
-        final HashSet<Integer> expectedResult = new HashSet<>();
-        expectedResult.add(1);
-
-        CollectionIntersect<Integer> aggregator = new CollectionIntersect<>();
+        final CollectionIntersect<Integer> aggregator = new CollectionIntersect<>();
 
         // When
         final Collection<Integer> result = aggregator.apply(hashSet1, hashSet2);
 
         // Then
         assertEquals(HashSet.class, result.getClass());
+        final HashSet<Integer> expectedResult = new HashSet<>();
+        expectedResult.add(1);
         assertEquals(expectedResult, result);
     }
 

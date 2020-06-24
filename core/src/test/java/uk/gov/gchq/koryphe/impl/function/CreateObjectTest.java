@@ -16,7 +16,7 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -29,11 +29,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CreateObjectTest extends FunctionTest {
 
@@ -70,12 +69,10 @@ public class CreateObjectTest extends FunctionTest {
         Map<String, String> value = new HashMap<>();
 
         // When / Then
-        try {
-            function.apply(value);
-            fail("Exception expected");
-        } catch (final RuntimeException e) {
-            assertTrue(e.getMessage().contains("Unable to create a new instance"));
-        }
+        final Exception exception = assertThrows(RuntimeException.class, () -> function.apply(value));
+        final String expected = "Unable to create a new instance of java.util.ArrayList. No constructors were found " +
+                "that accept a java.util.HashMap";
+        assertEquals(expected, exception.getMessage());
     }
 
     @Test
@@ -84,12 +81,10 @@ public class CreateObjectTest extends FunctionTest {
         final CreateObject function = new CreateObject(TestClass.class);
 
         // When / Then
-        try {
-            function.apply(null);
-            fail("Exception expected");
-        } catch (final RuntimeException e) {
-            assertTrue(e.getMessage().contains("Unable to create a new instance"));
-        }
+        final Exception exception = assertThrows(RuntimeException.class, () -> function.apply(null));
+        final String expected = "Unable to create a new instance of " +
+                "uk.gov.gchq.koryphe.impl.function.CreateObjectTest$TestClass using the no-arg constructor";
+        assertEquals(expected, exception.getMessage());
     }
 
     @Override
@@ -126,12 +121,12 @@ public class CreateObjectTest extends FunctionTest {
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
     private static final class TestClass {

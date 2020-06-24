@@ -17,7 +17,7 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import org.apache.commons.codec.binary.Base64;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -25,9 +25,9 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class Base64DecodeTest extends FunctionTest {
     @Override
@@ -42,14 +42,15 @@ public class Base64DecodeTest extends FunctionTest {
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { byte[].class };
+        return new Class[] {byte[].class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { byte[].class };
+        return new Class[] {byte[].class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -88,10 +89,9 @@ public class Base64DecodeTest extends FunctionTest {
     public void shouldReturnNullForNullInput() {
         // Given
         final Base64Decode function = new Base64Decode();
-        byte[] input = null;
 
         // When
-        final byte[] result = function.apply(input);
+        final byte[] result = function.apply(null);
 
         // Then
         assertNull(result);

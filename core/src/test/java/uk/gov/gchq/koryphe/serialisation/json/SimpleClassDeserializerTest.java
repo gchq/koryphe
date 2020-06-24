@@ -18,9 +18,9 @@ package uk.gov.gchq.koryphe.serialisation.json;
 
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.google.common.primitives.UnsignedLong;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.impl.predicate.IsA;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -28,16 +28,16 @@ import uk.gov.gchq.koryphe.util.ReflectionUtil;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 public class SimpleClassDeserializerTest {
 
-    @Before
-    @After
-    public void before() {
+    @BeforeEach
+    @AfterEach
+    public void beforeAndAfter() {
         SimpleClassNameCache.setUseFullNameForSerialisation(true);
         SimpleClassNameCache.reset();
         JsonSerialiser.resetMapper();
@@ -95,5 +95,4 @@ public class SimpleClassDeserializerTest {
         assertEquals(expectedClass, clazz);
         verify(context).findClass(expectedClass.getName());
     }
-
 }

@@ -16,7 +16,7 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -24,10 +24,12 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ToLongTest extends FunctionTest {
+
     @Test
     public void shouldConvertToLong() {
         // Given
@@ -37,8 +39,20 @@ public class ToLongTest extends FunctionTest {
         Object output = function.apply(5);
 
         // Then
-        assertEquals(new Long(5), output);
+        assertEquals(5L, output);
         assertEquals(Long.class, output.getClass());
+    }
+
+    @Test
+    public void shouldReturnNullWhenValueIsNull() {
+        // Given
+        final ToLong function = new ToLong();
+
+        // When
+        final Object output = function.apply(null);
+
+        // Then
+        assertNull(output);
     }
 
     @Override
@@ -61,6 +75,7 @@ public class ToLongTest extends FunctionTest {
         return new Class[] { Long.class };
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given

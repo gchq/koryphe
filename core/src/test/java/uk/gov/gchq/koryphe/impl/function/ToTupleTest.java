@@ -19,7 +19,7 @@ package uk.gov.gchq.koryphe.impl.function;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.tuple.ArrayTuple;
@@ -33,8 +33,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ToTupleTest extends FunctionTest {
 
@@ -95,6 +95,7 @@ public class ToTupleTest extends FunctionTest {
         // Given
         final ToTuple function = new ToTuple();
         Object input = new SimpleObj("value1");
+
         // When
         Tuple output = function.apply(input);
 
@@ -122,6 +123,7 @@ public class ToTupleTest extends FunctionTest {
         return new Class[] { Tuple.class };
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given

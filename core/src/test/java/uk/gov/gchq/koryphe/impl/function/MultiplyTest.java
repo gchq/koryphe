@@ -16,25 +16,27 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class MultiplyTest extends FunctionTest {
+
     @Test
     public void shouldMultiply2() {
         // Given
         final Multiply function = new Multiply();
 
         // When
-        int output = function.apply(4, 2);
+        final int output = function.apply(4, 2);
 
+        // Then
         assertEquals(8, output);
     }
 
@@ -44,8 +46,9 @@ public class MultiplyTest extends FunctionTest {
         final Multiply function = new Multiply();
 
         // When
-        int output = function.apply(9, null);
+        final int output = function.apply(9, null);
 
+        // Then
         assertEquals(9, output);
     }
 
@@ -55,11 +58,13 @@ public class MultiplyTest extends FunctionTest {
         final Multiply function = new Multiply();
 
         // When
-        Integer output = function.apply(null, 9);
+        final Integer output = function.apply(null, 9);
 
+        // Then
         assertEquals(null, output);
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -92,11 +97,11 @@ public class MultiplyTest extends FunctionTest {
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Integer.class, Integer.class };
+        return new Class[] {Integer.class, Integer.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Integer.class };
+        return new Class[] {Integer.class};
     }
 }

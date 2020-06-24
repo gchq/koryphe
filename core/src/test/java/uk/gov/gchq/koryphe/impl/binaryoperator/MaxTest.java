@@ -16,23 +16,24 @@
 
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.binaryoperator.BinaryOperatorTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MaxTest extends BinaryOperatorTest {
+
     private Comparable state;
 
-    @Before
+    @BeforeEach
     public void before() {
         state = null;
     }
@@ -70,25 +71,25 @@ public class MaxTest extends BinaryOperatorTest {
         final Max max = new Max();
 
         // When 1
-        state = max.apply(2l, state);
+        state = max.apply(2L, state);
 
         // Then 1
         assertTrue(state instanceof Long);
-        assertEquals(2l, state);
+        assertEquals(2L, state);
 
         // When 2
-        state = max.apply(1l, state);
+        state = max.apply(1L, state);
 
         // Then 2
         assertTrue(state instanceof Long);
-        assertEquals(2l, state);
+        assertEquals(2L, state);
 
         // When 3
-        state = max.apply(3l, state);
+        state = max.apply(3L, state);
 
         // Then 3
         assertTrue(state instanceof Long);
-        assertEquals(3l, state);
+        assertEquals(3L, state);
     }
 
     @Test
@@ -127,18 +128,10 @@ public class MaxTest extends BinaryOperatorTest {
         state = max.apply(state, 1);
 
         // When 2
-        try {
-            max.apply(state, 3l);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThrows(ClassCastException.class, () -> max.apply(state, 3L));
 
         // When 3
-        try {
-            max.apply(state, 2.1d);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThrows(ClassCastException.class, () -> max.apply(state, 2.1d));
 
         // Then 3
         assertTrue(state instanceof Integer);
