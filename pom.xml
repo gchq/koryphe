@@ -24,6 +24,7 @@
         <hamcrest.version>1.3</hamcrest.version>
         <jackson.version>2.6.5</jackson.version>
         <junit5.version>5.6.0</junit5.version>
+        <junitSurefireProvider.version>1.1.0</junitSurefireProvider.version>
         <mockito.version>1.9.5</mockito.version>
         <slf4j.api.version>1.7.25</slf4j.api.version>
 
@@ -33,7 +34,7 @@
         <commons-codec.version>1.6</commons-codec.version>
         <commons-io.version>2.4</commons-io.version>
         <org.json-version>20180813</org.json-version>
-        <compiler.plugin.verson>2.3.2</compiler.plugin.verson>
+        <compiler.plugin.verson>3.8.0</compiler.plugin.verson>
         <findbugs.plugin.version>3.0.5</findbugs.plugin.version>
         <gpg.plugin.version>1.6</gpg.plugin.version>
         <jacoco.plugin.version>0.7.7.201606060606</jacoco.plugin.version>
@@ -162,6 +163,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-surefire-provider</artifactId>
+            <version>${junitSurefireProvider.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-all</artifactId>
             <version>${hamcrest.version}</version>
@@ -276,6 +283,11 @@
                     <meminitial>128m</meminitial>
                     <maxmem>1024m</maxmem>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire.plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -16,7 +16,6 @@
 
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.binaryoperator.BinaryOperatorTest;
@@ -31,20 +30,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MinTest extends BinaryOperatorTest {
 
-    private Comparable state;
-
-    @BeforeEach
-    public void before() {
-        state = null;
-    }
-
     @Test
     public void testAggregateInIntMode() {
         // Given
         final Min min = new Min();
 
         // When 1
-        state = min.apply(1, state);
+        Comparable state = min.apply(1, null);
 
         // Then 1
         assertTrue(state instanceof Integer);
@@ -71,7 +63,7 @@ public class MinTest extends BinaryOperatorTest {
         final Min min = new Min();
 
         // When 1
-        state = min.apply(1L, state);
+        Comparable state = min.apply(1L, null);
 
         // Then 1
         assertTrue(state instanceof Long);
@@ -97,9 +89,8 @@ public class MinTest extends BinaryOperatorTest {
         // Given
         final Min min = new Min();
 
-
         // When 1
-        state = min.apply(2.1d, state);
+        Comparable state = min.apply(2.1d, null);
 
         // Then 1
         assertTrue(state instanceof Double);
@@ -126,13 +117,13 @@ public class MinTest extends BinaryOperatorTest {
         final Min min = new Min();
 
         // When 1
-        state = min.apply(5, state);
+        Comparable state = min.apply(5, null);
 
         // When 2
-        assertThrows(ClassCastException.class, () -> state = min.apply(2L, state));
+        assertThrows(ClassCastException.class, () -> min.apply(2L, state));
 
         // When 3
-        assertThrows(ClassCastException.class, () -> state = min.apply(2.1d, state));
+        assertThrows(ClassCastException.class, () -> min.apply(2.1d, state));
 
         // Then 3
         assertTrue(state instanceof Integer);

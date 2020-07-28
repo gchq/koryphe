@@ -16,7 +16,6 @@
 
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.binaryoperator.BinaryOperatorTest;
@@ -31,20 +30,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MaxTest extends BinaryOperatorTest {
 
-    private Comparable state;
-
-    @BeforeEach
-    public void before() {
-        state = null;
-    }
-
     @Test
     public void testAggregateInIntMode() {
         // Given
         final Max max = new Max();
 
         // When 1
-        state = max.apply(1, null);
+        Comparable state = max.apply(1, null);
 
         // Then 1
         assertTrue(state instanceof Integer);
@@ -71,7 +63,7 @@ public class MaxTest extends BinaryOperatorTest {
         final Max max = new Max();
 
         // When 1
-        state = max.apply(2L, state);
+        Comparable state = max.apply(2L, null);
 
         // Then 1
         assertTrue(state instanceof Long);
@@ -98,7 +90,7 @@ public class MaxTest extends BinaryOperatorTest {
         final Max max = new Max();
 
         // When 1
-        state = max.apply(1.1d, state);
+        Comparable state = max.apply(1.1d, null);
 
         // Then 1
         assertTrue(state instanceof Double);
@@ -125,17 +117,17 @@ public class MaxTest extends BinaryOperatorTest {
         final Max max = new Max();
 
         // When 1
-        state = max.apply(state, 1);
+        final Comparable newState = max.apply(null, 1);
 
         // When 2
-        assertThrows(ClassCastException.class, () -> max.apply(state, 3L));
+        assertThrows(ClassCastException.class, () -> max.apply(newState, 3L));
 
         // When 3
-        assertThrows(ClassCastException.class, () -> max.apply(state, 2.1d));
+        assertThrows(ClassCastException.class, () -> max.apply(newState, 2.1d));
 
         // Then 3
-        assertTrue(state instanceof Integer);
-        assertEquals(1, state);
+        assertTrue(newState instanceof Integer);
+        assertEquals(1, newState);
     }
 
     @Test

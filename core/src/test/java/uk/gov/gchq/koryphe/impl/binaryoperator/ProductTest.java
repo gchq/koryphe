@@ -16,7 +16,6 @@
 
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.binaryoperator.BinaryOperatorTest;
@@ -31,20 +30,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ProductTest extends BinaryOperatorTest {
 
-    private Number state;
-
-    @BeforeEach
-    public void before() {
-        state = null;
-    }
-
     @Test
     public void testAggregateInShortMode() {
         // Given
         final Product product = new Product();
 
         // When 1
-        state = product.apply((short) 2, state);
+        Number state = product.apply((short) 2, null);
 
         // Then 1
         assertTrue(state instanceof Short);
@@ -72,14 +64,13 @@ public class ProductTest extends BinaryOperatorTest {
         assertEquals(Short.MAX_VALUE, state);
     }
 
-
     @Test
     public void testAggregateInIntMode() {
         // Given
         final Product product = new Product();
 
         // When 1
-        state = product.apply(2, state);
+        Number state = product.apply(2, null);
 
         // Then 1
         assertTrue(state instanceof Integer);
@@ -106,21 +97,21 @@ public class ProductTest extends BinaryOperatorTest {
         final Product product = new Product();
 
         // When 1
-        state = product.apply(2, state);
+        final Number state = product.apply(2, null);
 
         // Then 1
         assertTrue(state instanceof Integer);
         assertEquals(2, state);
 
         // When 2
-        assertThrows(ClassCastException.class, () -> state = product.apply(2.7d, state));
+        assertThrows(ClassCastException.class, () -> product.apply(2.7d, state));
 
         // Then 2
         assertTrue(state instanceof Integer);
         assertEquals(2, state);
 
         // When 3
-        assertThrows(ClassCastException.class, () -> state = product.apply(1L, state));
+        assertThrows(ClassCastException.class, () -> product.apply(1L, state));
 
         // Then 3
         assertTrue(state instanceof Integer);
@@ -133,7 +124,7 @@ public class ProductTest extends BinaryOperatorTest {
         final Product product = new Product();
 
         // When 1
-        state = product.apply(2L, state);
+        Number state = product.apply(2L, null);
 
         // Then 1
         assertTrue(state instanceof Long);
@@ -158,27 +149,27 @@ public class ProductTest extends BinaryOperatorTest {
     public void testAggregateInLongModeMixedInput() {
         // Given
         final Product product = new Product();
-        state = 1L;
+        final Number state1 = 1L;
 
         // When 1
-        assertThrows(ClassCastException.class, () -> state = product.apply(1, state));
+        assertThrows(ClassCastException.class, () -> product.apply(1, state1));
 
         // Then 1
-        assertEquals(1L, state);
+        assertEquals(1L, state1);
 
         // When 2
-        state = product.apply(3L, state);
+        final Number state2 = product.apply(3L, 1L);
 
         // Then 2
-        assertTrue(state instanceof Long);
-        assertEquals(3L, state);
+        assertTrue(state2 instanceof Long);
+        assertEquals(3L, state2);
 
         // When 3
-        assertThrows(ClassCastException.class, () -> state = product.apply(2.5d, state));
+        assertThrows(ClassCastException.class, () -> product.apply(2.5d, state2));
 
         // Then 3
-        assertTrue(state instanceof Long);
-        assertEquals(3L, state);
+        assertTrue(state2 instanceof Long);
+        assertEquals(3L, state2);
     }
 
     @Test
@@ -187,7 +178,7 @@ public class ProductTest extends BinaryOperatorTest {
         final Product product = new Product();
 
         // When 1
-        state = product.apply(1.2d, state);
+        Number state = product.apply(1.2d, null);
 
         // Then 1
         assertTrue(state instanceof Double);
@@ -214,7 +205,7 @@ public class ProductTest extends BinaryOperatorTest {
         final Product product = new Product();
 
         // When 1
-        state = product.apply(1.2f, state);
+        Number state = product.apply(1.2f, null);
 
         // Then 1
         assertTrue(state instanceof Float);
@@ -239,50 +230,49 @@ public class ProductTest extends BinaryOperatorTest {
     public void testAggregateInDoubleModeMixedInput() {
         // Given
         final Product product = new Product();
-        state = 1d;
+        final Number state = 1d;
 
         // When 1
-        assertThrows(ClassCastException.class, () -> state = product.apply(1, state));
+        assertThrows(ClassCastException.class, () -> product.apply(1, state));
 
         // Then 1
         assertEquals(1d, state);
 
         // When 2
-        assertThrows(ClassCastException.class, () -> state = product.apply(3L, state));
+        assertThrows(ClassCastException.class, () -> product.apply(3L, state));
 
         // Then 2
         assertEquals(1d, state);
 
         // When 3
-        state = product.apply(2.1d, state);
+        final Number state2 = product.apply(2.1d, state);
 
         // Then 3
-        assertTrue(state instanceof Double);
-        assertEquals(2.1d, state);
+        assertTrue(state2 instanceof Double);
+        assertEquals(2.1d, state2);
     }
 
     @Test
     public void testAggregateInAutoModeIntInputFirst() {
         // Given
         final Product product = new Product();
-        state = 1;
 
         // When 1
-        state = product.apply(2, state);
+        Number state = product.apply(2, 1);
 
         // Then 1
         assertTrue(state instanceof Integer);
         assertEquals(2, state);
 
         // When 2
-        assertThrows(ClassCastException.class, () -> state = product.apply(3L, state));
+        assertThrows(ClassCastException.class, () -> product.apply(3L, state));
 
         // Then 2
         assertTrue(state instanceof Integer);
         assertEquals(2, state);
 
         // When 3
-        assertThrows(ClassCastException.class, () -> state = product.apply(2.1d, state));
+        assertThrows(ClassCastException.class, () -> product.apply(2.1d, state));
 
         // Then 3
         assertTrue(state instanceof Integer);
@@ -293,24 +283,23 @@ public class ProductTest extends BinaryOperatorTest {
     public void testAggregateInAutoModeLongInputFirst() {
         // Given
         final Product product = new Product();
-        state = 1L;
 
         // When 1
-        state = product.apply(2L, state);
+        Number state = product.apply(2L, 1L);
 
         // Then 1
         assertTrue(state instanceof Long);
         assertEquals(2L, state);
 
         // When 2
-        assertThrows(ClassCastException.class, () -> state = product.apply(3, state));
+        assertThrows(ClassCastException.class, () -> product.apply(3, state));
 
         // Then 2
         assertTrue(state instanceof Long);
         assertEquals(2L, state);
 
         // When 3
-        assertThrows(ClassCastException.class, () -> state = product.apply(2.1d, state));
+        assertThrows(ClassCastException.class, () -> product.apply(2.1d, state));
 
         // Then 3
         assertTrue(state instanceof Long);
@@ -321,24 +310,23 @@ public class ProductTest extends BinaryOperatorTest {
     public void testAggregateInAutoModeDoubleInputFirst() {
         // Given
         final Product product = new Product();
-        state = 1d;
 
         // When 1
-        state = product.apply(1.1d, state);
+        final Number state = product.apply(1.1d, 1d);
 
         // Then 1
         assertTrue(state instanceof Double);
         assertEquals(1.1d, state);
 
         // When 2
-        assertThrows(ClassCastException.class, () -> state = product.apply(2, state));
+        assertThrows(ClassCastException.class, () -> product.apply(2, state));
 
         // Then 2
         assertTrue(state instanceof Double);
         assertEquals(1.1d, state);
 
         // When 3
-        assertThrows(ClassCastException.class, () -> state = product.apply(1L, state));
+        assertThrows(ClassCastException.class, () -> product.apply(1L, state));
 
         // Then 3
         assertTrue(state instanceof Double);

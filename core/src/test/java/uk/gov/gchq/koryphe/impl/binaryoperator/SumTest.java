@@ -16,7 +16,6 @@
 
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.binaryoperator.BinaryOperatorTest;
@@ -32,20 +31,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SumTest extends BinaryOperatorTest {
 
-    private Number state;
-
-    @BeforeEach
-    public void before() {
-        state = null;
-    }
-
     @Test
     public void testAggregateShorts() {
         // Given
         final Sum sum = new Sum();
 
         // When 1
-        state = sum.apply((short) 1, state);
+        Number state = sum.apply((short) 1, null);
 
         // Then 1
         assertTrue(state instanceof Short);
@@ -79,7 +71,7 @@ public class SumTest extends BinaryOperatorTest {
         final Sum sum = new Sum();
 
         // When 1
-        state = sum.apply(1, state);
+        Number state = sum.apply(1, null);
 
         // Then 1
         assertTrue(state instanceof Integer);
@@ -106,21 +98,21 @@ public class SumTest extends BinaryOperatorTest {
         final Sum sum = new Sum();
 
         // When 1
-        state = sum.apply(1, state);
+        Number state = sum.apply(1, null);
 
         // Then 1
         assertTrue(state instanceof Integer);
         assertEquals(1, state);
 
         // When 2
-        assertThrows(ClassCastException.class, () -> state = sum.apply(2.7d, state));
+        assertThrows(ClassCastException.class, () -> sum.apply(2.7d, state));
 
         // Then 2
         assertTrue(state instanceof Integer);
         assertEquals(1, state);
 
         // When 3
-        assertThrows(ClassCastException.class, () -> state = sum.apply(1L, state));
+        assertThrows(ClassCastException.class, () -> sum.apply(1L, state));
 
         // Then 3
         assertTrue(state instanceof Integer);
@@ -133,7 +125,7 @@ public class SumTest extends BinaryOperatorTest {
         final Sum sum = new Sum();
 
         // When 1
-        state = sum.apply(2L, state);
+        Number state = sum.apply(2L, null);
 
         // Then 1
         assertTrue(state instanceof Long);
@@ -158,27 +150,27 @@ public class SumTest extends BinaryOperatorTest {
     public void testAggregateInLongModeMixedInput() {
         // Given
         final Sum sum = new Sum();
-        state = 0L;
+        final Number state = 0L;
 
         // When 1
-        assertThrows(ClassCastException.class, () -> state = sum.apply(1, state));
+        assertThrows(ClassCastException.class, () -> sum.apply(1, state));
 
         // Then 1
         assertEquals(0L, state);
 
         // When 2
-        state = sum.apply(3L, state);
+        final Number state2 = sum.apply(3L, state);
 
         // Then 2
-        assertTrue(state instanceof Long);
-        assertEquals(3L, state);
+        assertTrue(state2 instanceof Long);
+        assertEquals(3L, state2);
 
         // When 3
-        assertThrows(ClassCastException.class, () -> state = sum.apply(2.5d, state));
+        assertThrows(ClassCastException.class, () -> sum.apply(2.5d, state2));
 
         // Then 3
-        assertTrue(state instanceof Long);
-        assertEquals(3L, state);
+        assertTrue(state2 instanceof Long);
+        assertEquals(3L, state2);
     }
 
     @Test
@@ -187,7 +179,7 @@ public class SumTest extends BinaryOperatorTest {
         final Sum sum = new Sum();
 
         // When 1
-        state = sum.apply(1.1f, state);
+        Number state = sum.apply(1.1f, null);
 
         // Then 1
         assertTrue(state instanceof Float);
@@ -214,7 +206,7 @@ public class SumTest extends BinaryOperatorTest {
         final Sum sum = new Sum();
 
         // When 1
-        state = sum.apply(1.1d, state);
+        Number state = sum.apply(1.1d, null);
 
         // Then 1
         assertTrue(state instanceof Double);
@@ -239,50 +231,49 @@ public class SumTest extends BinaryOperatorTest {
     public void testAggregateInDoubleModeMixedInput() {
         // Given
         final Sum sum = new Sum();
-        state = 0d;
+        final Number state = 0d;
 
         // When 1
-        assertThrows(ClassCastException.class, () -> state = sum.apply(1, state));
+        assertThrows(ClassCastException.class, () -> sum.apply(1, state));
 
         // Then 1
         assertEquals(0d, state);
 
         // When 2
-        assertThrows(ClassCastException.class, () -> state = sum.apply(3L, state));
+        assertThrows(ClassCastException.class, () -> sum.apply(3L, state));
 
         // Then 2
         assertEquals(0d, state);
 
         // When 3
-        state = sum.apply(2.1d, state);
+        final Number state2 = sum.apply(2.1d, state);
 
         // Then 3
-        assertTrue(state instanceof Double);
-        assertEquals(2.1d, state);
+        assertTrue(state2 instanceof Double);
+        assertEquals(2.1d, state2);
     }
 
     @Test
     public void testAggregateInAutoModeIntInputFirst() {
         // Given
         final Sum sum = new Sum();
-        state = 0;
 
         // When 1
-        state = sum.apply(1, state);
+        final Number state = sum.apply(1, 0);
 
         // Then 1
         assertTrue(state instanceof Integer);
         assertEquals(1, state);
 
         // When 2
-        assertThrows(ClassCastException.class, () -> state = sum.apply(3L, state));
+        assertThrows(ClassCastException.class, () -> sum.apply(3L, state));
 
         // Then 2
         assertTrue(state instanceof Integer);
         assertEquals(1, state);
 
         // When 3
-        assertThrows(ClassCastException.class, () -> state = sum.apply(2.1d, state));
+        assertThrows(ClassCastException.class, () -> sum.apply(2.1d, state));
 
         // Then 3
         assertTrue(state instanceof Integer);
@@ -293,24 +284,23 @@ public class SumTest extends BinaryOperatorTest {
     public void testAggregateInAutoModeLongInputFirst() {
         // Given
         final Sum sum = new Sum();
-        state = 0L;
 
         // When 1
-        state = sum.apply(1L, state);
+        final Number state = sum.apply(1L, 0L);
 
         // Then 1
         assertTrue(state instanceof Long);
         assertEquals(1L, state);
 
         // When 2
-        assertThrows(ClassCastException.class, () -> state = sum.apply(3, state));
+        assertThrows(ClassCastException.class, () -> sum.apply(3, state));
 
         // Then 2
         assertTrue(state instanceof Long);
         assertEquals(1L, state);
 
         // When 3
-        assertThrows(ClassCastException.class, () -> state = sum.apply(2.1d, state));
+        assertThrows(ClassCastException.class, () -> sum.apply(2.1d, state));
 
         // Then 3
         assertTrue(state instanceof Long);
@@ -321,24 +311,23 @@ public class SumTest extends BinaryOperatorTest {
     public void testAggregateInAutoModeDoubleInputFirst() {
         // Given
         final Sum sum = new Sum();
-        state = 0d;
 
         // When 1
-        state = sum.apply(1.1d, state);
+        final Number state = sum.apply(1.1d, 0d);
 
         // Then 1
         assertTrue(state instanceof Double);
         assertEquals(1.1d, state);
 
         // When 2
-        assertThrows(ClassCastException.class, () -> state = sum.apply(2, state));
+        assertThrows(ClassCastException.class, () -> sum.apply(2, state));
 
         // Then 2
         assertTrue(state instanceof Double);
         assertEquals(1.1d, state);
 
         // When 3
-        assertThrows(ClassCastException.class, () -> state = sum.apply(1L, state));
+        assertThrows(ClassCastException.class, () -> sum.apply(1L, state));
 
         // Then 3
         assertTrue(state instanceof Double);
@@ -351,7 +340,7 @@ public class SumTest extends BinaryOperatorTest {
         final Sum sum = new Sum();
 
         // When
-        state = sum.apply(null, state);
+        final Number state = sum.apply(null, null);
 
         // Then
         assertNull(state);
@@ -364,7 +353,7 @@ public class SumTest extends BinaryOperatorTest {
 
         // When 1
         int firstValue = 1;
-        state = sum.apply(firstValue, state);
+        Number state = sum.apply(firstValue, null);
 
         // Then
         assertTrue(state instanceof Integer);
@@ -384,7 +373,7 @@ public class SumTest extends BinaryOperatorTest {
 
         // When 1
         long firstValue = 1L;
-        state = sum.apply(firstValue, state);
+        Number state = sum.apply(firstValue, null);
 
         // Then
         assertTrue(state instanceof Long);
@@ -392,6 +381,7 @@ public class SumTest extends BinaryOperatorTest {
 
         // When 2
         state = sum.apply(null, state);
+
         // Then
         assertTrue(state instanceof Long);
         assertEquals(firstValue, state);
@@ -404,7 +394,7 @@ public class SumTest extends BinaryOperatorTest {
 
         // When 1
         double firstValue = 1.0f;
-        state = sum.apply(firstValue, state);
+        Number state = sum.apply(firstValue, null);
 
         // Then
         assertTrue(state instanceof Double);
