@@ -21,6 +21,8 @@ import uk.gov.gchq.koryphe.binaryoperator.BinaryOperatorTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.function.BinaryOperator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -103,6 +105,13 @@ public class StringDeduplicateConcatTest extends BinaryOperatorTest {
     @Override
     protected StringDeduplicateConcat getInstance() {
         return new StringDeduplicateConcat();
+    }
+
+    @Override
+    protected Iterable<BinaryOperator> getDifferentInstances() {
+        StringDeduplicateConcat stringDeduplicateConcat = new StringDeduplicateConcat();
+        stringDeduplicateConcat.setSeparator("test");
+        return Collections.singletonList(stringDeduplicateConcat);
     }
 
     @Override

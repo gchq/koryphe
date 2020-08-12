@@ -18,6 +18,8 @@ package uk.gov.gchq.koryphe.impl.function;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
@@ -64,5 +66,23 @@ public class IterableFilter<I_ITEM> extends KorypheFunction<Iterable<I_ITEM>, It
     public IterableFilter<I_ITEM> setPredicate(final Predicate<I_ITEM> predicate) {
         this.predicate = predicate;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!super.equals(o)) return false; // Does exact equals and Class checking
+
+        IterableFilter that = (IterableFilter) o;
+        return new EqualsBuilder()
+                .append(predicate, that.predicate)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(3, 97)
+                .append(super.hashCode())
+                .append(predicate)
+                .toHashCode();
     }
 }

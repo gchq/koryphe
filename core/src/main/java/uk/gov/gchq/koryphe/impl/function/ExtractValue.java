@@ -15,6 +15,8 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
@@ -50,5 +52,23 @@ public class ExtractValue<K, V> extends KorypheFunction<Map<K, V>, V> {
     @Override
     public V apply(final Map<K, V> map) {
         return null == map ? null : map.get(key);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!super.equals(o)) return false; // Does exact equals and Class checking
+
+        ExtractValue that = (ExtractValue) o;
+        return new EqualsBuilder()
+                .append(key, that.key)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(11, 41)
+                .append(super.hashCode())
+                .append(key)
+                .toHashCode();
     }
 }

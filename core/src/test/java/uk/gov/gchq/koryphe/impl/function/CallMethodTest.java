@@ -23,6 +23,8 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -101,6 +103,11 @@ public class CallMethodTest extends FunctionTest {
     @Override
     protected Function getInstance() {
         return new CallMethod();
+    }
+
+    @Override
+    protected Iterable<Function> getDifferentInstances() {
+        return Collections.singletonList(new CallMethod("toString"));
     }
 
     @Override

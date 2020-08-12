@@ -16,6 +16,8 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
@@ -85,5 +87,23 @@ public class CallMethod extends KorypheFunction<Object, Object> {
         } catch (final NoSuchMethodException e) {
             throw new RuntimeException("Unable to invoke " + getMethod() + " on object class " + clazz, e);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!super.equals(o)) return false; // Does exact equals and Class checking
+
+        CallMethod that = (CallMethod) o;
+        return new EqualsBuilder()
+                .append(method, that.method)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(23, 67)
+                .append(super.hashCode())
+                .append(method)
+                .toHashCode();
     }
 }

@@ -16,6 +16,7 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
+import com.google.common.collect.Maps;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,6 +24,7 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -71,7 +73,18 @@ public class DictionaryLookupTest extends FunctionTest {
 
     @Override
     protected Function getInstance() {
-        return new DictionaryLookup();
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("one", 1);
+        map.put("two", 2);
+
+        return new DictionaryLookup(map);
+    }
+
+    @Override
+    protected Iterable<Function> getDifferentInstances() {
+        return Arrays.asList(new DictionaryLookup(null),
+                new DictionaryLookup(Maps.newHashMap())
+                );
     }
 
     @Override

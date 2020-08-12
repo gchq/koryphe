@@ -22,6 +22,9 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -77,6 +80,11 @@ public class ConcatTest extends FunctionTest {
     @Override
     protected Concat getInstance() {
         return new Concat();
+    }
+
+    @Override
+    protected Iterable<Function> getDifferentInstances() {
+        return Collections.singletonList(new Concat(" "));
     }
 
     @Override

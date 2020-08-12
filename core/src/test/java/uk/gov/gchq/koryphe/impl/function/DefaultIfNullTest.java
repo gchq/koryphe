@@ -21,6 +21,7 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,6 +34,11 @@ public class DefaultIfNullTest extends FunctionTest {
     @Override
     protected Function getInstance() {
         return new DefaultIfNull();
+    }
+
+    @Override
+    protected Iterable<Function> getDifferentInstances() {
+        return Collections.singletonList(new DefaultIfNull(42L));
     }
 
     @Override

@@ -18,6 +18,8 @@ package uk.gov.gchq.koryphe.impl.function;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
@@ -66,5 +68,23 @@ public class IterableFlatten<I_ITEM> extends KorypheFunction<Iterable<I_ITEM>, I
 
     public void setOperator(final BinaryOperator<I_ITEM> operator) {
         this.operator = operator;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!super.equals(o)) return false; // Does exact equals and Class checking
+
+        IterableFlatten that = (IterableFlatten) o;
+        return new EqualsBuilder()
+                .append(operator, that.operator)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(31, 59)
+                .append(super.hashCode())
+                .append(operator)
+                .toHashCode();
     }
 }

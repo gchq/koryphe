@@ -25,6 +25,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -38,6 +39,11 @@ public class IterableFunctionTest extends FunctionTest {
     @Override
     protected Function getInstance() {
         return new IterableFunction();
+    }
+
+    @Override
+    protected Iterable<Function> getDifferentInstances() {
+        return Collections.singletonList(new IterableFunction(new ToLong()));
     }
 
     @Override

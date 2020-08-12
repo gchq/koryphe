@@ -18,6 +18,7 @@ package uk.gov.gchq.koryphe.predicate;
 
 import org.junit.jupiter.api.Test;
 
+import uk.gov.gchq.koryphe.EqualityTest;
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -27,14 +28,10 @@ import uk.gov.gchq.koryphe.util.VersionUtil;
 import java.io.IOException;
 import java.util.function.Predicate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-public abstract class PredicateTest {
-
-    protected abstract Predicate getInstance();
+public abstract class PredicateTest extends EqualityTest<Predicate> {
 
     protected abstract Class<? extends Predicate> getPredicateClass();
 
@@ -47,51 +44,6 @@ public abstract class PredicateTest {
 
     protected Predicate deserialise(String json) throws IOException {
         return JsonSerialiser.deserialise(json, getPredicateClass());
-    }
-
-    @Test
-    public void shouldEquals() {
-        // Given
-        final Predicate instance = getInstance();
-
-        // When
-        final Predicate other = getInstance();
-
-        // Then
-        assertEquals(instance, other);
-        assertEquals(instance.hashCode(), other.hashCode());
-    }
-
-    @Test
-    public void shouldEqualsWhenSameObject() {
-        // Given
-        final Predicate instance = getInstance();
-
-        // Then
-        assertEquals(instance, instance);
-        assertEquals(instance.hashCode(), instance.hashCode());
-    }
-
-    @Test
-    public void shouldNotEqualsWhenDifferentClass() {
-        // Given
-        final Predicate instance = getInstance();
-
-        // When
-        final Object other = new Object();
-
-        // Then
-        assertNotEquals(instance, other);
-        assertNotEquals(instance.hashCode(), other.hashCode());
-    }
-
-    @Test
-    public void shouldNotEqualsNull() {
-        // Given
-        final Predicate instance = getInstance();
-
-        // Then
-        assertNotEquals(instance, null);
     }
 
     @Test

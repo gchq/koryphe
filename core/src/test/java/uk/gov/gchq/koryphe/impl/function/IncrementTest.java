@@ -1,0 +1,117 @@
+package uk.gov.gchq.koryphe.impl.function;
+
+import org.junit.jupiter.api.Test;
+import uk.gov.gchq.koryphe.function.FunctionTest;
+import uk.gov.gchq.koryphe.util.JsonSerialiser;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.function.Function;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class IncrementTest extends FunctionTest {
+    @Override
+    protected Class<? extends Function> getFunctionClass() {
+        return Increment.class;
+    }
+
+    @Override
+    protected Class[] getExpectedSignatureInputClasses() {
+        return new Class[] { Number.class };
+    }
+
+    @Override
+    protected Class[] getExpectedSignatureOutputClasses() {
+        return new Class[] { Number.class };
+    }
+
+    @Override
+    public void shouldJsonSerialiseAndDeserialise() throws IOException {
+        // Given
+        String json = "{ \"class\": \"uk.gov.gchq.koryphe.impl.function.Increment\" }";
+        Increment increment = new Increment();
+
+        // When
+        String serialised = JsonSerialiser.serialise(increment);
+        Increment deserialised = JsonSerialiser.deserialise(json, Increment.class);
+
+        // Then
+        JsonSerialiser.assertEquals(json, serialised);
+        assertEquals(increment, deserialised);
+    }
+
+    @Test
+    public void shouldReturnIncrementIfInputIsNull() {
+        // Given
+        Increment increment = new Increment(5);
+
+        // When
+        Number value = increment.apply(null);
+
+        // Then
+        assertEquals(5, value);
+    }
+
+    @Test
+    public void shouldReturnInputIfIncrementIsNull() {
+        // Given
+        Increment increment = new Increment();
+
+        // When
+        Number output = increment.apply(8);
+
+        // Then
+        assertEquals(8, output);
+    }
+
+    @Test
+    public void shouldMatchOutputTypeWithIncrementType() {
+        // Given
+        Increment increment = new Increment(10L);
+
+        // When
+        Number output = increment.apply(2);
+
+        // Then
+        assertEquals(Long.class, output.getClass());
+    }
+
+    @Test
+    public void shouldIncrementByTheSetIncrement() {
+        // Given
+        Increment increment = new Increment(10L);
+
+        // When
+        Number output = increment.apply(2);
+
+        // Then
+        assertEquals(12, output.intValue());
+    }
+
+    @Test
+    public void shouldBeAbleToHandleDifferentInputAndIncrementTypes() {
+        // Given
+        Increment increment = new Increment(10.5);
+
+        // When
+        Number output = increment.apply(2);
+
+        // Then
+        assertEquals(12.5, output);
+    }
+
+    @Override
+    protected Function getInstance() {
+        return new Increment(3);
+    }
+
+    @Override
+    protected Iterable<Function> getDifferentInstances() {
+        return Arrays.asList(
+                new Increment(3L),
+                new Increment(5),
+                new Increment());
+    }
+}

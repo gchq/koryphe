@@ -39,6 +39,17 @@ public class CsvLinesToMapsTest extends FunctionTest {
     }
 
     @Override
+    protected Iterable<Function> getDifferentInstances() {
+        return Arrays.asList(
+                new CsvLinesToMaps().delimiter('\t'),
+                new CsvLinesToMaps().firstRow(8),
+                new CsvLinesToMaps().quoteChar('\''),
+                new CsvLinesToMaps().quoted(),
+                new CsvLinesToMaps().header("myHeader")
+        );
+    }
+
+    @Override
     protected Class<? extends Function> getFunctionClass() {
         return CsvLinesToMaps.class;
     }

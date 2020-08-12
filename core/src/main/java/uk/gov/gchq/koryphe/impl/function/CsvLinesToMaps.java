@@ -22,6 +22,8 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
@@ -177,5 +179,31 @@ public class CsvLinesToMaps extends KorypheFunction<Iterable<String>, Iterable<M
     public CsvLinesToMaps quoteChar(final char quoteChar) {
         this.quoteChar = quoteChar;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!super.equals(o)) return false; // Does exact equals and Class checking
+
+        CsvLinesToMaps that = (CsvLinesToMaps) o;
+        return new EqualsBuilder()
+                .append(header, that.header)
+                .append(quoted, that.quoted)
+                .append(quoteChar, that.quoteChar)
+                .append(firstRow, that.firstRow)
+                .append(delimiter, that.delimiter)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(7, 19)
+                .append(super.hashCode())
+                .append(header)
+                .append(quoted)
+                .append(quoteChar)
+                .append(firstRow)
+                .append(delimiter)
+                .toHashCode();
     }
 }

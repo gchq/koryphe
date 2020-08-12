@@ -18,11 +18,13 @@ package uk.gov.gchq.koryphe.impl.function;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
+import uk.gov.gchq.koryphe.impl.binaryoperator.And;
 import uk.gov.gchq.koryphe.impl.binaryoperator.Sum;
 import uk.gov.gchq.koryphe.tuple.n.Tuple2;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,6 +34,11 @@ public class ApplyBiFunctionTest extends FunctionTest {
     @Override
     protected Function getInstance() {
         return new ApplyBiFunction(new Sum());
+    }
+
+    @Override
+    protected Iterable<Function> getDifferentInstances() {
+        return Collections.singleton(new ApplyBiFunction(new And()));
     }
 
     @Override

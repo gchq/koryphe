@@ -22,6 +22,7 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +35,17 @@ public class CsvToMapsTest extends FunctionTest {
     @Override
     protected Function getInstance() {
         return new CsvToMaps();
+    }
+
+    @Override
+    protected Iterable<Function> getDifferentInstances() {
+        return Arrays.asList(
+                new CsvToMaps().delimiter('\t'),
+                new CsvToMaps().firstRow(8),
+                new CsvToMaps().quoteChar('\''),
+                new CsvToMaps().quoted(),
+                new CsvToMaps().header("myHeader")
+        );
     }
 
     @Override

@@ -7,6 +7,9 @@ import uk.gov.gchq.koryphe.binaryoperator.BinaryOperatorTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.function.BinaryOperator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -59,6 +62,13 @@ public class StringConcatTest extends BinaryOperatorTest {
     @Override
     protected StringConcat getInstance() {
         return new StringConcat();
+    }
+
+    @Override
+    protected Iterable<BinaryOperator> getDifferentInstances() {
+        StringConcat alternative = new StringConcat();
+        alternative.setSeparator(" ");
+        return Collections.singletonList(alternative);
     }
 
     @Override

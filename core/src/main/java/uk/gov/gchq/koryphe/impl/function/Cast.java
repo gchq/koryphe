@@ -16,6 +16,8 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
@@ -49,5 +51,23 @@ public class Cast<I, O> extends KorypheFunction<I, O> {
 
     public void setOutputClass(final Class<O> outputClass) {
         this.outputClass = outputClass;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!super.equals(o)) return false; // Does exact equals and Class checking
+
+        Cast that = (Cast) o;
+        return new EqualsBuilder()
+                .append(outputClass, that.outputClass)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(7, 37)
+                .append(super.hashCode())
+                .append(outputClass)
+                .toHashCode();
     }
 }

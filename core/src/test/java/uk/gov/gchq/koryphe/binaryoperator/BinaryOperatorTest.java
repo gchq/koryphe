@@ -18,6 +18,7 @@ package uk.gov.gchq.koryphe.binaryoperator;
 
 import org.junit.jupiter.api.Test;
 
+import uk.gov.gchq.koryphe.EqualityTest;
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -27,14 +28,11 @@ import uk.gov.gchq.koryphe.util.VersionUtil;
 import java.io.IOException;
 import java.util.function.BinaryOperator;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-public abstract class BinaryOperatorTest {
-
-    protected abstract BinaryOperator getInstance();
+public abstract class BinaryOperatorTest extends EqualityTest<BinaryOperator> {
 
     protected abstract Class<? extends BinaryOperator> getFunctionClass();
 
@@ -47,42 +45,6 @@ public abstract class BinaryOperatorTest {
 
     protected BinaryOperator deserialise(String json) throws IOException {
         return JsonSerialiser.deserialise(json, getFunctionClass());
-    }
-
-    @Test
-    public void shouldEquals() {
-        // Given
-        final BinaryOperator instance = getInstance();
-
-        // When
-        final BinaryOperator other = getInstance();
-
-        // Then
-        assertEquals(instance, other);
-        assertEquals(instance.hashCode(), other.hashCode());
-    }
-
-    @Test
-    public void shouldEqualsWhenSameObject() {
-        // Given
-        final BinaryOperator instance = getInstance();
-
-        // Then
-        assertEquals(instance, instance);
-        assertEquals(instance.hashCode(), instance.hashCode());
-    }
-
-    @Test
-    public void shouldNotEqualsWhenDifferentClass() {
-        // Given
-        final BinaryOperator instance = getInstance();
-
-        // When
-        final Object other = new Object();
-
-        // Then
-        assertNotEquals(instance, other);
-        assertNotEquals(instance.hashCode(), other.hashCode());
     }
 
     @Test

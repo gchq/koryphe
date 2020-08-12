@@ -19,6 +19,7 @@ import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
+import uk.gov.gchq.koryphe.impl.predicate.IsLessThan;
 import uk.gov.gchq.koryphe.impl.predicate.IsMoreThan;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
@@ -86,6 +87,14 @@ public class IterableFilterTest extends FunctionTest {
     @Override
     protected IterableFilter<Integer> getInstance() {
         return new IterableFilter<>(new IsMoreThan(1));
+    }
+
+    @Override
+    protected Iterable<Function> getDifferentInstances() {
+        return Arrays.asList(
+                new IterableFilter(),
+                new IterableFilter(new IsLessThan(4L))
+        );
     }
 
     @Override

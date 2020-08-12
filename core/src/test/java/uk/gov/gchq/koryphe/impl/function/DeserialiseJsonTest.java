@@ -22,6 +22,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -33,6 +34,11 @@ public class DeserialiseJsonTest extends FunctionTest {
     @Override
     protected Function getInstance() {
         return new DeserialiseJson();
+    }
+
+    @Override
+    protected Iterable<Function> getDifferentInstances() {
+        return Collections.singletonList(new DeserialiseJson(Long.class));
     }
 
     @Override

@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
+import uk.gov.gchq.koryphe.EqualityTest;
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.signature.Signature;
@@ -35,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-public abstract class FunctionTest {
+public abstract class FunctionTest extends EqualityTest<Function> { // todo maybe Parameterise these tests (as well as the Predicate and BO tests)
 
     private static final ObjectMapper MAPPER = createObjectMapper();
 
@@ -45,8 +46,6 @@ public abstract class FunctionTest {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
         return mapper;
     }
-
-    protected abstract Function getInstance();
 
     protected abstract Class<? extends Function> getFunctionClass();
 
@@ -63,51 +62,6 @@ public abstract class FunctionTest {
 
     protected Function deserialise(String json) throws IOException {
         return MAPPER.readValue(json, getFunctionClass());
-    }
-
-    @Test
-    public void shouldEquals() {
-        // Given
-        final Function instance = getInstance();
-
-        // When
-        final Function other = getInstance();
-
-        // Then
-        assertEquals(instance, other);
-        assertEquals(instance.hashCode(), other.hashCode());
-    }
-
-    @Test
-    public void shouldEqualsWhenSameObject() {
-        // Given
-        final Function instance = getInstance();
-
-        // Then
-        assertEquals(instance, instance);
-        assertEquals(instance.hashCode(), instance.hashCode());
-    }
-
-    @Test
-    public void shouldNotEqualsWhenDifferentClass() {
-        // Given
-        final Function instance = getInstance();
-
-        // When
-        final Object other = new Object();
-
-        // Then
-        assertNotEquals(instance, other);
-        assertNotEquals(instance.hashCode(), other.hashCode());
-    }
-
-    @Test
-    public void shouldNotEqualsNull() {
-        // Given
-        final Function instance = getInstance();
-
-        // Then
-        assertNotNull(instance);
     }
 
     @Test

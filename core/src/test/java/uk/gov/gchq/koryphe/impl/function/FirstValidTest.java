@@ -18,6 +18,7 @@ package uk.gov.gchq.koryphe.impl.function;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
+import uk.gov.gchq.koryphe.impl.predicate.IsLessThan;
 import uk.gov.gchq.koryphe.impl.predicate.IsMoreThan;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
@@ -81,6 +82,14 @@ public class FirstValidTest extends FunctionTest {
     @Override
     protected FirstValid<Integer> getInstance() {
         return new FirstValid<>(new IsMoreThan(1));
+    }
+
+    @Override
+    protected Iterable<Function> getDifferentInstances() {
+        return Arrays.asList(
+                new FirstValid(new IsMoreThan(4)),
+                new FirstValid(new IsLessThan(3))
+        );
     }
 
     @Override

@@ -23,6 +23,7 @@ import uk.gov.gchq.koryphe.tuple.ArrayTuple;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,7 +31,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class FunctionChainTest extends FunctionTest {
     @Override
     protected Function getInstance() {
-        return new FunctionChain();
+        return new FunctionChain.Builder<>()
+                .execute(new ToInteger())
+                .execute(new DivideBy(3))
+                .build();
+    }
+
+    @Override
+    protected Iterable<Function> getDifferentInstances() {
+        return Arrays.asList(
+                new FunctionChain(),
+                new FunctionChain.Builder<>()
+                        .execute(new ToString())
+                        .execute(new StringSplit())
+                .build()
+        );
     }
 
     @Override

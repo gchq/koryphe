@@ -27,6 +27,7 @@ import uk.gov.gchq.koryphe.tuple.function.KorypheFunction2;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -48,6 +49,25 @@ public class IfTest extends FunctionTest {
                 .condition(true)
                 .then(new SetValue("value1"))
                 .otherwise(new SetValue("value2"));
+    }
+
+    @Override
+    protected Iterable<Function> getDifferentInstances() {
+        return Arrays.asList(
+                new If<>()
+                        .condition(false)
+                        .then(new SetValue("value1"))
+                        .otherwise(new SetValue("value2")),
+                new If<>()
+                        .condition(true)
+                        .then(new SetValue("differentThenValue"))
+                        .otherwise(new SetValue("value2")),
+                new If<>()
+                        .condition(true)
+                        .then(new SetValue("value1"))
+                        .otherwise(new SetValue("differentOtherwiseValue")),
+                getAltInstance()
+        );
     }
 
     private If<Comparable, Comparable> getAltInstance() {

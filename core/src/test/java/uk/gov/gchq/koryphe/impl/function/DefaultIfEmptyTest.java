@@ -40,6 +40,11 @@ public class DefaultIfEmptyTest extends FunctionTest {
     }
 
     @Override
+    protected Iterable<Function> getDifferentInstances() {
+        return Collections.singletonList(new DefaultIfEmpty("Default"));
+    }
+
+    @Override
     protected Class<? extends Function> getFunctionClass() {
         return DefaultIfEmpty.class;
     }

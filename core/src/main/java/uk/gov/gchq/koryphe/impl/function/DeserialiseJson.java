@@ -20,6 +20,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
@@ -82,5 +84,23 @@ public class DeserialiseJson<T> extends KorypheFunction<String, T> implements Se
         } else {
             this.outputClass = outputClass;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!super.equals(o)) return false; // Does exact equals and Class checking
+
+        DeserialiseJson that = (DeserialiseJson) o;
+        return new EqualsBuilder()
+                .append(outputClass, that.outputClass)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(43, 31)
+                .append(super.hashCode())
+                .append(outputClass)
+                .toHashCode();
     }
 }
