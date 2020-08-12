@@ -4,7 +4,7 @@
 
     <groupId>uk.gov.gchq.koryphe</groupId>
     <artifactId>koryphe</artifactId>
-    <version>1.10.1-SNAPSHOT</version>
+    <version>1.10.1</version>
     <packaging>pom</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
