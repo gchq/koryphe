@@ -18,6 +18,7 @@ package uk.gov.gchq.koryphe.impl.function;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
@@ -77,8 +78,10 @@ public class StringTruncate extends KorypheFunction<String, String> {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (!super.equals(o)) return false; // Does exact equals and Class checking
+    public boolean equals(final Object o) {
+        if (!super.equals(o)) {
+            return false; // Does exact equals and class checking
+        }
 
         StringTruncate that = (StringTruncate) o;
         return new EqualsBuilder()

@@ -20,9 +20,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.google.common.base.Charsets;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
@@ -85,8 +85,10 @@ public class ToBytes extends KorypheFunction<String, byte[]> {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (!super.equals(o)) return false; // Does exact equals and Class checking
+    public boolean equals(final Object o) {
+        if (!super.equals(o)) {
+            return false; // Does exact equals and class checking
+        }
 
         ToBytes that = (ToBytes) o;
         return new EqualsBuilder()

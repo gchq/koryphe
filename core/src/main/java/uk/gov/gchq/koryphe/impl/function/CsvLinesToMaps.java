@@ -21,9 +21,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
@@ -182,8 +182,10 @@ public class CsvLinesToMaps extends KorypheFunction<Iterable<String>, Iterable<M
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (!super.equals(o)) return false; // Does exact equals and Class checking
+    public boolean equals(final Object o) {
+        if (!super.equals(o)) {
+            return false; // Does exact equals and Class checking
+        }
 
         CsvLinesToMaps that = (CsvLinesToMaps) o;
         return new EqualsBuilder()

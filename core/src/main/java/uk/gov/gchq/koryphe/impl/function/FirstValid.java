@@ -18,9 +18,9 @@ package uk.gov.gchq.koryphe.impl.function;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.google.common.collect.Iterables;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
@@ -76,8 +76,10 @@ public class FirstValid<I_ITEM> extends KorypheFunction<Iterable<I_ITEM>, I_ITEM
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (!super.equals(o)) return false; // Does exact equals and Class checking
+    public boolean equals(final Object o) {
+        if (!super.equals(o)) {
+            return false; // Does exact equals and Class checking
+        }
 
         FirstValid that = (FirstValid) o;
         return new EqualsBuilder()

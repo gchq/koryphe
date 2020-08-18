@@ -17,10 +17,10 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
@@ -116,8 +116,10 @@ public class MapFilter<K, V> extends KorypheFunction<Map<K, V>, Map<K, V>> {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (!super.equals(o)) return false; // Does exact equals and Class checking
+    public boolean equals(final Object o) {
+        if (!super.equals(o)) {
+            return false; // Does exact equals and class checking
+        }
 
         MapFilter that = (MapFilter) o;
         return new EqualsBuilder()
