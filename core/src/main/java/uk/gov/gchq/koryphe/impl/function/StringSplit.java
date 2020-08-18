@@ -18,6 +18,8 @@ package uk.gov.gchq.koryphe.impl.function;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
@@ -60,5 +62,23 @@ public class StringSplit extends KorypheFunction<String, List<String>> {
 
     public void setDelimiter(final String delimiter) {
         this.delimiter = delimiter;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!super.equals(o)) return false; // Does exact equals and Class checking
+
+        StringSplit that = (StringSplit) o;
+        return new EqualsBuilder()
+                .append(delimiter, that.delimiter)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(53, 73)
+                .append(super.hashCode())
+                .append(delimiter)
+                .toHashCode();
     }
 }

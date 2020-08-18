@@ -18,6 +18,8 @@ package uk.gov.gchq.koryphe.impl.function;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
@@ -62,5 +64,23 @@ public class StringAppend extends KorypheFunction<String, String> {
         } else {
             this.suffix = suffix;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!super.equals(o)) return false; // Does exact equals and Class checking
+
+        StringAppend that = (StringAppend) o;
+        return new EqualsBuilder()
+                .append(suffix, that.suffix)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(13, 37)
+                .append(super.hashCode())
+                .append(suffix)
+                .toHashCode();
     }
 }

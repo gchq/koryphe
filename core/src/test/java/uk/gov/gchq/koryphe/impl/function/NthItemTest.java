@@ -37,6 +37,14 @@ public class NthItemTest extends FunctionTest {
     }
 
     @Override
+    protected Iterable<Function> getDifferentInstances() {
+        return Arrays.asList(
+                new NthItem(5),
+                new NthItem(10)
+        );
+    }
+
+    @Override
     protected Class<? extends Function> getFunctionClass() {
         return NthItem.class;
     }

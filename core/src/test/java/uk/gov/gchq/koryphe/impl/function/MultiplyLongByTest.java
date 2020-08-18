@@ -21,6 +21,8 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -90,6 +92,14 @@ public class MultiplyLongByTest extends FunctionTest {
     @Override
     protected MultiplyLongBy getInstance() {
         return new MultiplyLongBy(3L);
+    }
+
+    @Override
+    protected Iterable<Function> getDifferentInstances() {
+        return Arrays.asList(
+                new MultiplyLongBy(),
+                new MultiplyLongBy(100L)
+        );
     }
 
     @Override

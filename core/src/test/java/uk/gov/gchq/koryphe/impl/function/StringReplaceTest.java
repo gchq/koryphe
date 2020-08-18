@@ -21,6 +21,8 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -94,7 +96,15 @@ public class StringReplaceTest extends FunctionTest {
 
     @Override
     protected StringReplace getInstance() {
-        return new StringReplace();
+        return new StringReplace("searchForThis", "replaceWithThis");
+    }
+
+    @Override
+    protected Iterable<Function> getDifferentInstances() {
+        return Arrays.asList(
+                new StringReplace("searchForThis", "test"),
+                new StringReplace("test", "replaceWithThis")
+        );
     }
 
     @Override

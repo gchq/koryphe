@@ -16,6 +16,8 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
@@ -65,5 +67,25 @@ public class StringRegexReplace extends KorypheFunction<String, String> {
 
     public void setReplacement(final String replacement) {
         this.replacement = replacement;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!super.equals(o)) return false; // Does exact equals and Class checking
+
+        StringRegexReplace that = (StringRegexReplace) o;
+        return new EqualsBuilder()
+                .append(regex, that.regex)
+                .append(replacement, that.replacement)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(83, 29)
+                .append(super.hashCode())
+                .append(regex)
+                .append(replacement)
+                .toHashCode();
     }
 }

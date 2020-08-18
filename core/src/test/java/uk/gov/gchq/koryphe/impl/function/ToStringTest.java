@@ -15,6 +15,7 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
+import org.apache.commons.io.Charsets;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
@@ -22,6 +23,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -96,6 +98,11 @@ public class ToStringTest extends FunctionTest {
     @Override
     protected Function getInstance() {
         return new ToString();
+    }
+
+    @Override
+    protected Iterable<Function> getDifferentInstances() {
+        return Collections.singletonList(new ToString(Charsets.ISO_8859_1));
     }
 
     @Override

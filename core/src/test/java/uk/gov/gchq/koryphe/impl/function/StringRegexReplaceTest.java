@@ -21,6 +21,8 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -68,7 +70,16 @@ public class StringRegexReplaceTest extends FunctionTest {
 
     @Override
     protected StringRegexReplace getInstance() {
-        return new StringRegexReplace();
+        return new StringRegexReplace("replaceMe", "withThis");
+    }
+
+    @Override
+    protected Iterable<Function> getDifferentInstances() {
+        return Arrays.asList(
+                new StringRegexReplace("replaceMe", "withSomethingElse"),
+                new StringRegexReplace("r.*Me", "withThis"),
+                new StringRegexReplace()
+        );
     }
 
     @Override

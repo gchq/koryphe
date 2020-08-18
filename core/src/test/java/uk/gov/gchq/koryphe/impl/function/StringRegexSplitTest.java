@@ -21,7 +21,10 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
@@ -57,7 +60,15 @@ public class StringRegexSplitTest extends FunctionTest {
 
     @Override
     protected StringRegexSplit getInstance() {
-        return new StringRegexSplit();
+        return new StringRegexSplit("test");
+    }
+
+    @Override
+    protected Iterable<Function> getDifferentInstances() {
+        return Arrays.asList(
+                new StringRegexSplit("hello"),
+                new StringRegexSplit(".*")
+        );
     }
 
     @Override

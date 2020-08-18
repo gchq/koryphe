@@ -21,6 +21,8 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -77,6 +79,11 @@ public class StringPrependTest extends FunctionTest {
     @Override
     protected StringPrepend getInstance() {
         return new StringPrepend();
+    }
+
+    @Override
+    protected Iterable<Function> getDifferentInstances() {
+        return Collections.singletonList(new StringPrepend("different"));
     }
 
     @Override

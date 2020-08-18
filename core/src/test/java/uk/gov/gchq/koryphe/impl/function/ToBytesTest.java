@@ -22,6 +22,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -57,6 +58,11 @@ public class ToBytesTest extends FunctionTest {
     @Override
     protected Function getInstance() {
         return new ToBytes();
+    }
+
+    @Override
+    protected Iterable<Function> getDifferentInstances() {
+        return Collections.singletonList(new ToBytes(StandardCharsets.US_ASCII));
     }
 
     @Override

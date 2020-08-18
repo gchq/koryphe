@@ -21,6 +21,8 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -68,7 +70,16 @@ public class StringTruncateTest extends FunctionTest {
 
     @Override
     protected StringTruncate getInstance() {
-        return new StringTruncate();
+        return new StringTruncate(10, true);
+    }
+
+    @Override
+    protected Iterable<Function> getDifferentInstances() {
+        return Arrays.asList(
+                new StringTruncate(),
+                new StringTruncate(5, true),
+                new StringTruncate(10, false)
+        );
     }
 
     @Override

@@ -21,7 +21,9 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -88,6 +90,11 @@ public class StringSplitTest extends FunctionTest {
     @Override
     protected StringSplit getInstance() {
         return new StringSplit();
+    }
+
+    @Override
+    protected Iterable<Function> getDifferentInstances() {
+        return Collections.singletonList(new StringSplit(" "));
     }
 
     @Override
