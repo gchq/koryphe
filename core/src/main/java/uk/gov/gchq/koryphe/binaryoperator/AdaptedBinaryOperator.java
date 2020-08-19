@@ -17,6 +17,8 @@
 package uk.gov.gchq.koryphe.binaryoperator;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
@@ -78,5 +80,25 @@ public class AdaptedBinaryOperator<T, OT> extends Adapted<T, OT, OT, T, T> imple
 
     public void setBinaryOperator(final BinaryOperator<OT> binaryOperator) {
         this.binaryOperator = binaryOperator;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (!super.equals(o)) {
+            return false; // Does exact equals and Class checking
+        }
+
+        final AdaptedBinaryOperator that = (AdaptedBinaryOperator) o;
+        return new EqualsBuilder()
+                .append(binaryOperator, that.binaryOperator)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(43, 67)
+                .appendSuper(super.hashCode())
+                .append(binaryOperator)
+                .toHashCode();
     }
 }

@@ -20,9 +20,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.impl.predicate.IsA;
+import uk.gov.gchq.koryphe.impl.predicate.IsMoreThan;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -154,6 +156,14 @@ public class PredicateMapTest extends PredicateTest<PredicateMap> {
 
     @Override
     protected Iterable<PredicateMap> getDifferentInstances() {
-        return null; // todo implement
+        return Arrays.asList(
+                new PredicateMap(
+                        KEY2, new IsA(Map.class)
+                ),
+                new PredicateMap(
+                        KEY1, new IsMoreThan(5)
+                ),
+                new PredicateMap()
+        );
     }
 }

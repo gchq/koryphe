@@ -17,6 +17,8 @@
 package uk.gov.gchq.koryphe.tuple;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.Arrays;
 import java.util.function.BiFunction;
@@ -25,7 +27,7 @@ import java.util.function.BiFunction;
  * @param <R>  The type of reference used by tuples.
  * @param <FO> The adapted output type.
  */
-public class TupleOutputAdapter<R, FO> implements BiFunction<Tuple<R>, FO, Tuple<R>> {
+public class TupleOutputAdapter<R, FO> implements BiFunction<Tuple<R>, FO, Tuple<R>> { // todo test
     private R[] projection;
 
     /**
@@ -83,5 +85,29 @@ public class TupleOutputAdapter<R, FO> implements BiFunction<Tuple<R>, FO, Tuple
      */
     public R[] getProjection() {
         return Arrays.copyOf(projection, projection.length);
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || !getClass().equals(o.getClass())) {
+            return false;
+        }
+
+        final TupleOutputAdapter that = (TupleOutputAdapter) o;
+        return new EqualsBuilder()
+                .append(projection, that.projection)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(43, 67)
+                .append(getClass().hashCode())
+                .append(projection)
+                .toHashCode();
     }
 }

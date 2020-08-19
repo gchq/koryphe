@@ -17,6 +17,8 @@
 package uk.gov.gchq.koryphe.function;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import uk.gov.gchq.koryphe.adapted.Adapted;
 
@@ -74,5 +76,25 @@ public abstract class AdaptedFunction<I, FI, FO, O> extends Adapted<I, FI, FO, O
 
     public void setFunction(final Function<FI, FO> function) {
         this.function = function;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (!super.equals(o)) {
+            return false; // Does exact equals and Class checking
+        }
+
+        final AdaptedFunction that = (AdaptedFunction) o;
+        return new EqualsBuilder()
+                .append(function, that.function)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(43, 67)
+                .appendSuper(super.hashCode()) // todo find and replace all .append(super.hashcode()) with this
+                .append(function)
+                .toHashCode();
     }
 }
