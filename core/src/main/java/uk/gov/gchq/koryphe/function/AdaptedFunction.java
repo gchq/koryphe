@@ -80,8 +80,12 @@ public abstract class AdaptedFunction<I, FI, FO, O> extends Adapted<I, FI, FO, O
 
     @Override
     public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
         if (!super.equals(o)) {
-            return false; // Does exact equals and Class checking
+            return false; // Does class checking
         }
 
         final AdaptedFunction that = (AdaptedFunction) o;
@@ -93,7 +97,7 @@ public abstract class AdaptedFunction<I, FI, FO, O> extends Adapted<I, FI, FO, O
     @Override
     public int hashCode() {
         return new HashCodeBuilder(43, 67)
-                .appendSuper(super.hashCode()) // todo find and replace all .append(super.hashcode()) with this
+                .appendSuper(super.hashCode())
                 .append(function)
                 .toHashCode();
     }

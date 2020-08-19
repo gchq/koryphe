@@ -68,8 +68,12 @@ public class ApplyBiFunction<T, U, R> extends KorypheFunction2<T, U, R> implemen
 
     @Override
     public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
         if (!super.equals(o)) {
-            return false; // Does exact equals and Class checking
+            return false; // Does class checking
         }
 
         ApplyBiFunction<?, ?, ?> that = (ApplyBiFunction<?, ?, ?>) o;
@@ -81,7 +85,7 @@ public class ApplyBiFunction<T, U, R> extends KorypheFunction2<T, U, R> implemen
     @Override
     public int hashCode() {
         return new HashCodeBuilder(11, 89)
-                .append(super.hashCode())
+                .appendSuper(super.hashCode())
                 .append(function)
                 .toHashCode();
     }

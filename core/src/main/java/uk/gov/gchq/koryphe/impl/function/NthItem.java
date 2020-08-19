@@ -68,6 +68,10 @@ public class NthItem<T> extends KorypheFunction<Iterable<T>, T> {
 
     @Override
     public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
         if (!super.equals(o)) {
             return false; // Does exact equals and class checking
         }
@@ -81,7 +85,7 @@ public class NthItem<T> extends KorypheFunction<Iterable<T>, T> {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(67, 23)
-                .append(super.hashCode())
+                .appendSuper(super.hashCode())
                 .append(selection)
                 .toHashCode();
     }

@@ -106,8 +106,12 @@ public class Length extends KorypheFunction<Object, Integer> implements InputVal
 
     @Override
     public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
         if (!super.equals(o)) {
-            return false; // Does exact equals and Class checking
+            return false; // Does class checking
         }
 
         Length that = (Length) o;
@@ -119,7 +123,7 @@ public class Length extends KorypheFunction<Object, Integer> implements InputVal
     @Override
     public int hashCode() {
         return new HashCodeBuilder(43, 67)
-                .append(super.hashCode())
+                .appendSuper(super.hashCode())
                 .append(maxLength)
                 .toHashCode();
     }

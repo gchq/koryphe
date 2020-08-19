@@ -84,8 +84,12 @@ public class AdaptedBinaryOperator<T, OT> extends Adapted<T, OT, OT, T, T> imple
 
     @Override
     public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
         if (!super.equals(o)) {
-            return false; // Does exact equals and Class checking
+            return false; // Does class checking
         }
 
         final AdaptedBinaryOperator that = (AdaptedBinaryOperator) o;

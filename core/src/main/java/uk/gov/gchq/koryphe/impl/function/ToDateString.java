@@ -69,6 +69,10 @@ public class ToDateString extends KorypheFunction<Date, String> {
 
     @Override
     public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
         if (!super.equals(o)) {
             return false; // Does exact equals and class checking
         }
@@ -82,7 +86,7 @@ public class ToDateString extends KorypheFunction<Date, String> {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(61, 47)
-                .append(super.hashCode())
+                .appendSuper(super.hashCode())
                 .append(format)
                 .toHashCode();
     }

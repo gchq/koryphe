@@ -117,6 +117,10 @@ public class MapFilter<K, V> extends KorypheFunction<Map<K, V>, Map<K, V>> {
 
     @Override
     public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
         if (!super.equals(o)) {
             return false; // Does exact equals and class checking
         }
@@ -132,7 +136,7 @@ public class MapFilter<K, V> extends KorypheFunction<Map<K, V>, Map<K, V>> {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(13, 79)
-                .append(super.hashCode())
+                .appendSuper(super.hashCode())
                 .append(keyPredicate)
                 .append(valuePredicate)
                 .append(keyValuePredicate)

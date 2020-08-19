@@ -72,6 +72,10 @@ public class StringRegexReplace extends KorypheFunction<String, String> {
 
     @Override
     public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
         if (!super.equals(o)) {
             return false; // Does exact equals and class checking
         }
@@ -86,7 +90,7 @@ public class StringRegexReplace extends KorypheFunction<String, String> {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(83, 29)
-                .append(super.hashCode())
+                .appendSuper(super.hashCode())
                 .append(regex)
                 .append(replacement)
                 .toHashCode();

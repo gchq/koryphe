@@ -71,9 +71,12 @@ public abstract class Adapted<I, AI, AO, O, C> extends InputAdapted<I, AI> {
 
     @Override
     public boolean equals(final Object o) {
-        if (!super.equals(o)) { // todo add exact equals check to every equals method.
-            return false; // Does exact equals and Class checking
-            // todo replace "Class checking" with "class checking"
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o)) {
+            return false; // Does class checking
         }
 
         final Adapted that = (Adapted) o;

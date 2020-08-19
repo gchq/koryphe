@@ -92,8 +92,12 @@ public class CallMethod extends KorypheFunction<Object, Object> {
 
     @Override
     public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
         if (!super.equals(o)) {
-            return false; // Does exact equals and Class checking
+            return false; // Does class checking
         }
 
         CallMethod that = (CallMethod) o;
@@ -105,7 +109,7 @@ public class CallMethod extends KorypheFunction<Object, Object> {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(23, 67)
-                .append(super.hashCode())
+                .appendSuper(super.hashCode())
                 .append(method)
                 .toHashCode();
     }

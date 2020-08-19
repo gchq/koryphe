@@ -116,6 +116,10 @@ public class ParseDate extends KorypheFunction<String, Date> {
 
     @Override
     public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
         if (!super.equals(o)) {
             return false; // Does exact equals and class checking
         }
@@ -130,7 +134,7 @@ public class ParseDate extends KorypheFunction<String, Date> {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(73, 41)
-                .append(super.hashCode())
+                .appendSuper(super.hashCode())
                 .append(timeZone)
                 .append(format)
                 .toHashCode();

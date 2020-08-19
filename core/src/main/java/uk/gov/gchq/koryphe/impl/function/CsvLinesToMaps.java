@@ -183,8 +183,12 @@ public class CsvLinesToMaps extends KorypheFunction<Iterable<String>, Iterable<M
 
     @Override
     public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
         if (!super.equals(o)) {
-            return false; // Does exact equals and Class checking
+            return false; // Does class checking
         }
 
         CsvLinesToMaps that = (CsvLinesToMaps) o;
@@ -200,7 +204,7 @@ public class CsvLinesToMaps extends KorypheFunction<Iterable<String>, Iterable<M
     @Override
     public int hashCode() {
         return new HashCodeBuilder(7, 19)
-                .append(super.hashCode())
+                .appendSuper(super.hashCode())
                 .append(header)
                 .append(quoted)
                 .append(quoteChar)

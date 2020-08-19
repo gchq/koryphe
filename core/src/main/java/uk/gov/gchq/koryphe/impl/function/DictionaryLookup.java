@@ -58,8 +58,12 @@ public class DictionaryLookup<K, V> extends KorypheFunction<K, V> {
 
     @Override
     public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
         if (!super.equals(o)) {
-            return false; // Does exact equals and Class checking
+            return false; // Does class checking
         }
 
         DictionaryLookup that = (DictionaryLookup) o;
@@ -71,7 +75,7 @@ public class DictionaryLookup<K, V> extends KorypheFunction<K, V> {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(13, 53)
-                .append(super.hashCode())
+                .appendSuper(super.hashCode())
                 .append(dictionary)
                 .toHashCode();
     }

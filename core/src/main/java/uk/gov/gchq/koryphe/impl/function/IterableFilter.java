@@ -70,6 +70,10 @@ public class IterableFilter<I_ITEM> extends KorypheFunction<Iterable<I_ITEM>, It
 
     @Override
     public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
         if (!super.equals(o)) {
             return false; // Does exact equals and class checking
         }
@@ -83,7 +87,7 @@ public class IterableFilter<I_ITEM> extends KorypheFunction<Iterable<I_ITEM>, It
     @Override
     public int hashCode() {
         return new HashCodeBuilder(3, 97)
-                .append(super.hashCode())
+                .appendSuper(super.hashCode())
                 .append(predicate)
                 .toHashCode();
     }

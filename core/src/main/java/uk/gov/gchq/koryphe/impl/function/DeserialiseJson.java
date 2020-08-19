@@ -88,8 +88,12 @@ public class DeserialiseJson<T> extends KorypheFunction<String, T> implements Se
 
     @Override
     public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
         if (!super.equals(o)) {
-            return false; // Does exact equals and Class checking
+            return false; // Does class checking
         }
 
         DeserialiseJson that = (DeserialiseJson) o;
@@ -101,7 +105,7 @@ public class DeserialiseJson<T> extends KorypheFunction<String, T> implements Se
     @Override
     public int hashCode() {
         return new HashCodeBuilder(43, 31)
-                .append(super.hashCode())
+                .appendSuper(super.hashCode())
                 .append(outputClass)
                 .toHashCode();
     }

@@ -77,8 +77,12 @@ public class FirstValid<I_ITEM> extends KorypheFunction<Iterable<I_ITEM>, I_ITEM
 
     @Override
     public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
         if (!super.equals(o)) {
-            return false; // Does exact equals and Class checking
+            return false; // Does class checking
         }
 
         FirstValid that = (FirstValid) o;
@@ -90,7 +94,7 @@ public class FirstValid<I_ITEM> extends KorypheFunction<Iterable<I_ITEM>, I_ITEM
     @Override
     public int hashCode() {
         return new HashCodeBuilder(37, 83)
-                .append(super.hashCode())
+                .appendSuper(super.hashCode())
                 .append(predicate)
                 .toHashCode();
     }

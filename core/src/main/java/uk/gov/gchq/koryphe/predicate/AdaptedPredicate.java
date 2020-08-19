@@ -72,8 +72,12 @@ public class AdaptedPredicate<I, PI> extends InputAdapted<I, PI> implements Pred
 
     @Override
     public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
         if (!super.equals(o)) {
-            return false; // Does exact equals and Class checking
+            return false; // Does class checking
         }
 
         final AdaptedPredicate that = (AdaptedPredicate) o;

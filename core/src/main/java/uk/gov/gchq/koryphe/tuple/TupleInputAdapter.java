@@ -89,8 +89,12 @@ public class TupleInputAdapter<R, FI> extends KorypheFunction<Tuple<R>, FI> { //
 
     @Override
     public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
         if (!super.equals(o)) {
-            return false; // Does exact equals and Class checking
+            return false; // Does class checking
         }
 
         final TupleInputAdapter that = (TupleInputAdapter) o;

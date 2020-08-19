@@ -118,6 +118,10 @@ public class Increment extends KorypheFunction<Number, Number> {
 
     @Override
     public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
         if (!super.equals(o)) {
             return false; // Does exact equals and class checking
         }
@@ -131,7 +135,7 @@ public class Increment extends KorypheFunction<Number, Number> {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(59, 83)
-                .append(super.hashCode())
+                .appendSuper(super.hashCode())
                 .append(increment)
                 .append(increment == null ? null : increment.getClass())
                 .toHashCode();

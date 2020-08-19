@@ -62,8 +62,12 @@ public class DivideBy extends KorypheFunction<Integer, Tuple2<Integer, Integer>>
 
     @Override
     public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
         if (!super.equals(o)) {
-            return false; // Does exact equals and Class checking
+            return false; // Does class checking
         }
 
         DivideBy that = (DivideBy) o;
@@ -75,7 +79,7 @@ public class DivideBy extends KorypheFunction<Integer, Tuple2<Integer, Integer>>
     @Override
     public int hashCode() {
         return new HashCodeBuilder(47, 59)
-                .append(super.hashCode())
+                .appendSuper(super.hashCode())
                 .append(by)
                 .toHashCode();
     }

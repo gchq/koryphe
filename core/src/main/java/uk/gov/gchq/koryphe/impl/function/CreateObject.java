@@ -86,8 +86,12 @@ public class CreateObject extends KorypheFunction<Object, Object> {
 
     @Override
     public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
         if (!super.equals(o)) {
-            return false; // Does exact equals and Class checking
+            return false; // Does class checking
         }
 
         CreateObject that = (CreateObject) o;
@@ -99,7 +103,7 @@ public class CreateObject extends KorypheFunction<Object, Object> {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(3, 29)
-                .append(super.hashCode())
+                .appendSuper(super.hashCode())
                 .append(objectClass)
                 .toHashCode();
     }

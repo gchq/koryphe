@@ -72,6 +72,10 @@ public class IterableFlatten<I_ITEM> extends KorypheFunction<Iterable<I_ITEM>, I
 
     @Override
     public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
         if (!super.equals(o)) {
             return false; // Does exact equals and class checking
         }
@@ -85,7 +89,7 @@ public class IterableFlatten<I_ITEM> extends KorypheFunction<Iterable<I_ITEM>, I
     @Override
     public int hashCode() {
         return new HashCodeBuilder(31, 59)
-                .append(super.hashCode())
+                .appendSuper(super.hashCode())
                 .append(operator)
                 .toHashCode();
     }

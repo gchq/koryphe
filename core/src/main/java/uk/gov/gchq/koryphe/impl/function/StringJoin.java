@@ -62,6 +62,10 @@ public class StringJoin<I_ITEM> extends KorypheFunction<Iterable<I_ITEM>, String
 
     @Override
     public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
         if (!super.equals(o)) {
             return false; // Does exact equals and class checking
         }
@@ -75,7 +79,7 @@ public class StringJoin<I_ITEM> extends KorypheFunction<Iterable<I_ITEM>, String
     @Override
     public int hashCode() {
         return new HashCodeBuilder(53, 73)
-                .append(super.hashCode())
+                .appendSuper(super.hashCode())
                 .append(delimiter)
                 .toHashCode();
     }

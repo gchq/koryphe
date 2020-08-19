@@ -58,6 +58,10 @@ public class MultiplyLongBy extends KorypheFunction<Long, Long> {
 
     @Override
     public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
         if (!super.equals(o)) {
             return false; // Does exact equals and class checking
         }
@@ -71,7 +75,7 @@ public class MultiplyLongBy extends KorypheFunction<Long, Long> {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(83, 11)
-                .append(super.hashCode())
+                .appendSuper(super.hashCode())
                 .append(by)
                 .toHashCode();
     }
