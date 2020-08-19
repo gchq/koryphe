@@ -82,11 +82,6 @@ public class StringRegexReplaceTest extends FunctionTest<StringRegexReplace> {
     }
 
     @Override
-    protected Class<? extends StringRegexReplace> getFunctionClass() {
-        return StringRegexReplace.class;
-    }
-
-    @Override
     protected Class[] getExpectedSignatureInputClasses() {
         return new Class[]{ String.class };
     }

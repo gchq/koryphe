@@ -92,9 +92,4 @@ public class RegexTest extends PredicateTest<Regex> {
         );
     }
 
-    @Override
-    protected Class<Regex> getPredicateClass() {
-        return Regex.class;
     }
-
-}

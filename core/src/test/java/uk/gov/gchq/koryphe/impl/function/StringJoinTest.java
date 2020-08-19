@@ -121,11 +121,6 @@ public class StringJoinTest extends FunctionTest<StringJoin> {
     }
 
     @Override
-    protected Class<? extends StringJoin> getFunctionClass() {
-        return StringJoin.class;
-    }
-
-    @Override
     protected Class[] getExpectedSignatureInputClasses() {
         return new Class[]{ Iterable.class };
     }

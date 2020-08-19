@@ -66,11 +66,6 @@ public class ToBytesTest extends FunctionTest<ToBytes> {
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ToBytes.class;
-    }
-
-    @Override
     protected Class[] getExpectedSignatureInputClasses() {
         return new Class[] {String.class};
     }

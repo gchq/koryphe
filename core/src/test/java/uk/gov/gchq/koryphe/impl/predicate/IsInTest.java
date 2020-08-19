@@ -82,11 +82,6 @@ public class IsInTest extends PredicateTest<IsIn> {
     }
 
     @Override
-    protected Class<IsIn> getPredicateClass() {
-        return IsIn.class;
-    }
-
-    @Override
     protected IsIn getInstance() {
         return new IsIn(Collections.singletonList("someValue"));
     }

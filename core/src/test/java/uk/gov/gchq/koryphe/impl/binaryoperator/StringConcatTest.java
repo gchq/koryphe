@@ -51,7 +51,7 @@ public class StringConcatTest extends BinaryOperatorTest<StringConcat> {
                 "}"), json);
 
         // When 2
-        final StringConcat deserialisedAggregator = JsonSerialiser.deserialise(json, getFunctionClass());
+        final StringConcat deserialisedAggregator = JsonSerialiser.deserialise(json, StringConcat.class);
 
         // Then 2
         assertNotNull(deserialisedAggregator);
@@ -69,8 +69,4 @@ public class StringConcatTest extends BinaryOperatorTest<StringConcat> {
         return Collections.singletonList(alternative);
     }
 
-    @Override
-    protected Class<StringConcat> getFunctionClass() {
-        return StringConcat.class;
-    }
 }

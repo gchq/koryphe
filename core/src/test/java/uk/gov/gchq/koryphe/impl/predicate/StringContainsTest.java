@@ -144,8 +144,4 @@ public class StringContainsTest extends PredicateTest<StringContains> {
         );
     }
 
-    @Override
-    protected Class<? extends Predicate> getPredicateClass() {
-        return StringContains.class;
     }
-}

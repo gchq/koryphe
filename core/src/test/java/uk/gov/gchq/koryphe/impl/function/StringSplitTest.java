@@ -97,11 +97,6 @@ public class StringSplitTest extends FunctionTest<StringSplit> {
     }
 
     @Override
-    protected Class<? extends StringSplit> getFunctionClass() {
-        return StringSplit.class;
-    }
-
-    @Override
     protected Class[] getExpectedSignatureInputClasses() {
         return new Class[]{ String.class };
     }

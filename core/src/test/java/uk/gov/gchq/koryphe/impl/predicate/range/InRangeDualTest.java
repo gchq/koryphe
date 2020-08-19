@@ -413,11 +413,6 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest<InRa
     }
 
     @Override
-    protected Class<? extends Predicate> getPredicateClass() {
-        return getInstance().getClass();
-    }
-
-    @Override
     protected InRangeDual getInstance() {
         return createBuilder()
                 .start(convert(1000L))

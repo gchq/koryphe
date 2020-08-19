@@ -109,8 +109,4 @@ public class MultiRegexTest extends PredicateTest<MultiRegex> {
         );
     }
 
-    @Override
-    protected Class<MultiRegex> getPredicateClass() {
-        return MultiRegex.class;
     }
-}

@@ -148,11 +148,6 @@ public class PredicateMapTest extends PredicateTest<PredicateMap> {
     }
 
     @Override
-    protected Class<PredicateMap> getPredicateClass() {
-        return PredicateMap.class;
-    }
-
-    @Override
     protected PredicateMap getInstance() {
         return new PredicateMap<>(KEY1, new IsA(Map.class));
     }

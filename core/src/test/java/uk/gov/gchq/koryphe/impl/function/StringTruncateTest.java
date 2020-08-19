@@ -82,11 +82,6 @@ public class StringTruncateTest extends FunctionTest<StringTruncate> {
     }
 
     @Override
-    protected Class<? extends StringTruncate> getFunctionClass() {
-        return StringTruncate.class;
-    }
-
-    @Override
     protected Class[] getExpectedSignatureInputClasses() {
         return new Class[]{ String.class };
     }

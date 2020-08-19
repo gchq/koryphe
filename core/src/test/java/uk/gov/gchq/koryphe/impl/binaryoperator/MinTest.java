@@ -160,8 +160,4 @@ public class MinTest extends BinaryOperatorTest<Min> {
         return null;
     }
 
-    @Override
-    protected Class<Min> getFunctionClass() {
-        return Min.class;
-    }
 }

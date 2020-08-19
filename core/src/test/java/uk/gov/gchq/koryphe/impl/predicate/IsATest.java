@@ -103,11 +103,6 @@ public class IsATest extends PredicateTest<IsA> {
         assertThrows(IllegalArgumentException.class, () -> new IsA(type));
     }
 
-    @Override
-    protected Class<? extends Predicate> getPredicateClass() {
-        return IsA.class;
-    }
-
     @Test
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given

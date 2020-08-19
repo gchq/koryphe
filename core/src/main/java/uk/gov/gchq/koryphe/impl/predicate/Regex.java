@@ -79,7 +79,7 @@ public class Regex extends KoryphePredicate<String> {
 
         return new EqualsBuilder()
                 .append(controlValue != null ? controlValue.toString() : null,
-                        regex.controlValue != null ? regex.controlValue.toString(): null)
+                        regex.controlValue != null ? regex.controlValue.toString() : null)
                 .isEquals();
     }
 

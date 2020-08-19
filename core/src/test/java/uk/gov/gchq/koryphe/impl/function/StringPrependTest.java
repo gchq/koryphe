@@ -87,11 +87,6 @@ public class StringPrependTest extends FunctionTest<StringPrepend> {
     }
 
     @Override
-    protected Class<? extends StringPrepend> getFunctionClass() {
-        return StringPrepend.class;
-    }
-
-    @Override
     protected Class[] getExpectedSignatureInputClasses() {
         return new Class[]{ String.class };
     }

@@ -25,7 +25,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -42,11 +41,6 @@ public class ParseDateTest extends FunctionTest<ParseDate> {
                 new ParseDate().timeZone("EST"),
                 new ParseDate().format("dd-mmm-yy HH:mm:ss")
         );
-    }
-
-    @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ParseDate.class;
     }
 
     @Override

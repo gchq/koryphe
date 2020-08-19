@@ -98,11 +98,6 @@ public class AreEqualTest extends PredicateTest<AreEqual> {
     }
 
     @Override
-    protected Class<AreEqual> getPredicateClass() {
-        return AreEqual.class;
-    }
-
-    @Override
     protected AreEqual getInstance() {
         return new AreEqual();
     }

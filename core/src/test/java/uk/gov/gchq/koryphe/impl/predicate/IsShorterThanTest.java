@@ -189,11 +189,6 @@ public class IsShorterThanTest extends PredicateTest<IsShorterThan> {
     }
 
     @Override
-    protected Class<IsShorterThan> getPredicateClass() {
-        return IsShorterThan.class;
-    }
-
-    @Override
     protected IsShorterThan getInstance() {
         return new IsShorterThan(5);
     }

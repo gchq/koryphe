@@ -40,11 +40,6 @@ public class DeserialiseXmlTest extends FunctionTest<DeserialiseXml> {
     }
 
     @Override
-    protected Class<DeserialiseXml> getFunctionClass() {
-        return DeserialiseXml.class;
-    }
-
-    @Override
     protected Class[] getExpectedSignatureInputClasses() {
         return new Class[] {String.class};
     }

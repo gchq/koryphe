@@ -47,11 +47,6 @@ public class IterableFunctionTest extends FunctionTest<IterableFunction> {
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return IterableFunction.class;
-    }
-
-    @Override
     protected Class[] getExpectedSignatureInputClasses() {
         return new Class[] {Iterable.class};
     }

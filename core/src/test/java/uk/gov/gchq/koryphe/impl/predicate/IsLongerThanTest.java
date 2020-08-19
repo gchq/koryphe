@@ -189,11 +189,6 @@ public class IsLongerThanTest extends PredicateTest<IsLongerThan> {
     }
 
     @Override
-    protected Class<IsLongerThan> getPredicateClass() {
-        return IsLongerThan.class;
-    }
-
-    @Override
     protected IsLongerThan getInstance() {
         return new IsLongerThan(5);
     }

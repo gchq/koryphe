@@ -172,11 +172,6 @@ public class AreInTest extends PredicateTest<AreIn> {
     }
 
     @Override
-    protected Class<AreIn> getPredicateClass() {
-        return AreIn.class;
-    }
-
-    @Override
     protected AreIn getInstance() {
         return new AreIn(VALUE1);
     }

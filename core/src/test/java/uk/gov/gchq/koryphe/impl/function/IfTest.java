@@ -78,11 +78,6 @@ public class IfTest extends FunctionTest<If> {
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return If.class;
-    }
-
-    @Override
     protected Class[] getExpectedSignatureInputClasses() {
         return new Class[] { Object.class };
     }

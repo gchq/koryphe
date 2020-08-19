@@ -88,11 +88,6 @@ public class StringAppendTest extends FunctionTest<StringAppend> {
     }
 
     @Override
-    protected Class<? extends StringAppend> getFunctionClass() {
-        return StringAppend.class;
-    }
-
-    @Override
     protected Class[] getExpectedSignatureInputClasses() {
         return new Class[]{ String.class };
     }

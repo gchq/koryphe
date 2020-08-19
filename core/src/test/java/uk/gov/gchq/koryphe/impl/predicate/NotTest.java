@@ -105,11 +105,6 @@ public class NotTest extends PredicateTest<Not> {
     }
 
     @Override
-    protected Class<Not> getPredicateClass() {
-        return Not.class;
-    }
-
-    @Override
     protected Not<Object> getInstance() {
         return new Not<>(new IsA(String.class));
     }

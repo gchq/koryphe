@@ -31,11 +31,6 @@ class ToDateStringTest extends FunctionTest<ToDateString> {
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ToDateString.class;
-    }
-
-    @Override
     protected Class[] getExpectedSignatureInputClasses() {
         return new Class[] { Date.class };
     }

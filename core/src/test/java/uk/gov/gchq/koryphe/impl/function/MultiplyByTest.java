@@ -103,11 +103,6 @@ public class MultiplyByTest extends FunctionTest<MultiplyBy> {
     }
 
     @Override
-    protected Class<MultiplyBy> getFunctionClass() {
-        return MultiplyBy.class;
-    }
-
-    @Override
     protected Class[] getExpectedSignatureInputClasses() {
         return new Class[] { Integer.class };
     }

@@ -103,11 +103,6 @@ public class MapContainsTest extends PredicateTest<MapContains> {
     }
 
     @Override
-    protected Class<MapContains> getPredicateClass() {
-        return MapContains.class;
-    }
-
-    @Override
     protected MapContains getInstance() {
         return new MapContains(KEY1);
     }

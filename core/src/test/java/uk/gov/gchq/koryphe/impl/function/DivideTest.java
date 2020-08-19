@@ -93,11 +93,6 @@ public class DivideTest extends FunctionTest<Divide> {
     }
 
     @Override
-    protected Class<Divide> getFunctionClass() {
-        return Divide.class;
-    }
-
-    @Override
     protected Class[] getExpectedSignatureInputClasses() {
         return new Class[] {Integer.class, Integer.class};
     }

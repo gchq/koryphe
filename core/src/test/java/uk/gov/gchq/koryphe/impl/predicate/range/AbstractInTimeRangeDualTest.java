@@ -556,11 +556,6 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
     }
 
     @Override
-    protected Class<? extends Predicate> getPredicateClass() {
-        return getInstance().getClass();
-    }
-
-    @Override
     protected AbstractInTimeRangeDual getInstance() {
         return createBuilder()
                 .start("1000")

@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -43,11 +42,6 @@ public class ParseTimeTest extends FunctionTest<ParseTime> {
                 new ParseTime().timeZone("PST"),
                 new ParseTime().timeUnit(TimeUnit.DAY)
         );
-    }
-
-    @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ParseTime.class;
     }
 
     @Override

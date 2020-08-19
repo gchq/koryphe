@@ -83,11 +83,6 @@ public class IsXLessThanYTest extends PredicateTest<IsXLessThanY> {
     }
 
     @Override
-    protected Class<IsXLessThanY> getPredicateClass() {
-        return IsXLessThanY.class;
-    }
-
-    @Override
     protected IsXLessThanY getInstance() {
         return new IsXLessThanY();
     }

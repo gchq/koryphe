@@ -182,11 +182,6 @@ public class IsLessThanTest extends PredicateTest<IsLessThan> {
     }
 
     @Override
-    protected Class<IsLessThan> getPredicateClass() {
-        return IsLessThan.class;
-    }
-
-    @Override
     protected IsLessThan getInstance() {
         return new IsLessThan(5);
     }

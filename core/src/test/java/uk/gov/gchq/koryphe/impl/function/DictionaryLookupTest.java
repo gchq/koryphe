@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -86,11 +85,6 @@ public class DictionaryLookupTest extends FunctionTest<DictionaryLookup<?, ?>> {
                 new DictionaryLookup<>(null),
                 new DictionaryLookup<>(Maps.newHashMap())
         );
-    }
-
-    @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return DictionaryLookup.class;
     }
 
     @Override

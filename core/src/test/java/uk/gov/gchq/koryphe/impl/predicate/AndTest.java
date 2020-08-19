@@ -241,11 +241,6 @@ public class AndTest extends PredicateTest<And> {
     }
 
     @Override
-    protected Class<And> getPredicateClass() {
-        return And.class;
-    }
-
-    @Override
     protected And getInstance() {
         return new And();
     }

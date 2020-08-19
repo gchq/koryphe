@@ -25,7 +25,6 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -90,11 +89,6 @@ public class FirstValidTest extends FunctionTest<FirstValid> {
                 new FirstValid<>(new IsMoreThan(4)),
                 new FirstValid<>(new IsLessThan(3))
         );
-    }
-
-    @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return FirstValid.class;
     }
 
     @Override

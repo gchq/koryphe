@@ -70,11 +70,6 @@ public class StringRegexSplitTest extends FunctionTest<StringRegexSplit> {
     }
 
     @Override
-    protected Class<? extends StringRegexSplit> getFunctionClass() {
-        return StringRegexSplit.class;
-    }
-
-    @Override
     protected Class[] getExpectedSignatureInputClasses() {
         return new Class[]{ String.class };
     }

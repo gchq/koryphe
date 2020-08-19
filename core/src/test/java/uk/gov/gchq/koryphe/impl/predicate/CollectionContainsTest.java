@@ -144,11 +144,6 @@ public class CollectionContainsTest extends PredicateTest<CollectionContains> {
     }
 
     @Override
-    protected Class<CollectionContains> getPredicateClass() {
-        return CollectionContains.class;
-    }
-
-    @Override
     protected CollectionContains getInstance() {
         return new CollectionContains(VALUE1);
     }

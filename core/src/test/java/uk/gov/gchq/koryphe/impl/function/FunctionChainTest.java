@@ -24,7 +24,6 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -46,11 +45,6 @@ public class FunctionChainTest extends FunctionTest<FunctionChain> {
                         .execute(new StringSplit())
                 .build()
         );
-    }
-
-    @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return FunctionChain.class;
     }
 
     @Override

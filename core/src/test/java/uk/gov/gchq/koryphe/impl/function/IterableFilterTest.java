@@ -26,7 +26,6 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -95,11 +94,6 @@ public class IterableFilterTest extends FunctionTest<IterableFilter> {
                 new IterableFilter(),
                 new IterableFilter(new IsLessThan(4L))
         );
-    }
-
-    @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return IterableFilter.class;
     }
 
     @Override

@@ -107,11 +107,6 @@ public class StringReplaceTest extends FunctionTest<StringReplace> {
     }
 
     @Override
-    protected Class<? extends StringReplace> getFunctionClass() {
-        return StringReplace.class;
-    }
-
-    @Override
     protected Class[] getExpectedSignatureInputClasses() {
         return new Class[]{ String.class };
     }

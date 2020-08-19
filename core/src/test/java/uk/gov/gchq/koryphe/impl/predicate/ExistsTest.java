@@ -74,11 +74,6 @@ public class ExistsTest extends PredicateTest<Exists> {
     }
 
     @Override
-    protected Class<Exists> getPredicateClass() {
-        return Exists.class;
-    }
-
-    @Override
     protected Exists getInstance() {
         return new Exists();
     }

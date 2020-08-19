@@ -121,11 +121,6 @@ public class AgeOffTest extends PredicateTest<AgeOff> {
     }
 
     @Override
-    protected Class<AgeOff> getPredicateClass() {
-        return AgeOff.class;
-    }
-
-    @Override
     protected AgeOff getInstance() {
         return new AgeOff();
     }

@@ -241,11 +241,6 @@ public class OrTest extends PredicateTest<Or> {
     }
 
     @Override
-    protected Class<Or> getPredicateClass() {
-        return Or.class;
-    }
-
-    @Override
     protected Or getInstance() {
         return new Or(new IsA(String.class), new IsMoreThan(5L));
     }

@@ -7,16 +7,10 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class IncrementTest extends FunctionTest<Increment> {
-    @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return Increment.class;
-    }
-
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
         return new Class[] { Number.class };

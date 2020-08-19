@@ -98,11 +98,6 @@ public class IsFalseTest extends PredicateTest<IsFalse> {
     }
 
     @Override
-    protected Class<IsFalse> getPredicateClass() {
-        return IsFalse.class;
-    }
-
-    @Override
     protected IsFalse getInstance() {
         return new IsFalse();
     }

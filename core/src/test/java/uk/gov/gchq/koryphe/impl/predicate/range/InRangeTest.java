@@ -197,11 +197,6 @@ public class InRangeTest<T extends Comparable<T>> extends PredicateTest<InRange>
     }
 
     @Override
-    protected Class<? extends InRange> getPredicateClass() {
-        return getInstance().getClass();
-    }
-
-    @Override
     protected InRange<T> getInstance() {
         return createBuilder()
                 .start(convert(1000L))

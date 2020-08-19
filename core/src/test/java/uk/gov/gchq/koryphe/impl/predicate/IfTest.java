@@ -58,11 +58,6 @@ public class IfTest extends PredicateTest<If> {
         return new If<>(new IsA(Integer.class), new IsLessThan(3), new IsA(String.class));
     }
 
-    @Override
-    protected Class<? extends Predicate> getPredicateClass() {
-        return If.class;
-    }
-
     @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
