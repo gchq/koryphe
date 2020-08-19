@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ProductTest extends BinaryOperatorTest {
+public class ProductTest extends BinaryOperatorTest<Product> {
 
     @Test
     public void testAggregateInShortMode() {
@@ -360,7 +360,7 @@ public class ProductTest extends BinaryOperatorTest {
     }
 
     @Override
-    protected Class<Product> getFunctionClass() {
-        return Product.class;
+    protected Iterable<Product> getDifferentInstances() {
+        return null;
     }
 }

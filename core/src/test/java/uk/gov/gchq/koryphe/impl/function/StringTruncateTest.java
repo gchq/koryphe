@@ -22,13 +22,12 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class StringTruncateTest extends FunctionTest {
+public class StringTruncateTest extends FunctionTest<StringTruncate> {
 
     @Test
     public void shouldHandleNullInput() {
@@ -74,7 +73,7 @@ public class StringTruncateTest extends FunctionTest {
     }
 
     @Override
-    protected Iterable<Function> getDifferentInstances() {
+    protected Iterable<StringTruncate> getDifferentInstances() {
         return Arrays.asList(
                 new StringTruncate(),
                 new StringTruncate(5, true),

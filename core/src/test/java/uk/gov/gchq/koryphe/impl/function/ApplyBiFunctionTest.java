@@ -25,25 +25,19 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class ApplyBiFunctionTest extends FunctionTest {
+public class ApplyBiFunctionTest extends FunctionTest<ApplyBiFunction> {
     @Override
-    protected Function getInstance() {
+    protected ApplyBiFunction getInstance() {
         return new ApplyBiFunction(new Sum());
     }
 
     @Override
-    protected Iterable<Function> getDifferentInstances() {
+    protected Iterable<ApplyBiFunction> getDifferentInstances() {
         return Collections.singleton(new ApplyBiFunction(new And()));
-    }
-
-    @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ApplyBiFunction.class;
     }
 
     @Override

@@ -37,7 +37,7 @@ import static uk.gov.gchq.koryphe.util.DateUtil.DAYS_TO_MILLISECONDS;
 import static uk.gov.gchq.koryphe.util.DateUtil.HOURS_TO_MILLISECONDS;
 import static uk.gov.gchq.koryphe.util.DateUtil.MINUTES_TO_MILLISECONDS;
 
-public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends PredicateTest {
+public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends PredicateTest<AbstractInTimeRange> {
 
     @Test
     public void shouldAcceptValuesInRange() {
@@ -601,15 +601,25 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
         assertEquals(end, deserialisedFilter.getEnd());
     }
 
-    protected Class<? extends AbstractInTimeRange> getPredicateClass() {
-        return getInstance().getClass();
-    }
-
-    protected AbstractInTimeRange<T> getInstance() {
+    protected AbstractInTimeRange getInstance() {
         return createBuilder()
                 .start("1000")
                 .end("1010")
                 .build();
+    }
+
+    @Override
+    protected Iterable<AbstractInTimeRange> getDifferentInstances() {
+        return Arrays.asList(
+                createBuilder()
+                    .start("1000")
+                    .end("2000")
+                    .build(),
+                createBuilder()
+                        .start("10")
+                        .end("1010")
+                        .build()
+        );
     }
 
     protected T convert(final Long value) {

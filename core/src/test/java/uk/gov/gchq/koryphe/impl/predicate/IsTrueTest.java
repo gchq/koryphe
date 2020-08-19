@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class IsTrueTest extends PredicateTest {
+public class IsTrueTest extends PredicateTest<IsTrue> {
 
     @Test
     public void shouldAcceptTheValueWhenTrue() {
@@ -105,5 +105,10 @@ public class IsTrueTest extends PredicateTest {
     @Override
     protected IsTrue getInstance() {
         return new IsTrue();
+    }
+
+    @Override
+    protected Iterable<IsTrue> getDifferentInstances() {
+        return null;
     }
 }

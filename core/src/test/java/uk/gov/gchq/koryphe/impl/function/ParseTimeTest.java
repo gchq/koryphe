@@ -30,14 +30,14 @@ import java.util.function.Function;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class ParseTimeTest extends FunctionTest {
+public class ParseTimeTest extends FunctionTest<ParseTime> {
     @Override
-    protected Function getInstance() {
+    protected ParseTime getInstance() {
         return new ParseTime().timeZone("UTC");
     }
 
     @Override
-    protected Iterable<Function> getDifferentInstances() {
+    protected Iterable<ParseTime> getDifferentInstances() {
         return Arrays.asList(
                 new ParseTime().format("dd-MMM-YYYY hh:mm:ss"),
                 new ParseTime().timeZone("PST"),

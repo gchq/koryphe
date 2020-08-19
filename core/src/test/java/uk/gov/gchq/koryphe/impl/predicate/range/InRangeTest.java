@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class InRangeTest<T extends Comparable<T>> extends PredicateTest {
+public class InRangeTest<T extends Comparable<T>> extends PredicateTest<InRange> {
 
     @Test
     public void shouldAcceptValuesInRange() {
@@ -207,6 +207,20 @@ public class InRangeTest<T extends Comparable<T>> extends PredicateTest {
                 .start(convert(1000L))
                 .end(convert(1010L))
                 .build();
+    }
+
+    @Override
+    protected Iterable<InRange> getDifferentInstances() {
+        return Arrays.asList(
+                createBuilder()
+                    .start(convert(100L))
+                    .end(convert(1010L))
+                    .build(),
+                createBuilder()
+                    .start(convert(1000L))
+                    .end(convert(2000L))
+                    .build()
+        );
     }
 
     protected T convert(final Long value) {

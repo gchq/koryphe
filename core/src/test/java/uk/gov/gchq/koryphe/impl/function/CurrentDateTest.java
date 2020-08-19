@@ -5,15 +5,10 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CurrentDateTest extends FunctionTest {
-    @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return CurrentDate.class;
-    }
+public class CurrentDateTest extends FunctionTest<CurrentDate> {
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
@@ -42,7 +37,12 @@ public class CurrentDateTest extends FunctionTest {
     }
 
     @Override
-    protected Function getInstance() {
+    protected CurrentDate getInstance() {
         return new CurrentDate();
+    }
+
+    @Override
+    protected Iterable<CurrentDate> getDifferentInstances() {
+        return null;
     }
 }

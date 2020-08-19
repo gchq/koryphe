@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class IsInTest extends PredicateTest {
+public class IsInTest extends PredicateTest<IsIn> {
 
     @Test
     public void shouldAcceptWhenValueInList() {
@@ -89,5 +89,10 @@ public class IsInTest extends PredicateTest {
     @Override
     protected IsIn getInstance() {
         return new IsIn(Collections.singletonList("someValue"));
+    }
+
+    @Override
+    protected Iterable<IsIn> getDifferentInstances() {
+        return null;
     }
 }

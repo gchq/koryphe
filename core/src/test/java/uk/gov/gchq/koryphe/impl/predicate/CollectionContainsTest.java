@@ -29,14 +29,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CollectionContainsTest extends PredicateTest {
+public class CollectionContainsTest extends PredicateTest<CollectionContains> {
 
     private static final CustomObj VALUE1 = new CustomObj();
     private static final String VALUE2 = "value2";
@@ -155,7 +154,7 @@ public class CollectionContainsTest extends PredicateTest {
     }
 
     @Override
-    protected Iterable<Predicate> getDifferentInstances() {
+    protected Iterable<CollectionContains> getDifferentInstances() {
         return Arrays.asList(
                 new CollectionContains(),
                 new CollectionContains(VALUE2)

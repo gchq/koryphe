@@ -31,14 +31,13 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AreInTest extends PredicateTest {
+public class AreInTest extends PredicateTest<AreIn> {
 
     private static final CustomObj VALUE1 = new CustomObj();
     private static final String VALUE2 = "value2";
@@ -183,7 +182,7 @@ public class AreInTest extends PredicateTest {
     }
 
     @Override
-    protected Iterable<Predicate> getDifferentInstances() {
+    protected Iterable<AreIn> getDifferentInstances() {
         return Arrays.asList(
                 new AreIn(),
                 new AreIn(VALUE1, VALUE2),

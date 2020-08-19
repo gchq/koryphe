@@ -22,13 +22,12 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class MultiplyLongByTest extends FunctionTest {
+public class MultiplyLongByTest extends FunctionTest<MultiplyLongBy> {
 
     @Test
     public void shouldMultiplyBy2() {
@@ -95,7 +94,7 @@ public class MultiplyLongByTest extends FunctionTest {
     }
 
     @Override
-    protected Iterable<Function> getDifferentInstances() {
+    protected Iterable<MultiplyLongBy> getDifferentInstances() {
         return Arrays.asList(
                 new MultiplyLongBy(),
                 new MultiplyLongBy(100L)

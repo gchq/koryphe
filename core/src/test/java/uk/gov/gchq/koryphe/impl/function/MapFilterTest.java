@@ -36,7 +36,7 @@ import java.util.function.Function;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class MapFilterTest extends FunctionTest {
+public class MapFilterTest extends FunctionTest<MapFilter> {
 
     @Test
     public void shouldApplyKeyPredicate() {
@@ -136,7 +136,7 @@ public class MapFilterTest extends FunctionTest {
     }
 
     @Override
-    protected Iterable<Function> getDifferentInstances() {
+    protected Iterable<MapFilter> getDifferentInstances() {
         return Arrays.asList(
                 new MapFilter()
                         .keyPredicate(new IsA(String.class))
@@ -151,11 +151,6 @@ public class MapFilterTest extends FunctionTest {
                         .valuePredicate(new IsMoreThan(1))
                         .keyValuePredicate(new IsXLessThanY())
         );
-    }
-
-    @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return MapFilter.class;
     }
 
     @Override

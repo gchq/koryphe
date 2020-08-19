@@ -31,12 +31,11 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class ToTupleTest extends FunctionTest {
+public class ToTupleTest extends FunctionTest<ToTuple> {
 
     @Test
     public void shouldConvertListIntoArrayTuple() {
@@ -104,13 +103,13 @@ public class ToTupleTest extends FunctionTest {
     }
 
     @Override
-    protected Function getInstance() {
+    protected ToTuple getInstance() {
         return new ToTuple();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ToTuple.class;
+    protected Iterable<ToTuple> getDifferentInstances() {
+        return null;
     }
 
     @Override

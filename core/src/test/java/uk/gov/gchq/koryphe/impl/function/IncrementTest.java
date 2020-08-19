@@ -1,17 +1,17 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import org.junit.jupiter.api.Test;
+
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class IncrementTest extends FunctionTest {
+public class IncrementTest extends FunctionTest<Increment> {
     @Override
     protected Class<? extends Function> getFunctionClass() {
         return Increment.class;
@@ -103,12 +103,12 @@ public class IncrementTest extends FunctionTest {
     }
 
     @Override
-    protected Function getInstance() {
+    protected Increment getInstance() {
         return new Increment(3);
     }
 
     @Override
-    protected Iterable<Function> getDifferentInstances() {
+    protected Iterable<Increment> getDifferentInstances() {
         return Arrays.asList(
                 new Increment(3L),
                 new Increment(5),

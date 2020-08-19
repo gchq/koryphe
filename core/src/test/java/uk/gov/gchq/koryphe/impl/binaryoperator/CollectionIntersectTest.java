@@ -32,7 +32,7 @@ import java.util.TreeSet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class CollectionIntersectTest extends BinaryOperatorTest {
+public class CollectionIntersectTest extends BinaryOperatorTest<CollectionIntersect> {
 
     @Test
     public void shouldIntersectArraysTogether() {
@@ -124,7 +124,7 @@ public class CollectionIntersectTest extends BinaryOperatorTest {
                 "}"), json);
 
         // When 2
-        final CollectionIntersect deserialisedAggregator = JsonSerialiser.deserialise(json, getFunctionClass());
+        final CollectionIntersect deserialisedAggregator = JsonSerialiser.deserialise(json, CollectionIntersect.class);
 
         // Then 2
         assertNotNull(deserialisedAggregator);
@@ -136,7 +136,8 @@ public class CollectionIntersectTest extends BinaryOperatorTest {
     }
 
     @Override
-    protected Class<CollectionIntersect> getFunctionClass() {
-        return CollectionIntersect.class;
+    protected Iterable<CollectionIntersect> getDifferentInstances() {
+        return null;
     }
+
 }

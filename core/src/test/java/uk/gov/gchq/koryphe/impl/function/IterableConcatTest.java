@@ -25,22 +25,21 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class IterableConcatTest extends FunctionTest {
+public class IterableConcatTest extends FunctionTest<IterableConcat> {
     @Override
-    protected Function getInstance() {
+    protected IterableConcat getInstance() {
         return new IterableConcat();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return IterableConcat.class;
+    protected Iterable<IterableConcat> getDifferentInstances() {
+        return null;
     }
 
     @Override

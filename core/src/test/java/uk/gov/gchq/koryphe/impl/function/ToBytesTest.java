@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class ToBytesTest extends FunctionTest {
+public class ToBytesTest extends FunctionTest<ToBytes> {
 
     @Test
     public void shouldGetBytes() {
@@ -56,12 +56,12 @@ public class ToBytesTest extends FunctionTest {
     }
 
     @Override
-    protected Function getInstance() {
+    protected ToBytes getInstance() {
         return new ToBytes();
     }
 
     @Override
-    protected Iterable<Function> getDifferentInstances() {
+    protected Iterable<ToBytes> getDifferentInstances() {
         return Collections.singletonList(new ToBytes(StandardCharsets.US_ASCII));
     }
 

@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class StringPrependTest extends FunctionTest {
+public class StringPrependTest extends FunctionTest<StringPrepend> {
 
     @Test
     public void shouldHandleNullInput() {
@@ -82,7 +82,7 @@ public class StringPrependTest extends FunctionTest {
     }
 
     @Override
-    protected Iterable<Function> getDifferentInstances() {
+    protected Iterable<StringPrepend> getDifferentInstances() {
         return Collections.singletonList(new StringPrepend("different"));
     }
 

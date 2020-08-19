@@ -15,7 +15,7 @@ import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ToDateStringTest extends FunctionTest {
+class ToDateStringTest extends FunctionTest<ToDateString> {
 
     private static TimeZone originalTimezone;
 
@@ -69,7 +69,7 @@ class ToDateStringTest extends FunctionTest {
     }
 
     @Override
-    protected Iterable<Function> getDifferentInstances() {
+    protected Iterable<ToDateString> getDifferentInstances() {
         return Arrays.asList(
                 new ToDateString(),
                 new ToDateString("dd-MMM-yy hh:mm:ss")

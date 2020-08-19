@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class LongestTest extends FunctionTest {
+public class LongestTest extends FunctionTest<Longest> {
 
     @Test
     public void shouldHandleNullInputs() {
@@ -122,8 +122,8 @@ public class LongestTest extends FunctionTest {
     }
 
     @Override
-    protected Class<? extends Longest> getFunctionClass() {
-        return Longest.class;
+    protected Iterable<Longest> getDifferentInstances() {
+        return null;
     }
 
     @Override

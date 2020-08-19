@@ -35,14 +35,14 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class IterableFunctionTest extends FunctionTest {
+public class IterableFunctionTest extends FunctionTest<IterableFunction> {
     @Override
-    protected Function getInstance() {
+    protected IterableFunction getInstance() {
         return new IterableFunction();
     }
 
     @Override
-    protected Iterable<Function> getDifferentInstances() {
+    protected Iterable<IterableFunction> getDifferentInstances() {
         return Collections.singletonList(new IterableFunction(new ToLong()));
     }
 

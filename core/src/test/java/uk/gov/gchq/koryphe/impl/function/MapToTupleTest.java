@@ -26,12 +26,11 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class MapToTupleTest extends FunctionTest {
+public class MapToTupleTest extends FunctionTest<MapToTuple> {
 
     @Test
     public void shouldConvertMapIntoMapTuple() {
@@ -50,13 +49,13 @@ public class MapToTupleTest extends FunctionTest {
     }
 
     @Override
-    protected Function getInstance() {
+    protected MapToTuple getInstance() {
         return new MapToTuple<String>();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return MapToTuple.class;
+    protected Iterable<MapToTuple> getDifferentInstances() {
+        return null;
     }
 
     @Override

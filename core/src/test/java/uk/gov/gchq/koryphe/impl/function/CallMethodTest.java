@@ -23,18 +23,16 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
-public class CallMethodTest extends FunctionTest {
+public class CallMethodTest extends FunctionTest<CallMethod> {
 
     private static final String TEST_METHOD = "testMethod";
 
@@ -101,18 +99,13 @@ public class CallMethodTest extends FunctionTest {
     }
 
     @Override
-    protected Function getInstance() {
+    protected CallMethod getInstance() {
         return new CallMethod();
     }
 
     @Override
-    protected Iterable<Function> getDifferentInstances() {
+    protected Iterable<CallMethod> getDifferentInstances() {
         return Collections.singletonList(new CallMethod("toString"));
-    }
-
-    @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return CallMethod.class;
     }
 
     @Override

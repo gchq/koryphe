@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class IsATest extends PredicateTest {
+public class IsATest extends PredicateTest<IsA> {
 
     @Test
     public void shouldAcceptTheValueWhenSameClass() {
@@ -129,12 +129,12 @@ public class IsATest extends PredicateTest {
     }
 
     @Override
-    protected Predicate getInstance() {
+    protected IsA getInstance() {
         return new IsA(String.class);
     }
 
     @Override
-    protected Iterable<Predicate> getDifferentInstances() {
+    protected Iterable<IsA> getDifferentInstances() {
         return Arrays.asList(
                 new IsA(),
                 new IsA(Long.class)

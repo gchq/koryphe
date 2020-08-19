@@ -24,19 +24,23 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class DeserialiseXmlTest extends FunctionTest {
+public class DeserialiseXmlTest extends FunctionTest<DeserialiseXml> {
     @Override
-    protected Function getInstance() {
+    protected DeserialiseXml getInstance() {
         return new DeserialiseXml();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
+    protected Iterable<DeserialiseXml> getDifferentInstances() {
+        return null;
+    }
+
+    @Override
+    protected Class<DeserialiseXml> getFunctionClass() {
         return DeserialiseXml.class;
     }
 

@@ -41,7 +41,7 @@ import static org.mockito.Mockito.verify;
 import static uk.gov.gchq.koryphe.util.Util.project;
 import static uk.gov.gchq.koryphe.util.Util.select;
 
-public class IfTest extends FunctionTest {
+public class IfTest extends FunctionTest<If> {
 
     @Override
     protected If<Object, Object> getInstance() {
@@ -52,7 +52,7 @@ public class IfTest extends FunctionTest {
     }
 
     @Override
-    protected Iterable<Function> getDifferentInstances() {
+    protected Iterable<If> getDifferentInstances() {
         return Arrays.asList(
                 new If<>()
                         .condition(false)

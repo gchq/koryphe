@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class DictionaryLookupTest extends FunctionTest {
+public class DictionaryLookupTest extends FunctionTest<DictionaryLookup<?, ?>> {
 
     private Map<String, Integer> dictionary = new HashMap<>();
     ;
@@ -72,7 +72,7 @@ public class DictionaryLookupTest extends FunctionTest {
     }
 
     @Override
-    protected Function getInstance() {
+    protected DictionaryLookup<String, Integer> getInstance() {
         HashMap<String, Integer> map = new HashMap<>();
         map.put("one", 1);
         map.put("two", 2);
@@ -81,10 +81,11 @@ public class DictionaryLookupTest extends FunctionTest {
     }
 
     @Override
-    protected Iterable<Function> getDifferentInstances() {
-        return Arrays.asList(new DictionaryLookup(null),
-                new DictionaryLookup(Maps.newHashMap())
-                );
+    protected Iterable<DictionaryLookup<?, ?>> getDifferentInstances() {
+        return Arrays.asList(
+                new DictionaryLookup<>(null),
+                new DictionaryLookup<>(Maps.newHashMap())
+        );
     }
 
     @Override

@@ -1,4 +1,4 @@
-package uk.gov.gchq.koryphe;
+package uk.gov.gchq.koryphe.util;
 
 import org.junit.jupiter.api.Test;
 
@@ -13,9 +13,7 @@ public abstract class EqualityTest<T> {
 
     protected abstract T getInstance();
 
-    protected Iterable<T> getDifferentInstances() { // todo make abstract so that all tests will have to do it
-        return null;
-    }
+    protected abstract Iterable<T> getDifferentInstances();
 
     @Test
     public void shouldEqualsItself() {

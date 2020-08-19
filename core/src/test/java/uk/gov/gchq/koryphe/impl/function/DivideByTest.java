@@ -24,12 +24,11 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class DivideByTest extends FunctionTest {
+public class DivideByTest extends FunctionTest<DivideBy> {
 
     @Test
     public void shouldDivideBy2() {
@@ -93,13 +92,8 @@ public class DivideByTest extends FunctionTest {
     }
 
     @Override
-    protected Iterable<Function> getDifferentInstances() {
+    protected Iterable<DivideBy> getDifferentInstances() {
         return Collections.singletonList(new DivideBy(5));
-    }
-
-    @Override
-    protected Class<DivideBy> getFunctionClass() {
-        return DivideBy.class;
     }
 
     @Override

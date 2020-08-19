@@ -26,13 +26,12 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class StringJoinTest extends FunctionTest {
+public class StringJoinTest extends FunctionTest<StringJoin> {
 
     @Test
     public void shouldHandleNullInput() {
@@ -117,7 +116,7 @@ public class StringJoinTest extends FunctionTest {
     }
 
     @Override
-    protected Iterable<Function> getDifferentInstances() {
+    protected Iterable<StringJoin> getDifferentInstances() {
         return Collections.singletonList(new StringJoin("\t"));
     }
 

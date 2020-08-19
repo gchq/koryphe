@@ -28,9 +28,9 @@ import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class FunctionChainTest extends FunctionTest {
+public class FunctionChainTest extends FunctionTest<FunctionChain> {
     @Override
-    protected Function getInstance() {
+    protected FunctionChain getInstance() {
         return new FunctionChain.Builder<>()
                 .execute(new ToInteger())
                 .execute(new DivideBy(3))
@@ -38,9 +38,9 @@ public class FunctionChainTest extends FunctionTest {
     }
 
     @Override
-    protected Iterable<Function> getDifferentInstances() {
+    protected Iterable<FunctionChain> getDifferentInstances() {
         return Arrays.asList(
-                new FunctionChain(),
+                new FunctionChain<>(),
                 new FunctionChain.Builder<>()
                         .execute(new ToString())
                         .execute(new StringSplit())

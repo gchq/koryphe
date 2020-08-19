@@ -28,7 +28,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -36,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class IsShorterThanTest extends PredicateTest {
+public class IsShorterThanTest extends PredicateTest<IsShorterThan> {
 
     @Test
     public void shouldSetAndGetMaxLength() {
@@ -200,7 +199,7 @@ public class IsShorterThanTest extends PredicateTest {
     }
 
     @Override
-    protected Iterable<Predicate> getDifferentInstances() {
+    protected Iterable<IsShorterThan> getDifferentInstances() {
         return Arrays.asList(
                 new IsShorterThan(10),
                 new IsShorterThan()

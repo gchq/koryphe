@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
-import uk.gov.gchq.koryphe.EqualityTest;
+import uk.gov.gchq.koryphe.util.EqualityTest;
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.signature.Signature;
@@ -30,13 +30,11 @@ import uk.gov.gchq.koryphe.util.VersionUtil;
 import java.io.IOException;
 import java.util.function.Function;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-public abstract class FunctionTest extends EqualityTest<Function> { // todo maybe Parameterise these tests (as well as the Predicate and BO tests)
+public abstract class FunctionTest<T extends Function> extends EqualityTest<T> {
 
     private static final ObjectMapper MAPPER = createObjectMapper();
 
@@ -47,7 +45,9 @@ public abstract class FunctionTest extends EqualityTest<Function> { // todo mayb
         return mapper;
     }
 
-    protected abstract Class<? extends Function> getFunctionClass();
+    protected Class<? extends Function> getFunctionClass() {
+        return getInstance().getClass();
+    }
 
     protected abstract Class[] getExpectedSignatureInputClasses();
 

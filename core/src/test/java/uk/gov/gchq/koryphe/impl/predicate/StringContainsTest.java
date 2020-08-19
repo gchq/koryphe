@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class StringContainsTest extends PredicateTest {
+public class StringContainsTest extends PredicateTest<StringContains> {
 
     private static final String INPUT = "This is a test string, used for the StringContains test";
 
@@ -131,12 +131,12 @@ public class StringContainsTest extends PredicateTest {
     }
 
     @Override
-    protected Predicate getInstance() {
+    protected StringContains getInstance() {
         return new StringContains("");
     }
 
     @Override
-    protected Iterable<Predicate> getDifferentInstances() {
+    protected Iterable<StringContains> getDifferentInstances() {
         return Arrays.asList(
 //                new StringContains(), Empty string and null have the same hashcode
                 new StringContains("different"),

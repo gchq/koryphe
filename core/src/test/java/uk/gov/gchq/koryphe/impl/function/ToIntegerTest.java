@@ -22,12 +22,11 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class ToIntegerTest extends FunctionTest {
+public class ToIntegerTest extends FunctionTest<ToInteger> {
 
     @Test
     public void shouldConvertToInteger() {
@@ -43,13 +42,13 @@ public class ToIntegerTest extends FunctionTest {
     }
 
     @Override
-    protected Function getInstance() {
+    protected ToInteger getInstance() {
         return new ToInteger();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ToInteger.class;
+    protected Iterable<ToInteger> getDifferentInstances() {
+        return null;
     }
 
     @Override

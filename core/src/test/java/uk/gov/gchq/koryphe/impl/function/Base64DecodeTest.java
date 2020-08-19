@@ -23,21 +23,20 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class Base64DecodeTest extends FunctionTest {
+public class Base64DecodeTest extends FunctionTest<Base64Decode> {
     @Override
-    protected Function getInstance() {
+    protected Base64Decode getInstance() {
         return new Base64Decode();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return Base64Decode.class;
+    protected Iterable<Base64Decode> getDifferentInstances() {
+        return null;
     }
 
     @Override

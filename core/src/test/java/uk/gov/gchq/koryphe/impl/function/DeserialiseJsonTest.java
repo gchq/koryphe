@@ -25,25 +25,19 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class DeserialiseJsonTest extends FunctionTest {
+public class DeserialiseJsonTest extends FunctionTest<DeserialiseJson> {
     @Override
-    protected Function getInstance() {
+    protected DeserialiseJson getInstance() {
         return new DeserialiseJson();
     }
 
     @Override
-    protected Iterable<Function> getDifferentInstances() {
+    protected Iterable<DeserialiseJson> getDifferentInstances() {
         return Collections.singletonList(new DeserialiseJson(Long.class));
-    }
-
-    @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return DeserialiseJson.class;
     }
 
     @Override

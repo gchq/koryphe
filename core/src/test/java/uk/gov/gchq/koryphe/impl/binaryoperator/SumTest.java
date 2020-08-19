@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SumTest extends BinaryOperatorTest {
+public class SumTest extends BinaryOperatorTest<Sum> {
 
     @Test
     public void testAggregateShorts() {
@@ -434,7 +434,7 @@ public class SumTest extends BinaryOperatorTest {
     }
 
     @Override
-    protected Class<Sum> getFunctionClass() {
-        return Sum.class;
+    protected Iterable<Sum> getDifferentInstances() {
+        return null;
     }
 }

@@ -24,7 +24,7 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class ReverseStringTest extends FunctionTest {
+public class ReverseStringTest extends FunctionTest<ReverseString> {
 
     @Test
     public void shouldHandleNullInput() {
@@ -57,8 +57,8 @@ public class ReverseStringTest extends FunctionTest {
     }
 
     @Override
-    protected Class<? extends ReverseString> getFunctionClass() {
-        return ReverseString.class;
+    protected Iterable<ReverseString> getDifferentInstances() {
+        return null;
     }
 
     @Override

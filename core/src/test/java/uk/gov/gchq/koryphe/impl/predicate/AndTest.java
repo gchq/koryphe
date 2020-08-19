@@ -35,7 +35,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-public class AndTest extends PredicateTest {
+public class AndTest extends PredicateTest<And> {
 
     @Test
     public void shouldAcceptWhenAllFunctionsAccept() {
@@ -251,7 +251,7 @@ public class AndTest extends PredicateTest {
     }
 
     @Override
-    protected Iterable<Predicate> getDifferentInstances() {
+    protected Iterable<And> getDifferentInstances() {
         return Arrays.asList(
                 new And(new Exists(), new IsMoreThan(10L)),
                 new And(new Exists())

@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MaxTest extends BinaryOperatorTest {
+public class MaxTest extends BinaryOperatorTest<Max> {
 
     @Test
     public void testAggregateInIntMode() {
@@ -156,7 +156,7 @@ public class MaxTest extends BinaryOperatorTest {
     }
 
     @Override
-    protected Class<Max> getFunctionClass() {
-        return Max.class;
+    protected Iterable<Max> getDifferentInstances() {
+        return null;
     }
 }

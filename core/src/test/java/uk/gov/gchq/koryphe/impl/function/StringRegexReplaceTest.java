@@ -22,13 +22,12 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class StringRegexReplaceTest extends FunctionTest {
+public class StringRegexReplaceTest extends FunctionTest<StringRegexReplace> {
 
     @Test
     public void shouldHandleNullInput() {
@@ -74,7 +73,7 @@ public class StringRegexReplaceTest extends FunctionTest {
     }
 
     @Override
-    protected Iterable<Function> getDifferentInstances() {
+    protected Iterable<StringRegexReplace> getDifferentInstances() {
         return Arrays.asList(
                 new StringRegexReplace("replaceMe", "withSomethingElse"),
                 new StringRegexReplace("r.*Me", "withThis"),

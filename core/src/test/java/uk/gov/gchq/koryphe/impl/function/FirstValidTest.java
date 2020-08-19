@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class FirstValidTest extends FunctionTest {
+public class FirstValidTest extends FunctionTest<FirstValid> {
 
     @Test
     public void shouldApplyKeyPredicate() {
@@ -85,10 +85,10 @@ public class FirstValidTest extends FunctionTest {
     }
 
     @Override
-    protected Iterable<Function> getDifferentInstances() {
+    protected Iterable<FirstValid> getDifferentInstances() {
         return Arrays.asList(
-                new FirstValid(new IsMoreThan(4)),
-                new FirstValid(new IsLessThan(3))
+                new FirstValid<>(new IsMoreThan(4)),
+                new FirstValid<>(new IsLessThan(3))
         );
     }
 

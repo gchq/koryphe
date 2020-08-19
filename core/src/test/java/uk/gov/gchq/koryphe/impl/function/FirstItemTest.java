@@ -22,7 +22,6 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -30,25 +29,25 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class FirstItemTest extends FunctionTest {
+public class FirstItemTest extends FunctionTest<FirstItem> {
     @Override
-    protected Function getInstance() {
+    protected FirstItem getInstance() {
         return new FirstItem();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return FirstItem.class;
+    protected Iterable<FirstItem> getDifferentInstances() {
+        return null;
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] {Iterable.class};
+        return new Class[]{Iterable.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] {Object.class};
+        return new Class[]{Object.class};
     }
 
     @Test

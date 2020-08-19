@@ -26,7 +26,7 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class MultiplyTest extends FunctionTest {
+public class MultiplyTest extends FunctionTest<Multiply> {
 
     @Test
     public void shouldMultiply2() {
@@ -91,8 +91,8 @@ public class MultiplyTest extends FunctionTest {
     }
 
     @Override
-    protected Class<Multiply> getFunctionClass() {
-        return Multiply.class;
+    protected Iterable<Multiply> getDifferentInstances() {
+        return null;
     }
 
     @Override

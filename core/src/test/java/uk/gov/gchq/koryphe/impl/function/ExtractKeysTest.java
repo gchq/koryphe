@@ -25,22 +25,21 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ExtractKeysTest extends FunctionTest {
+public class ExtractKeysTest extends FunctionTest<ExtractKeys> {
     @Override
-    protected Function getInstance() {
+    protected ExtractKeys getInstance() {
         return new ExtractKeys();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ExtractKeys.class;
+    protected Iterable<ExtractKeys> getDifferentInstances() {
+        return null;
     }
 
     @Override

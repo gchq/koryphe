@@ -23,7 +23,6 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -33,7 +32,7 @@ import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class StringSplitTest extends FunctionTest {
+public class StringSplitTest extends FunctionTest<StringSplit> {
 
     @Test
     public void shouldHandleNullInput() {
@@ -93,7 +92,7 @@ public class StringSplitTest extends FunctionTest {
     }
 
     @Override
-    protected Iterable<Function> getDifferentInstances() {
+    protected Iterable<StringSplit> getDifferentInstances() {
         return Collections.singletonList(new StringSplit(" "));
     }
 

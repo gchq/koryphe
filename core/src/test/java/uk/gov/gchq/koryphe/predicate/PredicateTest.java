@@ -18,7 +18,7 @@ package uk.gov.gchq.koryphe.predicate;
 
 import org.junit.jupiter.api.Test;
 
-import uk.gov.gchq.koryphe.EqualityTest;
+import uk.gov.gchq.koryphe.util.EqualityTest;
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -31,9 +31,11 @@ import java.util.function.Predicate;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-public abstract class PredicateTest extends EqualityTest<Predicate> {
+public abstract class PredicateTest<T extends Predicate> extends EqualityTest<T> {
 
-    protected abstract Class<? extends Predicate> getPredicateClass();
+    protected Class<? extends Predicate> getPredicateClass() {
+        return getInstance().getClass();
+    }
 
     @Test
     public abstract void shouldJsonSerialiseAndDeserialise() throws IOException;

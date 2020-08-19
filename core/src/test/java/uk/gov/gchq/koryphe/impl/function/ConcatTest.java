@@ -22,15 +22,13 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class ConcatTest extends FunctionTest {
+public class ConcatTest extends FunctionTest<Concat> {
 
     @Test
     public void shouldConcatStringsWithDefaultSeparator() {
@@ -83,7 +81,7 @@ public class ConcatTest extends FunctionTest {
     }
 
     @Override
-    protected Iterable<Function> getDifferentInstances() {
+    protected Iterable<Concat> getDifferentInstances() {
         return Collections.singletonList(new Concat(" "));
     }
 
@@ -109,11 +107,6 @@ public class ConcatTest extends FunctionTest {
         // Then 2
         assertNotNull(deserialisedConcat);
         assertEquals(separator, deserialisedConcat.getSeparator());
-    }
-
-    @Override
-    protected Class<Concat> getFunctionClass() {
-        return Concat.class;
     }
 
     @Override

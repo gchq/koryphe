@@ -23,7 +23,6 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MultiRegexTest extends PredicateTest {
+public class MultiRegexTest extends PredicateTest<MultiRegex> {
 
     @Test
     public void shouldAcceptValidValue() {
@@ -102,7 +101,7 @@ public class MultiRegexTest extends PredicateTest {
     }
 
     @Override
-    protected Iterable<Predicate> getDifferentInstances() {
+    protected Iterable<MultiRegex> getDifferentInstances() {
         return Arrays.asList(
                 new MultiRegex(),
                 new MultiRegex(Pattern.compile("Something")),

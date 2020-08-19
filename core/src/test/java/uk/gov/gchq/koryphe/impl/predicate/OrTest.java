@@ -35,7 +35,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-public class OrTest extends PredicateTest {
+public class OrTest extends PredicateTest<Or> {
 
     @Test
     public void shouldAcceptWhenOneFunctionsAccepts() {
@@ -251,7 +251,7 @@ public class OrTest extends PredicateTest {
     }
 
     @Override
-    protected Iterable<Predicate> getDifferentInstances() {
+    protected Iterable<Or> getDifferentInstances() {
         return Arrays.asList(
                 new Or<>(),
                 new Or<>(new IsMoreThan(5), new IsLessThan(5, true))

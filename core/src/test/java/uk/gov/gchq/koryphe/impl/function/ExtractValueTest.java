@@ -24,26 +24,20 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class ExtractValueTest extends FunctionTest {
+public class ExtractValueTest extends FunctionTest<ExtractValue> {
     @Override
-    protected Function getInstance() {
+    protected ExtractValue<String, Integer> getInstance() {
         return new ExtractValue<String, Integer>("testKey");
     }
 
     @Override
-    protected Iterable<Function> getDifferentInstances() {
+    protected Iterable<ExtractValue> getDifferentInstances() {
         return Collections.singletonList(new ExtractValue("differentKey"));
-    }
-
-    @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ExtractValue.class;
     }
 
     @Override

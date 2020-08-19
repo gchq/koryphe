@@ -20,12 +20,11 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class ToNullTest extends FunctionTest {
+public class ToNullTest extends FunctionTest<ToNull> {
 
     @Test
     public void shouldReturnNullWhenValueIsNotNull() {
@@ -52,13 +51,13 @@ public class ToNullTest extends FunctionTest {
     }
 
     @Override
-    protected Function getInstance() {
+    protected ToNull getInstance() {
         return new ToNull();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ToNull.class;
+    protected Iterable<ToNull> getDifferentInstances() {
+        return null;
     }
 
     @Override

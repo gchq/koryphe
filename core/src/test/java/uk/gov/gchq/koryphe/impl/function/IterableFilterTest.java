@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
-public class IterableFilterTest extends FunctionTest {
+public class IterableFilterTest extends FunctionTest<IterableFilter> {
 
     @Test
     public void shouldApplyKeyPredicate() {
@@ -90,7 +90,7 @@ public class IterableFilterTest extends FunctionTest {
     }
 
     @Override
-    protected Iterable<Function> getDifferentInstances() {
+    protected Iterable<IterableFilter> getDifferentInstances() {
         return Arrays.asList(
                 new IterableFilter(),
                 new IterableFilter(new IsLessThan(4L))

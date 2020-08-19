@@ -22,22 +22,21 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class LastItemTest extends FunctionTest {
+public class LastItemTest extends FunctionTest<LastItem> {
     @Override
-    protected Function getInstance() {
+    protected LastItem getInstance() {
         return new LastItem();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return LastItem.class;
+    protected Iterable<LastItem> getDifferentInstances() {
+        return null;
     }
 
     @Override

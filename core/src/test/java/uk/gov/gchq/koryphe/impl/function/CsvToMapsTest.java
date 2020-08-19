@@ -26,19 +26,18 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class CsvToMapsTest extends FunctionTest {
+public class CsvToMapsTest extends FunctionTest<CsvToMaps> {
     @Override
-    protected Function getInstance() {
+    protected CsvToMaps getInstance() {
         return new CsvToMaps();
     }
 
     @Override
-    protected Iterable<Function> getDifferentInstances() {
+    protected Iterable<CsvToMaps> getDifferentInstances() {
         return Arrays.asList(
                 new CsvToMaps().delimiter('\t'),
                 new CsvToMaps().firstRow(8),
@@ -46,11 +45,6 @@ public class CsvToMapsTest extends FunctionTest {
                 new CsvToMaps().quoted(),
                 new CsvToMaps().header("myHeader")
         );
-    }
-
-    @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return CsvToMaps.class;
     }
 
     @Override

@@ -37,7 +37,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-public class IfTest extends PredicateTest {
+public class IfTest extends PredicateTest<If> {
 
     @Override
     protected If<Object> getInstance() {
@@ -45,7 +45,7 @@ public class IfTest extends PredicateTest {
     }
 
     @Override
-    protected Iterable<Predicate> getDifferentInstances() {
+    protected Iterable<If> getDifferentInstances() {
         return Arrays.asList(
                 new If<>(false, new IsA(String.class), new IsA(Integer.class)),
                 new If<>(true, new IsMoreThan(5L), new IsA(Integer.class)),

@@ -26,14 +26,13 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MapContainsPredicateTest extends PredicateTest {
+public class MapContainsPredicateTest extends PredicateTest<MapContainsPredicate> {
 
     private static final IsEqual KEY_PREDICATE_1 = new IsEqual("key1");
     private static final Regex KEY_PREDICATE_2 = new Regex("key.*");
@@ -130,7 +129,7 @@ public class MapContainsPredicateTest extends PredicateTest {
     }
 
     @Override
-    protected Iterable<Predicate> getDifferentInstances() {
+    protected Iterable<MapContainsPredicate> getDifferentInstances() {
         return Arrays.asList(
                 new MapContainsPredicate(),
                 new MapContainsPredicate(new IsEqual("differentValue")),

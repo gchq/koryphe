@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AreEqualTest extends PredicateTest {
+public class AreEqualTest extends PredicateTest<AreEqual> {
 
     @Test
     public void shouldAcceptTheWhenEqualValues() {
@@ -105,5 +105,10 @@ public class AreEqualTest extends PredicateTest {
     @Override
     protected AreEqual getInstance() {
         return new AreEqual();
+    }
+
+    @Override
+    protected Iterable<AreEqual> getDifferentInstances() {
+        return null;
     }
 }

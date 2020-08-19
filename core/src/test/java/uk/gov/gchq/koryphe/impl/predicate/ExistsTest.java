@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ExistsTest extends PredicateTest {
+public class ExistsTest extends PredicateTest<Exists> {
 
     @Test
     public void shouldAcceptTheValueWhenNotNull() {
@@ -81,5 +81,10 @@ public class ExistsTest extends PredicateTest {
     @Override
     protected Exists getInstance() {
         return new Exists();
+    }
+
+    @Override
+    protected Iterable<Exists> getDifferentInstances() {
+        return null;
     }
 }

@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> extends PredicateTest {
+public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> extends PredicateTest<AbstractInTimeRangeDual> {
 
     @AfterEach
     public void after() {
@@ -561,11 +561,25 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
     }
 
     @Override
-    protected Predicate getInstance() {
+    protected AbstractInTimeRangeDual getInstance() {
         return createBuilder()
                 .start("1000")
                 .end("1010")
                 .build();
+    }
+
+    @Override
+    protected Iterable<AbstractInTimeRangeDual> getDifferentInstances() {
+        return Arrays.asList(
+                createBuilder()
+                        .start("100")
+                        .end("1010")
+                        .build(),
+                createBuilder()
+                        .start("1000")
+                        .end("2010")
+                        .build()
+        );
     }
 
     protected abstract AbstractInTimeRangeDual.BaseBuilder<?, ? extends AbstractInTimeRangeDual<T>, T> createBuilderWithTimeOffsets();

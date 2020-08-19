@@ -34,7 +34,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class NotTest extends PredicateTest {
+public class NotTest extends PredicateTest<Not> {
 
     @Test
     public void shouldAcceptTheValueWhenTheWrappedFunctionReturnsFalse() {
@@ -115,7 +115,7 @@ public class NotTest extends PredicateTest {
     }
 
     @Override
-    protected Iterable<Predicate> getDifferentInstances() {
+    protected Iterable<Not> getDifferentInstances() {
         return Arrays.asList(
                 new Not<>(),
                 new Not<>(new IsEqual("test")),

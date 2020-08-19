@@ -4,15 +4,10 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CurrentTimeTest extends FunctionTest {
-    @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return CurrentTime.class;
-    }
+public class CurrentTimeTest extends FunctionTest<CurrentTime> {
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
@@ -41,7 +36,12 @@ public class CurrentTimeTest extends FunctionTest {
     }
 
     @Override
-    protected Function getInstance() {
+    protected CurrentTime getInstance() {
         return new CurrentTime();
+    }
+
+    @Override
+    protected Iterable<CurrentTime> getDifferentInstances() {
+        return null;
     }
 }

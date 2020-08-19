@@ -28,13 +28,12 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class IterableFlattenTest extends FunctionTest {
+public class IterableFlattenTest extends FunctionTest<IterableFlatten> {
 
     @Test
     public void shouldHandleNullInput() {
@@ -80,13 +79,8 @@ public class IterableFlattenTest extends FunctionTest {
     }
 
     @Override
-    protected Iterable<Function> getDifferentInstances() {
+    protected Iterable<IterableFlatten> getDifferentInstances() {
         return Collections.singletonList(new IterableFlatten(new StringConcat()));
-    }
-
-    @Override
-    protected Class<? extends IterableFlatten> getFunctionClass() {
-        return IterableFlatten.class;
     }
 
     @Override

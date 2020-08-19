@@ -22,13 +22,12 @@ import uk.gov.gchq.koryphe.binaryoperator.BinaryOperatorTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.function.BinaryOperator;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class OrTest extends BinaryOperatorTest {
+public class OrTest extends BinaryOperatorTest<Or> {
 
     @Test
     public void shouldCompareBooleans() {
@@ -63,13 +62,13 @@ public class OrTest extends BinaryOperatorTest {
     }
 
     @Override
-    protected BinaryOperator getInstance() {
+    protected Or getInstance() {
         return new Or();
     }
 
     @Override
-    protected Class<? extends BinaryOperator> getFunctionClass() {
-        return Or.class;
+    protected Iterable<Or> getDifferentInstances() {
+        return null;
     }
 
     @Test
