@@ -32,7 +32,7 @@ import java.util.Arrays;
  */
 @Since("1.0.0")
 @Summary("Extracts items from a tuple")
-public class TupleInputAdapter<R, FI> extends KorypheFunction<Tuple<R>, FI> { // todo test
+public class TupleInputAdapter<R, FI> extends KorypheFunction<Tuple<R>, FI> {
     private R[] selection;
 
     /**

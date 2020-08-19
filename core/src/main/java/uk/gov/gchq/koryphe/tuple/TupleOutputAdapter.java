@@ -27,7 +27,7 @@ import java.util.function.BiFunction;
  * @param <R>  The type of reference used by tuples.
  * @param <FO> The adapted output type.
  */
-public class TupleOutputAdapter<R, FO> implements BiFunction<Tuple<R>, FO, Tuple<R>> { // todo test
+public class TupleOutputAdapter<R, FO> implements BiFunction<Tuple<R>, FO, Tuple<R>> {
     private R[] projection;
 
     /**
