@@ -25,6 +25,7 @@ import uk.gov.gchq.koryphe.tuple.predicate.KoryphePredicate2;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -41,6 +42,16 @@ public class IfTest extends PredicateTest {
     @Override
     protected If<Object> getInstance() {
         return new If<>(true, new IsA(String.class), new IsA(Integer.class));
+    }
+
+    @Override
+    protected Iterable<Predicate> getDifferentInstances() {
+        return Arrays.asList(
+                new If<>(false, new IsA(String.class), new IsA(Integer.class)),
+                new If<>(true, new IsMoreThan(5L), new IsA(Integer.class)),
+                new If<>(true, new IsA(String.class), new IsA(Long.class)),
+                new If<>()
+        );
     }
 
     private If<Comparable> getAltInstance() {

@@ -21,6 +21,7 @@ import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -132,6 +133,15 @@ public class StringContainsTest extends PredicateTest {
     @Override
     protected Predicate getInstance() {
         return new StringContains("");
+    }
+
+    @Override
+    protected Iterable<Predicate> getDifferentInstances() {
+        return Arrays.asList(
+//                new StringContains(), Empty string and null have the same hashcode
+                new StringContains("different"),
+                new StringContains("", true)
+        );
     }
 
     @Override

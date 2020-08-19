@@ -24,6 +24,7 @@ import uk.gov.gchq.koryphe.tuple.predicate.IntegerTupleAdaptedPredicate;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -246,6 +247,14 @@ public class OrTest extends PredicateTest {
 
     @Override
     protected Or getInstance() {
-        return new Or();
+        return new Or(new IsA(String.class), new IsMoreThan(5L));
+    }
+
+    @Override
+    protected Iterable<Predicate> getDifferentInstances() {
+        return Arrays.asList(
+                new Or<>(),
+                new Or<>(new IsMoreThan(5), new IsLessThan(5, true))
+        );
     }
 }

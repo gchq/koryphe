@@ -25,11 +25,13 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -178,5 +180,14 @@ public class AreInTest extends PredicateTest {
     @Override
     protected AreIn getInstance() {
         return new AreIn(VALUE1);
+    }
+
+    @Override
+    protected Iterable<Predicate> getDifferentInstances() {
+        return Arrays.asList(
+                new AreIn(),
+                new AreIn(VALUE1, VALUE2),
+                new AreIn(VALUE2)
+        );
     }
 }

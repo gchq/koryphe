@@ -25,9 +25,11 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -150,5 +152,13 @@ public class CollectionContainsTest extends PredicateTest {
     @Override
     protected CollectionContains getInstance() {
         return new CollectionContains(VALUE1);
+    }
+
+    @Override
+    protected Iterable<Predicate> getDifferentInstances() {
+        return Arrays.asList(
+                new CollectionContains(),
+                new CollectionContains(VALUE2)
+        );
     }
 }

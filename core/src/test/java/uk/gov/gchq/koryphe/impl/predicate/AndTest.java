@@ -24,6 +24,7 @@ import uk.gov.gchq.koryphe.tuple.predicate.IntegerTupleAdaptedPredicate;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -247,5 +248,13 @@ public class AndTest extends PredicateTest {
     @Override
     protected And getInstance() {
         return new And();
+    }
+
+    @Override
+    protected Iterable<Predicate> getDifferentInstances() {
+        return Arrays.asList(
+                new And(new Exists(), new IsMoreThan(10L)),
+                new And(new Exists())
+        );
     }
 }

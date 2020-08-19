@@ -22,6 +22,8 @@ import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class MultiRegexTest extends PredicateTest {
 
     @Test
-    public void shouldAccepValidValue() {
+    public void shouldAcceptValidValue() {
         // Given
         Pattern[] patterns = new Pattern[2];
         patterns[0] = Pattern.compile("fail");
@@ -97,6 +99,15 @@ public class MultiRegexTest extends PredicateTest {
         patterns[0] = Pattern.compile("NOTHING");
         patterns[1] = Pattern.compile("[t,T].*[t,T]");
         return new MultiRegex(patterns);
+    }
+
+    @Override
+    protected Iterable<Predicate> getDifferentInstances() {
+        return Arrays.asList(
+                new MultiRegex(),
+                new MultiRegex(Pattern.compile("Something")),
+                new MultiRegex(Pattern.compile("different"), Pattern.compile("[t,T].*[t,T]"))
+        );
     }
 
     @Override

@@ -76,8 +76,10 @@ public class Regex extends KoryphePredicate<String> {
         }
 
         final Regex regex = (Regex) obj;
+
         return new EqualsBuilder()
-                .append(controlValue.toString(), regex.controlValue.toString())
+                .append(controlValue != null ? controlValue.toString() : null,
+                        regex.controlValue != null ? regex.controlValue.toString(): null)
                 .isEquals();
     }
 
@@ -85,7 +87,7 @@ public class Regex extends KoryphePredicate<String> {
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 // Pattern does not override hashCode()
-                .append(controlValue.toString())
+                .append(controlValue != null ? controlValue.toString() : null)
                 .toHashCode();
     }
 

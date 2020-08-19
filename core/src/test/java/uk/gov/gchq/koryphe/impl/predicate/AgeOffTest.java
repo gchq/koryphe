@@ -22,6 +22,8 @@ import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -127,5 +129,10 @@ public class AgeOffTest extends PredicateTest {
     @Override
     protected AgeOff getInstance() {
         return new AgeOff();
+    }
+
+    @Override
+    protected Iterable<Predicate> getDifferentInstances() {
+        return Collections.singletonList(new AgeOff(100L));
     }
 }

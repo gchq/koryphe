@@ -23,6 +23,7 @@ import uk.gov.gchq.koryphe.signature.Signature;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -111,6 +112,15 @@ public class NotTest extends PredicateTest {
     @Override
     protected Not<Object> getInstance() {
         return new Not<>(new IsA(String.class));
+    }
+
+    @Override
+    protected Iterable<Predicate> getDifferentInstances() {
+        return Arrays.asList(
+                new Not<>(),
+                new Not<>(new IsEqual("test")),
+                new Not<>(new IsA(Long.class))
+        );
     }
 
     @Test

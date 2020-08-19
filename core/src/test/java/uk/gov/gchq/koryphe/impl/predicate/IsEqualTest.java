@@ -23,6 +23,8 @@ import uk.gov.gchq.koryphe.util.CustomObj;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -98,5 +100,13 @@ public class IsEqualTest extends PredicateTest {
     @Override
     protected IsEqual getInstance() {
         return new IsEqual("someString");
+    }
+
+    @Override
+    protected Iterable<Predicate> getDifferentInstances() {
+        return Arrays.asList(
+                new IsEqual(),
+                new IsEqual(4L)
+        );
     }
 }

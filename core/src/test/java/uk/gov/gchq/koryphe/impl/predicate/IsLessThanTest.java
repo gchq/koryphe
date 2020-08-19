@@ -24,6 +24,8 @@ import uk.gov.gchq.koryphe.util.CustomObj;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -188,5 +190,14 @@ public class IsLessThanTest extends PredicateTest {
     @Override
     protected IsLessThan getInstance() {
         return new IsLessThan(5);
+    }
+
+    @Override
+    protected Iterable<Predicate> getDifferentInstances() {
+        return Arrays.asList(
+                new IsLessThan(),
+                new IsLessThan(10),
+                new IsLessThan(5, true)
+        );
     }
 }

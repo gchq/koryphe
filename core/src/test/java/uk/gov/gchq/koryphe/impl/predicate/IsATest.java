@@ -18,9 +18,12 @@ package uk.gov.gchq.koryphe.impl.predicate;
 
 import org.junit.jupiter.api.Test;
 
+import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -28,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class IsATest {
+public class IsATest extends PredicateTest {
 
     @Test
     public void shouldAcceptTheValueWhenSameClass() {
@@ -100,6 +103,11 @@ public class IsATest {
         assertThrows(IllegalArgumentException.class, () -> new IsA(type));
     }
 
+    @Override
+    protected Class<? extends Predicate> getPredicateClass() {
+        return IsA.class;
+    }
+
     @Test
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -118,5 +126,18 @@ public class IsATest {
         // Then 2
         assertNotNull(deserialisedFilter);
         assertEquals(type.getName(), deserialisedFilter.getType());
+    }
+
+    @Override
+    protected Predicate getInstance() {
+        return new IsA(String.class);
+    }
+
+    @Override
+    protected Iterable<Predicate> getDifferentInstances() {
+        return Arrays.asList(
+                new IsA(),
+                new IsA(Long.class)
+        );
     }
 }
