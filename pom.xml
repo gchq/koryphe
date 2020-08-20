@@ -17,7 +17,7 @@
     </modules>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
 
         <findbugs.version>3.0.1</findbugs.version>
         <guava.version>27.0.1-jre</guava.version>
@@ -29,22 +29,24 @@
         <slf4j.api.version>1.7.25</slf4j.api.version>
 
         <checkstyle.plugin.version>2.17</checkstyle.plugin.version>
-        <commons-lang3.version>3.3.2</commons-lang3.version>
+        <commons-lang3.version>3.11</commons-lang3.version>
         <commons-csv.version>1.4</commons-csv.version>
         <commons-codec.version>1.6</commons-codec.version>
         <commons-io.version>2.4</commons-io.version>
         <org.json-version>20180813</org.json-version>
-        <compiler.plugin.verson>3.8.0</compiler.plugin.verson>
-        <findbugs.plugin.version>3.0.5</findbugs.plugin.version>
+        <enforcer.plugin.version>3.0.0-M3</enforcer.plugin.version>
+        <compiler.plugin.verson>3.8.1</compiler.plugin.verson>
         <gpg.plugin.version>1.6</gpg.plugin.version>
         <jacoco.plugin.version>0.7.7.201606060606</jacoco.plugin.version>
-        <jar.plugin.version>2.4</jar.plugin.version>
-        <javadoc.plugin.version>2.10.3</javadoc.plugin.version>
+        <jar.plugin.version>3.2.0</jar.plugin.version>
+        <javadoc.plugin.version>3.2.0</javadoc.plugin.version>
+        <minimum.maven.version>3.3.9</minimum.maven.version>
         <nexus.plugin.version>1.6.7</nexus.plugin.version>
         <release.plugin.version>2.5.3</release.plugin.version>
         <scm.plugin.version>1.1</scm.plugin.version>
         <source.plugin.version>2.4</source.plugin.version>
-        <surefire.plugin.version>2.22.1</surefire.plugin.version>
+        <spotbugs.plugin.version>4.0.4</spotbugs.plugin.version>
+        <surefire.plugin.version>3.0.0-M5</surefire.plugin.version>
         <class-path-scanner.version>2.10.0</class-path-scanner.version>
 
 
@@ -202,6 +204,26 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>${enforcer.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>enforce-maven</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>${minimum.maven.version}</version>
+                                </requireMavenVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
                 <version>${release.plugin.version}</version>
                 <configuration>
@@ -241,16 +263,17 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>findbugs-maven-plugin</artifactId>
-                <version>${findbugs.plugin.version}</version>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>${spotbugs.plugin.version}</version>
                 <configuration>
                     <effort>Low</effort>
                     <threshold>Low</threshold>
                     <xmlOutput>true</xmlOutput>
-                    <findbugsXmlOutputDirectory>
-                        ${project.build.directory}/findbugs
-                    </findbugsXmlOutputDirectory>
+                    <spotbugsXmlOutputDirectory>
+                        ${project.build.directory}/spotbugs
+                    </spotbugsXmlOutputDirectory>
+                    <spotbugsXmlOutputFilename>findbugs.xml</spotbugsXmlOutputFilename>
                 </configuration>
                 <executions>
                     <execution>
@@ -263,9 +286,10 @@
                             <effort>Low</effort>
                             <threshold>Low</threshold>
                             <xmlOutput>true</xmlOutput>
-                            <findbugsXmlOutputDirectory>
-                                ${project.build.directory}/findbugs
-                            </findbugsXmlOutputDirectory>
+                            <spotbugsXmlOutputDirectory>
+                                ${project.build.directory}/spotbugs
+                            </spotbugsXmlOutputDirectory>
+                            <spotbugsXmlOutputFilename>findbugs.xml</spotbugsXmlOutputFilename>
                         </configuration>
                     </execution>
                 </executions>
@@ -316,7 +340,6 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>${javadoc.plugin.version}</version>
                 <configuration>
-                    <aggregate>true</aggregate>
                     <show>public</show>
                     <nohelp>true</nohelp>
                     <header>Koryphe ${project.version}</header>
@@ -537,9 +560,9 @@
                         </configuration>
                     </plugin>
                     <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>findbugs-maven-plugin</artifactId>
-                        <version>${findbugs.plugin.version}</version>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs-maven-plugin</artifactId>
+                        <version>${spotbugs.plugin.version}</version>
                         <configuration>
                             <fork>false</fork>
                         </configuration>
