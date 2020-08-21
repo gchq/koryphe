@@ -19,7 +19,7 @@ package uk.gov.gchq.koryphe.tuple.function;
 import uk.gov.gchq.koryphe.tuple.n.Tuple3;
 
 public abstract class KorypheFunction3<T, U, V, R> extends KorypheFunctionN<Tuple3<T, U, V>, R> {
-    public abstract R apply(final T t, final U u, final V v);
+    public abstract R apply(T t, U u, V v);
 
     @Override
     public R delegateApply(final Tuple3<T, U, V> tuple) {

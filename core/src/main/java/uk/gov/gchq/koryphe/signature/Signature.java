@@ -56,7 +56,7 @@ public abstract class Signature {
      * @param arguments Class or Tuple of classes to test.
      * @return ValidationResult containing the isValid flag and errors messages.
      */
-    public abstract ValidationResult assignable(final Class<?>... arguments);
+    public abstract ValidationResult assignable(Class<?>... arguments);
 
     public abstract Class[] getClasses();
 

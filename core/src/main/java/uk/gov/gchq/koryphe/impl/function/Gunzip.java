@@ -47,7 +47,7 @@ public class Gunzip extends KorypheFunction<byte[], byte[]> {
             return new byte[0];
         }
 
-        try (final GZIPInputStream gzipStream = new GZIPInputStream(new ByteArrayInputStream(compressed))) {
+        try (GZIPInputStream gzipStream = new GZIPInputStream(new ByteArrayInputStream(compressed))) {
             return IOUtils.toByteArray(gzipStream);
         } catch (final IOException e) {
             throw new RuntimeException("Failed to decompress provided gzipped string", e);
