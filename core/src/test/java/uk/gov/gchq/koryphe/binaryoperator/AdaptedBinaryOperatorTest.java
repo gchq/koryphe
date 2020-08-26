@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 
 class AdaptedBinaryOperatorTest extends BinaryOperatorTest<AdaptedBinaryOperator> {
-
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given

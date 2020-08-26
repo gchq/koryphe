@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 class BinaryOperatorCompositeTest extends BinaryOperatorTest<BinaryOperatorComposite> {
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given

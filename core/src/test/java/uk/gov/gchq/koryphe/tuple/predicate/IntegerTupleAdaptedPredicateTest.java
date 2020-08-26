@@ -1,15 +1,15 @@
 package uk.gov.gchq.koryphe.tuple.predicate;
 
-import uk.gov.gchq.koryphe.function.FunctionTest;
+import org.junit.jupiter.api.Test;
+
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class IntegerTupleAdaptedPredicateTest extends PredicateTest<IntegerTupleAdaptedPredicate> {
     // todo this
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
 

@@ -21,6 +21,7 @@ public class IncrementTest extends FunctionTest<Increment> {
         return new Class[] { Number.class };
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given

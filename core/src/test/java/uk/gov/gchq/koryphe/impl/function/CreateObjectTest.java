@@ -87,6 +87,7 @@ public class CreateObjectTest extends FunctionTest<CreateObject> {
         assertEquals(expected, exception.getMessage());
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given

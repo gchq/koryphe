@@ -27,6 +27,7 @@ class FunctionCompositeTest extends FunctionTest<FunctionComposite>{
         return new Class[] { Object.class };
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given

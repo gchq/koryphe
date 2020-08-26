@@ -18,6 +18,7 @@ package uk.gov.gchq.koryphe.impl.function;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
+import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
@@ -61,8 +62,23 @@ public class ReverseStringTest extends FunctionTest<ReverseString> {
         return null;
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
+        // Given
+        ReverseString instance = getInstance();
+        String json = "" +
+                "{" +
+                    "\"class\": \"uk.gov.gchq.koryphe.impl.function.ReverseString\"" +
+                "}";
+
+        // When
+        String serialised = JsonSerialiser.serialise(instance);
+        ReverseString deserialised = JsonSerialiser.deserialise(json, ReverseString.class);
+
+        // Then
+        JsonSerialiser.assertEquals(json, serialised);
+        assertEquals(instance, deserialised);
 
     }
 

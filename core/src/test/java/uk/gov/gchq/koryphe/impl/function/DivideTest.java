@@ -62,6 +62,7 @@ public class DivideTest extends FunctionTest<Divide> {
         assertEquals(new Tuple2<>(9, 0), output);
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given

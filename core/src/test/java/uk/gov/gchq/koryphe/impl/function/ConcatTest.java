@@ -85,6 +85,7 @@ public class ConcatTest extends FunctionTest<Concat> {
         return Collections.singletonList(new Concat(" "));
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given

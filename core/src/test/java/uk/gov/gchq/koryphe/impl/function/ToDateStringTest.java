@@ -40,6 +40,7 @@ class ToDateStringTest extends FunctionTest<ToDateString> {
         return new Class[] { String.class };
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given

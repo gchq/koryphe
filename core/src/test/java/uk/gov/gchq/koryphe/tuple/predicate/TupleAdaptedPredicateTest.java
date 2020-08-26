@@ -1,5 +1,7 @@
 package uk.gov.gchq.koryphe.tuple.predicate;
 
+import org.junit.jupiter.api.Test;
+
 import uk.gov.gchq.koryphe.impl.predicate.IsA;
 import uk.gov.gchq.koryphe.impl.predicate.IsMoreThan;
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
@@ -7,10 +9,9 @@ import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class TupleAdaptedPredicateTest extends PredicateTest<TupleAdaptedPredicate> {
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // todo serialisation check

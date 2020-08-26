@@ -16,9 +16,13 @@
 
 package uk.gov.gchq.koryphe.tuple;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 
 import java.util.Arrays;
 import java.util.function.BiFunction;
@@ -27,6 +31,9 @@ import java.util.function.BiFunction;
  * @param <R>  The type of reference used by tuples.
  * @param <FO> The adapted output type.
  */
+@Since("1.0.0")
+@Summary("Projects items to a tuple")
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
 public class TupleOutputAdapter<R, FO> implements BiFunction<Tuple<R>, FO, Tuple<R>> {
     private R[] projection;
 

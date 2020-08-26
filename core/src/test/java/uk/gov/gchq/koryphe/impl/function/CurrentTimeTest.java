@@ -1,5 +1,7 @@
 package uk.gov.gchq.koryphe.impl.function;
 
+import org.junit.jupiter.api.Test;
+
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
@@ -19,6 +21,7 @@ public class CurrentTimeTest extends FunctionTest<CurrentTime> {
         return new Class[] { Long.class };
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given

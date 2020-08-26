@@ -70,6 +70,7 @@ public class AndTest extends BinaryOperatorTest<And> {
         return null;
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given

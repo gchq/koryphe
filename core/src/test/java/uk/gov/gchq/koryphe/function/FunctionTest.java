@@ -53,7 +53,6 @@ public abstract class FunctionTest<T extends Function> extends EqualityTest<T> {
 
     protected abstract Class[] getExpectedSignatureOutputClasses();
 
-    @Test
     public abstract void shouldJsonSerialiseAndDeserialise() throws IOException;
 
     protected String serialise(Object object) throws IOException {
