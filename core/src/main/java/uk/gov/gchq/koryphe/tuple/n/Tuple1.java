@@ -17,7 +17,7 @@
 package uk.gov.gchq.koryphe.tuple.n;
 
 /**
- * An {@link TupleN} containing 2 entries.
+ * An {@link TupleN} containing 1 entry.
  *
  * @param <A> Type of the entry at index 0.
  */

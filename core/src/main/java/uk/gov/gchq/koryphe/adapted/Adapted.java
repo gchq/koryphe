@@ -55,7 +55,7 @@ public abstract class Adapted<I, AI, AO, O, C> extends InputAdapted<I, AI> {
     }
 
     public void setOutputAdapter(final Function<AO, O> outputAdapter) {
-        setOutputAdapter((o, ao) -> outputAdapter.apply(ao));
+        setOutputAdapter(new StatelessOutputAdapter<>(outputAdapter));
     }
 
     /**

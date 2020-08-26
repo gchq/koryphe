@@ -18,6 +18,8 @@ package uk.gov.gchq.koryphe;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,6 +103,32 @@ public class ValidationResult {
     @JsonIgnore
     public String getErrorString() {
         return "Validation errors: " + System.lineSeparator() + StringUtils.join(getErrors(), System.lineSeparator());
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        final ValidationResult that = (ValidationResult) o;
+
+        return new EqualsBuilder()
+                .append(isValid, that.isValid)
+                .append(errors, that.errors)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 67)
+                .append(isValid)
+                .append(errors)
+                .toHashCode();
     }
 
     @Override

@@ -35,6 +35,14 @@ public class StringConcat extends KorypheBinaryOperator<String> {
     private static final String DEFAULT_SEPARATOR = ",";
     private String separator = DEFAULT_SEPARATOR;
 
+    public StringConcat() {
+        // required for serialisation
+    }
+
+    public StringConcat(final String separator) {
+        this.separator = separator;
+    }
+
     @Override
     public String _apply(final String a, final String b) {
         return a + separator + b;

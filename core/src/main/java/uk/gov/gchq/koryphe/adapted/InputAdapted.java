@@ -36,6 +36,14 @@ import java.util.function.Function;
 public class InputAdapted<I, AI> {
     protected Function<I, AI> inputAdapter;
 
+    public InputAdapted() {
+        // Required for serialisation
+    }
+
+    public InputAdapted(final Function<I, AI> inputAdapter) {
+        this.inputAdapter = inputAdapter;
+    }
+
     public Function<I, AI> getInputAdapter() {
         return inputAdapter;
     }
@@ -74,6 +82,7 @@ public class InputAdapted<I, AI> {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(53, 59)
+                .append(getClass())
                 .append(inputAdapter)
                 .toHashCode();
     }
