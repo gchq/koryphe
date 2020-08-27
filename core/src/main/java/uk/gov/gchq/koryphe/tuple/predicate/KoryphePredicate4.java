@@ -19,7 +19,7 @@ package uk.gov.gchq.koryphe.tuple.predicate;
 import uk.gov.gchq.koryphe.tuple.n.Tuple4;
 
 public abstract class KoryphePredicate4<T, U, V, W> extends KoryphePredicateN<Tuple4<T, U, V, W>> {
-    public abstract boolean test(final T t, final U u, final V v, final W w);
+    public abstract boolean test(T t, U u, V v, W w);
 
     @Override
     protected boolean delegateTest(final Tuple4<T, U, V, W> tuple) {

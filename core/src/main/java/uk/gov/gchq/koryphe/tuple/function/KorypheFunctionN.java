@@ -33,5 +33,5 @@ public abstract class KorypheFunctionN<TUPLE extends Tuple<Integer>, R> extends 
         }
     }
 
-    protected abstract R delegateApply(final TUPLE tuple);
+    protected abstract R delegateApply(TUPLE tuple);
 }

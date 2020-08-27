@@ -33,5 +33,5 @@ public abstract class KoryphePredicateN<TUPLE extends Tuple<Integer>> extends Ko
         }
     }
 
-    protected abstract boolean delegateTest(final TUPLE tuple);
+    protected abstract boolean delegateTest(TUPLE tuple);
 }
