@@ -38,10 +38,14 @@
     </module>
 
     <module name="TreeWalker">
+        <property name="cacheFile" value="${checkstyle.cache.file}"/>
+
         <module name="SuppressWarningsHolder"/>
 
         <module name="AtclauseOrder"/>
-        <module name="JavadocMethod"/>
+        <module name="JavadocMethod">
+            <property name="allowMissingJavadoc" value="true"/>
+        </module>
         <module name="JavadocStyle">
             <property name="checkFirstSentence" value="false"/>
         </module>

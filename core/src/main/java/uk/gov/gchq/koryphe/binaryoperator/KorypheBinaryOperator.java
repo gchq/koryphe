@@ -47,7 +47,7 @@ public abstract class KorypheBinaryOperator<T> implements BinaryOperator<T> {
         return _apply(state, input);
     }
 
-    protected abstract T _apply(T a, T b);
+    protected abstract T _apply(final T a, final T b);
 
     @Override
     public boolean equals(final Object obj) {

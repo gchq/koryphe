@@ -19,5 +19,5 @@ package uk.gov.gchq.koryphe.signature;
 import uk.gov.gchq.koryphe.ValidationResult;
 
 public interface OutputValidator {
-    ValidationResult isOutputValid(Class<?>... arguments);
+    ValidationResult isOutputValid(final Class<?>... arguments);
 }

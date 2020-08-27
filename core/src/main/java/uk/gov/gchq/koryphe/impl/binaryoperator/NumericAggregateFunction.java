@@ -48,13 +48,13 @@ public abstract class NumericAggregateFunction extends KorypheBinaryOperator<Num
         return null;
     }
 
-    protected abstract Integer aggregateInt(Integer a, Integer b);
+    protected abstract Integer aggregateInt(final Integer a, final Integer b);
 
-    protected abstract Long aggregateLong(Long a, Long b);
+    protected abstract Long aggregateLong(final Long a, final Long b);
 
-    protected abstract Double aggregateDouble(Double a, Double b);
+    protected abstract Double aggregateDouble(final Double a, final Double b);
 
-    protected abstract Float aggregateFloat(Float a, Float b);
+    protected abstract Float aggregateFloat(final Float a, final Float b);
 
-    protected abstract Short aggregateShort(Short a, Short b);
+    protected abstract Short aggregateShort(final Short a, final Short b);
 }
