@@ -47,7 +47,7 @@ class ToDateStringTest extends FunctionTest<ToDateString> {
         Function instance = getInstance();
         String json = "{\n" +
                 "\t\"class\": \"uk.gov.gchq.koryphe.impl.function.ToDateString\",\n" +
-                "\t\"format\": \"YYYY-mm-dd HH:mm:ss.SSS\"\n" +
+                "\t\"format\": \"YYYY-MM-dd HH:mm:ss.SSS\"\n" +
                 "}";
 
         // When

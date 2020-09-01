@@ -16,6 +16,9 @@
 
 package uk.gov.gchq.koryphe.adapted;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -44,18 +47,22 @@ import java.util.function.Function;
  * @param <C> Context type - either <code>I</code> or <code>O</code>, depending on context.
  */
 public abstract class Adapted<I, AI, AO, O, C> extends InputAdapted<I, AI> {
+
     protected BiFunction<C, AO, O> outputAdapter;
 
+    @JsonGetter
     public BiFunction<C, AO, O> getOutputAdapter() {
         return outputAdapter;
     }
 
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
     public void setOutputAdapter(final BiFunction<C, AO, O> outputAdapter) {
         this.outputAdapter = outputAdapter;
     }
 
+    @JsonIgnore
     public void setOutputAdapter(final Function<AO, O> outputAdapter) {
-        setOutputAdapter(new StatelessOutputAdapter<>(outputAdapter));
+        setOutputAdapter(new StateAgnosticOutputAdapter<>(outputAdapter));
     }
 
     /**

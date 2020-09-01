@@ -17,15 +17,19 @@ package uk.gov.gchq.koryphe.predicate;
 
 import org.junit.jupiter.api.Test;
 
+import uk.gov.gchq.koryphe.impl.function.ToLowerCase;
 import uk.gov.gchq.koryphe.impl.function.ToString;
+import uk.gov.gchq.koryphe.impl.function.ToUpperCase;
 import uk.gov.gchq.koryphe.impl.predicate.IsEqual;
+import uk.gov.gchq.koryphe.impl.predicate.StringContains;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AdaptedPredicateTest {
+public class AdaptedPredicateTest extends PredicateTest<AdaptedPredicate>{
 
     @Test
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
@@ -55,5 +59,19 @@ public class AdaptedPredicateTest {
         assertEquals(original.getPredicate().getClass(), deserialised.getPredicate().getClass());
         assertEquals(original.getInputAdapter().getClass(), deserialised.getInputAdapter().getClass());
         assertEquals(((IsEqual) original.getPredicate()).getControlValue(), ((IsEqual) deserialised.getPredicate()).getControlValue());
+    }
+
+    @Override
+    protected AdaptedPredicate getInstance() {
+        return new AdaptedPredicate(new ToUpperCase(), new StringContains("TEST"));
+    }
+
+    @Override
+    protected Iterable<AdaptedPredicate> getDifferentInstances() {
+        return Arrays.asList(
+                new AdaptedPredicate(new ToLowerCase(), new StringContains("TEST")),
+                new AdaptedPredicate(new ToUpperCase(), new StringContains("DIFFERENT")),
+                new AdaptedPredicate()
+        );
     }
 }

@@ -37,7 +37,7 @@ import java.util.function.Function;
 @Since("1.0.0")
 @Summary("Applies a function and adapts the input/output")
 public class AdaptedBinaryOperator<T, OT> extends Adapted<T, OT, OT, T, T> implements BinaryOperator<T> {
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+
     protected BinaryOperator<OT> binaryOperator;
 
     /**
@@ -81,6 +81,7 @@ public class AdaptedBinaryOperator<T, OT> extends Adapted<T, OT, OT, T, T> imple
         return binaryOperator;
     }
 
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
     public void setBinaryOperator(final BinaryOperator<OT> binaryOperator) {
         this.binaryOperator = binaryOperator;
     }

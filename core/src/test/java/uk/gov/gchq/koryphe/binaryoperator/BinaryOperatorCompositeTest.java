@@ -21,10 +21,10 @@ class BinaryOperatorCompositeTest extends BinaryOperatorTest<BinaryOperatorCompo
         String json = "{" +
                     "\"operators\": [" +
                         "{" +
-                            "\"class\": \"uk.gov.gchq.koryphe.impl.binaryOperator.Sum\"" +
+                            "\"class\": \"uk.gov.gchq.koryphe.impl.binaryoperator.Sum\"" +
                         "}," +
                         "{" +
-                            "\"class\": \"uk.gov.gchq.koryphe.impl.binaryOperator.Product\"" +
+                            "\"class\": \"uk.gov.gchq.koryphe.impl.binaryoperator.Product\"" +
                         "}" +
                     "]" +
                 "}";

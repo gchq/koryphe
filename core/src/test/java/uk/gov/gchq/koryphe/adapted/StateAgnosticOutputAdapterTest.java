@@ -13,25 +13,25 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class StatelessOutputAdapterTest extends EqualityTest<StatelessOutputAdapter> {
+class StateAgnosticOutputAdapterTest extends EqualityTest<StateAgnosticOutputAdapter> {
 
     @Override
-    protected StatelessOutputAdapter getInstance() {
-        return new StatelessOutputAdapter(new Identity());
+    protected StateAgnosticOutputAdapter getInstance() {
+        return new StateAgnosticOutputAdapter(new Identity());
     }
 
     @Override
-    protected Iterable<StatelessOutputAdapter> getDifferentInstances() {
+    protected Iterable<StateAgnosticOutputAdapter> getDifferentInstances() {
         return Arrays.asList(
-                new StatelessOutputAdapter(),
-                new StatelessOutputAdapter(new ToLong())
+                new StateAgnosticOutputAdapter(),
+                new StateAgnosticOutputAdapter(new ToLong())
         );
     }
 
     @Test
     public void shouldReturnTheUnadaptedOutputIfNoAdapterIsProvided() {
         // Given
-        StatelessOutputAdapter<Object, Object, Object> soa = new StatelessOutputAdapter<>();
+        StateAgnosticOutputAdapter<Object, Object, Object> soa = new StateAgnosticOutputAdapter<>();
 
         // When
         Object output = soa.apply(null, "input");
@@ -43,7 +43,7 @@ class StatelessOutputAdapterTest extends EqualityTest<StatelessOutputAdapter> {
     @Test
     public void shouldApplyAnOutputAdapter() {
         // Given
-        StatelessOutputAdapter<Object, Integer, Integer> soa = new StatelessOutputAdapter<>(new MultiplyBy(10));
+        StateAgnosticOutputAdapter<Object, Integer, Integer> soa = new StateAgnosticOutputAdapter<>(new MultiplyBy(10));
 
         // When
         Object output = soa.apply(null, 10);
@@ -55,10 +55,9 @@ class StatelessOutputAdapterTest extends EqualityTest<StatelessOutputAdapter> {
     @Test
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
-        StatelessOutputAdapter<Object, Integer, Integer> soa = new StatelessOutputAdapter<>(new MultiplyBy(10));
+        StateAgnosticOutputAdapter<Object, Integer, Integer> soa = new StateAgnosticOutputAdapter<>(new MultiplyBy(10));
         String json =
                 "{\n" +
-                    "\"class\": \"uk.gov.gchq.koryphe.adapted.StatelessOutputAdapter\",\n" +
                     "\"adapter\": {\n" +
                         "\"class\": \"uk.gov.gchq.koryphe.impl.function.MultiplyBy\",\n" +
                         "\"by\": 10\n" +
@@ -66,7 +65,7 @@ class StatelessOutputAdapterTest extends EqualityTest<StatelessOutputAdapter> {
                 "}";
         // When
         String serialised = JsonSerialiser.serialise(soa);
-        StatelessOutputAdapter deserialised = JsonSerialiser.deserialise(json, StatelessOutputAdapter.class);
+        StateAgnosticOutputAdapter deserialised = JsonSerialiser.deserialise(json, StateAgnosticOutputAdapter.class);
 
         // Then
         JsonSerialiser.assertEquals(json, serialised);

@@ -39,7 +39,7 @@ class FunctionCompositeTest extends FunctionTest<FunctionComposite>{
                             "\"class\": \"uk.gov.gchq.koryphe.impl.function.ToLong\"" +
                         "}," +
                         "{" +
-                            "\"class\": \"uk.gov.gchq.koryphe.impl.function.MultiplyLongBy.\"," +
+                            "\"class\": \"uk.gov.gchq.koryphe.impl.function.MultiplyLongBy\"," +
                             "\"by\": 10" +
                         "}" +
                     "]" +

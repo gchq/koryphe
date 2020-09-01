@@ -33,15 +33,14 @@ class AdaptedBinaryOperatorTest extends BinaryOperatorTest<AdaptedBinaryOperator
         AdaptedBinaryOperator adaptedBinaryOperator = new AdaptedBinaryOperator(new Product(), new ToLong(), new MultiplyBy(5));
         String json =
                 "{\n" +
-                        "\"class\": \"uk.gov.gchq.koryphe.binaryOperator.AdaptedBinaryOperator\"" +
                         "\"binaryOperator\": {\n" +
-                            "\"class\": \"uk.gov.gchq.koryphe.impl.binaryOperator.Product\"\n" +
-                        "}\n" +
+                            "\"class\": \"uk.gov.gchq.koryphe.impl.binaryoperator.Product\"\n" +
+                        "},\n" +
                         "\"inputAdapter\": {\n" +
                             "\"class\": \"uk.gov.gchq.koryphe.impl.function.ToLong\"\n" +
-                        "}\n" +
+                        "},\n" +
                         "\"outputAdapter\": {\n" +
-                            "\"class\": \"uk.gov.gchq.koryphe.binaryOperator.StatelessOutputAdapter\",\n" +
+                            "\"class\": \"uk.gov.gchq.koryphe.adapted.StateAgnosticOutputAdapter\",\n" +
                             "\"adapter\": {\n" +
                                 "\"class\": \"uk.gov.gchq.koryphe.impl.function.MultiplyBy\",\n" +
                                 "\"by\": 5\n" +
