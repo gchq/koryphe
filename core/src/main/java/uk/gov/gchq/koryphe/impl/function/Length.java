@@ -110,7 +110,7 @@ public class Length extends KorypheFunction<Object, Integer> implements InputVal
             return true;
         }
 
-        if (!super.classEquals(o)) {
+        if (!super.equals(o)) {
             return false; // Does class checking
         }
 

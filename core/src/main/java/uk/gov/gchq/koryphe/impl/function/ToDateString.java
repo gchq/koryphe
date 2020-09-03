@@ -73,7 +73,7 @@ public class ToDateString extends KorypheFunction<Date, String> {
             return true;
         }
 
-        if (!super.classEquals(o)) {
+        if (!super.equals(o)) {
             return false; // Does exact equals and class checking
         }
 

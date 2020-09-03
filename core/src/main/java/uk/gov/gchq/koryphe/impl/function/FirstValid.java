@@ -81,7 +81,7 @@ public class FirstValid<I_ITEM> extends KorypheFunction<Iterable<I_ITEM>, I_ITEM
             return true;
         }
 
-        if (!super.classEquals(o)) {
+        if (!super.equals(o)) {
             return false; // Does class checking
         }
 

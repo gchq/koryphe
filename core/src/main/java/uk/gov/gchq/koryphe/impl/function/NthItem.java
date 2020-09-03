@@ -72,7 +72,7 @@ public class NthItem<T> extends KorypheFunction<Iterable<T>, T> {
             return true;
         }
 
-        if (!super.classEquals(o)) {
+        if (!super.equals(o)) {
             return false; // Does exact equals and class checking
         }
 

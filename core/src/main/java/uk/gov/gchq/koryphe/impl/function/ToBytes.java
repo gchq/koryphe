@@ -90,7 +90,7 @@ public class ToBytes extends KorypheFunction<String, byte[]> {
             return true;
         }
 
-        if (!super.classEquals(o)) {
+        if (!super.equals(o)) {
             return false; // Does exact equals and class checking
         }
 

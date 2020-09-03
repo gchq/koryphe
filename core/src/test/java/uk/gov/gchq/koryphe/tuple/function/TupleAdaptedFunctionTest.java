@@ -16,7 +16,7 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class TupleAdaptedFunctionTest extends FunctionTest<TupleAdaptedFunction> {
 
@@ -76,13 +76,11 @@ class TupleAdaptedFunctionTest extends FunctionTest<TupleAdaptedFunction> {
         inputs.put("input", "aString");
 
         // When / Then
-        try {
+        NumberFormatException e = assertThrows(NumberFormatException.class, () -> {
             function.apply(inputs);
-            fail("Expected function to fail");
-        } catch (NumberFormatException e) {
-            assertNotNull(e.getMessage());
-        }
+        });
 
+        assertNotNull(e.getMessage());
     }
 
     @Test

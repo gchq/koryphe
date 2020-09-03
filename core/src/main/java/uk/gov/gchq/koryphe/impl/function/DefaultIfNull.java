@@ -58,7 +58,7 @@ public class DefaultIfNull extends KorypheFunction<Object, Object> {
             return true;
         }
 
-        if (!super.classEquals(o)) {
+        if (!super.equals(o)) {
             return false; // Does class checking
         }
 

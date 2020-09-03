@@ -76,7 +76,7 @@ public class IterableFlatten<I_ITEM> extends KorypheFunction<Iterable<I_ITEM>, I
             return true;
         }
 
-        if (!super.classEquals(o)) {
+        if (!super.equals(o)) {
             return false; // Does exact equals and class checking
         }
 

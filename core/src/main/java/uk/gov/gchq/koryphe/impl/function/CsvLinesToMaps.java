@@ -187,7 +187,7 @@ public class CsvLinesToMaps extends KorypheFunction<Iterable<String>, Iterable<M
             return true;
         }
 
-        if (!super.classEquals(o)) {
+        if (!super.equals(o)) {
             return false; // Does class checking
         }
 

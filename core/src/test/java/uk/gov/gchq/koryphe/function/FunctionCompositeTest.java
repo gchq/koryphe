@@ -14,7 +14,7 @@ import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class FunctionCompositeTest extends FunctionTest<FunctionComposite>{
     @Override
@@ -113,13 +113,10 @@ class FunctionCompositeTest extends FunctionTest<FunctionComposite>{
         ));
 
         // When / Then
-
-        try {
+        ClassCastException e = assertThrows(ClassCastException.class, () -> {
             functionComposite.apply(5);
-            fail("Expected apply to fail");
-        } catch (ClassCastException e) {
-            assertNotNull(e.getMessage());
-        }
+        });
 
+        assertNotNull(e.getMessage());
     }
 }

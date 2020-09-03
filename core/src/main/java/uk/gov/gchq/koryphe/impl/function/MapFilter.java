@@ -121,7 +121,7 @@ public class MapFilter<K, V> extends KorypheFunction<Map<K, V>, Map<K, V>> {
             return true;
         }
 
-        if (!super.classEquals(o)) {
+        if (!super.equals(o)) {
             return false; // Does exact equals and class checking
         }
 

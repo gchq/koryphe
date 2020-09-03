@@ -169,7 +169,7 @@ public class CsvToMaps extends KorypheFunction<String, Iterable<Map<String, Obje
             return true;
         }
 
-        if (!super.classEquals(o)) {
+        if (!super.equals(o)) {
             return false; // Does class checking
         }
 

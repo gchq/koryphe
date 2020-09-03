@@ -61,7 +61,7 @@ public class ExtractValue<K, V> extends KorypheFunction<Map<K, V>, V> {
             return true;
         }
 
-        if (!super.classEquals(o)) {
+        if (!super.equals(o)) {
             return false; // Does class checking
         }
 

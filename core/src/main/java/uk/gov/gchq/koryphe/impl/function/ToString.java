@@ -93,7 +93,7 @@ public class ToString extends KorypheFunction<Object, String> {
             return true;
         }
 
-        if (!super.classEquals(o)) {
+        if (!super.equals(o)) {
             return false; // Does exact equals and class checking
         }
 
