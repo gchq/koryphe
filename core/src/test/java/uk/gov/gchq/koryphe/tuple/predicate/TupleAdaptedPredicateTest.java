@@ -43,7 +43,7 @@ class TupleAdaptedPredicateTest extends PredicateTest<TupleAdaptedPredicate> {
     }
 
     @Override
-    protected Iterable<TupleAdaptedPredicate> getDifferentInstances() {
+    protected Iterable<TupleAdaptedPredicate> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new TupleAdaptedPredicate(new IsA(Long.class), new String[] { "input" }),
                 new TupleAdaptedPredicate(new IsMoreThan(5), new String[] { "input" }),

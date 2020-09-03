@@ -48,7 +48,7 @@ class TupleInputAdapterTest extends FunctionTest<TupleInputAdapter> {
     }
 
     @Override
-    protected Iterable<TupleInputAdapter> getDifferentInstances() {
+    protected Iterable<TupleInputAdapter> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new TupleInputAdapter(),
                 new TupleInputAdapter(new String[] { "differentInput" }),

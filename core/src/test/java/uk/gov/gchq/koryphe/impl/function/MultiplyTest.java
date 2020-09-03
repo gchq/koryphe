@@ -91,7 +91,7 @@ public class MultiplyTest extends FunctionTest<Multiply> {
     }
 
     @Override
-    protected Iterable<Multiply> getDifferentInstances() {
+    protected Iterable<Multiply> getDifferentInstancesOrNull() {
         return null;
     }
 

@@ -246,7 +246,7 @@ public class AndTest extends PredicateTest<And> {
     }
 
     @Override
-    protected Iterable<And> getDifferentInstances() {
+    protected Iterable<And> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new And(new Exists(), new IsMoreThan(10L)),
                 new And(new Exists())

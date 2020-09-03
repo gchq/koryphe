@@ -89,7 +89,7 @@ public class IterableFilterTest extends FunctionTest<IterableFilter> {
     }
 
     @Override
-    protected Iterable<IterableFilter> getDifferentInstances() {
+    protected Iterable<IterableFilter> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new IterableFilter(),
                 new IterableFilter(new IsLessThan(4L))

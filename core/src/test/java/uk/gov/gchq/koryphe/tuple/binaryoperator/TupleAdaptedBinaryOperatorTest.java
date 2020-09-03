@@ -109,7 +109,7 @@ public class TupleAdaptedBinaryOperatorTest extends BinaryOperatorTest<TupleAdap
     }
 
     @Override
-    protected Iterable<TupleAdaptedBinaryOperator> getDifferentInstances() {
+    protected Iterable<TupleAdaptedBinaryOperator> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new TupleAdaptedBinaryOperator(new Product(), new String[] { "a", "b"}),
                 new TupleAdaptedBinaryOperator(new Sum(), new String[] { "c", "d"}),

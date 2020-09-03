@@ -36,7 +36,7 @@ public class DefaultIfNullTest extends FunctionTest<DefaultIfNull> {
     }
 
     @Override
-    protected Iterable<DefaultIfNull> getDifferentInstances() {
+    protected Iterable<DefaultIfNull> getDifferentInstancesOrNull() {
         return Collections.singletonList(new DefaultIfNull(42L));
     }
 

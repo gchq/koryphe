@@ -155,7 +155,7 @@ public class PredicateMapTest extends PredicateTest<PredicateMap> {
     }
 
     @Override
-    protected Iterable<PredicateMap> getDifferentInstances() {
+    protected Iterable<PredicateMap> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new PredicateMap(
                         KEY2, new IsA(Map.class)

@@ -95,7 +95,7 @@ public class MultiplyByTest extends FunctionTest<MultiplyBy> {
     }
 
     @Override
-    protected Iterable<MultiplyBy> getDifferentInstances() {
+    protected Iterable<MultiplyBy> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new MultiplyBy(),
                 new MultiplyBy(4)

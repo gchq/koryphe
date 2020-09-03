@@ -19,7 +19,7 @@ class InputAdaptedTest extends EqualityTest<InputAdapted> {
     }
 
     @Override
-    protected Iterable<InputAdapted> getDifferentInstances() {
+    protected Iterable<InputAdapted> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new InputAdapted(),
                 new InputAdapted(new ToString()),

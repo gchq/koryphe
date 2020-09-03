@@ -434,7 +434,7 @@ public class SumTest extends BinaryOperatorTest<Sum> {
     }
 
     @Override
-    protected Iterable<Sum> getDifferentInstances() {
+    protected Iterable<Sum> getDifferentInstancesOrNull() {
         return null;
     }
 }

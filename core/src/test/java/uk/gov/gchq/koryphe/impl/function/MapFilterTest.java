@@ -136,7 +136,7 @@ public class MapFilterTest extends FunctionTest<MapFilter> {
     }
 
     @Override
-    protected Iterable<MapFilter> getDifferentInstances() {
+    protected Iterable<MapFilter> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new MapFilter()
                         .keyPredicate(new IsA(String.class))

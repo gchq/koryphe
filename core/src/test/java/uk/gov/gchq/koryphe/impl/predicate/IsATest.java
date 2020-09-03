@@ -129,7 +129,7 @@ public class IsATest extends PredicateTest<IsA> {
     }
 
     @Override
-    protected Iterable<IsA> getDifferentInstances() {
+    protected Iterable<IsA> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new IsA(),
                 new IsA(Long.class)

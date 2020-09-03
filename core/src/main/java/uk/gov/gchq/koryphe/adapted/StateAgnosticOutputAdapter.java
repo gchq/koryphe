@@ -82,7 +82,7 @@ public class StateAgnosticOutputAdapter<T, U, R> implements BiFunction<T, U, R> 
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37)
+        return new HashCodeBuilder(53, 67)
                 .append(getClass())
                 .append(adapter)
                 .toHashCode();

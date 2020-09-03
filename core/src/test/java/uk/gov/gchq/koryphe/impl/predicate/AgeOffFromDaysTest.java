@@ -108,7 +108,7 @@ public class AgeOffFromDaysTest extends PredicateTest<AgeOffFromDays> {
     }
 
     @Override
-    protected Iterable<AgeOffFromDays> getDifferentInstances() {
+    protected Iterable<AgeOffFromDays> getDifferentInstancesOrNull() {
         return null;
     }
 }

@@ -97,7 +97,7 @@ public class IsEqualTest extends PredicateTest<IsEqual> {
     }
 
     @Override
-    protected Iterable<IsEqual> getDifferentInstances() {
+    protected Iterable<IsEqual> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new IsEqual(),
                 new IsEqual(4L)

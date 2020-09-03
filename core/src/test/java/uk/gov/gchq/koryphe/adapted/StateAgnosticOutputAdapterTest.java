@@ -21,7 +21,7 @@ class StateAgnosticOutputAdapterTest extends EqualityTest<StateAgnosticOutputAda
     }
 
     @Override
-    protected Iterable<StateAgnosticOutputAdapter> getDifferentInstances() {
+    protected Iterable<StateAgnosticOutputAdapter> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new StateAgnosticOutputAdapter(),
                 new StateAgnosticOutputAdapter(new ToLong())

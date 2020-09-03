@@ -43,7 +43,7 @@ public class LengthTest extends FunctionTest<Length> {
     }
 
     @Override
-    protected Iterable<Length> getDifferentInstances() {
+    protected Iterable<Length> getDifferentInstancesOrNull() {
         return Collections.singletonList(new Length(5));
     }
 

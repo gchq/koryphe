@@ -103,7 +103,7 @@ public class ToSetTest extends FunctionTest<ToSet> {
     }
 
     @Override
-    protected Iterable<ToSet> getDifferentInstances() {
+    protected Iterable<ToSet> getDifferentInstancesOrNull() {
         return null;
     }
 

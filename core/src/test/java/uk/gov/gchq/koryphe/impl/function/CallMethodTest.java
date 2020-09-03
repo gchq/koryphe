@@ -104,7 +104,7 @@ public class CallMethodTest extends FunctionTest<CallMethod> {
     }
 
     @Override
-    protected Iterable<CallMethod> getDifferentInstances() {
+    protected Iterable<CallMethod> getDifferentInstancesOrNull() {
         return Collections.singletonList(new CallMethod("toString"));
     }
 

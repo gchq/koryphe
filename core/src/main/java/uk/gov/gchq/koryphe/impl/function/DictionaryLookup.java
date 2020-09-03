@@ -62,7 +62,7 @@ public class DictionaryLookup<K, V> extends KorypheFunction<K, V> {
             return true;
         }
 
-        if (!super.equals(o)) {
+        if (!super.classEquals(o)) {
             return false; // Does class checking
         }
 

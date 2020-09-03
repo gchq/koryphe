@@ -87,7 +87,7 @@ public class IsInTest extends PredicateTest<IsIn> {
     }
 
     @Override
-    protected Iterable<IsIn> getDifferentInstances() {
+    protected Iterable<IsIn> getDifferentInstancesOrNull() {
         return null;
     }
 }

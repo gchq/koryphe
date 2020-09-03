@@ -64,7 +64,7 @@ public class DefaultIfEmpty extends KorypheFunction<Object, Object> {
             return true;
         }
 
-        if (!super.equals(o)) {
+        if (!super.classEquals(o)) {
             return false; // Does class checking
         }
 

@@ -37,7 +37,7 @@ public class IsEmptyTest extends FunctionTest<IsEmpty> {
     }
 
     @Override
-    protected Iterable<IsEmpty> getDifferentInstances() {
+    protected Iterable<IsEmpty> getDifferentInstancesOrNull() {
         return null;
     }
 

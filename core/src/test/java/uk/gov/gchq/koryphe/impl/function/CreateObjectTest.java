@@ -116,7 +116,7 @@ public class CreateObjectTest extends FunctionTest<CreateObject> {
     }
 
     @Override
-    protected Iterable<CreateObject> getDifferentInstances() {
+    protected Iterable<CreateObject> getDifferentInstancesOrNull() {
         return Collections.singletonList(new CreateObject(Integer.class));
     }
 

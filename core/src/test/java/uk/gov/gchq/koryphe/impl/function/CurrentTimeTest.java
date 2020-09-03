@@ -44,7 +44,7 @@ public class CurrentTimeTest extends FunctionTest<CurrentTime> {
     }
 
     @Override
-    protected Iterable<CurrentTime> getDifferentInstances() {
+    protected Iterable<CurrentTime> getDifferentInstancesOrNull() {
         return null;
     }
 }

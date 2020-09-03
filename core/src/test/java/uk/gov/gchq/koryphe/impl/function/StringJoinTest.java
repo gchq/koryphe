@@ -116,7 +116,7 @@ public class StringJoinTest extends FunctionTest<StringJoin> {
     }
 
     @Override
-    protected Iterable<StringJoin> getDifferentInstances() {
+    protected Iterable<StringJoin> getDifferentInstancesOrNull() {
         return Collections.singletonList(new StringJoin("\t"));
     }
 

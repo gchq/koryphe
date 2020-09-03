@@ -37,7 +37,7 @@ class TupleOutputAdapterTest extends EqualityTest<TupleOutputAdapter> { // Can't
     }
 
     @Override
-    protected Iterable<TupleOutputAdapter> getDifferentInstances() {
+    protected Iterable<TupleOutputAdapter> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new TupleOutputAdapter(new String[] { "Different" }),
                 new TupleOutputAdapter(new Integer[] { 1, 2, 3 }),

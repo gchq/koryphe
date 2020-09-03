@@ -83,7 +83,7 @@ public class StringTruncate extends KorypheFunction<String, String> {
             return true;
         }
 
-        if (!super.equals(o)) {
+        if (!super.classEquals(o)) {
             return false; // Does exact equals and class checking
         }
 

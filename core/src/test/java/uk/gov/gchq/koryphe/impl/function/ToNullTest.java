@@ -56,7 +56,7 @@ public class ToNullTest extends FunctionTest<ToNull> {
     }
 
     @Override
-    protected Iterable<ToNull> getDifferentInstances() {
+    protected Iterable<ToNull> getDifferentInstancesOrNull() {
         return null;
     }
 

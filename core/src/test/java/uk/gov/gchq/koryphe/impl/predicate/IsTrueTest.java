@@ -103,7 +103,7 @@ public class IsTrueTest extends PredicateTest<IsTrue> {
     }
 
     @Override
-    protected Iterable<IsTrue> getDifferentInstances() {
+    protected Iterable<IsTrue> getDifferentInstancesOrNull() {
         return null;
     }
 }

@@ -66,7 +66,7 @@ public class StringJoin<I_ITEM> extends KorypheFunction<Iterable<I_ITEM>, String
             return true;
         }
 
-        if (!super.equals(o)) {
+        if (!super.classEquals(o)) {
             return false; // Does exact equals and class checking
         }
 

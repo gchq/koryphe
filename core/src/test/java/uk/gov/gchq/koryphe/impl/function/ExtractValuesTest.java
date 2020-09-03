@@ -38,7 +38,7 @@ public class ExtractValuesTest extends FunctionTest<ExtractValues> {
     }
 
     @Override
-    protected Iterable<ExtractValues> getDifferentInstances() {
+    protected Iterable<ExtractValues> getDifferentInstancesOrNull() {
         return null;
     }
 

@@ -57,7 +57,7 @@ class PredicateCompositeTest extends PredicateTest<PredicateComposite> {
     }
 
     @Override
-    protected Iterable<PredicateComposite> getDifferentInstances() {
+    protected Iterable<PredicateComposite> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new PredicateComposite(Arrays.asList(
                         new Exists(),

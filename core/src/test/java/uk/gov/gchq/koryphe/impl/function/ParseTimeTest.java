@@ -36,7 +36,7 @@ public class ParseTimeTest extends FunctionTest<ParseTime> {
     }
 
     @Override
-    protected Iterable<ParseTime> getDifferentInstances() {
+    protected Iterable<ParseTime> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new ParseTime().format("dd-MMM-YYYY hh:mm:ss"),
                 new ParseTime().timeZone("PST"),

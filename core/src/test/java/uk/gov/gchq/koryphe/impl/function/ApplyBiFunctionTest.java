@@ -36,8 +36,8 @@ public class ApplyBiFunctionTest extends FunctionTest<ApplyBiFunction> {
     }
 
     @Override
-    protected Iterable<ApplyBiFunction> getDifferentInstances() {
-        return Collections.singleton(new ApplyBiFunction(new And()));
+    protected Iterable<ApplyBiFunction> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new ApplyBiFunction(new And()));
     }
 
     @Override

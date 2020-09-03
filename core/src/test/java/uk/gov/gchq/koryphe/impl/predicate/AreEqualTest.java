@@ -103,7 +103,7 @@ public class AreEqualTest extends PredicateTest<AreEqual> {
     }
 
     @Override
-    protected Iterable<AreEqual> getDifferentInstances() {
+    protected Iterable<AreEqual> getDifferentInstancesOrNull() {
         return null;
     }
 }

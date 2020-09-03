@@ -36,7 +36,7 @@ public class ExtractValueTest extends FunctionTest<ExtractValue> {
     }
 
     @Override
-    protected Iterable<ExtractValue> getDifferentInstances() {
+    protected Iterable<ExtractValue> getDifferentInstancesOrNull() {
         return Collections.singletonList(new ExtractValue("differentKey"));
     }
 

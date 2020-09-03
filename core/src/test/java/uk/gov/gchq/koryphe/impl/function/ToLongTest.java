@@ -60,7 +60,7 @@ public class ToLongTest extends FunctionTest<ToLong> {
     }
 
     @Override
-    protected Iterable<ToLong> getDifferentInstances() {
+    protected Iterable<ToLong> getDifferentInstancesOrNull() {
         return null;
     }
 

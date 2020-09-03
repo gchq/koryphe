@@ -39,7 +39,7 @@ public class DefaultIfEmptyTest extends FunctionTest<DefaultIfEmpty> {
     }
 
     @Override
-    protected Iterable<DefaultIfEmpty> getDifferentInstances() {
+    protected Iterable<DefaultIfEmpty> getDifferentInstancesOrNull() {
         return Collections.singletonList(new DefaultIfEmpty("Default"));
     }
 

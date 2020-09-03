@@ -33,7 +33,7 @@ public class SizeTest extends FunctionTest<Size> {
     }
 
     @Override
-    protected Iterable<Size> getDifferentInstances() {
+    protected Iterable<Size> getDifferentInstancesOrNull() {
         return null;
     }
 

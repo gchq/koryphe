@@ -124,7 +124,7 @@ public class MapContainsPredicateTest extends PredicateTest<MapContainsPredicate
     }
 
     @Override
-    protected Iterable<MapContainsPredicate> getDifferentInstances() {
+    protected Iterable<MapContainsPredicate> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new MapContainsPredicate(),
                 new MapContainsPredicate(new IsEqual("differentValue")),

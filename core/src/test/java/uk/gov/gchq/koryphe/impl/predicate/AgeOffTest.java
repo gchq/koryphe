@@ -126,7 +126,7 @@ public class AgeOffTest extends PredicateTest<AgeOff> {
     }
 
     @Override
-    protected Iterable<AgeOff> getDifferentInstances() {
+    protected Iterable<AgeOff> getDifferentInstancesOrNull() {
         return Collections.singletonList(new AgeOff(100L));
     }
 }

@@ -35,7 +35,7 @@ public class LastItemTest extends FunctionTest<LastItem> {
     }
 
     @Override
-    protected Iterable<LastItem> getDifferentInstances() {
+    protected Iterable<LastItem> getDifferentInstancesOrNull() {
         return null;
     }
 

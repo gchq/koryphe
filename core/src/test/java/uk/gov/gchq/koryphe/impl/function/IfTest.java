@@ -52,7 +52,7 @@ public class IfTest extends FunctionTest<If> {
     }
 
     @Override
-    protected Iterable<If> getDifferentInstances() {
+    protected Iterable<If> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new If<>()
                         .condition(false)

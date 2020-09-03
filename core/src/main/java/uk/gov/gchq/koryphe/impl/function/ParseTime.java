@@ -149,7 +149,7 @@ public class ParseTime extends KorypheFunction<String, Long> {
             return true;
         }
 
-        if (!super.equals(o)) {
+        if (!super.classEquals(o)) {
             return false; // Does exact equals and class checking
         }
 

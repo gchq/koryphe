@@ -45,7 +45,7 @@ public class CurrentDateTest extends FunctionTest<CurrentDate> {
     }
 
     @Override
-    protected Iterable<CurrentDate> getDifferentInstances() {
+    protected Iterable<CurrentDate> getDifferentInstancesOrNull() {
         return null;
     }
 }

@@ -122,7 +122,7 @@ public class LongestTest extends FunctionTest<Longest> {
     }
 
     @Override
-    protected Iterable<Longest> getDifferentInstances() {
+    protected Iterable<Longest> getDifferentInstancesOrNull() {
         return null;
     }
 

@@ -35,7 +35,7 @@ public class DeserialiseXmlTest extends FunctionTest<DeserialiseXml> {
     }
 
     @Override
-    protected Iterable<DeserialiseXml> getDifferentInstances() {
+    protected Iterable<DeserialiseXml> getDifferentInstancesOrNull() {
         return null;
     }
 

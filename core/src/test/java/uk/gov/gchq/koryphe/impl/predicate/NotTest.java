@@ -110,7 +110,7 @@ public class NotTest extends PredicateTest<Not> {
     }
 
     @Override
-    protected Iterable<Not> getDifferentInstances() {
+    protected Iterable<Not> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new Not<>(),
                 new Not<>(new IsEqual("test")),

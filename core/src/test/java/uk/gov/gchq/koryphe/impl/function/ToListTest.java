@@ -104,7 +104,7 @@ public class ToListTest extends FunctionTest<ToList> {
     }
 
     @Override
-    protected Iterable<ToList> getDifferentInstances() {
+    protected Iterable<ToList> getDifferentInstancesOrNull() {
         return null;
     }
 

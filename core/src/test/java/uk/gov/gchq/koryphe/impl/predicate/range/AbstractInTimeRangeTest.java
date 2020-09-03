@@ -609,7 +609,7 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
     }
 
     @Override
-    protected Iterable<AbstractInTimeRange> getDifferentInstances() {
+    protected Iterable<AbstractInTimeRange> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 createBuilder()
                     .start("1000")

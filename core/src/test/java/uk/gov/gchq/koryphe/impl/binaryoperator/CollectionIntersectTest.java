@@ -136,7 +136,7 @@ public class CollectionIntersectTest extends BinaryOperatorTest<CollectionInters
     }
 
     @Override
-    protected Iterable<CollectionIntersect> getDifferentInstances() {
+    protected Iterable<CollectionIntersect> getDifferentInstancesOrNull() {
         return null;
     }
 

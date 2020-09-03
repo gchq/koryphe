@@ -177,7 +177,7 @@ public class AreInTest extends PredicateTest<AreIn> {
     }
 
     @Override
-    protected Iterable<AreIn> getDifferentInstances() {
+    protected Iterable<AreIn> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new AreIn(),
                 new AreIn(VALUE1, VALUE2),

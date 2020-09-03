@@ -67,7 +67,7 @@ public class OrTest extends BinaryOperatorTest<Or> {
     }
 
     @Override
-    protected Iterable<Or> getDifferentInstances() {
+    protected Iterable<Or> getDifferentInstancesOrNull() {
         return null;
     }
 

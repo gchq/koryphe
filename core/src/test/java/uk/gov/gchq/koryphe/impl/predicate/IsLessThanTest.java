@@ -187,7 +187,7 @@ public class IsLessThanTest extends PredicateTest<IsLessThan> {
     }
 
     @Override
-    protected Iterable<IsLessThan> getDifferentInstances() {
+    protected Iterable<IsLessThan> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new IsLessThan(),
                 new IsLessThan(10),

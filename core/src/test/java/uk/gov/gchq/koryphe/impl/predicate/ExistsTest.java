@@ -79,7 +79,7 @@ public class ExistsTest extends PredicateTest<Exists> {
     }
 
     @Override
-    protected Iterable<Exists> getDifferentInstances() {
+    protected Iterable<Exists> getDifferentInstancesOrNull() {
         return null;
     }
 }

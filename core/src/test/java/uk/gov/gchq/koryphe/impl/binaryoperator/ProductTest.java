@@ -360,7 +360,7 @@ public class ProductTest extends BinaryOperatorTest<Product> {
     }
 
     @Override
-    protected Iterable<Product> getDifferentInstances() {
+    protected Iterable<Product> getDifferentInstancesOrNull() {
         return null;
     }
 }

@@ -83,7 +83,7 @@ public class StringAppendTest extends FunctionTest<StringAppend> {
     }
 
     @Override
-    protected Iterable<StringAppend> getDifferentInstances() {
+    protected Iterable<StringAppend> getDifferentInstancesOrNull() {
         return Collections.singletonList(new StringAppend("different"));
     }
 

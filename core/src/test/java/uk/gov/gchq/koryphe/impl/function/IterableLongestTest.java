@@ -46,7 +46,7 @@ public class IterableLongestTest extends FunctionTest<IterableLongest> {
     }
 
     @Override
-    protected Iterable<IterableLongest> getDifferentInstances() {
+    protected Iterable<IterableLongest> getDifferentInstancesOrNull() {
         return null;
     }
 

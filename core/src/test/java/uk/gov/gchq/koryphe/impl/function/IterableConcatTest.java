@@ -38,7 +38,7 @@ public class IterableConcatTest extends FunctionTest<IterableConcat> {
     }
 
     @Override
-    protected Iterable<IterableConcat> getDifferentInstances() {
+    protected Iterable<IterableConcat> getDifferentInstancesOrNull() {
         return null;
     }
 

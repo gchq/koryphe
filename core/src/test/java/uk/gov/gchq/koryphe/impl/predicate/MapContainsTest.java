@@ -108,7 +108,7 @@ public class MapContainsTest extends PredicateTest<MapContains> {
     }
 
     @Override
-    protected Iterable<MapContains> getDifferentInstances() {
+    protected Iterable<MapContains> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new MapContains(),
                 new MapContains(KEY2)

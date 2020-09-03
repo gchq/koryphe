@@ -47,7 +47,7 @@ public class ToIntegerTest extends FunctionTest<ToInteger> {
     }
 
     @Override
-    protected Iterable<ToInteger> getDifferentInstances() {
+    protected Iterable<ToInteger> getDifferentInstancesOrNull() {
         return null;
     }
 

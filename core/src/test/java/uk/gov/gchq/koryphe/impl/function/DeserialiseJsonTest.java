@@ -36,7 +36,7 @@ public class DeserialiseJsonTest extends FunctionTest<DeserialiseJson> {
     }
 
     @Override
-    protected Iterable<DeserialiseJson> getDifferentInstances() {
+    protected Iterable<DeserialiseJson> getDifferentInstancesOrNull() {
         return Collections.singletonList(new DeserialiseJson(Long.class));
     }
 

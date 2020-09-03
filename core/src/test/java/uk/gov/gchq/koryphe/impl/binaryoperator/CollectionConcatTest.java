@@ -107,7 +107,7 @@ public class CollectionConcatTest extends BinaryOperatorTest<CollectionConcat> {
     }
 
     @Override
-    protected Iterable<CollectionConcat> getDifferentInstances() {
+    protected Iterable<CollectionConcat> getDifferentInstancesOrNull() {
         return null;
     }
 }

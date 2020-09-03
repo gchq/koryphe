@@ -58,7 +58,7 @@ public class ReverseStringTest extends FunctionTest<ReverseString> {
     }
 
     @Override
-    protected Iterable<ReverseString> getDifferentInstances() {
+    protected Iterable<ReverseString> getDifferentInstancesOrNull() {
         return null;
     }
 

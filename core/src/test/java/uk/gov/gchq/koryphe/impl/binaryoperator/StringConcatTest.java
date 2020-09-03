@@ -63,7 +63,7 @@ public class StringConcatTest extends BinaryOperatorTest<StringConcat> {
     }
 
     @Override
-    protected Iterable<StringConcat> getDifferentInstances() {
+    protected Iterable<StringConcat> getDifferentInstancesOrNull() {
         StringConcat alternative = new StringConcat();
         alternative.setSeparator(" ");
         return Collections.singletonList(alternative);

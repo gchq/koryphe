@@ -156,7 +156,7 @@ public class MinTest extends BinaryOperatorTest<Min> {
     }
 
     @Override
-    protected Iterable<Min> getDifferentInstances() {
+    protected Iterable<Min> getDifferentInstancesOrNull() {
         return null;
     }
 

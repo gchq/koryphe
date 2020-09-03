@@ -63,7 +63,7 @@ class FunctionCompositeTest extends FunctionTest<FunctionComposite>{
     }
 
     @Override
-    protected Iterable<FunctionComposite> getDifferentInstances() {
+    protected Iterable<FunctionComposite> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new FunctionComposite(),
                 new FunctionComposite(Arrays.asList(

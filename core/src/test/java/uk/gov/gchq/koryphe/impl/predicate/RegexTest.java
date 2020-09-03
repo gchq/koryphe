@@ -85,7 +85,7 @@ public class RegexTest extends PredicateTest<Regex> {
     }
 
     @Override
-    protected Iterable<Regex> getDifferentInstances() {
+    protected Iterable<Regex> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new Regex(),
                 new Regex("different")

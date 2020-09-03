@@ -7,13 +7,25 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
  * A TestClass which checks for equality and inequality using both the Equals and Hashcode methods of an object
- * @param <T> The Class of object that is being tested against.
+ * @param <T> The Class of object that is being tested.
  */
 public abstract class EqualityTest<T> {
 
+    /**
+     * Provides a new instance to test equality against.
+     * @return an instance
+     */
     protected abstract T getInstance();
 
-    protected abstract Iterable<T> getDifferentInstances();
+
+    /**
+     * Provides an iterable of instances which should not equal the instance provided
+     * by {@code getInstance()}. If the instance does not have any variety (ie it has
+     * no fields) then null should be returned.
+     * @return an iterable of instances which are different to that provided by
+     * {@code getInstance()}
+     */
+    protected abstract Iterable<T> getDifferentInstancesOrNull();
 
     @Test
     public void shouldEqualsItself() {
@@ -91,7 +103,7 @@ public abstract class EqualityTest<T> {
     public void shouldNotEqualDifferentInstances() {
         // Given
         T instance = getInstance();
-        Iterable<T> alternativeInstances = getDifferentInstances();
+        Iterable<T> alternativeInstances = getDifferentInstancesOrNull();
 
         // When
         if (alternativeInstances == null) {
@@ -108,7 +120,7 @@ public abstract class EqualityTest<T> {
     public void shouldHaveDifferentHashcodesToDifferentInstances() {
         // Given
         T instance = getInstance();
-        Iterable<T> alternativeInstances = getDifferentInstances();
+        Iterable<T> alternativeInstances = getDifferentInstancesOrNull();
 
         // When
         if (alternativeInstances == null) {

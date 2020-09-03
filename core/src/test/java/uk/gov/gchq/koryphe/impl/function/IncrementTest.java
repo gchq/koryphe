@@ -103,7 +103,7 @@ public class IncrementTest extends FunctionTest<Increment> {
     }
 
     @Override
-    protected Iterable<Increment> getDifferentInstances() {
+    protected Iterable<Increment> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new Increment(3L),
                 new Increment(5),

@@ -54,7 +54,7 @@ public class MapToTupleTest extends FunctionTest<MapToTuple> {
     }
 
     @Override
-    protected Iterable<MapToTuple> getDifferentInstances() {
+    protected Iterable<MapToTuple> getDifferentInstancesOrNull() {
         return null;
     }
 

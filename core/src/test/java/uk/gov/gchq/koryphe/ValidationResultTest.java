@@ -19,7 +19,7 @@ class ValidationResultTest extends EqualityTest<ValidationResult> {
     }
 
     @Override
-    protected Iterable<ValidationResult> getDifferentInstances() {
+    protected Iterable<ValidationResult> getDifferentInstancesOrNull() {
         ValidationResult twoErrors = new ValidationResult("Something wen't wrong");
         twoErrors.addError("another thing went wrong");
 

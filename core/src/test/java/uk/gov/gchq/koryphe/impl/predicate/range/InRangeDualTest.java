@@ -421,7 +421,7 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest<InRa
     }
 
     @Override
-    protected Iterable<InRangeDual> getDifferentInstances() {
+    protected Iterable<InRangeDual> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 createBuilder()
                         .start(convert(100L))

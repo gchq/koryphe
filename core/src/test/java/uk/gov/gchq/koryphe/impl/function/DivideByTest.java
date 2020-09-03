@@ -92,7 +92,7 @@ public class DivideByTest extends FunctionTest<DivideBy> {
     }
 
     @Override
-    protected Iterable<DivideBy> getDifferentInstances() {
+    protected Iterable<DivideBy> getDifferentInstancesOrNull() {
         return Collections.singletonList(new DivideBy(5));
     }
 

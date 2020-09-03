@@ -73,7 +73,7 @@ public class StringRegexReplaceTest extends FunctionTest<StringRegexReplace> {
     }
 
     @Override
-    protected Iterable<StringRegexReplace> getDifferentInstances() {
+    protected Iterable<StringRegexReplace> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new StringRegexReplace("replaceMe", "withSomethingElse"),
                 new StringRegexReplace("r.*Me", "withThis"),

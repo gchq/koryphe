@@ -73,7 +73,7 @@ public class StringTruncateTest extends FunctionTest<StringTruncate> {
     }
 
     @Override
-    protected Iterable<StringTruncate> getDifferentInstances() {
+    protected Iterable<StringTruncate> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new StringTruncate(),
                 new StringTruncate(5, true),

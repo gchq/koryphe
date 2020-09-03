@@ -94,7 +94,7 @@ public class MultiplyLongByTest extends FunctionTest<MultiplyLongBy> {
     }
 
     @Override
-    protected Iterable<MultiplyLongBy> getDifferentInstances() {
+    protected Iterable<MultiplyLongBy> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new MultiplyLongBy(),
                 new MultiplyLongBy(100L)

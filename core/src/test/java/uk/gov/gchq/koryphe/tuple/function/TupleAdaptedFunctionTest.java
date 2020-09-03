@@ -59,7 +59,7 @@ class TupleAdaptedFunctionTest extends FunctionTest<TupleAdaptedFunction> {
     }
 
     @Override
-    protected Iterable<TupleAdaptedFunction> getDifferentInstances() {
+    protected Iterable<TupleAdaptedFunction> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new TupleAdaptedFunction(new String[] {"differentInput"}, new ToUpperCase(), new String[] { "output" }),
                 new TupleAdaptedFunction(new String[] {"input"}, new ToUpperCase(), new String[] { "DifferentOutput" }),

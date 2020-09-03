@@ -107,7 +107,7 @@ public class StringDeduplicateConcatTest extends BinaryOperatorTest<StringDedupl
     }
 
     @Override
-    protected Iterable<StringDeduplicateConcat> getDifferentInstances() {
+    protected Iterable<StringDeduplicateConcat> getDifferentInstancesOrNull() {
         StringDeduplicateConcat stringDeduplicateConcat = new StringDeduplicateConcat();
         stringDeduplicateConcat.setSeparator("test");
         return Collections.singletonList(stringDeduplicateConcat);

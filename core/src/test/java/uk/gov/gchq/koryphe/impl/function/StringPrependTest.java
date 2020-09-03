@@ -82,7 +82,7 @@ public class StringPrependTest extends FunctionTest<StringPrepend> {
     }
 
     @Override
-    protected Iterable<StringPrepend> getDifferentInstances() {
+    protected Iterable<StringPrepend> getDifferentInstancesOrNull() {
         return Collections.singletonList(new StringPrepend("different"));
     }
 

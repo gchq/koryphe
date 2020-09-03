@@ -65,7 +65,7 @@ class ToDateStringTest extends FunctionTest<ToDateString> {
     }
 
     @Override
-    protected Iterable<ToDateString> getDifferentInstances() {
+    protected Iterable<ToDateString> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new ToDateString(),
                 new ToDateString("dd-MMM-yy hh:mm:ss")

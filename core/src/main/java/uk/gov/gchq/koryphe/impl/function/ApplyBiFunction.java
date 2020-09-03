@@ -72,7 +72,7 @@ public class ApplyBiFunction<T, U, R> extends KorypheFunction2<T, U, R> implemen
             return true;
         }
 
-        if (!super.equals(o)) {
+        if (!super.classEquals(o)) {
             return false; // Does class checking
         }
 

@@ -102,7 +102,7 @@ public class ToArrayTest extends FunctionTest<ToArray> {
     }
 
     @Override
-    protected Iterable<ToArray> getDifferentInstances() {
+    protected Iterable<ToArray> getDifferentInstancesOrNull() {
         return null;
     }
 

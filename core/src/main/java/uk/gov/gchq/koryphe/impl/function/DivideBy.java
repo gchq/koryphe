@@ -66,7 +66,7 @@ public class DivideBy extends KorypheFunction<Integer, Tuple2<Integer, Integer>>
             return true;
         }
 
-        if (!super.equals(o)) {
+        if (!super.classEquals(o)) {
             return false; // Does class checking
         }
 

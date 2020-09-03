@@ -84,7 +84,7 @@ public class FirstValidTest extends FunctionTest<FirstValid> {
     }
 
     @Override
-    protected Iterable<FirstValid> getDifferentInstances() {
+    protected Iterable<FirstValid> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new FirstValid<>(new IsMoreThan(4)),
                 new FirstValid<>(new IsLessThan(3))

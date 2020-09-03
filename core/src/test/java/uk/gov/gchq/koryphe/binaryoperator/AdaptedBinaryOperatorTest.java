@@ -62,7 +62,7 @@ class AdaptedBinaryOperatorTest extends BinaryOperatorTest<AdaptedBinaryOperator
     }
 
     @Override
-    protected Iterable<AdaptedBinaryOperator> getDifferentInstances() {
+    protected Iterable<AdaptedBinaryOperator> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new AdaptedBinaryOperator(new Product(), new ToLong(), new MultiplyBy(5)),
                 new AdaptedBinaryOperator(new Sum(), new ToInteger(), new MultiplyBy(5)),

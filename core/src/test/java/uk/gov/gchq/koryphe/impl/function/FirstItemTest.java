@@ -36,7 +36,7 @@ public class FirstItemTest extends FunctionTest<FirstItem> {
     }
 
     @Override
-    protected Iterable<FirstItem> getDifferentInstances() {
+    protected Iterable<FirstItem> getDifferentInstancesOrNull() {
         return null;
     }
 

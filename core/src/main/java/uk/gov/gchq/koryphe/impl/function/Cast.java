@@ -60,7 +60,7 @@ public class Cast<I, O> extends KorypheFunction<I, O> {
             return true;
         }
 
-        if (!super.equals(o)) {
+        if (!super.classEquals(o)) {
             return false; // Does class checking
         }
 

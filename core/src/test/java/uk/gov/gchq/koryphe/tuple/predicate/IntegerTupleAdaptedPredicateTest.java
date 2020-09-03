@@ -49,7 +49,7 @@ class IntegerTupleAdaptedPredicateTest extends PredicateTest<IntegerTupleAdapted
     }
 
     @Override
-    protected Iterable<IntegerTupleAdaptedPredicate> getDifferentInstances() {
+    protected Iterable<IntegerTupleAdaptedPredicate> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new IntegerTupleAdaptedPredicate(new StringContains("different"), 1),
                 new IntegerTupleAdaptedPredicate(new StringContains("test"), 2),

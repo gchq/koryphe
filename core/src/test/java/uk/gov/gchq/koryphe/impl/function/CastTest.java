@@ -49,7 +49,7 @@ public class CastTest extends FunctionTest<Cast> {
     }
 
     @Override
-    protected Iterable<Cast> getDifferentInstances() {
+    protected Iterable<Cast> getDifferentInstancesOrNull() {
         return Collections.singletonList(new Cast<>(Integer.class));
     }
 

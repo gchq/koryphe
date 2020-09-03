@@ -66,7 +66,7 @@ public class AndTest extends BinaryOperatorTest<And> {
     }
 
     @Override
-    protected Iterable<And> getDifferentInstances() {
+    protected Iterable<And> getDifferentInstancesOrNull() {
         return null;
     }
 

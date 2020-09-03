@@ -37,7 +37,7 @@ public class GunzipTest extends FunctionTest<Gunzip> {
     }
 
     @Override
-    protected Iterable<Gunzip> getDifferentInstances() {
+    protected Iterable<Gunzip> getDifferentInstancesOrNull() {
         return null;
     }
 

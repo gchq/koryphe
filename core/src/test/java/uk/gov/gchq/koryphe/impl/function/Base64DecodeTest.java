@@ -35,7 +35,7 @@ public class Base64DecodeTest extends FunctionTest<Base64Decode> {
     }
 
     @Override
-    protected Iterable<Base64Decode> getDifferentInstances() {
+    protected Iterable<Base64Decode> getDifferentInstancesOrNull() {
         return null;
     }
 

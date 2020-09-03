@@ -67,7 +67,7 @@ public class AdaptedPredicateTest extends PredicateTest<AdaptedPredicate>{
     }
 
     @Override
-    protected Iterable<AdaptedPredicate> getDifferentInstances() {
+    protected Iterable<AdaptedPredicate> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new AdaptedPredicate(new ToLowerCase(), new StringContains("TEST")),
                 new AdaptedPredicate(new ToUpperCase(), new StringContains("DIFFERENT")),

@@ -564,7 +564,7 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
     }
 
     @Override
-    protected Iterable<AbstractInTimeRangeDual> getDifferentInstances() {
+    protected Iterable<AbstractInTimeRangeDual> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 createBuilder()
                         .start("100")

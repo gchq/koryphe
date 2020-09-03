@@ -100,7 +100,7 @@ public class ToStringTest extends FunctionTest<ToString> {
     }
 
     @Override
-    protected Iterable<ToString> getDifferentInstances() {
+    protected Iterable<ToString> getDifferentInstancesOrNull() {
         return Collections.singletonList(new ToString(Charsets.ISO_8859_1));
     }
 

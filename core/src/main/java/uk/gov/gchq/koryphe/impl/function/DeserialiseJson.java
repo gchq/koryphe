@@ -92,7 +92,7 @@ public class DeserialiseJson<T> extends KorypheFunction<String, T> implements Se
             return true;
         }
 
-        if (!super.equals(o)) {
+        if (!super.classEquals(o)) {
             return false; // Does class checking
         }
 

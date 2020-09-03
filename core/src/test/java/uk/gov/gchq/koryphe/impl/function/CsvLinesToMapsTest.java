@@ -38,7 +38,7 @@ public class CsvLinesToMapsTest extends FunctionTest<CsvLinesToMaps> {
     }
 
     @Override
-    protected Iterable<CsvLinesToMaps> getDifferentInstances() {
+    protected Iterable<CsvLinesToMaps> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new CsvLinesToMaps().delimiter('\t'),
                 new CsvLinesToMaps().firstRow(8),

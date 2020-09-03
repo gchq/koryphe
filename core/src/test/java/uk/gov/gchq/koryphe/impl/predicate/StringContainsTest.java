@@ -136,7 +136,7 @@ public class StringContainsTest extends PredicateTest<StringContains> {
     }
 
     @Override
-    protected Iterable<StringContains> getDifferentInstances() {
+    protected Iterable<StringContains> getDifferentInstancesOrNull() {
         return Arrays.asList(
 //                new StringContains(), Empty string and null have the same hashCode
                 new StringContains("different"),

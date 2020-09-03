@@ -54,7 +54,7 @@ public class TupleAdaptedBinaryOperatorCompositeTest extends BinaryOperatorTest<
     }
 
     @Override
-    protected Iterable<TupleAdaptedBinaryOperatorComposite> getDifferentInstances() {
+    protected Iterable<TupleAdaptedBinaryOperatorComposite> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new TupleAdaptedBinaryOperatorComposite.Builder()
                         .select(new String[] { "differentInput", "anotherInput" })

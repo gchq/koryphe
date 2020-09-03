@@ -101,7 +101,7 @@ public class MultiRegexTest extends PredicateTest<MultiRegex> {
     }
 
     @Override
-    protected Iterable<MultiRegex> getDifferentInstances() {
+    protected Iterable<MultiRegex> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new MultiRegex(),
                 new MultiRegex(Pattern.compile("Something")),

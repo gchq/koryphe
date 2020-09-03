@@ -92,7 +92,7 @@ public class StringSplitTest extends FunctionTest<StringSplit> {
     }
 
     @Override
-    protected Iterable<StringSplit> getDifferentInstances() {
+    protected Iterable<StringSplit> getDifferentInstancesOrNull() {
         return Collections.singletonList(new StringSplit(" "));
     }
 

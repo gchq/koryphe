@@ -76,7 +76,7 @@ class TupleAdaptedFunctionCompositeTest extends FunctionTest<TupleAdaptedFunctio
     }
 
     @Override
-    protected Iterable<TupleAdaptedFunctionComposite> getDifferentInstances() {
+    protected Iterable<TupleAdaptedFunctionComposite> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new TupleAdaptedFunctionComposite.Builder<String>()
                         .select(new String[] { "DifferentInput" })

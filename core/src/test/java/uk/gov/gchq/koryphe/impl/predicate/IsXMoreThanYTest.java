@@ -88,7 +88,7 @@ public class IsXMoreThanYTest extends PredicateTest<IsXMoreThanY> {
     }
 
     @Override
-    protected Iterable<IsXMoreThanY> getDifferentInstances() {
+    protected Iterable<IsXMoreThanY> getDifferentInstancesOrNull() {
         return null;
     }
 }

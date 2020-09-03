@@ -48,7 +48,7 @@ class BinaryOperatorCompositeTest extends BinaryOperatorTest<BinaryOperatorCompo
     }
 
     @Override
-    protected Iterable<BinaryOperatorComposite> getDifferentInstances() {
+    protected Iterable<BinaryOperatorComposite> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new BinaryOperatorComposite(),
                 new BinaryOperatorComposite(Arrays.asList(

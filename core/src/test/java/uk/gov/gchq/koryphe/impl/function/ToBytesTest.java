@@ -61,7 +61,7 @@ public class ToBytesTest extends FunctionTest<ToBytes> {
     }
 
     @Override
-    protected Iterable<ToBytes> getDifferentInstances() {
+    protected Iterable<ToBytes> getDifferentInstancesOrNull() {
         return Collections.singletonList(new ToBytes(StandardCharsets.US_ASCII));
     }
 

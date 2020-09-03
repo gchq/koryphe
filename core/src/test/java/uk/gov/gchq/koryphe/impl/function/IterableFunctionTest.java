@@ -42,7 +42,7 @@ public class IterableFunctionTest extends FunctionTest<IterableFunction> {
     }
 
     @Override
-    protected Iterable<IterableFunction> getDifferentInstances() {
+    protected Iterable<IterableFunction> getDifferentInstancesOrNull() {
         return Collections.singletonList(new IterableFunction(new ToLong()));
     }
 

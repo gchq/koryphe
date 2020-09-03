@@ -205,7 +205,7 @@ public class InRangeTest<T extends Comparable<T>> extends PredicateTest<InRange>
     }
 
     @Override
-    protected Iterable<InRange> getDifferentInstances() {
+    protected Iterable<InRange> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 createBuilder()
                     .start(convert(100L))

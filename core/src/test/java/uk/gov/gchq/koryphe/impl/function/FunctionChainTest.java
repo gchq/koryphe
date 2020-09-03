@@ -37,7 +37,7 @@ public class FunctionChainTest extends FunctionTest<FunctionChain> {
     }
 
     @Override
-    protected Iterable<FunctionChain> getDifferentInstances() {
+    protected Iterable<FunctionChain> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new FunctionChain<>(),
                 new FunctionChain.Builder<>()

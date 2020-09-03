@@ -67,7 +67,7 @@ class TupleAdaptedPredicateCompositeTest extends PredicateTest<TupleAdaptedPredi
     }
 
     @Override
-    protected Iterable<TupleAdaptedPredicateComposite> getDifferentInstances() {
+    protected Iterable<TupleAdaptedPredicateComposite> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new TupleAdaptedPredicateComposite.Builder<String>()
                         .select(new String[]{ "test" })

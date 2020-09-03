@@ -62,7 +62,7 @@ public class MultiplyBy extends KorypheFunction<Integer, Integer> {
             return true;
         }
 
-        if (!super.equals(o)) {
+        if (!super.classEquals(o)) {
             return false; // Does exact equals and class checking
         }
 

@@ -70,7 +70,7 @@ public class StringSplit extends KorypheFunction<String, List<String>> {
             return true;
         }
 
-        if (!super.equals(o)) {
+        if (!super.classEquals(o)) {
             return false; // Does exact equals and class checking
         }
 

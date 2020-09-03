@@ -108,7 +108,7 @@ public class ToTupleTest extends FunctionTest<ToTuple> {
     }
 
     @Override
-    protected Iterable<ToTuple> getDifferentInstances() {
+    protected Iterable<ToTuple> getDifferentInstancesOrNull() {
         return null;
     }
 

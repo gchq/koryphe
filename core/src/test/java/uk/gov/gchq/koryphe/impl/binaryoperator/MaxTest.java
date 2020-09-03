@@ -156,7 +156,7 @@ public class MaxTest extends BinaryOperatorTest<Max> {
     }
 
     @Override
-    protected Iterable<Max> getDifferentInstances() {
+    protected Iterable<Max> getDifferentInstancesOrNull() {
         return null;
     }
 }

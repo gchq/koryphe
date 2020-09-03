@@ -76,7 +76,7 @@ public class ToUpperCaseTest extends FunctionTest<ToUpperCase> {
     }
 
     @Override
-    protected Iterable<ToUpperCase> getDifferentInstances() {
+    protected Iterable<ToUpperCase> getDifferentInstancesOrNull() {
         return null;
     }
 

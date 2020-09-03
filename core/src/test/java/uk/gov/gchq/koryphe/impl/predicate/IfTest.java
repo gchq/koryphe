@@ -45,7 +45,7 @@ public class IfTest extends PredicateTest<If> {
     }
 
     @Override
-    protected Iterable<If> getDifferentInstances() {
+    protected Iterable<If> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new If<>(false, new IsA(String.class), new IsA(Integer.class)),
                 new If<>(true, new IsMoreThan(5L), new IsA(Integer.class)),

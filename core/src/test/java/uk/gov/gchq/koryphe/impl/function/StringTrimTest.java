@@ -59,7 +59,7 @@ public class StringTrimTest extends FunctionTest<StringTrim> {
     }
 
     @Override
-    protected Iterable<StringTrim> getDifferentInstances() {
+    protected Iterable<StringTrim> getDifferentInstancesOrNull() {
         return null;
     }
 

@@ -246,7 +246,7 @@ public class OrTest extends PredicateTest<Or> {
     }
 
     @Override
-    protected Iterable<Or> getDifferentInstances() {
+    protected Iterable<Or> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new Or<>(),
                 new Or<>(new IsMoreThan(5), new IsLessThan(5, true))

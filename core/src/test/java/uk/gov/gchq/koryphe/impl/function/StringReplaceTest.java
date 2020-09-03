@@ -99,7 +99,7 @@ public class StringReplaceTest extends FunctionTest<StringReplace> {
     }
 
     @Override
-    protected Iterable<StringReplace> getDifferentInstances() {
+    protected Iterable<StringReplace> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new StringReplace("searchForThis", "test"),
                 new StringReplace("test", "replaceWithThis")

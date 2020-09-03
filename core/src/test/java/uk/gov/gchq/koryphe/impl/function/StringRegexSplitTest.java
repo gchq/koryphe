@@ -62,7 +62,7 @@ public class StringRegexSplitTest extends FunctionTest<StringRegexSplit> {
     }
 
     @Override
-    protected Iterable<StringRegexSplit> getDifferentInstances() {
+    protected Iterable<StringRegexSplit> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new StringRegexSplit("hello"),
                 new StringRegexSplit(".*")

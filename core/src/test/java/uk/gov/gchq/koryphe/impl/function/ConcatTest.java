@@ -81,7 +81,7 @@ public class ConcatTest extends FunctionTest<Concat> {
     }
 
     @Override
-    protected Iterable<Concat> getDifferentInstances() {
+    protected Iterable<Concat> getDifferentInstancesOrNull() {
         return Collections.singletonList(new Concat(" "));
     }
 

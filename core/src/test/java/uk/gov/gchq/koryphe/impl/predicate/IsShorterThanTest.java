@@ -194,7 +194,7 @@ public class IsShorterThanTest extends PredicateTest<IsShorterThan> {
     }
 
     @Override
-    protected Iterable<IsShorterThan> getDifferentInstances() {
+    protected Iterable<IsShorterThan> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new IsShorterThan(10),
                 new IsShorterThan()

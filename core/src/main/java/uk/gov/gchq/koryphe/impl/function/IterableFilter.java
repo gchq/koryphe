@@ -74,7 +74,7 @@ public class IterableFilter<I_ITEM> extends KorypheFunction<Iterable<I_ITEM>, It
             return true;
         }
 
-        if (!super.equals(o)) {
+        if (!super.classEquals(o)) {
             return false; // Does exact equals and class checking
         }
 

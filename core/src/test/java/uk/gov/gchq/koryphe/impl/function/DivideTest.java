@@ -89,7 +89,7 @@ public class DivideTest extends FunctionTest<Divide> {
     }
 
     @Override
-    protected Iterable getDifferentInstances() {
+    protected Iterable getDifferentInstancesOrNull() {
         return null;
     }
 

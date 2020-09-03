@@ -80,7 +80,7 @@ public class DictionaryLookupTest extends FunctionTest<DictionaryLookup<?, ?>> {
     }
 
     @Override
-    protected Iterable<DictionaryLookup<?, ?>> getDifferentInstances() {
+    protected Iterable<DictionaryLookup<?, ?>> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new DictionaryLookup<>(null),
                 new DictionaryLookup<>(Maps.newHashMap())

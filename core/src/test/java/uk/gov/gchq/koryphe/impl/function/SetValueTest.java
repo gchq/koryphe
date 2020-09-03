@@ -49,7 +49,7 @@ public class SetValueTest extends FunctionTest<SetValue> {
     }
 
     @Override
-    protected Iterable<SetValue> getDifferentInstances() {
+    protected Iterable<SetValue> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new SetValue(1L),
                 new SetValue(new SetValue())

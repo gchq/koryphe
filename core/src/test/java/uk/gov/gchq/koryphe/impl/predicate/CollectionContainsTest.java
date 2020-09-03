@@ -149,7 +149,7 @@ public class CollectionContainsTest extends PredicateTest<CollectionContains> {
     }
 
     @Override
-    protected Iterable<CollectionContains> getDifferentInstances() {
+    protected Iterable<CollectionContains> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new CollectionContains(),
                 new CollectionContains(VALUE2)

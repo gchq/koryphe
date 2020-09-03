@@ -79,7 +79,7 @@ public class IterableFlattenTest extends FunctionTest<IterableFlatten> {
     }
 
     @Override
-    protected Iterable<IterableFlatten> getDifferentInstances() {
+    protected Iterable<IterableFlatten> getDifferentInstancesOrNull() {
         return Collections.singletonList(new IterableFlatten(new StringConcat()));
     }
 

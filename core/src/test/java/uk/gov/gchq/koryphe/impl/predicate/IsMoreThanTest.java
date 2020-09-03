@@ -146,7 +146,7 @@ public class IsMoreThanTest extends PredicateTest<IsMoreThan> {
     }
 
     @Override
-    protected Iterable<IsMoreThan> getDifferentInstances() {
+    protected Iterable<IsMoreThan> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new IsMoreThan(),
                 new IsMoreThan(10L)
