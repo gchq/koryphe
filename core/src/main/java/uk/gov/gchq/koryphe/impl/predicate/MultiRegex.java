@@ -42,10 +42,10 @@ public class MultiRegex extends KoryphePredicate<String> {
     private Pattern[] patterns;
 
     public MultiRegex() {
-        this(null);
+        this((Pattern[]) null);
     }
 
-    public MultiRegex(final Pattern[] patterns) {
+    public MultiRegex(final Pattern... patterns) {
         setPatterns(patterns);
     }
 

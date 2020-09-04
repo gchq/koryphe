@@ -21,12 +21,13 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class StringReplaceTest extends FunctionTest {
+public class StringReplaceTest extends FunctionTest<StringReplace> {
 
     @Test
     public void shouldHandleNullInput() {
@@ -94,12 +95,15 @@ public class StringReplaceTest extends FunctionTest {
 
     @Override
     protected StringReplace getInstance() {
-        return new StringReplace();
+        return new StringReplace("searchForThis", "replaceWithThis");
     }
 
     @Override
-    protected Class<? extends StringReplace> getFunctionClass() {
-        return StringReplace.class;
+    protected Iterable<StringReplace> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new StringReplace("searchForThis", "test"),
+                new StringReplace("test", "replaceWithThis")
+        );
     }
 
     @Override

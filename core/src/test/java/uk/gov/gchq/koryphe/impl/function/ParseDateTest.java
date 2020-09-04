@@ -23,21 +23,24 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class ParseDateTest extends FunctionTest {
+public class ParseDateTest extends FunctionTest<ParseDate> {
     @Override
-    protected Function getInstance() {
-        return new ParseDate();
+    protected ParseDate getInstance() {
+        return new ParseDate().timeZone("UTC");
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ParseDate.class;
+    protected Iterable<ParseDate> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new ParseDate().timeZone("EST"),
+                new ParseDate().format("dd-mmm-yy HH:mm:ss")
+        );
     }
 
     @Override

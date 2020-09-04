@@ -7,11 +7,12 @@ import uk.gov.gchq.koryphe.binaryoperator.BinaryOperatorTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class StringConcatTest extends BinaryOperatorTest {
+public class StringConcatTest extends BinaryOperatorTest<StringConcat> {
 
     private String state;
 
@@ -50,7 +51,7 @@ public class StringConcatTest extends BinaryOperatorTest {
                 "}"), json);
 
         // When 2
-        final StringConcat deserialisedAggregator = JsonSerialiser.deserialise(json, getFunctionClass());
+        final StringConcat deserialisedAggregator = JsonSerialiser.deserialise(json, StringConcat.class);
 
         // Then 2
         assertNotNull(deserialisedAggregator);
@@ -62,7 +63,10 @@ public class StringConcatTest extends BinaryOperatorTest {
     }
 
     @Override
-    protected Class<StringConcat> getFunctionClass() {
-        return StringConcat.class;
+    protected Iterable<StringConcat> getDifferentInstancesOrNull() {
+        StringConcat alternative = new StringConcat();
+        alternative.setSeparator(" ");
+        return Collections.singletonList(alternative);
     }
+
 }

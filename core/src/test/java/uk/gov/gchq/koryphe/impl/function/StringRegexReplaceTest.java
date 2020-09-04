@@ -21,12 +21,13 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class StringRegexReplaceTest extends FunctionTest {
+public class StringRegexReplaceTest extends FunctionTest<StringRegexReplace> {
 
     @Test
     public void shouldHandleNullInput() {
@@ -68,12 +69,16 @@ public class StringRegexReplaceTest extends FunctionTest {
 
     @Override
     protected StringRegexReplace getInstance() {
-        return new StringRegexReplace();
+        return new StringRegexReplace("replaceMe", "withThis");
     }
 
     @Override
-    protected Class<? extends StringRegexReplace> getFunctionClass() {
-        return StringRegexReplace.class;
+    protected Iterable<StringRegexReplace> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new StringRegexReplace("replaceMe", "withSomethingElse"),
+                new StringRegexReplace("r.*Me", "withThis"),
+                new StringRegexReplace()
+        );
     }
 
     @Override

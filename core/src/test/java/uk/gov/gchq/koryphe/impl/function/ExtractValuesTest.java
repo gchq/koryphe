@@ -24,7 +24,6 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -32,15 +31,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ExtractValuesTest extends FunctionTest {
+public class ExtractValuesTest extends FunctionTest<ExtractValues> {
     @Override
-    protected Function getInstance() {
+    protected ExtractValues getInstance() {
         return new ExtractValues();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ExtractValues.class;
+    protected Iterable<ExtractValues> getDifferentInstancesOrNull() {
+        return null;
     }
 
     @Override

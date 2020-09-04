@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class StringTrimTest extends FunctionTest {
+public class StringTrimTest extends FunctionTest<StringTrim> {
 
     @Test
     public void shouldHandleNullInput() {
@@ -59,8 +59,8 @@ public class StringTrimTest extends FunctionTest {
     }
 
     @Override
-    protected Class<? extends StringTrim> getFunctionClass() {
-        return StringTrim.class;
+    protected Iterable<StringTrim> getDifferentInstancesOrNull() {
+        return null;
     }
 
     @Override

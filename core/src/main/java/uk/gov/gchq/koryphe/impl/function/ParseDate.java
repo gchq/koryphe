@@ -17,6 +17,8 @@ package uk.gov.gchq.koryphe.impl.function;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
@@ -110,5 +112,31 @@ public class ParseDate extends KorypheFunction<String, Date> {
     public ParseDate timeZone(final TimeZone timeZone) {
         setTimeZone(timeZone);
         return this;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o)) {
+            return false; // Does exact equals and class checking
+        }
+
+        ParseDate that = (ParseDate) o;
+        return new EqualsBuilder()
+                .append(timeZone, that.timeZone)
+                .append(format, that.format)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(73, 41)
+                .appendSuper(super.hashCode())
+                .append(timeZone)
+                .append(format)
+                .toHashCode();
     }
 }

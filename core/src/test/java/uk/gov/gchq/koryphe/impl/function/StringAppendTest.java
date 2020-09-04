@@ -21,12 +21,13 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class StringAppendTest extends FunctionTest {
+public class StringAppendTest extends FunctionTest<StringAppend> {
 
     @Test
     public void shouldHandleNullInput() {
@@ -82,8 +83,8 @@ public class StringAppendTest extends FunctionTest {
     }
 
     @Override
-    protected Class<? extends StringAppend> getFunctionClass() {
-        return StringAppend.class;
+    protected Iterable<StringAppend> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new StringAppend("different"));
     }
 
     @Override

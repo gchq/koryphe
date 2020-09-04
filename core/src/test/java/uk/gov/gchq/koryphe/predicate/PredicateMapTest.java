@@ -20,9 +20,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.impl.predicate.IsA;
+import uk.gov.gchq.koryphe.impl.predicate.IsMoreThan;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -37,7 +39,7 @@ import static org.mockito.Mockito.mock;
 /**
  * Tests the MapFilter class can be used to mapFilter {@code FreqMap} frequencies.
  */
-public class PredicateMapTest extends PredicateTest {
+public class PredicateMapTest extends PredicateTest<PredicateMap> {
 
     private static final String KEY1 = "key1";
     private static final Date DATE_KEY = new Date();
@@ -148,12 +150,20 @@ public class PredicateMapTest extends PredicateTest {
     }
 
     @Override
-    protected Class<PredicateMap> getPredicateClass() {
-        return PredicateMap.class;
+    protected PredicateMap getInstance() {
+        return new PredicateMap<>(KEY1, new IsA(Map.class));
     }
 
     @Override
-    protected PredicateMap getInstance() {
-        return new PredicateMap<>(KEY1, new IsA(Map.class));
+    protected Iterable<PredicateMap> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new PredicateMap(
+                        KEY2, new IsA(Map.class)
+                ),
+                new PredicateMap(
+                        KEY1, new IsMoreThan(5)
+                ),
+                new PredicateMap()
+        );
     }
 }

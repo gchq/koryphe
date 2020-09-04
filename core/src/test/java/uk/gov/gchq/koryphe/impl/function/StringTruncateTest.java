@@ -21,12 +21,13 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class StringTruncateTest extends FunctionTest {
+public class StringTruncateTest extends FunctionTest<StringTruncate> {
 
     @Test
     public void shouldHandleNullInput() {
@@ -68,12 +69,16 @@ public class StringTruncateTest extends FunctionTest {
 
     @Override
     protected StringTruncate getInstance() {
-        return new StringTruncate();
+        return new StringTruncate(10, true);
     }
 
     @Override
-    protected Class<? extends StringTruncate> getFunctionClass() {
-        return StringTruncate.class;
+    protected Iterable<StringTruncate> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new StringTruncate(),
+                new StringTruncate(5, true),
+                new StringTruncate(10, false)
+        );
     }
 
     @Override

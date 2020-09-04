@@ -23,6 +23,7 @@ import uk.gov.gchq.koryphe.signature.Signature;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,7 +34,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class NotTest extends PredicateTest {
+public class NotTest extends PredicateTest<Not> {
 
     @Test
     public void shouldAcceptTheValueWhenTheWrappedFunctionReturnsFalse() {
@@ -104,13 +105,17 @@ public class NotTest extends PredicateTest {
     }
 
     @Override
-    protected Class<Not> getPredicateClass() {
-        return Not.class;
+    protected Not<Object> getInstance() {
+        return new Not<>(new IsA(String.class));
     }
 
     @Override
-    protected Not<Object> getInstance() {
-        return new Not<>(new IsA(String.class));
+    protected Iterable<Not> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new Not<>(),
+                new Not<>(new IsEqual("test")),
+                new Not<>(new IsA(Long.class))
+        );
     }
 
     @Test

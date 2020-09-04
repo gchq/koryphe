@@ -23,12 +23,12 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.function.Function;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class CastTest extends FunctionTest {
+public class CastTest extends FunctionTest<Cast> {
 
     @Disabled
     @Test
@@ -44,13 +44,13 @@ public class CastTest extends FunctionTest {
     }
 
     @Override
-    protected Function getInstance() {
+    protected Cast getInstance() {
         return new Cast<>();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return Cast.class;
+    protected Iterable<Cast> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new Cast<>(Integer.class));
     }
 
     @Override

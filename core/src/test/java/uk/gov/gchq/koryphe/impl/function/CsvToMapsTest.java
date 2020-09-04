@@ -22,23 +22,29 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class CsvToMapsTest extends FunctionTest {
+public class CsvToMapsTest extends FunctionTest<CsvToMaps> {
     @Override
-    protected Function getInstance() {
+    protected CsvToMaps getInstance() {
         return new CsvToMaps();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return CsvToMaps.class;
+    protected Iterable<CsvToMaps> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new CsvToMaps().delimiter('\t'),
+                new CsvToMaps().firstRow(8),
+                new CsvToMaps().quoteChar('\''),
+                new CsvToMaps().quoted(),
+                new CsvToMaps().header("myHeader")
+        );
     }
 
     @Override

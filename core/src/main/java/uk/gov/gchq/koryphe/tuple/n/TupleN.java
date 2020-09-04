@@ -19,7 +19,7 @@ package uk.gov.gchq.koryphe.tuple.n;
 import uk.gov.gchq.koryphe.tuple.ArrayTuple;
 
 /**
- * An {@link ArrayTuple} containing 5 entries.
+ * An {@link ArrayTuple} containing any number of entries.
  */
 public class TupleN extends ArrayTuple {
     public TupleN(final int size) {

@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class IsXLessThanYTest extends PredicateTest {
+public class IsXLessThanYTest extends PredicateTest<IsXLessThanY> {
 
     @Test
     public void shouldAcceptWhenLessThan() {
@@ -83,12 +83,12 @@ public class IsXLessThanYTest extends PredicateTest {
     }
 
     @Override
-    protected Class<IsXLessThanY> getPredicateClass() {
-        return IsXLessThanY.class;
+    protected IsXLessThanY getInstance() {
+        return new IsXLessThanY();
     }
 
     @Override
-    protected IsXLessThanY getInstance() {
-        return new IsXLessThanY();
+    protected Iterable<IsXLessThanY> getDifferentInstancesOrNull() {
+        return null;
     }
 }

@@ -27,7 +27,7 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class DivideTest extends FunctionTest {
+public class DivideTest extends FunctionTest<Divide> {
 
     @Test
     public void shouldDivide2() {
@@ -62,6 +62,7 @@ public class DivideTest extends FunctionTest {
         assertEquals(new Tuple2<>(9, 0), output);
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -88,8 +89,8 @@ public class DivideTest extends FunctionTest {
     }
 
     @Override
-    protected Class<Divide> getFunctionClass() {
-        return Divide.class;
+    protected Iterable getDifferentInstancesOrNull() {
+        return null;
     }
 
     @Override

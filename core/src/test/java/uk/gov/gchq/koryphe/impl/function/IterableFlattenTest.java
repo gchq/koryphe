@@ -20,10 +20,12 @@ import com.google.common.collect.Sets;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
+import uk.gov.gchq.koryphe.impl.binaryoperator.StringConcat;
 import uk.gov.gchq.koryphe.impl.binaryoperator.Sum;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -31,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class IterableFlattenTest extends FunctionTest {
+public class IterableFlattenTest extends FunctionTest<IterableFlatten> {
 
     @Test
     public void shouldHandleNullInput() {
@@ -77,8 +79,8 @@ public class IterableFlattenTest extends FunctionTest {
     }
 
     @Override
-    protected Class<? extends IterableFlatten> getFunctionClass() {
-        return IterableFlatten.class;
+    protected Iterable<IterableFlatten> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new IterableFlatten(new StringConcat()));
     }
 
     @Override

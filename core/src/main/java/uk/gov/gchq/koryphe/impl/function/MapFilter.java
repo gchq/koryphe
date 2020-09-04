@@ -17,6 +17,9 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
@@ -110,5 +113,42 @@ public class MapFilter<K, V> extends KorypheFunction<Map<K, V>, Map<K, V>> {
         }
 
         removeIfPredicate = filter.negate();
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o)) {
+            return false; // Does exact equals and class checking
+        }
+
+        MapFilter that = (MapFilter) o;
+        return new EqualsBuilder()
+                .append(keyPredicate, that.keyPredicate)
+                .append(valuePredicate, that.valuePredicate)
+                .append(keyValuePredicate, that.keyValuePredicate)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(13, 79)
+                .appendSuper(super.hashCode())
+                .append(keyPredicate)
+                .append(valuePredicate)
+                .append(keyValuePredicate)
+                .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("keyPredicate", keyPredicate)
+                .append("valuePredicate", valuePredicate)
+                .append("keyValuePredicate", keyValuePredicate)
+                .toString();
     }
 }

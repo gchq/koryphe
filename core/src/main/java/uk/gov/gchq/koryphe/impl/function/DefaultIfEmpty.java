@@ -16,6 +16,9 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
@@ -29,7 +32,7 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
 public class DefaultIfEmpty extends KorypheFunction<Object, Object> {
 
     private Object defaultValue;
-    private Length delegate = new Length();
+    private final Length delegate = new Length();
 
     public DefaultIfEmpty() {
     }
@@ -53,5 +56,29 @@ public class DefaultIfEmpty extends KorypheFunction<Object, Object> {
 
     public void setDefaultValue(final Object defaultValue) {
         this.defaultValue = defaultValue;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o)) {
+            return false; // Does class checking
+        }
+
+        DefaultIfEmpty that = (DefaultIfEmpty) o;
+        return new EqualsBuilder()
+                .append(defaultValue, that.defaultValue)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(23, 17)
+                .appendSuper(super.hashCode())
+                .append(defaultValue)
+                .toHashCode();
     }
 }

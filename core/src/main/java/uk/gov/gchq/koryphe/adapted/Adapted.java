@@ -16,6 +16,12 @@
 
 package uk.gov.gchq.koryphe.adapted;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -41,18 +47,22 @@ import java.util.function.Function;
  * @param <C> Context type - either <code>I</code> or <code>O</code>, depending on context.
  */
 public abstract class Adapted<I, AI, AO, O, C> extends InputAdapted<I, AI> {
+
     protected BiFunction<C, AO, O> outputAdapter;
 
+    @JsonGetter
     public BiFunction<C, AO, O> getOutputAdapter() {
         return outputAdapter;
     }
 
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
     public void setOutputAdapter(final BiFunction<C, AO, O> outputAdapter) {
         this.outputAdapter = outputAdapter;
     }
 
+    @JsonIgnore
     public void setOutputAdapter(final Function<AO, O> outputAdapter) {
-        setOutputAdapter((o, ao) -> outputAdapter.apply(ao));
+        setOutputAdapter(new StateAgnosticOutputAdapter<>(outputAdapter));
     }
 
     /**
@@ -64,5 +74,29 @@ public abstract class Adapted<I, AI, AO, O, C> extends InputAdapted<I, AI> {
      */
     protected O adaptOutput(final AO output, final C into) {
         return outputAdapter == null ? (O) output : outputAdapter.apply(into, output);
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o)) {
+            return false; // Does class checking
+        }
+
+        final Adapted that = (Adapted) o;
+        return new EqualsBuilder()
+                .append(outputAdapter, that.outputAdapter)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(5, 89)
+                .appendSuper(super.hashCode())
+                .append(outputAdapter)
+                .toHashCode();
     }
 }

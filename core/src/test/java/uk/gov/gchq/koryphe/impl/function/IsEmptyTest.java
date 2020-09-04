@@ -23,7 +23,6 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -31,15 +30,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class IsEmptyTest extends FunctionTest {
+public class IsEmptyTest extends FunctionTest<IsEmpty> {
     @Override
-    protected Function getInstance() {
+    protected IsEmpty getInstance() {
         return new IsEmpty();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return IsEmpty.class;
+    protected Iterable<IsEmpty> getDifferentInstancesOrNull() {
+        return null;
     }
 
     @Override

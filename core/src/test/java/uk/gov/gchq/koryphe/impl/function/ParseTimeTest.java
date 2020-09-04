@@ -19,24 +19,29 @@ import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
+import uk.gov.gchq.koryphe.util.TimeUnit;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.function.Function;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class ParseTimeTest extends FunctionTest {
+public class ParseTimeTest extends FunctionTest<ParseTime> {
     @Override
-    protected Function getInstance() {
-        return new ParseTime();
+    protected ParseTime getInstance() {
+        return new ParseTime().timeZone("UTC");
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ParseTime.class;
+    protected Iterable<ParseTime> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new ParseTime().format("dd-MMM-YYYY hh:mm:ss"),
+                new ParseTime().timeZone("PST"),
+                new ParseTime().timeUnit(TimeUnit.DAY)
+        );
     }
 
     @Override

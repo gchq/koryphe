@@ -25,6 +25,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CollectionContainsTest extends PredicateTest {
+public class CollectionContainsTest extends PredicateTest<CollectionContains> {
 
     private static final CustomObj VALUE1 = new CustomObj();
     private static final String VALUE2 = "value2";
@@ -143,12 +144,15 @@ public class CollectionContainsTest extends PredicateTest {
     }
 
     @Override
-    protected Class<CollectionContains> getPredicateClass() {
-        return CollectionContains.class;
+    protected CollectionContains getInstance() {
+        return new CollectionContains(VALUE1);
     }
 
     @Override
-    protected CollectionContains getInstance() {
-        return new CollectionContains(VALUE1);
+    protected Iterable<CollectionContains> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new CollectionContains(),
+                new CollectionContains(VALUE2)
+        );
     }
 }

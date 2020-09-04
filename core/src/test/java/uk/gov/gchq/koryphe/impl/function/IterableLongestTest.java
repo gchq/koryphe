@@ -8,13 +8,12 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class IterableLongestTest extends FunctionTest {
+public class IterableLongestTest extends FunctionTest<IterableLongest> {
 
     @Test
     public void shouldHandleNullInput() {
@@ -47,8 +46,8 @@ public class IterableLongestTest extends FunctionTest {
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return IterableLongest.class;
+    protected Iterable<IterableLongest> getDifferentInstancesOrNull() {
+        return null;
     }
 
     @Override

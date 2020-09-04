@@ -32,7 +32,7 @@ import java.util.function.Predicate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
+public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest<InRangeDual> {
 
     @Test
     public void shouldAcceptValuesInRange() {
@@ -413,16 +413,25 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest {
     }
 
     @Override
-    protected Class<? extends Predicate> getPredicateClass() {
-        return getInstance().getClass();
-    }
-
-    @Override
-    protected Predicate getInstance() {
+    protected InRangeDual getInstance() {
         return createBuilder()
                 .start(convert(1000L))
                 .end(convert(1010L))
                 .build();
+    }
+
+    @Override
+    protected Iterable<InRangeDual> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                createBuilder()
+                        .start(convert(100L))
+                        .end(convert(1010L))
+                        .build(),
+                createBuilder()
+                        .start(convert(1000L))
+                        .end(convert(2010L))
+                        .build()
+        );
     }
 
     protected T convert(final Long value) {

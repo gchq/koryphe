@@ -22,13 +22,14 @@ import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AgeOffTest extends PredicateTest {
+public class AgeOffTest extends PredicateTest<AgeOff> {
 
     public static final int MINUTE_IN_MILLISECONDS = 60000;
     public static final long CUSTOM_AGE_OFF = 100000;
@@ -120,12 +121,12 @@ public class AgeOffTest extends PredicateTest {
     }
 
     @Override
-    protected Class<AgeOff> getPredicateClass() {
-        return AgeOff.class;
+    protected AgeOff getInstance() {
+        return new AgeOff();
     }
 
     @Override
-    protected AgeOff getInstance() {
-        return new AgeOff();
+    protected Iterable<AgeOff> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new AgeOff(100L));
     }
 }

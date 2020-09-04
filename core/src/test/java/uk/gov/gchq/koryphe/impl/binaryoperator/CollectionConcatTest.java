@@ -15,7 +15,7 @@ import java.util.TreeSet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class CollectionConcatTest extends BinaryOperatorTest {
+public class CollectionConcatTest extends BinaryOperatorTest<CollectionConcat> {
 
     @Test
     public void shouldConcatArraysTogether() {
@@ -95,7 +95,7 @@ public class CollectionConcatTest extends BinaryOperatorTest {
                 "}"), json);
 
         // When 2
-        final CollectionConcat deserialisedAggregator = JsonSerialiser.deserialise(json, getFunctionClass());
+        final CollectionConcat deserialisedAggregator = JsonSerialiser.deserialise(json, CollectionConcat.class);
 
         // Then 2
         assertNotNull(deserialisedAggregator);
@@ -107,7 +107,7 @@ public class CollectionConcatTest extends BinaryOperatorTest {
     }
 
     @Override
-    protected Class<CollectionConcat> getFunctionClass() {
-        return CollectionConcat.class;
+    protected Iterable<CollectionConcat> getDifferentInstancesOrNull() {
+        return null;
     }
 }

@@ -25,6 +25,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -34,15 +35,15 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class IterableFunctionTest extends FunctionTest {
+public class IterableFunctionTest extends FunctionTest<IterableFunction> {
     @Override
-    protected Function getInstance() {
+    protected IterableFunction getInstance() {
         return new IterableFunction();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return IterableFunction.class;
+    protected Iterable<IterableFunction> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new IterableFunction(new ToLong()));
     }
 
     @Override

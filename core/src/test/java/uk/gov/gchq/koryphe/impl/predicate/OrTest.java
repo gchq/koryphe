@@ -24,6 +24,7 @@ import uk.gov.gchq.koryphe.tuple.predicate.IntegerTupleAdaptedPredicate;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -34,7 +35,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-public class OrTest extends PredicateTest {
+public class OrTest extends PredicateTest<Or> {
 
     @Test
     public void shouldAcceptWhenOneFunctionsAccepts() {
@@ -240,12 +241,15 @@ public class OrTest extends PredicateTest {
     }
 
     @Override
-    protected Class<Or> getPredicateClass() {
-        return Or.class;
+    protected Or getInstance() {
+        return new Or(new IsA(String.class), new IsMoreThan(5L));
     }
 
     @Override
-    protected Or getInstance() {
-        return new Or();
+    protected Iterable<Or> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new Or<>(),
+                new Or<>(new IsMoreThan(5), new IsLessThan(5, true))
+        );
     }
 }

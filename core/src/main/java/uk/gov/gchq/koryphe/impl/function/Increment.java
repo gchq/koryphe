@@ -17,6 +17,8 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
@@ -112,6 +114,31 @@ public class Increment extends KorypheFunction<Number, Number> {
         } else {
             type = null;
         }
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o)) {
+            return false; // Does exact equals and class checking
+        }
+
+        Increment that = (Increment) o;
+        return new EqualsBuilder()
+                .append(increment, that.increment)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(59, 83)
+                .appendSuper(super.hashCode())
+                .append(increment)
+                .append(increment == null ? null : increment.getClass())
+                .toHashCode();
     }
 
     private enum Type {

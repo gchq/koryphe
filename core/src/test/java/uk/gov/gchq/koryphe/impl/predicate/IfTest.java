@@ -25,6 +25,7 @@ import uk.gov.gchq.koryphe.tuple.predicate.KoryphePredicate2;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,20 +37,25 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-public class IfTest extends PredicateTest {
+public class IfTest extends PredicateTest<If> {
 
     @Override
     protected If<Object> getInstance() {
         return new If<>(true, new IsA(String.class), new IsA(Integer.class));
     }
 
-    private If<Comparable> getAltInstance() {
-        return new If<>(new IsA(Integer.class), new IsLessThan(3), new IsA(String.class));
+    @Override
+    protected Iterable<If> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new If<>(false, new IsA(String.class), new IsA(Integer.class)),
+                new If<>(true, new IsMoreThan(5L), new IsA(Integer.class)),
+                new If<>(true, new IsA(String.class), new IsA(Long.class)),
+                new If<>()
+        );
     }
 
-    @Override
-    protected Class<? extends Predicate> getPredicateClass() {
-        return If.class;
+    private If<Comparable> getAltInstance() {
+        return new If<>(new IsA(Integer.class), new IsLessThan(3), new IsA(String.class));
     }
 
     @Test

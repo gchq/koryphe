@@ -24,24 +24,23 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class DefaultIfEmptyTest extends FunctionTest {
+public class DefaultIfEmptyTest extends FunctionTest<DefaultIfEmpty> {
 
     private final static String DEFAULT_VALUE = "default";
 
     @Override
-    protected Function getInstance() {
+    protected DefaultIfEmpty getInstance() {
         return new DefaultIfEmpty();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return DefaultIfEmpty.class;
+    protected Iterable<DefaultIfEmpty> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new DefaultIfEmpty("Default"));
     }
 
     @Override

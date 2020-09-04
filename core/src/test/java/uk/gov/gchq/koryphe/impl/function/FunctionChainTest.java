@@ -23,19 +23,28 @@ import uk.gov.gchq.koryphe.tuple.ArrayTuple;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.function.Function;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class FunctionChainTest extends FunctionTest {
+public class FunctionChainTest extends FunctionTest<FunctionChain> {
     @Override
-    protected Function getInstance() {
-        return new FunctionChain();
+    protected FunctionChain getInstance() {
+        return new FunctionChain.Builder<>()
+                .execute(new ToInteger())
+                .execute(new DivideBy(3))
+                .build();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return FunctionChain.class;
+    protected Iterable<FunctionChain> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new FunctionChain<>(),
+                new FunctionChain.Builder<>()
+                        .execute(new ToString())
+                        .execute(new StringSplit())
+                .build()
+        );
     }
 
     @Override

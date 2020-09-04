@@ -22,13 +22,14 @@ import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class RegexTest extends PredicateTest {
+public class RegexTest extends PredicateTest<Regex> {
 
     @Test
     public void shouldAccepValidValue() {
@@ -84,8 +85,11 @@ public class RegexTest extends PredicateTest {
     }
 
     @Override
-    protected Class<Regex> getPredicateClass() {
-        return Regex.class;
+    protected Iterable<Regex> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new Regex(),
+                new Regex("different")
+        );
     }
 
-}
+    }

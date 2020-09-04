@@ -25,6 +25,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -36,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AreInTest extends PredicateTest {
+public class AreInTest extends PredicateTest<AreIn> {
 
     private static final CustomObj VALUE1 = new CustomObj();
     private static final String VALUE2 = "value2";
@@ -171,12 +172,16 @@ public class AreInTest extends PredicateTest {
     }
 
     @Override
-    protected Class<AreIn> getPredicateClass() {
-        return AreIn.class;
+    protected AreIn getInstance() {
+        return new AreIn(VALUE1);
     }
 
     @Override
-    protected AreIn getInstance() {
-        return new AreIn(VALUE1);
+    protected Iterable<AreIn> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new AreIn(),
+                new AreIn(VALUE1, VALUE2),
+                new AreIn(VALUE2)
+        );
     }
 }

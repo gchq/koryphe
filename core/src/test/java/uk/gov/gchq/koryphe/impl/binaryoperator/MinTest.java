@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MinTest extends BinaryOperatorTest {
+public class MinTest extends BinaryOperatorTest<Min> {
 
     @Test
     public void testAggregateInIntMode() {
@@ -156,7 +156,8 @@ public class MinTest extends BinaryOperatorTest {
     }
 
     @Override
-    protected Class<Min> getFunctionClass() {
-        return Min.class;
+    protected Iterable<Min> getDifferentInstancesOrNull() {
+        return null;
     }
+
 }

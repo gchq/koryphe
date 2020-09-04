@@ -18,19 +18,19 @@ package uk.gov.gchq.koryphe.impl.function;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
+import uk.gov.gchq.koryphe.impl.predicate.IsLessThan;
 import uk.gov.gchq.koryphe.impl.predicate.IsMoreThan;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class FirstValidTest extends FunctionTest {
+public class FirstValidTest extends FunctionTest<FirstValid> {
 
     @Test
     public void shouldApplyKeyPredicate() {
@@ -84,8 +84,11 @@ public class FirstValidTest extends FunctionTest {
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return FirstValid.class;
+    protected Iterable<FirstValid> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new FirstValid<>(new IsMoreThan(4)),
+                new FirstValid<>(new IsLessThan(3))
+        );
     }
 
     @Override

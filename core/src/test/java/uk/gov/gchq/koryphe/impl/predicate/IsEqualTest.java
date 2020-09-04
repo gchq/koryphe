@@ -23,13 +23,14 @@ import uk.gov.gchq.koryphe.util.CustomObj;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class IsEqualTest extends PredicateTest {
+public class IsEqualTest extends PredicateTest<IsEqual> {
 
     @Test
     public void shouldAcceptTheTestValue() {
@@ -91,12 +92,15 @@ public class IsEqualTest extends PredicateTest {
     }
 
     @Override
-    protected Class<IsEqual> getPredicateClass() {
-        return IsEqual.class;
+    protected IsEqual getInstance() {
+        return new IsEqual("someString");
     }
 
     @Override
-    protected IsEqual getInstance() {
-        return new IsEqual("someString");
+    protected Iterable<IsEqual> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new IsEqual(),
+                new IsEqual(4L)
+        );
     }
 }

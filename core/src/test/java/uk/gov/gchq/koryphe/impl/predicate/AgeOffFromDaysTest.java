@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AgeOffFromDaysTest extends PredicateTest {
+public class AgeOffFromDaysTest extends PredicateTest<AgeOffFromDays> {
 
     public static final int MINUTE_IN_MILLISECONDS = 60000;
     public static final int DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000;
@@ -103,12 +103,12 @@ public class AgeOffFromDaysTest extends PredicateTest {
     }
 
     @Override
-    protected Class<AgeOffFromDays> getPredicateClass() {
-        return AgeOffFromDays.class;
+    protected AgeOffFromDays getInstance() {
+        return new AgeOffFromDays();
     }
 
     @Override
-    protected AgeOffFromDays getInstance() {
-        return new AgeOffFromDays();
+    protected Iterable<AgeOffFromDays> getDifferentInstancesOrNull() {
+        return null;
     }
 }

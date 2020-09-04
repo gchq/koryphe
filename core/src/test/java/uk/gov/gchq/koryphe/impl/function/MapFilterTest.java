@@ -23,10 +23,12 @@ import uk.gov.gchq.koryphe.impl.predicate.IsA;
 import uk.gov.gchq.koryphe.impl.predicate.IsIn;
 import uk.gov.gchq.koryphe.impl.predicate.IsLessThan;
 import uk.gov.gchq.koryphe.impl.predicate.IsMoreThan;
+import uk.gov.gchq.koryphe.impl.predicate.IsXLessThanY;
 import uk.gov.gchq.koryphe.impl.predicate.Not;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -34,7 +36,7 @@ import java.util.function.Function;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class MapFilterTest extends FunctionTest {
+public class MapFilterTest extends FunctionTest<MapFilter> {
 
     @Test
     public void shouldApplyKeyPredicate() {
@@ -134,8 +136,21 @@ public class MapFilterTest extends FunctionTest {
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return MapFilter.class;
+    protected Iterable<MapFilter> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new MapFilter()
+                        .keyPredicate(new IsA(String.class))
+                        .valuePredicate(new IsMoreThan(1))
+                        .keyValuePredicate(new AreEqual()),
+                new MapFilter<>()
+                        .keyPredicate(new Not<>(new IsA(String.class)))
+                        .valuePredicate(new IsLessThan(5))
+                        .keyValuePredicate(new AreEqual()),
+                new MapFilter<>()
+                        .keyPredicate(new Not<>(new IsA(String.class)))
+                        .valuePredicate(new IsMoreThan(1))
+                        .keyValuePredicate(new IsXLessThanY())
+        );
     }
 
     @Override

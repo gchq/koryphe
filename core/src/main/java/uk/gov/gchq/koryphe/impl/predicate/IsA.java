@@ -80,7 +80,7 @@ public class IsA extends KoryphePredicate<Object> {
      * Tests whether the argument supplied is an instance of the control class.
      *
      * @param input {@link Object} to test.
-     * @return true iff input is null or non-null and can be cast to the control class, otherwise false.
+     * @return true if input is null or non-null and can be cast to the control class, otherwise false.
      */
     @Override
     public boolean test(final Object input) {

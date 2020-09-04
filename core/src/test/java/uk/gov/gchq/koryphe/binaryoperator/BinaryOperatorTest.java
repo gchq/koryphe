@@ -18,6 +18,7 @@ package uk.gov.gchq.koryphe.binaryoperator;
 
 import org.junit.jupiter.api.Test;
 
+import uk.gov.gchq.koryphe.util.EqualityTest;
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -27,16 +28,15 @@ import uk.gov.gchq.koryphe.util.VersionUtil;
 import java.io.IOException;
 import java.util.function.BinaryOperator;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-public abstract class BinaryOperatorTest {
+public abstract class BinaryOperatorTest<T extends BinaryOperator> extends EqualityTest<T> {
 
-    protected abstract BinaryOperator getInstance();
-
-    protected abstract Class<? extends BinaryOperator> getFunctionClass();
+    protected Class<? extends BinaryOperator> getFunctionClass() {
+        return getInstance().getClass();
+    }
 
     @Test
     public abstract void shouldJsonSerialiseAndDeserialise() throws IOException;
@@ -50,45 +50,9 @@ public abstract class BinaryOperatorTest {
     }
 
     @Test
-    public void shouldEquals() {
-        // Given
-        final BinaryOperator instance = getInstance();
-
-        // When
-        final BinaryOperator other = getInstance();
-
-        // Then
-        assertEquals(instance, other);
-        assertEquals(instance.hashCode(), other.hashCode());
-    }
-
-    @Test
-    public void shouldEqualsWhenSameObject() {
-        // Given
-        final BinaryOperator instance = getInstance();
-
-        // Then
-        assertEquals(instance, instance);
-        assertEquals(instance.hashCode(), instance.hashCode());
-    }
-
-    @Test
-    public void shouldNotEqualsWhenDifferentClass() {
-        // Given
-        final BinaryOperator instance = getInstance();
-
-        // When
-        final Object other = new Object();
-
-        // Then
-        assertNotEquals(instance, other);
-        assertNotEquals(instance.hashCode(), other.hashCode());
-    }
-
-    @Test
     public void shouldNotEqualsNull() {
         // Given
-        final BinaryOperator instance = getInstance();
+        final T instance = getInstance();
 
         // Then
         assertNotEquals(instance, null);
@@ -97,7 +61,7 @@ public abstract class BinaryOperatorTest {
     @Test
     public void shouldHaveSinceAnnotation() {
         // Given
-        final BinaryOperator instance = getInstance();
+        final T instance = getInstance();
 
         // When
         final Since annotation = instance.getClass().getAnnotation(Since.class);
@@ -112,7 +76,7 @@ public abstract class BinaryOperatorTest {
     @Test
     public void shouldHaveSummaryAnnotation() {
         // Given
-        final BinaryOperator instance = getInstance();
+        final T instance = getInstance();
 
         // When
         final Summary annotation = instance.getClass().getAnnotation(Summary.class);

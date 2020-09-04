@@ -15,6 +15,9 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
@@ -51,5 +54,29 @@ public class DictionaryLookup<K, V> extends KorypheFunction<K, V> {
 
     public void setDictionary(final Map<K, V> dictionary) {
         this.dictionary = dictionary;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o)) {
+            return false; // Does class checking
+        }
+
+        DictionaryLookup that = (DictionaryLookup) o;
+        return new EqualsBuilder()
+                .append(dictionary, that.dictionary)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(13, 53)
+                .appendSuper(super.hashCode())
+                .append(dictionary)
+                .toHashCode();
     }
 }

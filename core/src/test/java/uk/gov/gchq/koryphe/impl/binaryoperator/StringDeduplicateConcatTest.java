@@ -21,11 +21,12 @@ import uk.gov.gchq.koryphe.binaryoperator.BinaryOperatorTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class StringDeduplicateConcatTest extends BinaryOperatorTest {
+public class StringDeduplicateConcatTest extends BinaryOperatorTest<StringDeduplicateConcat> {
 
     @Test
     public void shouldRemoveDuplicate() {
@@ -106,8 +107,10 @@ public class StringDeduplicateConcatTest extends BinaryOperatorTest {
     }
 
     @Override
-    protected Class<StringDeduplicateConcat> getFunctionClass() {
-        return StringDeduplicateConcat.class;
+    protected Iterable<StringDeduplicateConcat> getDifferentInstancesOrNull() {
+        StringDeduplicateConcat stringDeduplicateConcat = new StringDeduplicateConcat();
+        stringDeduplicateConcat.setSeparator("test");
+        return Collections.singletonList(stringDeduplicateConcat);
     }
 
     @Test
@@ -127,7 +130,7 @@ public class StringDeduplicateConcatTest extends BinaryOperatorTest {
 
         // When 2
         final StringDeduplicateConcat deserialisedOperator =
-                JsonSerialiser.deserialise(json, getFunctionClass());
+                JsonSerialiser.deserialise(json, StringDeduplicateConcat.class);
 
         // Then 2
         assertEquals(";", deserialisedOperator.getSeparator());

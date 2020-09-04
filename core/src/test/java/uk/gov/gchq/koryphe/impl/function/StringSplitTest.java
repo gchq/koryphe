@@ -21,6 +21,7 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -31,7 +32,7 @@ import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class StringSplitTest extends FunctionTest {
+public class StringSplitTest extends FunctionTest<StringSplit> {
 
     @Test
     public void shouldHandleNullInput() {
@@ -91,8 +92,8 @@ public class StringSplitTest extends FunctionTest {
     }
 
     @Override
-    protected Class<? extends StringSplit> getFunctionClass() {
-        return StringSplit.class;
+    protected Iterable<StringSplit> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new StringSplit(" "));
     }
 
     @Override

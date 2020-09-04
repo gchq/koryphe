@@ -15,6 +15,7 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
+import org.apache.commons.io.Charsets;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
@@ -22,13 +23,13 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.function.Function;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class ToStringTest extends FunctionTest {
+public class ToStringTest extends FunctionTest<ToString> {
 
     @Test
     public void shouldReturnString() {
@@ -94,13 +95,13 @@ public class ToStringTest extends FunctionTest {
     }
 
     @Override
-    protected Function getInstance() {
+    protected ToString getInstance() {
         return new ToString();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ToString.class;
+    protected Iterable<ToString> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new ToString(Charsets.ISO_8859_1));
     }
 
     @Override

@@ -23,12 +23,12 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -36,15 +36,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class LengthTest extends FunctionTest {
+public class LengthTest extends FunctionTest<Length> {
     @Override
-    protected Function getInstance() {
+    protected Length getInstance() {
         return new Length();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return Length.class;
+    protected Iterable<Length> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new Length(5));
     }
 
     @Override

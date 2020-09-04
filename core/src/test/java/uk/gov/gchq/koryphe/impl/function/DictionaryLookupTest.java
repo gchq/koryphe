@@ -16,6 +16,7 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
+import com.google.common.collect.Maps;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,16 +24,16 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class DictionaryLookupTest extends FunctionTest {
+public class DictionaryLookupTest extends FunctionTest<DictionaryLookup<?, ?>> {
 
     private Map<String, Integer> dictionary = new HashMap<>();
     ;
@@ -70,13 +71,20 @@ public class DictionaryLookupTest extends FunctionTest {
     }
 
     @Override
-    protected Function getInstance() {
-        return new DictionaryLookup();
+    protected DictionaryLookup<String, Integer> getInstance() {
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("one", 1);
+        map.put("two", 2);
+
+        return new DictionaryLookup(map);
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return DictionaryLookup.class;
+    protected Iterable<DictionaryLookup<?, ?>> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new DictionaryLookup<>(null),
+                new DictionaryLookup<>(Maps.newHashMap())
+        );
     }
 
     @Override

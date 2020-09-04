@@ -22,6 +22,7 @@ import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class IsShorterThanTest extends PredicateTest {
+public class IsShorterThanTest extends PredicateTest<IsShorterThan> {
 
     @Test
     public void shouldSetAndGetMaxLength() {
@@ -188,12 +189,15 @@ public class IsShorterThanTest extends PredicateTest {
     }
 
     @Override
-    protected Class<IsShorterThan> getPredicateClass() {
-        return IsShorterThan.class;
+    protected IsShorterThan getInstance() {
+        return new IsShorterThan(5);
     }
 
     @Override
-    protected IsShorterThan getInstance() {
-        return new IsShorterThan(5);
+    protected Iterable<IsShorterThan> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new IsShorterThan(10),
+                new IsShorterThan()
+        );
     }
 }

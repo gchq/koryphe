@@ -25,13 +25,12 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
-public class ToArrayTest extends FunctionTest {
+public class ToArrayTest extends FunctionTest<ToArray> {
 
     @Test
     public void shouldConvertNullToArray() {
@@ -98,13 +97,13 @@ public class ToArrayTest extends FunctionTest {
     }
 
     @Override
-    protected Function getInstance() {
+    protected ToArray getInstance() {
         return new ToArray();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ToArray.class;
+    protected Iterable<ToArray> getDifferentInstancesOrNull() {
+        return null;
     }
 
     @Override

@@ -24,17 +24,17 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class CreateObjectTest extends FunctionTest {
+public class CreateObjectTest extends FunctionTest<CreateObject> {
 
     @Test
     public void shouldCreateNewObjectUsingNoArgConstructor() {
@@ -87,6 +87,7 @@ public class CreateObjectTest extends FunctionTest {
         assertEquals(expected, exception.getMessage());
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -110,13 +111,13 @@ public class CreateObjectTest extends FunctionTest {
     }
 
     @Override
-    protected Function getInstance() {
+    protected CreateObject getInstance() {
         return new CreateObject();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return CreateObject.class;
+    protected Iterable<CreateObject> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new CreateObject(Integer.class));
     }
 
     @Override

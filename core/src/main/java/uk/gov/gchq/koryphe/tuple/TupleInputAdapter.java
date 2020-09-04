@@ -17,12 +17,14 @@
 package uk.gov.gchq.koryphe.tuple;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
+import uk.gov.gchq.koryphe.function.KorypheFunction;
 
 import java.util.Arrays;
-import java.util.function.Function;
 
 /**
  * @param <R>  The type of reference used by tuples.
@@ -30,7 +32,7 @@ import java.util.function.Function;
  */
 @Since("1.0.0")
 @Summary("Extracts items from a tuple")
-public class TupleInputAdapter<R, FI> implements Function<Tuple<R>, FI> {
+public class TupleInputAdapter<R, FI> extends KorypheFunction<Tuple<R>, FI> {
     private R[] selection;
 
     /**
@@ -83,5 +85,29 @@ public class TupleInputAdapter<R, FI> implements Function<Tuple<R>, FI> {
         } else {
             this.selection = selection;
         }
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o)) {
+            return false; // Does class checking
+        }
+
+        final TupleInputAdapter that = (TupleInputAdapter) o;
+        return new EqualsBuilder()
+                .append(selection, that.selection)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(43, 67)
+                .appendSuper(super.hashCode())
+                .append(selection)
+                .toHashCode();
     }
 }

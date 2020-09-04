@@ -17,6 +17,8 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
@@ -62,5 +64,29 @@ public class ApplyBiFunction<T, U, R> extends KorypheFunction2<T, U, R> implemen
 
     public void setFunction(final BiFunction<T, U, R> function) {
         this.function = function;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o)) {
+            return false; // Does class checking
+        }
+
+        ApplyBiFunction<?, ?, ?> that = (ApplyBiFunction<?, ?, ?>) o;
+        return new EqualsBuilder()
+                .append(function, that.function)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(11, 89)
+                .appendSuper(super.hashCode())
+                .append(function)
+                .toHashCode();
     }
 }

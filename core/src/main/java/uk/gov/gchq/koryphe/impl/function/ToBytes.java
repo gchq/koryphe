@@ -20,6 +20,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.google.common.base.Charsets;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
@@ -80,5 +82,29 @@ public class ToBytes extends KorypheFunction<String, byte[]> {
     @JsonGetter("charset")
     public String getCharsetAsString() {
         return charset.name();
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o)) {
+            return false; // Does exact equals and class checking
+        }
+
+        ToBytes that = (ToBytes) o;
+        return new EqualsBuilder()
+                .append(charset, that.charset)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(5, 83)
+                .appendSuper(super.hashCode())
+                .append(charset)
+                .toHashCode();
     }
 }

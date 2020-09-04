@@ -24,13 +24,14 @@ import uk.gov.gchq.koryphe.util.CustomObj;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class IsLessThanTest extends PredicateTest {
+public class IsLessThanTest extends PredicateTest<IsLessThan> {
 
     @Test
     public void shouldAcceptWhenLessThan() {
@@ -181,12 +182,16 @@ public class IsLessThanTest extends PredicateTest {
     }
 
     @Override
-    protected Class<IsLessThan> getPredicateClass() {
-        return IsLessThan.class;
+    protected IsLessThan getInstance() {
+        return new IsLessThan(5);
     }
 
     @Override
-    protected IsLessThan getInstance() {
-        return new IsLessThan(5);
+    protected Iterable<IsLessThan> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new IsLessThan(),
+                new IsLessThan(10),
+                new IsLessThan(5, true)
+        );
     }
 }

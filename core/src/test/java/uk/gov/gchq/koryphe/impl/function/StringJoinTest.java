@@ -23,6 +23,7 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -30,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class StringJoinTest extends FunctionTest {
+public class StringJoinTest extends FunctionTest<StringJoin> {
 
     @Test
     public void shouldHandleNullInput() {
@@ -115,8 +116,8 @@ public class StringJoinTest extends FunctionTest {
     }
 
     @Override
-    protected Class<? extends StringJoin> getFunctionClass() {
-        return StringJoin.class;
+    protected Iterable<StringJoin> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new StringJoin("\t"));
     }
 
     @Override

@@ -22,13 +22,12 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class ToLongTest extends FunctionTest {
+public class ToLongTest extends FunctionTest<ToLong> {
 
     @Test
     public void shouldConvertToLong() {
@@ -56,13 +55,13 @@ public class ToLongTest extends FunctionTest {
     }
 
     @Override
-    protected Function getInstance() {
+    protected ToLong getInstance() {
         return new ToLong();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ToLong.class;
+    protected Iterable<ToLong> getDifferentInstancesOrNull() {
+        return null;
     }
 
     @Override

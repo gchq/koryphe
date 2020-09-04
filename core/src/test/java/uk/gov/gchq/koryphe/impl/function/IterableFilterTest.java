@@ -19,20 +19,20 @@ import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
+import uk.gov.gchq.koryphe.impl.predicate.IsLessThan;
 import uk.gov.gchq.koryphe.impl.predicate.IsMoreThan;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
-public class IterableFilterTest extends FunctionTest {
+public class IterableFilterTest extends FunctionTest<IterableFilter> {
 
     @Test
     public void shouldApplyKeyPredicate() {
@@ -89,8 +89,11 @@ public class IterableFilterTest extends FunctionTest {
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return IterableFilter.class;
+    protected Iterable<IterableFilter> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new IterableFilter(),
+                new IterableFilter(new IsLessThan(4L))
+        );
     }
 
     @Override

@@ -23,6 +23,7 @@ import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MapContainsTest extends PredicateTest {
+public class MapContainsTest extends PredicateTest<MapContains> {
 
     private static final String KEY1 = "key1";
     private static final String KEY2 = "key2";
@@ -102,12 +103,15 @@ public class MapContainsTest extends PredicateTest {
     }
 
     @Override
-    protected Class<MapContains> getPredicateClass() {
-        return MapContains.class;
+    protected MapContains getInstance() {
+        return new MapContains(KEY1);
     }
 
     @Override
-    protected MapContains getInstance() {
-        return new MapContains(KEY1);
+    protected Iterable<MapContains> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new MapContains(),
+                new MapContains(KEY2)
+        );
     }
 }

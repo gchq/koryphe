@@ -22,13 +22,14 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class ToBytesTest extends FunctionTest {
+public class ToBytesTest extends FunctionTest<ToBytes> {
 
     @Test
     public void shouldGetBytes() {
@@ -55,13 +56,13 @@ public class ToBytesTest extends FunctionTest {
     }
 
     @Override
-    protected Function getInstance() {
+    protected ToBytes getInstance() {
         return new ToBytes();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ToBytes.class;
+    protected Iterable<ToBytes> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new ToBytes(StandardCharsets.US_ASCII));
     }
 
     @Override

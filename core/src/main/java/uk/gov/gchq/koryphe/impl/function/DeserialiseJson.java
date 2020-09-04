@@ -19,6 +19,8 @@ package uk.gov.gchq.koryphe.impl.function;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
@@ -82,5 +84,29 @@ public class DeserialiseJson<T> extends KorypheFunction<String, T> implements Se
         } else {
             this.outputClass = outputClass;
         }
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o)) {
+            return false; // Does class checking
+        }
+
+        DeserialiseJson that = (DeserialiseJson) o;
+        return new EqualsBuilder()
+                .append(outputClass, that.outputClass)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(43, 31)
+                .appendSuper(super.hashCode())
+                .append(outputClass)
+                .toHashCode();
     }
 }

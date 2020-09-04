@@ -21,23 +21,23 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.function.Function;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class DefaultIfNullTest extends FunctionTest {
+public class DefaultIfNullTest extends FunctionTest<DefaultIfNull> {
 
     private final static String DEFAULT_VALUE = "default";
 
     @Override
-    protected Function getInstance() {
+    protected DefaultIfNull getInstance() {
         return new DefaultIfNull();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return DefaultIfNull.class;
+    protected Iterable<DefaultIfNull> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new DefaultIfNull(42L));
     }
 
     @Override

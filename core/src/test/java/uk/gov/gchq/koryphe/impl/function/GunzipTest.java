@@ -23,33 +23,32 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.function.Function;
 import java.util.zip.GZIPOutputStream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class GunzipTest extends FunctionTest {
+public class GunzipTest extends FunctionTest<Gunzip> {
 
     @Override
-    protected Function getInstance() {
+    protected Gunzip getInstance() {
         return new Gunzip();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return Gunzip.class;
+    protected Iterable<Gunzip> getDifferentInstancesOrNull() {
+        return null;
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { byte[].class };
+        return new Class[]{byte[].class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { byte[].class };
+        return new Class[]{byte[].class};
     }
 
     @Test

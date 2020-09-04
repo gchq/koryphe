@@ -22,22 +22,22 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class DeserialiseJsonTest extends FunctionTest {
+public class DeserialiseJsonTest extends FunctionTest<DeserialiseJson> {
     @Override
-    protected Function getInstance() {
+    protected DeserialiseJson getInstance() {
         return new DeserialiseJson();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return DeserialiseJson.class;
+    protected Iterable<DeserialiseJson> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new DeserialiseJson(Long.class));
     }
 
     @Override

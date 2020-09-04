@@ -27,13 +27,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
-public class ToListTest extends FunctionTest {
+public class ToListTest extends FunctionTest<ToList> {
 
     @Test
     public void shouldConvertNullToList() {
@@ -100,13 +99,13 @@ public class ToListTest extends FunctionTest {
     }
 
     @Override
-    protected Function getInstance() {
+    protected ToList getInstance() {
         return new ToList();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ToList.class;
+    protected Iterable<ToList> getDifferentInstancesOrNull() {
+        return null;
     }
 
     @Override

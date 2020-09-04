@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class ToUpperCaseTest extends FunctionTest {
+public class ToUpperCaseTest extends FunctionTest<ToUpperCase> {
 
     private static final String TEST_STRING = "test string";
 
@@ -71,13 +71,13 @@ public class ToUpperCaseTest extends FunctionTest {
     }
 
     @Override
-    protected Function getInstance() {
+    protected ToUpperCase getInstance() {
         return new ToUpperCase();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ToUpperCase.class;
+    protected Iterable<ToUpperCase> getDifferentInstancesOrNull() {
+        return null;
     }
 
     @Override

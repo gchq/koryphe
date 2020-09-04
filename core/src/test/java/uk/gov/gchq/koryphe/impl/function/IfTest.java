@@ -27,6 +27,7 @@ import uk.gov.gchq.koryphe.tuple.function.KorypheFunction2;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -40,7 +41,7 @@ import static org.mockito.Mockito.verify;
 import static uk.gov.gchq.koryphe.util.Util.project;
 import static uk.gov.gchq.koryphe.util.Util.select;
 
-public class IfTest extends FunctionTest {
+public class IfTest extends FunctionTest<If> {
 
     @Override
     protected If<Object, Object> getInstance() {
@@ -50,16 +51,30 @@ public class IfTest extends FunctionTest {
                 .otherwise(new SetValue("value2"));
     }
 
+    @Override
+    protected Iterable<If> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new If<>()
+                        .condition(false)
+                        .then(new SetValue("value1"))
+                        .otherwise(new SetValue("value2")),
+                new If<>()
+                        .condition(true)
+                        .then(new SetValue("differentThenValue"))
+                        .otherwise(new SetValue("value2")),
+                new If<>()
+                        .condition(true)
+                        .then(new SetValue("value1"))
+                        .otherwise(new SetValue("differentOtherwiseValue")),
+                getAltInstance()
+        );
+    }
+
     private If<Comparable, Comparable> getAltInstance() {
         return new If<Comparable, Comparable>()
                 .predicate(new IsA(Integer.class))
                 .then(new SetValue("value2"))
                 .otherwise(new SetValue("value3"));
-    }
-
-    @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return If.class;
     }
 
     @Override

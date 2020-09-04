@@ -22,12 +22,12 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.function.Function;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class SetValueTest extends FunctionTest {
+public class SetValueTest extends FunctionTest<SetValue> {
 
     private static final String SET_VALUE = "testVal";
 
@@ -44,13 +44,16 @@ public class SetValueTest extends FunctionTest {
     }
 
     @Override
-    protected Function getInstance() {
+    protected SetValue getInstance() {
         return new SetValue(SET_VALUE);
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return SetValue.class;
+    protected Iterable<SetValue> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new SetValue(1L),
+                new SetValue(new SetValue())
+        );
     }
 
     @Override
