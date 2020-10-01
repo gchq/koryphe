@@ -67,6 +67,19 @@ public class StringTruncateTest extends FunctionTest<StringTruncate> {
         assertEquals("A long inp...", result);
     }
 
+    @Test
+    public void shouldReturnFullStringIfInputShorterThanMaxLength() {
+        //Given
+        final StringTruncate function = new StringTruncate(10);
+        final String input = "123 56";
+
+        //When
+        final String result = function.apply(input);
+
+        //Then
+        assertEquals(result, input);
+    }
+
     @Override
     protected StringTruncate getInstance() {
         return new StringTruncate(10, true);
