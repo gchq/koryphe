@@ -52,7 +52,7 @@ public class StringTruncate extends KorypheFunction<String, String> {
             return null;
         }
 
-        String truncated = input.substring(0, length);
+        String truncated = input.substring(0, Math.min(input.length(), length));
 
         if (ellipses && truncated.length() < input.length()) {
             truncated += ELLIPSES;
