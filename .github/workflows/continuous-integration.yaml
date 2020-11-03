@@ -3,12 +3,6 @@ name: Continuous Integration
 on: [ pull_request ]
 
 jobs:
-  check-all-modules-are-tested:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Check all modules are tested
-      run: ./cd/check_modules.sh
 
   build:
     runs-on: ubuntu-latest
