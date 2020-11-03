@@ -18,9 +18,7 @@ env:
     - secure: BXC762J54uP471XmhR2Ys6mTDRQX1uX6lQ7q0TenGdiEwICSMmjx2YmODTvrFI/7MYaLOw5X1VSbUvLzFbT/BZZusYe+n+aZYj8w43V0+Wo3qruseeVeqt3TZyNTi+kpOABeNNxRDOOuLF5Y3e0whlf13Pp9y++WYvgnvE4b1JhmyPrPiLYg0bYclCRZWvC4Wyb8O2qWSz8ZdhECy89X7n2L/97b93YPZJ7JPB3FzZR2WUbm6MMCRECi9/OHyICUTmHUb0derpzsGtC9X6+J9RIvB6Op7/eUwhYFDznHdgj0Zgs7jwXF2MROpW8yyDab+/8hH2VRdojtZnMZ+kUL7tgvOsTEmKd6jlKAjk+NqkQkQjiQw7JhAFHNt13NeIHGoTxEbdi7QBXu1vf9TXzGGvfhDDJ/B8VivB+la+0glW5zw/qkDjPUkO68zOFw/U8/Ohs2NZNmeSu0lRPcId+M90mqC/QT3qK4GSjCZeI8NLjjV7X+aWIm0ffZ4tQxZ485Mf9Y5n2JW9jHrgoe3mAlJZMzosonOdcE64hF27bZHLeBiq+kZPsBQRIcQ/sQAf+F8qPQk1cd638wkhooB41iL0PVDhyQA+6lmTUd+jO65Xmtbf4F8OEimwyMaAY6OO4voO1HOGUgh5AsHmxrcQ5AeXiZJBOqLCbuQHbzyrpimck=
     - MAVEN_OPTS="-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
 
-install: travis_wait 45 ./cd/install.sh
 script:
-  - travis_wait 45 ./cd/verify.sh
   - ./cd/deploy.sh
 after_success: travis_wait 45 ./cd/after_success.sh
 
