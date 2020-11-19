@@ -21,7 +21,6 @@ env:
 install: travis_wait 45 ./cd/install.sh
 script:
   - travis_wait 45 ./cd/verify.sh
-  - ./cd/deploy.sh
 after_success: travis_wait 45 ./cd/after_success.sh
 
 before_cache:
