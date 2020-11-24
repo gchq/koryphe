@@ -535,7 +535,7 @@
             </build>
         </profile>
         <profile>
-            <id>travis</id>
+            <id>coverage</id>
             <build>
                 <plugins>
                     <plugin>

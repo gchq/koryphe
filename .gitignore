@@ -17,13 +17,16 @@ target/
 */*.iml
 *.iml
 */.settings
+.settings/
 */.project
+.project
 */bin
 */*.class
 */atlassian-ide*
 */.idea
 .idea/*
 .idea
+.vscode
 */.classpath
 __pycache__
 *.pem
