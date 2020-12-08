@@ -19,8 +19,12 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.DatabindContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
+import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
 import com.fasterxml.jackson.databind.jsontype.TypeIdResolver;
 import com.fasterxml.jackson.databind.jsontype.impl.ClassNameIdResolver;
+
+import java.io.IOException;
 
 /**
  * <p>A {@code SimpleClassNameIdResolver} is a {@link TypeIdResolver} that allows
@@ -36,9 +40,21 @@ import com.fasterxml.jackson.databind.jsontype.impl.ClassNameIdResolver;
  * @see SimpleClassNameCache
  */
 public class SimpleClassNameIdResolver implements TypeIdResolver {
+    private static final String DESCRIPTION = "simple class name used as type id";
     private ClassNameIdResolver defaultResolver;
-
+    private PolymorphicTypeValidator polymorphicTypeValidator;
     private JavaType baseType;
+
+    public SimpleClassNameIdResolver() {
+        this(BasicPolymorphicTypeValidator.builder()
+                .allowIfSubType(Object.class)
+                .build()
+        );
+    }
+
+    public SimpleClassNameIdResolver(final PolymorphicTypeValidator polymorphicTypeValidator) {
+        this.polymorphicTypeValidator = polymorphicTypeValidator;
+    }
 
     /**
      * Gets a simple class name for the given class.
@@ -106,7 +122,7 @@ public class SimpleClassNameIdResolver implements TypeIdResolver {
         } else {
             this.baseType = baseType.getContentType();
         }
-        final ClassNameIdResolver newDefaultResolver = new ClassNameIdResolver(this.baseType, null);
+        final ClassNameIdResolver newDefaultResolver = new ClassNameIdResolver(this.baseType, null, polymorphicTypeValidator);
         newDefaultResolver.init(this.baseType);
         init(newDefaultResolver);
     }
@@ -143,13 +159,13 @@ public class SimpleClassNameIdResolver implements TypeIdResolver {
     }
 
     @Override
-    public JavaType typeFromId(final String id) {
-        return defaultResolver.typeFromId(getClassName(id, baseType));
+    public JavaType typeFromId(final DatabindContext context, final String id) throws IOException {
+        return defaultResolver.typeFromId(context, getClassName(id, baseType));
     }
 
     @Override
-    public JavaType typeFromId(final DatabindContext context, final String id) {
-        return defaultResolver.typeFromId(context, getClassName(id, baseType));
+    public String getDescForKnownTypeIds() {
+        return DESCRIPTION;
     }
 
     @Override
