@@ -42,7 +42,6 @@ import java.io.IOException;
 public class SimpleClassNameIdResolver implements TypeIdResolver {
     private static final String DESCRIPTION = "simple class name used as type id";
     private ClassNameIdResolver defaultResolver;
-    // todo either look to move to static state (yuck!) or use different serialisation method
     private PolymorphicTypeValidator polymorphicTypeValidator;
     private JavaType baseType;
 
