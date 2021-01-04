@@ -16,11 +16,11 @@
 package uk.gov.gchq.koryphe.util;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import uk.gov.gchq.koryphe.impl.predicate.And;
 import uk.gov.gchq.koryphe.iterable.CloseableIterable;
 import uk.gov.gchq.koryphe.iterable.CloseableIterator;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -109,6 +109,10 @@ public final class IterableUtil {
 
     public static <T> CloseableIterable<T> concat(final Iterable<? extends Iterable<? extends T>> iterables) {
         return new ChainedIterable<>(iterables);
+    }
+
+    public static <T> CloseableIterable<T> concat(final Iterable<? extends T>... itrs) {
+        return new ChainedIterable<>(Arrays.asList(itrs));
     }
 
     public static <T> CloseableIterable<T> limit(final Iterable<T> iterable, final int start, final Integer end, final boolean truncate) {
@@ -249,6 +253,10 @@ public final class IterableUtil {
 
     private static class ChainedIterable<T> implements CloseableIterable<T> {
         private final Iterable<? extends Iterable<? extends T>> iterables;
+
+        ChainedIterable(final Iterable<T>... itrs) {
+            this(Arrays.asList(itrs));
+        }
 
         ChainedIterable(final Iterable<? extends Iterable<? extends T>> iterables) {
             if (null == iterables) {
