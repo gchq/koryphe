@@ -65,7 +65,7 @@ public class DeserialiseJson<T> extends KorypheFunction<String, T> implements Se
 
     private static ObjectMapper createObjectMapper() {
         final ObjectMapper mapper = new ObjectMapper();
-        SimpleClassNameIdResolver.configureObjectMapper(mapper);
+        new SimpleClassNameIdResolver().configureObjectMapper(mapper);
         return mapper;
     }
 

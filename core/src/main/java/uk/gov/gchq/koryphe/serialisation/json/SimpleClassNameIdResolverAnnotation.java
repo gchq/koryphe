@@ -18,6 +18,7 @@ package uk.gov.gchq.koryphe.serialisation.json;
 
 import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
 import com.fasterxml.jackson.databind.jsontype.TypeIdResolver;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -30,6 +31,16 @@ import java.lang.annotation.Annotation;
  */
 @SuppressWarnings("ClassExplicitlyAnnotation")
 public class SimpleClassNameIdResolverAnnotation implements JsonTypeIdResolver {
+    private final Class<? extends SimpleClassNameIdResolver> resolverClass;
+
+    public SimpleClassNameIdResolverAnnotation() {
+        this(SimpleClassNameIdResolver.class);
+    }
+
+    public SimpleClassNameIdResolverAnnotation(final Class<? extends SimpleClassNameIdResolver> resolverClass) {
+        this.resolverClass = resolverClass;
+    }
+
     @Override
     public Class<? extends Annotation> annotationType() {
         return JsonTypeIdResolver.class;
@@ -37,22 +48,31 @@ public class SimpleClassNameIdResolverAnnotation implements JsonTypeIdResolver {
 
     @Override
     public Class<? extends TypeIdResolver> value() {
-        return SimpleClassNameIdResolver.class;
+        return resolverClass;
     }
 
     @Override
-    public boolean equals(final Object obj) {
-        return this == obj || (null != obj && getClass().equals(obj.getClass()));
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        SimpleClassNameIdResolverAnnotation that = (SimpleClassNameIdResolverAnnotation) o;
+
+        return new EqualsBuilder().append(resolverClass, that.resolverClass).isEquals();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(11, 17)
-                .build();
+        return new HashCodeBuilder(17, 37).append(resolverClass).toHashCode();
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).toString();
+        return new ToStringBuilder(this).append(resolverClass).toString();
     }
 }

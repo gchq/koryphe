@@ -38,7 +38,7 @@ public class JsonSerialiser {
     private static ObjectMapper createObjectMapper() {
         final ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        SimpleClassNameIdResolver.configureObjectMapper(mapper);
+        new SimpleClassNameIdResolver().configureObjectMapper(mapper);
         return mapper;
     }
 

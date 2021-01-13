@@ -46,14 +46,13 @@ public class SimpleClassNameIdResolver implements TypeIdResolver {
     private JavaType baseType;
 
     public SimpleClassNameIdResolver() {
-        this(BasicPolymorphicTypeValidator.builder()
-                .allowIfSubType(Object.class)
-                .build()
-        );
+        polymorphicTypeValidator = createDefaultTypeValidator();
     }
 
-    public SimpleClassNameIdResolver(final PolymorphicTypeValidator polymorphicTypeValidator) {
-        this.polymorphicTypeValidator = polymorphicTypeValidator;
+    protected PolymorphicTypeValidator createDefaultTypeValidator() {
+        return BasicPolymorphicTypeValidator.builder()
+            .allowIfSubType(Object.class)
+            .build();
     }
 
     /**
@@ -107,9 +106,9 @@ public class SimpleClassNameIdResolver implements TypeIdResolver {
      *
      * @param mapper the object mapper to configure.
      */
-    public static void configureObjectMapper(final ObjectMapper mapper) {
+    public void configureObjectMapper(final ObjectMapper mapper) {
         mapper.setAnnotationIntrospector(new DelegatingAnnotationIntrospector.Builder()
-                .add(new SimpleClassNameIdResolverAnnotation())
+                .add(new SimpleClassNameIdResolverAnnotation(getClass()))
                 .build());
         mapper.registerModule(SimpleClassSerializer.getModule());
     }
