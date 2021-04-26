@@ -32,7 +32,7 @@
         <commons-lang3.version>3.3.2</commons-lang3.version>
         <commons-csv.version>1.4</commons-csv.version>
         <commons-codec.version>1.6</commons-codec.version>
-        <commons-io.version>2.4</commons-io.version>
+        <commons-io.version>2.7</commons-io.version>
         <org.json-version>20180813</org.json-version>
         <compiler.plugin.verson>3.8.0</compiler.plugin.verson>
         <findbugs.plugin.version>3.0.5</findbugs.plugin.version>
