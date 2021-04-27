@@ -64,7 +64,7 @@ public class ParseDateTest extends FunctionTest<ParseDate> {
         final ParseDate deserialised = JsonSerialiser.deserialise(json, ParseDate.class);
 
         // Then
-        JsonSerialiser.assertEquals("{\"class\":\"uk.gov.gchq.koryphe.impl.function.ParseDate\",\"format\":\"yyyy dd\",\"timeZone\":\"GMT\"}", json);
+        JsonSerialiser.assertEquals("{\"class\":\"uk.gov.gchq.koryphe.impl.function.ParseDate\",\"format\":\"yyyy dd\",\"timeZone\":\"GMT\",\"microseconds\":false}", json);
         assertEquals(function.getFormat(), deserialised.getFormat());
         assertEquals(function.getTimeZone(), deserialised.getTimeZone());
     }
@@ -93,6 +93,33 @@ public class ParseDateTest extends FunctionTest<ParseDate> {
 
         // Then
         assertEquals(new SimpleDateFormat("yyyy-MM hh:mm:ss.SSS").parse(input), result);
+    }
+
+    @Test
+    public void shouldParseTimestampInMilliseconds() throws ParseException {
+        // Given
+        final ParseDate function = new ParseDate();
+        final String input = "946782245006";
+
+        // When
+        final Date result = function.apply(input);
+
+        // Then
+        assertEquals(new Date(Long.parseLong(input)), result);
+    }
+
+    @Test
+    public void shouldParseTimestampInMicroseconds() throws ParseException {
+        // Given
+        final ParseDate function = new ParseDate();
+        function.setMicroseconds(true);
+        final String input = "946782245006000";
+
+        // When
+        final Date result = function.apply(input);
+
+        // Then
+        assertEquals(new Date(Long.parseLong(input.substring(0, input.length() - 3))), result);
     }
 
     @Test
