@@ -23,6 +23,11 @@ import uk.gov.gchq.koryphe.util.CloseableUtil;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+/**
+ * @param <T> the type of items in the iterator.
+ * @deprecated Closable will be removed, it is used with scaling Big Data and does not belong in Koryphe.
+ */
+@Deprecated
 public class StreamIterable<T> implements CloseableIterable<T> {
     private final Supplier<Stream<T>> streamSupplier;
 
