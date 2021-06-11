@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2021 Crown Copyright
+ * Copyright 2017-2020 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public abstract class FunctionTest<T extends Function> extends EqualityTest<T> {
 
@@ -73,7 +74,7 @@ public abstract class FunctionTest<T extends Function> extends EqualityTest<T> {
         // Then
         assertNotNull(annotation, "Missing Since annotation on class " + instance.getClass().getName());
         assertNotNull(annotation.value(), "Missing Since annotation on class " + instance.getClass().getName());
-        assertTrue(VersionUtil.validateVersionString(annotation.value()),
+        assumeTrue(VersionUtil.validateVersionString(annotation.value()),
                 annotation.value() + " is not a valid value string.");
     }
 
@@ -88,7 +89,7 @@ public abstract class FunctionTest<T extends Function> extends EqualityTest<T> {
         // Then
         assertNotNull(annotation, "Missing Summary annotation on class " + instance.getClass().getName());
         assertNotNull(annotation.value(), "Missing Summary annotation on class " + instance.getClass().getName());
-        assertTrue(SummaryUtil.validateSummaryString(annotation.value()),
+        assumeTrue(SummaryUtil.validateSummaryString(annotation.value()),
                 annotation.value() + " is not a valid value string.");
     }
 
