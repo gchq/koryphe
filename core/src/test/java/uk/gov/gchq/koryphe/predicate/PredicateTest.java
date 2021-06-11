@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2021 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@ package uk.gov.gchq.koryphe.predicate;
 
 import org.junit.jupiter.api.Test;
 
-import uk.gov.gchq.koryphe.util.EqualityTest;
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
+import uk.gov.gchq.koryphe.util.EqualityTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import uk.gov.gchq.koryphe.util.SummaryUtil;
 import uk.gov.gchq.koryphe.util.VersionUtil;
@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class PredicateTest<T extends Predicate> extends EqualityTest<T> {
 
@@ -59,7 +59,7 @@ public abstract class PredicateTest<T extends Predicate> extends EqualityTest<T>
         // Then
         assertNotNull(annotation, "Missing Since annotation on class " + instance.getClass().getName());
         assertNotNull(annotation.value(), "Missing Since annotation on class " + instance.getClass().getName());
-        assumeTrue(VersionUtil.validateVersionString(annotation.value()),
+        assertTrue(VersionUtil.validateVersionString(annotation.value()),
                 annotation.value() + " is not a valid value string.");
     }
 
@@ -74,7 +74,7 @@ public abstract class PredicateTest<T extends Predicate> extends EqualityTest<T>
         // Then
         assertNotNull(annotation, "Missing Summary annotation on class " + instance.getClass().getName());
         assertNotNull(annotation.value(), "Missing Summary annotation on class " + instance.getClass().getName());
-        assumeTrue(SummaryUtil.validateSummaryString(annotation.value()),
+        assertTrue(SummaryUtil.validateSummaryString(annotation.value()),
                 annotation.value() + " is not a valid value string.");
     }
 }
