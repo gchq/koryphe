@@ -115,6 +115,12 @@ public final class IterableUtil {
         return new LimitedIterable<>(iterable, start, end, truncate);
     }
 
+    /**
+     * @param <I_ITEM> input type of items in the input iterator
+     * @param <O_ITEM> output type of items in the output iterator
+     * @deprecated Closable will be removed, it is used with scaling Big Data and does not belong in Koryphe.
+     */
+    @Deprecated
     private static class MappedIterable<I_ITEM, O_ITEM> implements CloseableIterable<O_ITEM> {
         private final Iterable<I_ITEM> iterable;
         private final List<Function> functions;
@@ -135,6 +141,11 @@ public final class IterableUtil {
         }
     }
 
+    /**
+     * @param <O_ITEM> the type of items in the iterator
+     * @deprecated Closable will be removed, it is used with scaling Big Data and does not belong in Koryphe.
+     */
+    @Deprecated
     private static class MappedIterator<I_ITEM, O_ITEM> implements CloseableIterator<O_ITEM> {
         private final Iterator<? extends I_ITEM> iterator;
         private final List<Function> functions;
@@ -168,6 +179,11 @@ public final class IterableUtil {
         }
     }
 
+    /**
+     * @param <T> the type of items in the iterator
+     * @deprecated Closable will be removed, it is used with scaling Big Data and does not belong in Koryphe.
+     */
+    @Deprecated
     private static class FilteredIterable<T> implements CloseableIterable<T> {
         private final Iterable<T> iterable;
         private final List<Predicate> predicates;
@@ -188,6 +204,11 @@ public final class IterableUtil {
         }
     }
 
+    /**
+     * @param <T> the type of items in the iterator
+     * @deprecated Closable will be removed, it is used with scaling Big Data and does not belong in Koryphe.
+     */
+    @Deprecated
     private static class FilteredIterator<T> implements CloseableIterator<T> {
         private final Iterator<? extends T> iterator;
         private final And<T> andPredicate;
@@ -247,6 +268,11 @@ public final class IterableUtil {
         }
     }
 
+    /**
+     * @param <T> the type of items in the iterator
+     * @deprecated Closable will be removed, it is used with scaling Big Data and does not belong in Koryphe.
+     */
+    @Deprecated
     private static class ChainedIterable<T> implements CloseableIterable<T> {
         private final Iterable<? extends Iterable<? extends T>> iterables;
 
@@ -270,6 +296,11 @@ public final class IterableUtil {
         }
     }
 
+    /**
+     * @param <T> the type of items in the iterator
+     * @deprecated Closable will be removed, it is used with scaling Big Data and does not belong in Koryphe.
+     */
+    @Deprecated
     private static class ChainedIterator<T> implements CloseableIterator<T> {
         private final Iterator<? extends Iterable<? extends T>> iterablesIterator;
         private Iterator<? extends T> currentIterator = Collections.emptyIterator();
@@ -315,6 +346,11 @@ public final class IterableUtil {
         }
     }
 
+    /**
+     * @param <T> the type of items in the iterator
+     * @deprecated Closable will be removed, it is used with scaling Big Data and does not belong in Koryphe.
+     */
+    @Deprecated
     private static final class LimitedIterable<T> implements CloseableIterable<T> {
         private final Iterable<T> iterable;
         private final int start;
@@ -358,6 +394,11 @@ public final class IterableUtil {
         }
     }
 
+    /**
+     * @param <T> the type of items in the iterator
+     * @deprecated Closable will be removed, it is used with scaling Big Data and does not belong in Koryphe.
+     */
+    @Deprecated
     private static final class LimitedIterator<T> implements CloseableIterator<T> {
         private final Iterator<T> iterator;
         private final Integer end;

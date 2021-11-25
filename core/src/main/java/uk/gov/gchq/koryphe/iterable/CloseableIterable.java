@@ -23,7 +23,9 @@ import java.io.Closeable;
  * of the {@link Closeable#close()} method.
  *
  * @param <T> the type of items in the iterable.
+ * @deprecated Closable will be removed, it is used with scaling Big Data and does not belong in Koryphe.
  */
+@Deprecated
 public interface CloseableIterable<T> extends Iterable<T>, Closeable {
     @Override
     void close();
