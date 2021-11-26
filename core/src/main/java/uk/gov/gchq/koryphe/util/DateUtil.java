@@ -17,11 +17,15 @@ package uk.gov.gchq.koryphe.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
+
+import static java.util.concurrent.TimeUnit.MICROSECONDS;
 
 /**
  * A utility class for Dates.
@@ -36,8 +40,7 @@ public final class DateUtil {
     public static final String TIME_ZONE = "koryphe.timezone.default";
     private static final TimeZone TIME_ZONE_DEFAULT = getTimeZoneDefault();
 
-
-    private static final Pattern TIMESTAMP_MILLISECONDS = Pattern.compile("^\\d*$");
+    private static final Pattern TIMESTAMP_EPOCH = Pattern.compile("^\\d*$");
     private static final Map<Pattern, String> FORMATS = new LinkedHashMap<>();
 
     static {
@@ -69,6 +72,7 @@ public final class DateUtil {
      * The date string can be in any of the following formats:
      * <ul>
      * <li>timestamp in milliseconds</li>
+     * <li>timestamp in microseconds</li>
      * <li>yyyy/MM</li>
      * <li>yyyy/MM/dd</li>
      * <li>yyyy/MM/dd HH</li>
@@ -82,38 +86,51 @@ public final class DateUtil {
      * @return parsed date
      */
     public static Date parse(final String dateString) {
-        return parse(dateString, null);
+        return parse(dateString, null, false);
     }
 
-    public static Date parse(final String dateString, final TimeZone timeZone) {
+    public static Date parse(final String dateString, final TimeZone timeZone, final boolean microseconds) {
         if (null == dateString) {
             return null;
         }
 
-        if (TIMESTAMP_MILLISECONDS.matcher(dateString).matches()) {
+        if (TIMESTAMP_EPOCH.matcher(dateString).matches()) {
             try {
-                return new Date(Long.parseLong(dateString));
+                if (!microseconds) {
+                    return new Date(Long.parseLong(dateString));
+                } else {
+                    final long epochMicroseconds = Long.parseLong(dateString);
+
+                    final long epochSeconds = MICROSECONDS.toSeconds(epochMicroseconds);
+                    final long nanos = MICROSECONDS.toNanos(Math.floorMod(epochMicroseconds, TimeUnit.SECONDS.toMicros(1)));
+
+                    return Date.from(Instant.ofEpochSecond(epochSeconds, nanos));
+                }
             } catch (final NumberFormatException e) {
                 throw new IllegalArgumentException(String.format(ERROR_MSG, dateString), e);
             }
         }
 
-        final String formatedDateString = CHARS_TO_STRIP.matcher(dateString).replaceAll("");
+        final String formattedDateString = CHARS_TO_STRIP.matcher(dateString).replaceAll("");
 
         for (final Map.Entry<Pattern, String> entry : FORMATS.entrySet()) {
-            if (entry.getKey().matcher(formatedDateString).matches()) {
+            if (entry.getKey().matcher(formattedDateString).matches()) {
                 try {
                     final SimpleDateFormat sdf = new SimpleDateFormat(entry.getValue());
                     if (null != timeZone) {
                         sdf.setTimeZone(timeZone);
                     }
-                    return sdf.parse(formatedDateString);
+                    return sdf.parse(formattedDateString);
                 } catch (final ParseException e) {
                     throw new IllegalArgumentException(String.format(ERROR_MSG, dateString), e);
                 }
             }
         }
         throw new IllegalArgumentException(String.format(ERROR_MSG, dateString));
+    }
+
+    public static Date parse(final String dateString, final TimeZone timeZone) {
+        return parse(dateString, timeZone, false);
     }
 
     /**

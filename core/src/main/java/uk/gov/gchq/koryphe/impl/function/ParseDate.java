@@ -41,6 +41,7 @@ import static java.util.Objects.nonNull;
 public class ParseDate extends KorypheFunction<String, Date> {
     private String format;
     private TimeZone timeZone;
+    private boolean microseconds;
 
     public ParseDate() {
         setTimeZone((TimeZone) null);
@@ -55,7 +56,7 @@ public class ParseDate extends KorypheFunction<String, Date> {
         try {
             final Date date;
             if (isNull(format)) {
-                date = DateUtil.parse(dateString, timeZone);
+                date = DateUtil.parse(dateString, timeZone, microseconds);
             } else {
                 final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
                 if (nonNull(timeZone)) {
@@ -114,6 +115,20 @@ public class ParseDate extends KorypheFunction<String, Date> {
         return this;
     }
 
+    public boolean isMicroseconds() {
+        return microseconds;
+    }
+
+    @JsonSetter
+    public void setMicroseconds(final boolean microseconds) {
+        this.microseconds = microseconds;
+    }
+
+    public ParseDate microseconds(final boolean microseconds) {
+        setMicroseconds(microseconds);
+        return this;
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
@@ -128,6 +143,7 @@ public class ParseDate extends KorypheFunction<String, Date> {
         return new EqualsBuilder()
                 .append(timeZone, that.timeZone)
                 .append(format, that.format)
+                .append(microseconds, that.microseconds)
                 .isEquals();
     }
 
@@ -137,6 +153,7 @@ public class ParseDate extends KorypheFunction<String, Date> {
                 .appendSuper(super.hashCode())
                 .append(timeZone)
                 .append(format)
+                .append(microseconds)
                 .toHashCode();
     }
 }
