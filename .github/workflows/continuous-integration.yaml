@@ -1,6 +1,11 @@
 name: Continuous Integration
 
-on: [ pull_request ]
+on:
+  pull_request:
+  push:
+    branches:
+      - 'release/**'
+      - 'hotfix/**'
 
 jobs:
 
@@ -32,4 +37,3 @@ jobs:
 
     - name: Upload Coverage
       uses: codecov/codecov-action@v1
-
