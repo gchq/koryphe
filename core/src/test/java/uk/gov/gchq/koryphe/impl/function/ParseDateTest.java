@@ -111,11 +111,27 @@ public class ParseDateTest extends FunctionTest<ParseDate> {
     }
 
     @Test
-    public void shouldParseTimestampFloorInMicroseconds() throws ParseException {
+    public void shouldParseAndFloorLowTimestampInMicroseconds() throws ParseException {
         // Given
         final ParseDate function = new ParseDate();
         function.setMicroseconds(true);
         final String input = "946782245006123";
+        final String flooredInput = "946782245006000";
+
+        // When
+        final Date result = function.apply(input);
+
+        // Then
+        // Date has millisecond precision, therefore result is floored
+        assertEquals(Long.parseLong(flooredInput), ChronoUnit.MICROS.between(Instant.EPOCH, result.toInstant()));
+    }
+
+    @Test
+    public void shouldParseAndFloorHighTimestampInMicroseconds() throws ParseException {
+        // Given
+        final ParseDate function = new ParseDate();
+        function.setMicroseconds(true);
+        final String input = "946782245006999";
         final String flooredInput = "946782245006000";
 
         // When
