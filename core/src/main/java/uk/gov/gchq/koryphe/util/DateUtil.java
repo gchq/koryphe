@@ -102,7 +102,7 @@ public final class DateUtil {
                     final long epochMicroseconds = Long.parseLong(dateString);
 
                     final long epochSeconds = MICROSECONDS.toSeconds(epochMicroseconds);
-                    final long nanos = MICROSECONDS.toNanos(Math.floorMod(epochMicroseconds, TimeUnit.SECONDS.toMicros(1)));
+                    final long nanos = MICROSECONDS.toNanos(epochMicroseconds % TimeUnit.SECONDS.toMicros(1));
 
                     return Date.from(Instant.ofEpochSecond(epochSeconds, nanos));
                 }
