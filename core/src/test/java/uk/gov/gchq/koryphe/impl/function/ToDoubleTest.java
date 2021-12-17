@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 Crown Copyright
+ * Copyright 2018-2021 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ToDoubleTest extends FunctionTest<ToDouble> {
 
     @Test
-    public void shouldConvertToDouble() {
+    public void shouldConvertStringToDouble() {
         // Given
         final ToDouble function = new ToDouble();
 
@@ -36,6 +36,18 @@ public class ToDoubleTest extends FunctionTest<ToDouble> {
 
         // Then
         assertEquals(5.2, output);
+        assertEquals(Double.class, output.getClass());
+    }
+    @Test
+    public void shouldConvertNumberToDouble() {
+        // Given
+        final ToDouble function = new ToDouble();
+
+        // When
+        Object output = function.apply(5);
+
+        // Then
+        assertEquals(5.0, output);
         assertEquals(Double.class, output.getClass());
     }
 
