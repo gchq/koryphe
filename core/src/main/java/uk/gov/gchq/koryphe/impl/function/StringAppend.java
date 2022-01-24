@@ -24,6 +24,8 @@ import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
+import java.util.Objects;
+
 /**
  * A {@code StringAppend} is a {@link java.util.function.Function} which takes a input {@link String} and returns the
  * same string, appended with a suffix.
@@ -59,11 +61,7 @@ public class StringAppend extends KorypheFunction<String, String> {
     }
 
     public void setSuffix(final String suffix) {
-        if (null == suffix) {
-            this.suffix = StringUtils.EMPTY;
-        } else {
-            this.suffix = suffix;
-        }
+        this.suffix = Objects.requireNonNullElse(suffix, StringUtils.EMPTY);
     }
 
     @Override

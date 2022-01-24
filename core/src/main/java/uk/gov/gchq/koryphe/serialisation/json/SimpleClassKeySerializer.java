@@ -19,7 +19,7 @@ package uk.gov.gchq.koryphe.serialisation.json;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdKeySerializer;
+import com.fasterxml.jackson.databind.ser.std.StdKeySerializers;
 
 import java.io.IOException;
 import java.util.Date;
@@ -29,8 +29,12 @@ import java.util.Date;
  * for {@link Class}es as Map keys, which utilises the {@link SimpleClassNameIdResolver} to
  * allow simple class names to be used.
  */
-public class SimpleClassKeySerializer extends StdKeySerializer {
+public class SimpleClassKeySerializer extends StdKeySerializers.Default {
     private static final long serialVersionUID = -1765103660342721103L;
+
+    public SimpleClassKeySerializer() {
+        super(3, Class.class);
+    }
 
     // Largely copied from StdKeySerializer.serialise, with a slight change to use the simple class name.
     @Override

@@ -44,7 +44,7 @@ public class TupleAdaptedBinaryOperatorComposite<R> extends BinaryOperatorCompos
         private final TupleAdaptedBinaryOperatorComposite<R> binaryOperator;
 
         public Builder() {
-            this(new TupleAdaptedBinaryOperatorComposite<R>());
+            this(new TupleAdaptedBinaryOperatorComposite<>());
         }
 
         private Builder(final TupleAdaptedBinaryOperatorComposite<R> binaryOperator) {

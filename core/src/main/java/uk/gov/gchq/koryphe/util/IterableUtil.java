@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -362,11 +363,7 @@ public final class IterableUtil {
                 throw new IllegalArgumentException("The start pointer must be less than the end pointer.");
             }
 
-            if (null == iterable) {
-                this.iterable = Collections.emptyList();
-            } else {
-                this.iterable = iterable;
-            }
+            this.iterable = Objects.requireNonNullElse(iterable, Collections.emptyList());
 
             this.start = start;
             this.end = end;
@@ -410,11 +407,7 @@ public final class IterableUtil {
                 throw new IllegalArgumentException("start should be less than end");
             }
 
-            if (null == iterator) {
-                this.iterator = Collections.emptyIterator();
-            } else {
-                this.iterator = iterator;
-            }
+            this.iterator = Objects.requireNonNullElse(iterator, Collections.emptyIterator());
             this.end = end;
             this.truncate = truncate;
 

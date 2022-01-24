@@ -81,7 +81,7 @@ public class AdaptedBinaryOperator<T, OT> extends Adapted<T, OT, OT, T, T> imple
         return binaryOperator;
     }
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
     public void setBinaryOperator(final BinaryOperator<OT> binaryOperator) {
         this.binaryOperator = binaryOperator;
     }

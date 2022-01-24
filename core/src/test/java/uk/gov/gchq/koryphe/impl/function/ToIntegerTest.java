@@ -34,7 +34,7 @@ public class ToIntegerTest extends FunctionTest<ToInteger> {
         final ToInteger function = new ToInteger();
 
         // When
-        Object output = function.apply(new Long(5));
+        Object output = function.apply(Long.valueOf(5L));
 
         // Then
         assertEquals(5, output);

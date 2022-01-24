@@ -101,7 +101,7 @@ public class ToStringTest extends FunctionTest<ToString> {
 
     @Override
     protected Iterable<ToString> getDifferentInstancesOrNull() {
-        return Collections.singletonList(new ToString(Charsets.ISO_8859_1));
+        return Collections.singletonList(new ToString(StandardCharsets.ISO_8859_1));
     }
 
     @Override
@@ -123,9 +123,9 @@ public class ToStringTest extends FunctionTest<ToString> {
         final String json = JsonSerialiser.serialise(ts);
 
         // Then
-        JsonSerialiser.assertEquals(String.format("{" +
+        JsonSerialiser.assertEquals("{" +
                 "  \"class\" : \"uk.gov.gchq.koryphe.impl.function.ToString\"" +
-                "}"), json);
+                "}", json);
 
         // When 2
         final ToString deserialisedTs = JsonSerialiser.deserialise(json, ToString.class);

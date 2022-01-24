@@ -341,7 +341,7 @@ public class IfTest extends FunctionTest<If> {
                 .otherwise(new SetValue(2));
 
         // When / Then
-        assertEquals(new Integer(1), function.apply(1));
-        assertEquals(new Integer(2), function.apply(3));
+        assertEquals(Integer.valueOf(1), function.apply(1));
+        assertEquals(Integer.valueOf(2), function.apply(3));
     }
 }

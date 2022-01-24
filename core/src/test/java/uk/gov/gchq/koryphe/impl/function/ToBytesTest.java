@@ -84,9 +84,9 @@ public class ToBytesTest extends FunctionTest<ToBytes> {
         final String json = JsonSerialiser.serialise(ts);
 
         // Then
-        JsonSerialiser.assertEquals(String.format("{" +
+        JsonSerialiser.assertEquals("{" +
                 "  \"class\" : \"uk.gov.gchq.koryphe.impl.function.ToBytes\"" +
-                "}"), json);
+                "}", json);
 
         // When 2
         final ToBytes deserialisedTs = JsonSerialiser.deserialise(json, ToBytes.class);

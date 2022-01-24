@@ -26,7 +26,7 @@ import java.util.Arrays;
 public class SingletonSignature extends Signature {
     private final Object input;
     private final boolean isInput;
-    private Class<?> type;
+    private final Class<?> type;
 
     SingletonSignature(final Object input, final Class type, final boolean isInput) {
         this.input = input;

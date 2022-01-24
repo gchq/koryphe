@@ -34,7 +34,7 @@ public final class VersionUtil {
      */
     public static boolean validateVersionString(final String versionString) {
         final String[] tokens = versionString.split("\\.");
-        return tokens.length == 3 && Arrays.stream(tokens).map(NumberUtils::isNumber).reduce(true, Boolean::logicalAnd);
+        return tokens.length == 3 && Arrays.stream(tokens).map(NumberUtils::isCreatable).reduce(true, Boolean::logicalAnd);
     }
 
     private VersionUtil() {

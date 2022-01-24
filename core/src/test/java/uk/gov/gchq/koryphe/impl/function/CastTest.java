@@ -37,7 +37,7 @@ public class CastTest extends FunctionTest<Cast> {
         final Cast function = new Cast(Integer.class);
 
         // When
-        Object output = function.apply(new Long(5));
+        Object output = function.apply(Long.valueOf(5L));
 
         // Then
         assertEquals(Integer.class, output.getClass());

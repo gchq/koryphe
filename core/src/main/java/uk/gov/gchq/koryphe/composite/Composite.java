@@ -40,7 +40,7 @@ public abstract class Composite<C> {
         this.components = components;
     }
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
     public List<C> getComponents() {
         return components;
     }

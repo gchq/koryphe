@@ -88,7 +88,7 @@ public class LengthTest extends FunctionTest<Length> {
         final Integer result = function.apply(null);
 
         // Then
-        assertEquals(new Integer(0), result);
+        assertEquals(Integer.valueOf(0), result);
     }
 
     @Test
@@ -101,7 +101,7 @@ public class LengthTest extends FunctionTest<Length> {
         final Integer result = function.apply(input);
 
         // Then
-        assertEquals(new Integer(10), result);
+        assertEquals(Integer.valueOf(10), result);
     }
 
     @Test
@@ -114,7 +114,7 @@ public class LengthTest extends FunctionTest<Length> {
         final Integer result = function.apply(input);
 
         // Then
-        assertEquals(new Integer(5), result);
+        assertEquals(Integer.valueOf(5), result);
     }
 
     @Test
@@ -131,7 +131,7 @@ public class LengthTest extends FunctionTest<Length> {
         final Integer result = function.apply(input);
 
         // Then
-        assertEquals(new Integer(4), result);
+        assertEquals(Integer.valueOf(4), result);
     }
 
     @Test
@@ -139,15 +139,15 @@ public class LengthTest extends FunctionTest<Length> {
         // Given
         final Length function = new Length();
         final Set<Object> input = new HashSet<>();
-        input.add(2.718);
-        input.add(3.142);
+        input.add(2.142);
+        input.add(3.718);
         input.add("constants");
 
         // When
         final Integer result = function.apply(input);
 
         // Then
-        assertEquals(new Integer(3), result);
+        assertEquals(Integer.valueOf(3), result);
     }
 
     @Test
@@ -164,7 +164,7 @@ public class LengthTest extends FunctionTest<Length> {
         final Integer result = function.apply(input);
 
         // Then
-        assertEquals(new Integer(4), result);
+        assertEquals(Integer.valueOf(4), result);
     }
 
     @Test

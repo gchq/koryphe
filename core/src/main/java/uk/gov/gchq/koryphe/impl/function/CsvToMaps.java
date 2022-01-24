@@ -65,7 +65,7 @@ public class CsvToMaps extends KorypheFunction<String, Iterable<Map<String, Obje
         try {
             final CSVParser csvParser = new CSVParser(new StringReader(csv), getCsvFormat());
             final CloseableIterable<CSVRecord> csvRecords = IterableUtil.limit(csvParser.getRecords(), firstRow, null, false);
-            return IterableUtil.map(csvRecords, (item) -> extractMap((CSVRecord) item));
+            return IterableUtil.map(csvRecords, item -> extractMap((CSVRecord) item));
         } catch (final IOException e) {
             throw new RuntimeException("Unable to parse csv", e);
         }
@@ -81,11 +81,11 @@ public class CsvToMaps extends KorypheFunction<String, Iterable<Map<String, Obje
     }
 
     private CSVFormat getCsvFormat() {
-        CSVFormat format = CSVFormat.DEFAULT.withDelimiter(delimiter);
+        final CSVFormat.Builder formatBuilder = CSVFormat.DEFAULT.builder().setDelimiter(delimiter);
         if (quoted) {
-            format = format.withQuote(quoteChar);
+            formatBuilder.setQuote(quoteChar);
         }
-        return format;
+        return formatBuilder.build();
     }
 
     public List<String> getHeader() {

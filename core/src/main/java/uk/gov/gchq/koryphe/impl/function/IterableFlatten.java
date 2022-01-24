@@ -61,7 +61,7 @@ public class IterableFlatten<I_ITEM> extends KorypheFunction<Iterable<I_ITEM>, I
         return null;
     }
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
     public BinaryOperator<I_ITEM> getOperator() {
         return operator;
     }

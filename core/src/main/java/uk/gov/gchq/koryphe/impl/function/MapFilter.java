@@ -55,7 +55,7 @@ public class MapFilter<K, V> extends KorypheFunction<Map<K, V>, Map<K, V>> {
         return map;
     }
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
     public Predicate<K> getKeyPredicate() {
         return keyPredicate;
     }
@@ -70,7 +70,7 @@ public class MapFilter<K, V> extends KorypheFunction<Map<K, V>, Map<K, V>> {
         return this;
     }
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
     public Predicate<V> getValuePredicate() {
         return valuePredicate;
     }
@@ -85,7 +85,7 @@ public class MapFilter<K, V> extends KorypheFunction<Map<K, V>, Map<K, V>> {
         return this;
     }
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
     public KoryphePredicate2<K, V> getKeyValuePredicate() {
         return keyValuePredicate;
     }

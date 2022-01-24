@@ -25,7 +25,7 @@ import java.util.function.BinaryOperator;
  *
  * @param <T> Input/Output type
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
 public abstract class KorypheBinaryOperator<T> implements BinaryOperator<T> {
     /**
      * Apply the operator after completing null checks.

@@ -80,7 +80,7 @@ public class LastItemTest extends FunctionTest<LastItem> {
 
         // Then
         assertNotNull(result);
-        assertEquals(new Integer(11), result);
+        assertEquals(Integer.valueOf(11), result);
     }
 
     @Test

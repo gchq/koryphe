@@ -329,7 +329,6 @@ public class ReflectiveTupleTest {
 
     private static class ExampleObj {
         public String fieldA = "fa";
-        private String fieldB = "fb";
         private String methodA = "ma";
         private String methodB = "mb";
 
@@ -384,15 +383,9 @@ public class ReflectiveTupleTest {
     private static class ExampleObj3 {
         public String fieldA = "fa";
         private String fieldB = "fb";
-        private String fieldC = "fc";
 
         public ExampleObj3 setFieldB(final String fieldB) {
             this.fieldB = fieldB;
-            return this;
-        }
-
-        private ExampleObj3 fieldC(final String fieldC) {
-            this.fieldC = fieldC;
             return this;
         }
     }

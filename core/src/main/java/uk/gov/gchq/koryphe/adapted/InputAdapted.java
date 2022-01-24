@@ -48,7 +48,7 @@ public class InputAdapted<I, AI> {
         return inputAdapter;
     }
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
     public void setInputAdapter(final Function<I, AI> inputAdapter) {
         this.inputAdapter = inputAdapter;
     }

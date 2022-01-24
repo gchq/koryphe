@@ -70,7 +70,7 @@ public class FirstValid<I_ITEM> extends KorypheFunction<Iterable<I_ITEM>, I_ITEM
         return this;
     }
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
     public Predicate getPredicate() {
         return predicate;
     }

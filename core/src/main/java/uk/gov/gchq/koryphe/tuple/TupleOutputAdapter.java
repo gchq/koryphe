@@ -25,6 +25,7 @@ import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.BiFunction;
 
 /**
@@ -33,7 +34,7 @@ import java.util.function.BiFunction;
  */
 @Since("1.0.0")
 @Summary("Projects items to a tuple")
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
 public class TupleOutputAdapter<R, FO> implements BiFunction<Tuple<R>, FO, Tuple<R>> {
     private R[] projection;
 
@@ -80,11 +81,7 @@ public class TupleOutputAdapter<R, FO> implements BiFunction<Tuple<R>, FO, Tuple
      */
     @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "Cloning the array would be expensive - we will have to reply on users not modifying the array")
     public void setProjection(final R[] projection) {
-        if (null == projection) {
-            this.projection = (R[]) new Object[0];
-        } else {
-            this.projection = projection;
-        }
+        this.projection = Objects.requireNonNullElseGet(projection, () -> (R[]) new Object[0]);
     }
 
     /**

@@ -32,6 +32,7 @@ import java.util.Arrays;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
@@ -100,7 +101,7 @@ public class TupleAdaptedBinaryOperatorTest extends BinaryOperatorTest<TupleAdap
 
         Function<Tuple<String>, Integer> deserialisedInputMask = deserialisedBinaryOperator.getInputAdapter();
         assertNotSame(inputAdapter, deserialisedInputMask);
-        assertTrue(deserialisedInputMask instanceof Function);
+        assertNotNull(deserialisedInputMask);
     }
 
     @Override

@@ -98,11 +98,12 @@ public class CsvLinesToMaps extends KorypheFunction<Iterable<String>, Iterable<M
     }
 
     private CSVFormat getCsvFormat() {
-        CSVFormat format = CSVFormat.DEFAULT.withDelimiter(delimiter);
+        final CSVFormat.Builder formatBuilder = CSVFormat.DEFAULT.builder().setDelimiter(delimiter);
         if (quoted) {
-            format = format.withQuote(quoteChar);
+            formatBuilder.setQuote(quoteChar);
         }
-        return format;
+
+        return formatBuilder.build();
     }
 
     public List<String> getHeader() {

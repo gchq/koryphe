@@ -30,6 +30,7 @@ import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
@@ -130,6 +131,6 @@ public class TuplePredicateTest {
 
         Function<Tuple<String>, Object> deserialisedInputAdapter = deserialisedPredicate.getInputAdapter();
         assertNotSame(inputAdapter, deserialisedInputAdapter);
-        assertTrue(deserialisedInputAdapter instanceof Function);
+        assertNotNull(deserialisedInputAdapter);
     }
 }

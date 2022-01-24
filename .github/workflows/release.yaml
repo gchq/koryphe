@@ -22,7 +22,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         distribution: 'zulu'
-        java-version: '8'
+        java-version: '11'
 
     - name: Checkout master
       uses: actions/checkout@v2
@@ -91,7 +91,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         distribution: 'zulu'
-        java-version: '8'
+        java-version: '11'
 
     - name: Merge release into develop
       run: |
@@ -155,7 +155,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         distribution: 'zulu'
-        java-version: '8'
+        java-version: '11'
 
     - name: Set version
       run: echo "RELEASE_VERSION=$(echo ${{ github.event.milestone.title }} | cut -c 2-)" >> $GITHUB_ENV
@@ -183,7 +183,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         distribution: 'zulu'
-        java-version: '8'
+        java-version: '11'
 
     - name: Checkout master
       uses: actions/checkout@v2

@@ -55,7 +55,7 @@ public abstract class Adapted<I, AI, AO, O, C> extends InputAdapted<I, AI> {
         return outputAdapter;
     }
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
     public void setOutputAdapter(final BiFunction<C, AO, O> outputAdapter) {
         this.outputAdapter = outputAdapter;
     }

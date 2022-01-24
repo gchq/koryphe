@@ -25,6 +25,7 @@ import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * @param <R>  The type of reference used by tuples.
@@ -80,11 +81,7 @@ public class TupleInputAdapter<R, FI> extends KorypheFunction<Tuple<R>, FI> {
      */
     @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "Cloning the array would be expensive - we will have to reply on users not modifying the array")
     public void setSelection(final R[] selection) {
-        if (null == selection) {
-            this.selection = (R[]) new Object[0];
-        } else {
-            this.selection = selection;
-        }
+        this.selection = Objects.requireNonNullElseGet(selection, () -> (R[]) new Object[0]);
     }
 
     @Override

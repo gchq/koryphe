@@ -76,9 +76,7 @@ class TupleAdaptedFunctionTest extends FunctionTest<TupleAdaptedFunction> {
         inputs.put("input", "aString");
 
         // When / Then
-        NumberFormatException e = assertThrows(NumberFormatException.class, () -> {
-            function.apply(inputs);
-        });
+        NumberFormatException e = assertThrows(NumberFormatException.class, () -> function.apply(inputs));
 
         assertNotNull(e.getMessage());
     }

@@ -44,7 +44,7 @@ public class TupleAdaptedPredicateComposite<R> extends PredicateComposite<Tuple<
         private final TupleAdaptedPredicateComposite<R> composite;
 
         public Builder() {
-            this(new TupleAdaptedPredicateComposite<R>());
+            this(new TupleAdaptedPredicateComposite<>());
         }
 
         private Builder(final TupleAdaptedPredicateComposite<R> composite) {
@@ -54,7 +54,7 @@ public class TupleAdaptedPredicateComposite<R> extends PredicateComposite<Tuple<
         public SelectedBuilder<R> select(final R[] selection) {
             final TupleAdaptedPredicate<R, ?> current = new TupleAdaptedPredicate<>();
             current.setSelection(selection);
-            return new SelectedBuilder<R>(composite, current);
+            return new SelectedBuilder<>(composite, current);
         }
 
         public TupleAdaptedPredicateComposite<R> build() {

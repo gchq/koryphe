@@ -36,11 +36,11 @@ import java.util.function.Predicate;
  *
  * @param <I> Type of input to be validated
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
 @Since("1.0.0")
 @Summary("Returns the inverse of a predicate")
 public class Not<I> extends KoryphePredicate<I> implements InputValidator {
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
     private Predicate<I> predicate;
 
     public Not() {

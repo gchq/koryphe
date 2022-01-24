@@ -33,7 +33,7 @@ import java.util.function.BinaryOperator;
 @Since("1.0.0")
 @Summary("Merges 2 maps by applying a binary operator to each of the values")
 public class BinaryOperatorMap<K, T> extends KorypheBinaryOperator<Map<K, T>> {
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
     private BinaryOperator<? super T> binaryOperator;
 
     /**

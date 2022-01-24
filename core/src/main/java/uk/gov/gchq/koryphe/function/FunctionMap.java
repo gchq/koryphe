@@ -35,7 +35,7 @@ import java.util.function.Function;
 @Since("1.0.0")
 @Summary("Applies a function to each value in a map")
 public class FunctionMap<K, I, O> extends KorypheFunction<Map<K, I>, Map<K, O>> {
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
     private Function<I, O> function;
 
     /**

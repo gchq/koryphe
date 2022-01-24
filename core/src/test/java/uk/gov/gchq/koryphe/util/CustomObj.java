@@ -15,13 +15,31 @@
  */
 package uk.gov.gchq.koryphe.util;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 public final class CustomObj implements Comparable<CustomObj> {
-    public final String value = "1";
+    public final static String value = "1";
+
+    @JsonGetter
+    public String getValue() {
+        return value;
+    }
+
+    @JsonSetter
+    public void setValue(final String value) {
+        // Do nothing
+    }
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         final CustomObj customObj = (CustomObj) o;
 

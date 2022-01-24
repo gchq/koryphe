@@ -56,8 +56,8 @@ public class CreateObject extends KorypheFunction<Object, Object> {
 
         if (isNull(value)) {
             try {
-                return objectClass.newInstance();
-            } catch (final InstantiationException | IllegalAccessException e) {
+                return objectClass.getDeclaredConstructor().newInstance();
+            } catch (final InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                 throw new RuntimeException("Unable to create a new instance of " + objectClass.getName() + " using the no-arg constructor", e);
             }
         }

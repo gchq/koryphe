@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class ExtractValueTest extends FunctionTest<ExtractValue> {
     @Override
     protected ExtractValue<String, Integer> getInstance() {
-        return new ExtractValue<String, Integer>("testKey");
+        return new ExtractValue<>("testKey");
     }
 
     @Override

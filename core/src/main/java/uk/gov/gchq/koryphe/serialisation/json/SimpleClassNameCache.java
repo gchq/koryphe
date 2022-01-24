@@ -21,7 +21,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import uk.gov.gchq.koryphe.util.ReflectionUtil;
 
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -66,16 +65,14 @@ import java.util.stream.Collectors;
 public final class SimpleClassNameCache {
     public static final boolean DEFAULT_USE_FULL_NAME_FOR_SERIALISATION = true;
 
-    private static final Set<Class> DEFAULT_PARENT_CLASSES = Sets.newHashSet(
+    private static final Set<Class> DEFAULT_PARENT_CLASSES = Set.of(
             Predicate.class,
             Function.class,
             BinaryOperator.class,
             Comparator.class
     );
 
-    private static final Set<String> DEFAULT_CORE_PACKAGES = Sets.newLinkedHashSet(
-            Arrays.asList("java.lang", "java.util")
-    );
+    private static final Set<String> DEFAULT_CORE_PACKAGES = Set.of("java.lang", "java.util");
 
     /**
      * Core packages such as java.lang that will be used to try and expand unknown
@@ -296,7 +293,7 @@ public final class SimpleClassNameCache {
                 // If the conflict cannot be resolved then explain to the user
                 // that they need to provide the full class name.
                 if (null == className) {
-                    final List<String> classOptions = classesForId.stream().map(c -> isArray ? "[L" + c.getName() + ";" : c.getName()).collect(Collectors.toList());
+                    final List<String> classOptions = classesForId.stream().map(c -> isArray ? "[L" + c.getName() + ";" : c.getName()).collect(Collectors.toUnmodifiableList());
                     throw new IllegalArgumentException("Multiple " + nonArrayId + " classes exist. Please choose one of the following and specify the full class name: " + classOptions);
                 }
             }

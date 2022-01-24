@@ -45,7 +45,7 @@ public class MapContainsPredicate extends KoryphePredicate<Map> {
         this.keyPredicate = keyPredicate;
     }
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
     public Predicate getKeyPredicate() {
         return keyPredicate;
     }

@@ -113,9 +113,7 @@ class FunctionCompositeTest extends FunctionTest<FunctionComposite>{
         ));
 
         // When / Then
-        ClassCastException e = assertThrows(ClassCastException.class, () -> {
-            functionComposite.apply(5);
-        });
+        ClassCastException e = assertThrows(ClassCastException.class, () -> functionComposite.apply(5));
 
         assertNotNull(e.getMessage());
     }

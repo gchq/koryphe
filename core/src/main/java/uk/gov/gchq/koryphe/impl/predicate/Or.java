@@ -35,7 +35,7 @@ import java.util.function.Predicate;
  *
  * @param <I> Type of input to be validated.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
 @Since("1.0.0")
 @Summary("Returns true if any of the predicates are true")
 public class Or<I> extends PredicateComposite<I, Predicate<I>> {

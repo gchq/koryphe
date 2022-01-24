@@ -26,7 +26,7 @@ import java.util.function.Function;
  * @param <I> Input type
  * @param <O> Output type
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
 public abstract class KorypheFunction<I, O> implements Function<I, O> {
     @Override
     public boolean equals(final Object obj) {

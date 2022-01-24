@@ -63,7 +63,7 @@ public class PredicateMap<T> extends KoryphePredicate<Map<?, T>> {
         }
     }
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
     public Predicate<? super T> getPredicate() {
         return predicate;
     }

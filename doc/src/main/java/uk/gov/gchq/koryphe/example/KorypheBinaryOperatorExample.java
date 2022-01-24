@@ -30,13 +30,11 @@ public abstract class KorypheBinaryOperatorExample<T> extends KorypheExample<T, 
         System.out.println(JsonSerialiser.serialise(getBinaryOperator()));
         System.out.println();
         System.out.println("Binary Operator inputs: ");
-        getInput().forEach(i -> printInput(i));
+        getInput().forEach(this::printInput);
         System.out.println();
         System.out.println("Binary Operator output: ");
         Optional<T> result = getInput().reduce(getBinaryOperator());
-        if (result.isPresent()) {
-            printOutput(result.get());
-        }
+        result.ifPresent(this::printOutput);
         System.out.println();
     }
 }

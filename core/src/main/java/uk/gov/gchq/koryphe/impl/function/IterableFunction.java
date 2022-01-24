@@ -61,7 +61,7 @@ public class IterableFunction<I_ITEM, O_ITEM> extends KorypheFunction<Iterable<I
     }
 
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
     public List<Function> getFunctions() {
         return functions;
     }

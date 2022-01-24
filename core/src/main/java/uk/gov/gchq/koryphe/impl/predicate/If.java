@@ -27,6 +27,7 @@ import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.tuple.predicate.IntegerTupleAdaptedPredicate;
 import uk.gov.gchq.koryphe.tuple.predicate.TupleAdaptedPredicate;
 
+import java.util.Objects;
 import java.util.function.Predicate;
 
 /**
@@ -52,23 +53,24 @@ import java.util.function.Predicate;
  *
  * @param <I> the type of input to be validated
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
 @Since("1.3.0")
 @Summary("Conditionally applies a predicate")
 public class If<I> extends KoryphePredicate<I> {
 
     private Boolean condition;
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class", defaultImpl = TupleAdaptedPredicate.class)
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class", defaultImpl = TupleAdaptedPredicate.class)
     private Predicate<? super I> predicate;
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class", defaultImpl = TupleAdaptedPredicate.class)
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class", defaultImpl = TupleAdaptedPredicate.class)
     private Predicate<? super I> then;
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class", defaultImpl = TupleAdaptedPredicate.class)
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class", defaultImpl = TupleAdaptedPredicate.class)
     private Predicate<? super I> otherwise;
 
     public If() {
+        // Empty
     }
 
     /**
@@ -135,14 +137,7 @@ public class If<I> extends KoryphePredicate<I> {
      */
     @Override
     public boolean test(final I input) {
-        boolean conditionTmp;
-        if (null == condition) {
-            conditionTmp = null != predicate && predicate.test(input);
-        } else {
-            conditionTmp = condition;
-        }
-
-        if (conditionTmp) {
+        if (Objects.requireNonNullElseGet(condition, () -> null != predicate && predicate.test(input))) {
             return null != then && then.test(input);
         }
 
