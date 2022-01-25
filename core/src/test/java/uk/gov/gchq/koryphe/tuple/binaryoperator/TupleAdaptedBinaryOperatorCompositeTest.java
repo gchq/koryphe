@@ -28,14 +28,14 @@ public class TupleAdaptedBinaryOperatorCompositeTest
         final TupleAdaptedBinaryOperatorComposite<Object> instance = getInstance();
         final String json = "" +
                 "{" +
-                "\"operators\": [" +
-                "{" +
-                "\"selection\": [\"input\", \"anotherInput\"]," +
-                "\"binaryOperator\": {" +
-                "\"class\": \"uk.gov.gchq.koryphe.impl.binaryoperator.Sum\"" +
-                "}" +
-                "}" +
-                "]" +
+                	"\"operators\": [" +
+                		"{" +
+                			"\"selection\": [\"input\", \"anotherInput\"]," +
+                			"\"binaryOperator\": {" +
+                				"\"class\": \"uk.gov.gchq.koryphe.impl.binaryoperator.Sum\"" +
+                			"}" +
+                		"}" +
+                	"]" +
                 "}";
 
         // When
