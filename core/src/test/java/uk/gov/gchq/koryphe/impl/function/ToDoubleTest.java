@@ -27,6 +27,23 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ToDoubleTest extends FunctionTest<ToDouble> {
 
     @Test
+    public void shouldThrowException() {
+        // Given
+        final ToDouble function = new ToDouble();
+
+        // When
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            function.apply(true);
+        });
+
+        String expectedMessage = "Could not convert value to Double: ";
+        String actualMessage = exception.getMessage();
+
+        // Then
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
     public void shouldConvertStringToDouble() {
         // Given
         final ToDouble function = new ToDouble();
@@ -38,6 +55,7 @@ public class ToDoubleTest extends FunctionTest<ToDouble> {
         assertEquals(5.2, output);
         assertEquals(Double.class, output.getClass());
     }
+
     @Test
     public void shouldConvertNumberToDouble() {
         // Given
