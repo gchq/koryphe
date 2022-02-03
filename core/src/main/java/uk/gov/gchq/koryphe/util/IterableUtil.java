@@ -18,9 +18,8 @@ package uk.gov.gchq.koryphe.util;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import uk.gov.gchq.koryphe.impl.predicate.And;
-import uk.gov.gchq.koryphe.iterable.CloseableIterable;
-import uk.gov.gchq.koryphe.iterable.CloseableIterator;
 
+import java.io.Closeable;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -51,7 +50,7 @@ public final class IterableUtil {
      * @param <T>       the type of the items in the iterable
      * @return the lazily filtered iterable
      */
-    public static <T> CloseableIterable<T> filter(final Iterable<T> iterable, final Predicate predicate) {
+    public static <T> Iterable<T> filter(final Iterable<T> iterable, final Predicate predicate) {
         if (null == predicate) {
             throw new IllegalArgumentException("Predicate cannot be null");
         }
@@ -67,7 +66,7 @@ public final class IterableUtil {
      * @param <T>        the type of the items in the iterable
      * @return the lazily filtered iterable
      */
-    public static <T> CloseableIterable<T> filter(final Iterable<T> iterable, final List<Predicate> predicates) {
+    public static <T> Iterable<T> filter(final Iterable<T> iterable, final List<Predicate> predicates) {
         if (null == iterable) {
             return null;
         }
@@ -84,14 +83,14 @@ public final class IterableUtil {
         return new FilteredIterable<>(iterable, predicates);
     }
 
-    public static <I_ITEM, O_ITEM> CloseableIterable<O_ITEM> map(final Iterable<I_ITEM> iterable, final Function function) {
+    public static <I_ITEM, O_ITEM> Iterable<O_ITEM> map(final Iterable<I_ITEM> iterable, final Function function) {
         if (null == function) {
             throw new IllegalArgumentException("Function cannot be null");
         }
         return map(iterable, Collections.singletonList(function));
     }
 
-    public static <I_ITEM, O_ITEM> CloseableIterable<O_ITEM> map(final Iterable<I_ITEM> iterable, final List<Function> functions) {
+    public static <I_ITEM, O_ITEM> Iterable<O_ITEM> map(final Iterable<I_ITEM> iterable, final List<Function> functions) {
         if (null == iterable) {
             return null;
         }
@@ -108,21 +107,19 @@ public final class IterableUtil {
         return new MappedIterable<>(iterable, functions);
     }
 
-    public static <T> CloseableIterable<T> concat(final Iterable<? extends Iterable<? extends T>> iterables) {
+    public static <T> Iterable<T> concat(final Iterable<? extends Iterable<? extends T>> iterables) {
         return new ChainedIterable<>(iterables);
     }
 
-    public static <T> CloseableIterable<T> limit(final Iterable<T> iterable, final int start, final Integer end, final boolean truncate) {
+    public static <T> Iterable<T> limit(final Iterable<T> iterable, final int start, final Integer end, final boolean truncate) {
         return new LimitedIterable<>(iterable, start, end, truncate);
     }
 
     /**
      * @param <I_ITEM> input type of items in the input iterator
      * @param <O_ITEM> output type of items in the output iterator
-     * @deprecated Closable will be removed, it is used with scaling Big Data and does not belong in Koryphe.
      */
-    @Deprecated
-    private static class MappedIterable<I_ITEM, O_ITEM> implements CloseableIterable<O_ITEM> {
+    private static class MappedIterable<I_ITEM, O_ITEM> implements Closeable, Iterable<O_ITEM> {
         private final Iterable<I_ITEM> iterable;
         private final List<Function> functions;
 
@@ -132,7 +129,7 @@ public final class IterableUtil {
         }
 
         @Override
-        public CloseableIterator<O_ITEM> iterator() {
+        public Iterator<O_ITEM> iterator() {
             return new MappedIterator<>(iterable.iterator(), functions);
         }
 
@@ -144,10 +141,8 @@ public final class IterableUtil {
 
     /**
      * @param <O_ITEM> the type of items in the iterator
-     * @deprecated Closable will be removed, it is used with scaling Big Data and does not belong in Koryphe.
      */
-    @Deprecated
-    private static class MappedIterator<I_ITEM, O_ITEM> implements CloseableIterator<O_ITEM> {
+    private static class MappedIterator<I_ITEM, O_ITEM> implements Closeable, Iterator<O_ITEM> {
         private final Iterator<? extends I_ITEM> iterator;
         private final List<Function> functions;
 
@@ -182,10 +177,8 @@ public final class IterableUtil {
 
     /**
      * @param <T> the type of items in the iterator
-     * @deprecated Closable will be removed, it is used with scaling Big Data and does not belong in Koryphe.
      */
-    @Deprecated
-    private static class FilteredIterable<T> implements CloseableIterable<T> {
+    private static class FilteredIterable<T> implements Closeable, Iterable<T> {
         private final Iterable<T> iterable;
         private final List<Predicate> predicates;
 
@@ -195,7 +188,7 @@ public final class IterableUtil {
         }
 
         @Override
-        public CloseableIterator<T> iterator() {
+        public Iterator<T> iterator() {
             return new FilteredIterator<>(iterable.iterator(), predicates);
         }
 
@@ -207,10 +200,8 @@ public final class IterableUtil {
 
     /**
      * @param <T> the type of items in the iterator
-     * @deprecated Closable will be removed, it is used with scaling Big Data and does not belong in Koryphe.
      */
-    @Deprecated
-    private static class FilteredIterator<T> implements CloseableIterator<T> {
+    private static class FilteredIterator<T> implements Closeable, Iterator<T> {
         private final Iterator<? extends T> iterator;
         private final And<T> andPredicate;
 
@@ -271,10 +262,8 @@ public final class IterableUtil {
 
     /**
      * @param <T> the type of items in the iterator
-     * @deprecated Closable will be removed, it is used with scaling Big Data and does not belong in Koryphe.
      */
-    @Deprecated
-    private static class ChainedIterable<T> implements CloseableIterable<T> {
+    private static class ChainedIterable<T> implements Closeable, Iterable<T> {
         private final Iterable<? extends Iterable<? extends T>> iterables;
 
         ChainedIterable(final Iterable<? extends Iterable<? extends T>> iterables) {
@@ -285,7 +274,7 @@ public final class IterableUtil {
         }
 
         @Override
-        public CloseableIterator<T> iterator() {
+        public Iterator<T> iterator() {
             return new ChainedIterator<>(iterables.iterator());
         }
 
@@ -299,10 +288,8 @@ public final class IterableUtil {
 
     /**
      * @param <T> the type of items in the iterator
-     * @deprecated Closable will be removed, it is used with scaling Big Data and does not belong in Koryphe.
      */
-    @Deprecated
-    private static class ChainedIterator<T> implements CloseableIterator<T> {
+    private static class ChainedIterator<T> implements Closeable, Iterator<T> {
         private final Iterator<? extends Iterable<? extends T>> iterablesIterator;
         private Iterator<? extends T> currentIterator = Collections.emptyIterator();
 
@@ -349,10 +336,8 @@ public final class IterableUtil {
 
     /**
      * @param <T> the type of items in the iterator
-     * @deprecated Closable will be removed, it is used with scaling Big Data and does not belong in Koryphe.
      */
-    @Deprecated
-    private static final class LimitedIterable<T> implements CloseableIterable<T> {
+    private static final class LimitedIterable<T> implements Closeable, Iterable<T> {
         private final Iterable<T> iterable;
         private final int start;
         private final Integer end;
@@ -386,17 +371,15 @@ public final class IterableUtil {
         }
 
         @Override
-        public CloseableIterator<T> iterator() {
+        public Iterator<T> iterator() {
             return new LimitedIterator<>(iterable.iterator(), start, end, truncate);
         }
     }
 
     /**
      * @param <T> the type of items in the iterator
-     * @deprecated Closable will be removed, it is used with scaling Big Data and does not belong in Koryphe.
      */
-    @Deprecated
-    private static final class LimitedIterator<T> implements CloseableIterator<T> {
+    private static final class LimitedIterator<T> implements Closeable, Iterator<T> {
         private final Iterator<T> iterator;
         private final Integer end;
         private int index = 0;

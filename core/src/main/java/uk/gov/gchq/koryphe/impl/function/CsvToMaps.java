@@ -27,7 +27,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
-import uk.gov.gchq.koryphe.iterable.CloseableIterable;
+import uk.gov.gchq.koryphe.util.CloseableUtil;
 import uk.gov.gchq.koryphe.util.IterableUtil;
 
 import java.io.IOException;
@@ -45,8 +45,7 @@ import static java.util.Objects.isNull;
 
 @Since("1.8.0")
 @Summary("Parses a CSV into Maps")
-@JsonPropertyOrder(value = {"header", "firstRow", "delimiter", "quoted", "quoteChar"},
-        alphabetic = true)
+@JsonPropertyOrder(value = { "header", "firstRow", "delimiter", "quoted", "quoteChar" }, alphabetic = true)
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class CsvToMaps extends KorypheFunction<String, Iterable<Map<String, Object>>> implements Serializable {
     private static final long serialVersionUID = 891938487168606844L;
@@ -62,12 +61,14 @@ public class CsvToMaps extends KorypheFunction<String, Iterable<Map<String, Obje
             return null;
         }
 
-        try {
-            final CSVParser csvParser = new CSVParser(new StringReader(csv), getCsvFormat());
-            final CloseableIterable<CSVRecord> csvRecords = IterableUtil.limit(csvParser.getRecords(), firstRow, null, false);
-            return IterableUtil.map(csvRecords, item -> extractMap((CSVRecord) item));
+        Iterable<CSVRecord> csvRecords = null;
+        try (final CSVParser csvParser = new CSVParser(new StringReader(csv), getCsvFormat())) {
+            csvRecords = IterableUtil.limit(csvParser.getRecords(), firstRow, null, false);
+            return IterableUtil.map(csvRecords, (item) -> extractMap((CSVRecord) item));
         } catch (final IOException e) {
             throw new RuntimeException("Unable to parse csv", e);
+        } finally {
+            CloseableUtil.close(csvRecords);
         }
     }
 
@@ -163,6 +164,7 @@ public class CsvToMaps extends KorypheFunction<String, Iterable<Map<String, Obje
         this.quoteChar = quoteChar;
         return this;
     }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
@@ -173,7 +175,7 @@ public class CsvToMaps extends KorypheFunction<String, Iterable<Map<String, Obje
             return false; // Does class checking
         }
 
-        CsvToMaps that = (CsvToMaps) o;
+        final CsvToMaps that = (CsvToMaps) o;
         return new EqualsBuilder()
                 .append(header, that.header)
                 .append(quoted, that.quoted)
@@ -194,5 +196,4 @@ public class CsvToMaps extends KorypheFunction<String, Iterable<Map<String, Obje
                 .append(delimiter)
                 .toHashCode();
     }
-
 }
