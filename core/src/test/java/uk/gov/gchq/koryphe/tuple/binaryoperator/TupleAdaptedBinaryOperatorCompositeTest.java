@@ -33,7 +33,7 @@ public class TupleAdaptedBinaryOperatorCompositeTest
                             "\"selection\": [\"input\", \"anotherInput\"]," +
                             "\"binaryOperator\": {" +
                                 "\"class\": \"uk.gov.gchq.koryphe.impl.binaryoperator.Sum\"" +
-                             "}" +
+                            "}" +
                         "}" +
                     "]" +
                 "}";
