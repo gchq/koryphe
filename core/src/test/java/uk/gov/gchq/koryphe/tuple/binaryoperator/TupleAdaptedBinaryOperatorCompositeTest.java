@@ -15,15 +15,18 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class TupleAdaptedBinaryOperatorCompositeTest extends BinaryOperatorTest<TupleAdaptedBinaryOperatorComposite> {
+public class TupleAdaptedBinaryOperatorCompositeTest
+        extends BinaryOperatorTest<TupleAdaptedBinaryOperatorComposite<Object>> {
+
     @Test
     @Override
+    @SuppressWarnings("unchecked")
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
-        TupleAdaptedBinaryOperatorComposite instance = getInstance();
-        String json = "" +
+        final TupleAdaptedBinaryOperatorComposite<Object> instance = getInstance();
+        final String json = "" +
                 "{" +
                     "\"operators\": [" +
                         "{" +
@@ -36,8 +39,9 @@ public class TupleAdaptedBinaryOperatorCompositeTest extends BinaryOperatorTest<
                 "}";
 
         // When
-        String serialised = JsonSerialiser.serialise(instance);
-        TupleAdaptedBinaryOperatorComposite deserialised = JsonSerialiser.deserialise(json, TupleAdaptedBinaryOperatorComposite.class);
+        final String serialised = JsonSerialiser.serialise(instance);
+        final TupleAdaptedBinaryOperatorComposite<Object> deserialised = JsonSerialiser.deserialise(json,
+                TupleAdaptedBinaryOperatorComposite.class);
 
         // Then
         JsonSerialiser.assertEquals(json, serialised);
@@ -46,43 +50,42 @@ public class TupleAdaptedBinaryOperatorCompositeTest extends BinaryOperatorTest<
     }
 
     @Override
-    protected TupleAdaptedBinaryOperatorComposite getInstance() {
-        return new TupleAdaptedBinaryOperatorComposite.Builder()
+    protected TupleAdaptedBinaryOperatorComposite<Object> getInstance() {
+        return new TupleAdaptedBinaryOperatorComposite.Builder<>()
                 .select(new String[] { "input", "anotherInput" })
                 .execute(new Sum())
                 .build();
     }
 
     @Override
-    protected Iterable<TupleAdaptedBinaryOperatorComposite> getDifferentInstancesOrNull() {
+    protected Iterable<TupleAdaptedBinaryOperatorComposite<Object>> getDifferentInstancesOrNull() {
         return Arrays.asList(
-                new TupleAdaptedBinaryOperatorComposite.Builder()
+                new TupleAdaptedBinaryOperatorComposite.Builder<>()
                         .select(new String[] { "differentInput", "anotherInput" })
                         .execute(new Sum())
                         .build(),
-                new TupleAdaptedBinaryOperatorComposite.Builder()
+                new TupleAdaptedBinaryOperatorComposite.Builder<>()
                         .select(new String[] { "input", "anotherInput" })
                         .execute(new Product())
                         .build(),
-                new TupleAdaptedBinaryOperatorComposite(),
-                new TupleAdaptedBinaryOperatorComposite.Builder()
+                new TupleAdaptedBinaryOperatorComposite<>(),
+                new TupleAdaptedBinaryOperatorComposite.Builder<>()
                         .select(new String[] { "input", "anotherInput" })
                         .execute(new Sum())
-                        .select(new String[] { "input", "differentInput"})
+                        .select(new String[] { "input", "differentInput" })
                         .execute(new Max())
-                .build()
-        );
+                        .build());
     }
 
     @Test
     public void shouldErrorIfObjectsAreTheWrongType() {
         // Given
-        ArrayTuple stateTuple = new ArrayTuple(5, 10, 15);
-        ArrayTuple inputTuple = new ArrayTuple(1, "two", 3);
+        final ArrayTuple stateTuple = new ArrayTuple(5, 10, 15);
+        final ArrayTuple inputTuple = new ArrayTuple(1, "two", 3);
 
         // When
-        TupleAdaptedBinaryOperatorComposite<Integer> boc = new TupleAdaptedBinaryOperatorComposite.Builder<Integer>()
-                .select(new Integer[]{ 0 })
+        final TupleAdaptedBinaryOperatorComposite<Integer> boc = new TupleAdaptedBinaryOperatorComposite.Builder<Integer>()
+                .select(new Integer[] { 0 })
                 .execute(new Product())
                 .select(new Integer[] { 1 })
                 .execute(new Max())
@@ -91,24 +94,20 @@ public class TupleAdaptedBinaryOperatorCompositeTest extends BinaryOperatorTest<
                 .build();
 
         // Then
-        try {
-            boc.apply(stateTuple, inputTuple);
-            fail("Expected aggregation to fail");
-        } catch (ClassCastException e) {
-            assertNotNull(e.getMessage());
-        }
-
+        final ClassCastException actual = assertThrows(ClassCastException.class,
+                () -> boc.apply(stateTuple, inputTuple));
+        assertNotNull(actual.getMessage());
     }
 
     @Test
     public void shouldMergeTheInputTupleIntoTheStateTuple() {
         // Given
-        ArrayTuple stateTuple = new ArrayTuple(5, 10, 15);
-        ArrayTuple inputTuple = new ArrayTuple(1, 2, 3);
+        final ArrayTuple stateTuple = new ArrayTuple(5, 10, 15);
+        final ArrayTuple inputTuple = new ArrayTuple(1, 2, 3);
 
         // When
-        TupleAdaptedBinaryOperatorComposite<Integer> boc = new TupleAdaptedBinaryOperatorComposite.Builder<Integer>()
-                .select(new Integer[]{ 0 })
+        final TupleAdaptedBinaryOperatorComposite<Integer> boc = new TupleAdaptedBinaryOperatorComposite.Builder<Integer>()
+                .select(new Integer[] { 0 })
                 .execute(new Product())
                 .select(new Integer[] { 1 })
                 .execute(new Max())
@@ -116,13 +115,11 @@ public class TupleAdaptedBinaryOperatorCompositeTest extends BinaryOperatorTest<
                 .execute(new Sum())
                 .build();
 
-        Tuple<Integer> agg = boc.apply(stateTuple, inputTuple);
+        final Tuple<Integer> agg = boc.apply(stateTuple, inputTuple);
 
         // Then
         assertEquals(5, agg.get(0));
         assertEquals(10, agg.get(1));
         assertEquals(18, agg.get(2));
     }
-
-
 }

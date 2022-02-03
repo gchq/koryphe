@@ -19,8 +19,6 @@ package uk.gov.gchq.koryphe.util;
 import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Test;
 
-import uk.gov.gchq.koryphe.iterable.CloseableIterable;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -112,7 +110,7 @@ public class IterableUtilTest {
         final int end = 1;
 
         // When
-        final CloseableIterable<Integer> limitedValues = IterableUtil.limit(values, start, end, true);
+        final Iterable<Integer> limitedValues = IterableUtil.limit(values, start, end, true);
 
         // Then
         assertEquals(values.subList(start, end), Lists.newArrayList(limitedValues));
@@ -126,7 +124,7 @@ public class IterableUtilTest {
         final int end = Integer.MAX_VALUE;
 
         // When
-        final CloseableIterable<Integer> limitedValues = IterableUtil.limit(values, start, end, true);
+        final Iterable<Integer> limitedValues = IterableUtil.limit(values, start, end, true);
 
         // Then
         assertEquals(values.subList(start, values.size()), Lists.newArrayList(limitedValues));
@@ -140,7 +138,7 @@ public class IterableUtilTest {
         final int end = Integer.MAX_VALUE;
 
         // When
-        final CloseableIterable<Integer> limitedValues = IterableUtil.limit(values, start, end, true);
+        final Iterable<Integer> limitedValues = IterableUtil.limit(values, start, end, true);
 
         // Then
         assertEquals(values, Lists.newArrayList(limitedValues));
@@ -154,7 +152,7 @@ public class IterableUtilTest {
         final int end = Integer.MAX_VALUE;
 
         // When
-        final CloseableIterable<Integer> limitedValues = IterableUtil.limit(values, start, end, true);
+        final Iterable<Integer> limitedValues = IterableUtil.limit(values, start, end, true);
 
         // Then
         assertTrue(Lists.newArrayList(limitedValues).isEmpty());
@@ -183,7 +181,7 @@ public class IterableUtilTest {
         final boolean truncate = false;
 
         // When
-        final CloseableIterable<Integer> limitedValues = IterableUtil.limit(values, start, end, truncate);
+        final Iterable<Integer> limitedValues = IterableUtil.limit(values, start, end, truncate);
 
         // Then
         final Exception exception = assertThrows(NoSuchElementException.class, () -> {
@@ -197,7 +195,7 @@ public class IterableUtilTest {
     @Test
     public void shouldHandleNullIterable() {
         // Given
-        final CloseableIterable<Integer> nullIterable = IterableUtil.limit(null, 0, 1, true);
+        final Iterable<Integer> nullIterable = IterableUtil.limit(null, 0, 1, true);
 
         // Then
         assertTrue(Lists.newArrayList(nullIterable).isEmpty());
@@ -212,7 +210,7 @@ public class IterableUtilTest {
         final boolean truncate = false;
 
         // When
-        final CloseableIterable<Integer> equalValues = IterableUtil.limit(values, start, end, truncate);
+        final Iterable<Integer> equalValues = IterableUtil.limit(values, start, end, truncate);
 
         // Then
         assertEquals(values, Lists.newArrayList(equalValues));
