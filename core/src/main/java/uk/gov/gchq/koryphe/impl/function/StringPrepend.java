@@ -24,7 +24,7 @@ import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
-import java.util.Objects;
+import static java.util.Objects.requireNonNullElse;
 
 /**
  * A {@code StringPrepend} is a {@link java.util.function.Function} which takes a input {@link String} and returns the
@@ -59,7 +59,7 @@ public class StringPrepend extends KorypheFunction<String, String> {
     }
 
     public void setPrefix(final String prefix) {
-        this.prefix = Objects.requireNonNullElse(prefix, StringUtils.EMPTY);
+        this.prefix = requireNonNullElse(prefix, StringUtils.EMPTY);
     }
 
     @Override

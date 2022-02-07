@@ -27,10 +27,10 @@ import uk.gov.gchq.koryphe.tuple.function.TupleAdaptedFunction;
 import uk.gov.gchq.koryphe.tuple.predicate.IntegerTupleAdaptedPredicate;
 import uk.gov.gchq.koryphe.tuple.predicate.TupleAdaptedPredicate;
 
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import static java.util.Objects.requireNonNullElse;
 import static uk.gov.gchq.koryphe.util.Util.arr;
 
 /**
@@ -82,7 +82,7 @@ public class If<I, O> extends KorypheFunction<I, O> {
      */
     @Override
     public O apply(final I input) {
-        if (Objects.requireNonNullElseGet(condition, () -> null != predicate && predicate.test(input))) {
+        if (requireNonNullElse(condition, null != predicate && predicate.test(input))) {
             if (null != then) {
                 return then.apply(input);
             }

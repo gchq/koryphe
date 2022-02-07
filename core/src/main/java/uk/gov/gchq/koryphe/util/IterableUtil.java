@@ -24,9 +24,10 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
+
+import static java.util.Objects.requireNonNullElse;
 
 /**
  * An {@code IterableUtil} is a utility class providing capabilities for:
@@ -348,7 +349,7 @@ public final class IterableUtil {
                 throw new IllegalArgumentException("The start pointer must be less than the end pointer.");
             }
 
-            this.iterable = Objects.requireNonNullElse(iterable, Collections.emptyList());
+            this.iterable = requireNonNullElse(iterable, Collections.emptyList());
 
             this.start = start;
             this.end = end;
@@ -390,7 +391,7 @@ public final class IterableUtil {
                 throw new IllegalArgumentException("start should be less than end");
             }
 
-            this.iterator = Objects.requireNonNullElse(iterator, Collections.emptyIterator());
+            this.iterator = requireNonNullElse(iterator, Collections.emptyIterator());
             this.end = end;
             this.truncate = truncate;
 

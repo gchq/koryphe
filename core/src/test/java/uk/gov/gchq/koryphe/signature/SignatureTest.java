@@ -356,7 +356,7 @@ public class SignatureTest {
     @Test
     public void shouldCheckApplyBiFunctionTypesForInlineBiFunction() {
         // Given
-        final BiFunction<Long, Double, String> inlineBiFunction = new BiFunction<Long, Double, String>() {
+        final BiFunction<Long, Double, String> inlineBiFunction = new BiFunction<>() {
             @Override
             public String apply(final Long l, final Double d) {
                 return Long.toString(l).concat(Double.toString(d));

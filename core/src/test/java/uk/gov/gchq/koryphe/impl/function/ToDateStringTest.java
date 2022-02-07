@@ -3,6 +3,7 @@ package uk.gov.gchq.koryphe.impl.function;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
@@ -13,7 +14,8 @@ import java.util.Date;
 import java.util.TimeZone;
 import java.util.function.Function;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class ToDateStringTest extends FunctionTest<ToDateString> {
 

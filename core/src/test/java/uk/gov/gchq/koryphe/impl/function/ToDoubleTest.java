@@ -17,6 +17,7 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import org.junit.jupiter.api.Test;
+
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
@@ -36,9 +37,7 @@ public class ToDoubleTest extends FunctionTest<ToDouble> {
         final ToDouble function = new ToDouble();
 
         // When
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            function.apply(true);
-        });
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> function.apply(true));
 
         String expectedMessage = "Could not convert value to Double: ";
         String actualMessage = exception.getMessage();

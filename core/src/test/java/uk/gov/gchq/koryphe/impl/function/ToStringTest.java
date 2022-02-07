@@ -15,7 +15,6 @@
  */
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.apache.commons.io.Charsets;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;

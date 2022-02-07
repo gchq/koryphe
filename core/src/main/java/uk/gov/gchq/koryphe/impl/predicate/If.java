@@ -27,8 +27,9 @@ import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.tuple.predicate.IntegerTupleAdaptedPredicate;
 import uk.gov.gchq.koryphe.tuple.predicate.TupleAdaptedPredicate;
 
-import java.util.Objects;
 import java.util.function.Predicate;
+
+import static java.util.Objects.requireNonNullElse;
 
 /**
  * An {@code If} is a {@link Predicate} that conditionally applies one of two predicates to a provided input.
@@ -137,7 +138,7 @@ public class If<I> extends KoryphePredicate<I> {
      */
     @Override
     public boolean test(final I input) {
-        if (Objects.requireNonNullElseGet(condition, () -> null != predicate && predicate.test(input))) {
+        if (requireNonNullElse(condition, null != predicate && predicate.test(input))) {
             return null != then && then.test(input);
         }
 
