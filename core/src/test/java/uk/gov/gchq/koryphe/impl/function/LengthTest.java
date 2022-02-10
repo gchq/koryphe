@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2018-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
 import org.junit.jupiter.api.Test;
@@ -88,7 +89,7 @@ public class LengthTest extends FunctionTest<Length> {
         final Integer result = function.apply(null);
 
         // Then
-        assertEquals(new Integer(0), result);
+        assertEquals(Integer.valueOf(0), result);
     }
 
     @Test
@@ -101,7 +102,7 @@ public class LengthTest extends FunctionTest<Length> {
         final Integer result = function.apply(input);
 
         // Then
-        assertEquals(new Integer(10), result);
+        assertEquals(Integer.valueOf(10), result);
     }
 
     @Test
@@ -114,7 +115,7 @@ public class LengthTest extends FunctionTest<Length> {
         final Integer result = function.apply(input);
 
         // Then
-        assertEquals(new Integer(5), result);
+        assertEquals(Integer.valueOf(5), result);
     }
 
     @Test
@@ -131,7 +132,7 @@ public class LengthTest extends FunctionTest<Length> {
         final Integer result = function.apply(input);
 
         // Then
-        assertEquals(new Integer(4), result);
+        assertEquals(Integer.valueOf(4), result);
     }
 
     @Test
@@ -139,15 +140,15 @@ public class LengthTest extends FunctionTest<Length> {
         // Given
         final Length function = new Length();
         final Set<Object> input = new HashSet<>();
-        input.add(2.718);
-        input.add(3.142);
+        input.add(2.142);
+        input.add(3.718);
         input.add("constants");
 
         // When
         final Integer result = function.apply(input);
 
         // Then
-        assertEquals(new Integer(3), result);
+        assertEquals(Integer.valueOf(3), result);
     }
 
     @Test
@@ -164,7 +165,7 @@ public class LengthTest extends FunctionTest<Length> {
         final Integer result = function.apply(input);
 
         // Then
-        assertEquals(new Integer(4), result);
+        assertEquals(Integer.valueOf(4), result);
     }
 
     @Test

@@ -1,4 +1,4 @@
-Copyright 2017-2020 Crown Copyright
+Copyright 2017-2022 Crown Copyright
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ Koryphe is an extensible functions library for filtering, aggregating and transf
  
 ## Context adapted functions
 
-Koryphe allows any Java 8 Function, BinaryOperator or Predicate to be adapted and applied to the values contained within a complex object such as a Tuple.
+Koryphe allows any Java 11 Function, BinaryOperator or Predicate to be adapted and applied to the values contained within a complex object such as a Tuple.
 
 ## Function composition
 

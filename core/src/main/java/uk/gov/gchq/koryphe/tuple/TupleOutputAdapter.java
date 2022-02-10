@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,13 +27,15 @@ import uk.gov.gchq.koryphe.Summary;
 import java.util.Arrays;
 import java.util.function.BiFunction;
 
+import static java.util.Objects.requireNonNullElse;
+
 /**
  * @param <R>  The type of reference used by tuples.
  * @param <FO> The adapted output type.
  */
 @Since("1.0.0")
 @Summary("Projects items to a tuple")
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
 public class TupleOutputAdapter<R, FO> implements BiFunction<Tuple<R>, FO, Tuple<R>> {
     private R[] projection;
 
@@ -80,11 +82,7 @@ public class TupleOutputAdapter<R, FO> implements BiFunction<Tuple<R>, FO, Tuple
      */
     @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "Cloning the array would be expensive - we will have to reply on users not modifying the array")
     public void setProjection(final R[] projection) {
-        if (null == projection) {
-            this.projection = (R[]) new Object[0];
-        } else {
-            this.projection = projection;
-        }
+        this.projection = requireNonNullElse(projection, (R[]) new Object[0]);
     }
 
     /**

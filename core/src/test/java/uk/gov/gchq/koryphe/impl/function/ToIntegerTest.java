@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 Crown Copyright
+ * Copyright 2018-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ public class ToIntegerTest extends FunctionTest<ToInteger> {
         final ToInteger function = new ToInteger();
 
         // When
-        Object output = function.apply(new Long(5));
+        Object output = function.apply(5L);
 
         // Then
         assertEquals(5, output);

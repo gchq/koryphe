@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
@@ -130,6 +131,6 @@ public class TuplePredicateTest {
 
         Function<Tuple<String>, Object> deserialisedInputAdapter = deserialisedPredicate.getInputAdapter();
         assertNotSame(inputAdapter, deserialisedInputAdapter);
-        assertTrue(deserialisedInputAdapter instanceof Function);
+        assertNotNull(deserialisedInputAdapter);
     }
 }

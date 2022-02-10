@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2020-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ import java.util.Arrays;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
@@ -100,7 +101,7 @@ public class TupleAdaptedBinaryOperatorTest extends BinaryOperatorTest<TupleAdap
 
         Function<Tuple<String>, Integer> deserialisedInputMask = deserialisedBinaryOperator.getInputAdapter();
         assertNotSame(inputAdapter, deserialisedInputMask);
-        assertTrue(deserialisedInputMask instanceof Function);
+        assertNotNull(deserialisedInputMask);
     }
 
     @Override

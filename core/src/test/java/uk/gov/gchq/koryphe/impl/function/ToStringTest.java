@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.apache.commons.io.Charsets;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
@@ -101,7 +101,7 @@ public class ToStringTest extends FunctionTest<ToString> {
 
     @Override
     protected Iterable<ToString> getDifferentInstancesOrNull() {
-        return Collections.singletonList(new ToString(Charsets.ISO_8859_1));
+        return Collections.singletonList(new ToString(StandardCharsets.ISO_8859_1));
     }
 
     @Override
@@ -123,9 +123,9 @@ public class ToStringTest extends FunctionTest<ToString> {
         final String json = JsonSerialiser.serialise(ts);
 
         // Then
-        JsonSerialiser.assertEquals(String.format("{" +
+        JsonSerialiser.assertEquals("{" +
                 "  \"class\" : \"uk.gov.gchq.koryphe.impl.function.ToString\"" +
-                "}"), json);
+                "}", json);
 
         // When 2
         final ToString deserialisedTs = JsonSerialiser.deserialise(json, ToString.class);

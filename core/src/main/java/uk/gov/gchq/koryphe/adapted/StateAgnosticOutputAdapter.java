@@ -36,7 +36,7 @@ import java.util.function.Function;
 @Since("1.11.0")
 @Summary("Adapts an output without considering the state")
 public class StateAgnosticOutputAdapter<T, U, R> implements BiFunction<T, U, R> {
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
     private Function<U, R> adapter;
 
     public StateAgnosticOutputAdapter() {

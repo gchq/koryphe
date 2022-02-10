@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2018-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
 import org.junit.jupiter.api.Test;
@@ -341,7 +342,7 @@ public class IfTest extends FunctionTest<If> {
                 .otherwise(new SetValue(2));
 
         // When / Then
-        assertEquals(new Integer(1), function.apply(1));
-        assertEquals(new Integer(2), function.apply(3));
+        assertEquals(Integer.valueOf(1), function.apply(1));
+        assertEquals(Integer.valueOf(2), function.apply(3));
     }
 }

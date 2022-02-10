@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2018-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ public final class VersionUtil {
      */
     public static boolean validateVersionString(final String versionString) {
         final String[] tokens = versionString.split("\\.");
-        return tokens.length == 3 && Arrays.stream(tokens).map(NumberUtils::isNumber).reduce(true, Boolean::logicalAnd);
+        return tokens.length == 3 && Arrays.stream(tokens).map(NumberUtils::isCreatable).reduce(true, Boolean::logicalAnd);
     }
 
     private VersionUtil() {

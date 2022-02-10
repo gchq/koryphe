@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Assertions;
 import uk.gov.gchq.koryphe.serialisation.json.SimpleClassNameIdResolver;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 public class JsonSerialiser {
@@ -66,6 +67,6 @@ public class JsonSerialiser {
     }
 
     public static void assertEquals(final byte[] expectedJson, final byte[] actualJson) {
-        assertEquals(new String(expectedJson), new String(actualJson));
+        assertEquals(new String(expectedJson, StandardCharsets.UTF_8), new String(actualJson, StandardCharsets.UTF_8));
     }
 }

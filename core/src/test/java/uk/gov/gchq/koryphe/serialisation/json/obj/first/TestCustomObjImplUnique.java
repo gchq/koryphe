@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.serialisation.json.obj.first;
 
 import uk.gov.gchq.koryphe.serialisation.json.obj.TestCustomObj;

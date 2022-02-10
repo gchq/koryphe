@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,8 @@ import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
 import java.util.Arrays;
+
+import static java.util.Objects.requireNonNullElse;
 
 /**
  * @param <R>  The type of reference used by tuples.
@@ -80,11 +82,7 @@ public class TupleInputAdapter<R, FI> extends KorypheFunction<Tuple<R>, FI> {
      */
     @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "Cloning the array would be expensive - we will have to reply on users not modifying the array")
     public void setSelection(final R[] selection) {
-        if (null == selection) {
-            this.selection = (R[]) new Object[0];
-        } else {
-            this.selection = selection;
-        }
+        this.selection = requireNonNullElse(selection, (R[]) new Object[0]);
     }
 
     @Override

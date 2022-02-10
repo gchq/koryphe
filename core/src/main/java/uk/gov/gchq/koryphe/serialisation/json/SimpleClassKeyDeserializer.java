@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2020 Crown Copyright
+ * Copyright 2018-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package uk.gov.gchq.koryphe.serialisation.json;
 
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.KeyDeserializer;
 
 import java.io.IOException;
@@ -32,7 +33,7 @@ public class SimpleClassKeyDeserializer extends KeyDeserializer {
         try {
             return ctxt.findClass(SimpleClassNameIdResolver.getClassName(key));
         } catch (final Exception e) {
-            throw ctxt.mappingException("Cannot find class %s", key);
+            throw new JsonMappingException(ctxt.getParser(), String.format("Cannot find class %s", key), e);
         }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ public class TupleAdaptedPredicateComposite<R> extends PredicateComposite<Tuple<
         private final TupleAdaptedPredicateComposite<R> composite;
 
         public Builder() {
-            this(new TupleAdaptedPredicateComposite<R>());
+            this(new TupleAdaptedPredicateComposite<>());
         }
 
         private Builder(final TupleAdaptedPredicateComposite<R> composite) {
@@ -54,7 +54,7 @@ public class TupleAdaptedPredicateComposite<R> extends PredicateComposite<Tuple<
         public SelectedBuilder<R> select(final R[] selection) {
             final TupleAdaptedPredicate<R, ?> current = new TupleAdaptedPredicate<>();
             current.setSelection(selection);
-            return new SelectedBuilder<R>(composite, current);
+            return new SelectedBuilder<>(composite, current);
         }
 
         public TupleAdaptedPredicateComposite<R> build() {

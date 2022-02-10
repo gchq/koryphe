@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.util;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -26,6 +27,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.function.Predicate;
+
+import static java.util.Objects.requireNonNullElse;
 
 /**
  * An {@code IterableUtil} is a utility class providing capabilities for:
@@ -347,11 +350,7 @@ public final class IterableUtil {
                 throw new IllegalArgumentException("The start pointer must be less than the end pointer.");
             }
 
-            if (null == iterable) {
-                this.iterable = Collections.emptyList();
-            } else {
-                this.iterable = iterable;
-            }
+            this.iterable = requireNonNullElse(iterable, Collections.emptyList());
 
             this.start = start;
             this.end = end;
@@ -393,11 +392,7 @@ public final class IterableUtil {
                 throw new IllegalArgumentException("start should be less than end");
             }
 
-            if (null == iterator) {
-                this.iterator = Collections.emptyIterator();
-            } else {
-                this.iterator = iterator;
-            }
+            this.iterator = requireNonNullElse(iterator, Collections.emptyIterator());
             this.end = end;
             this.truncate = truncate;
 

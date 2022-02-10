@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.function.Function;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
@@ -132,8 +133,8 @@ public class TupleFunctionTest {
         TupleOutputAdapter<String, String> outputAdapterCopy = deserialisedFunction
                 .getOutputAdapter();
         assertNotSame(inputAdapter, inputAdapterCopy);
-        assertTrue(inputAdapterCopy instanceof Function);
+        assertNotNull(inputAdapterCopy);
         assertNotSame(outputAdapter, outputAdapterCopy);
-        assertTrue(outputAdapterCopy instanceof TupleOutputAdapter);
+        assertNotNull(outputAdapterCopy);
     }
 }

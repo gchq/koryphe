@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2020 Crown Copyright
+ * Copyright 2019-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.zip.GZIPOutputStream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -76,7 +77,7 @@ public class GunzipTest extends FunctionTest<Gunzip> {
     public void shouldUncompressString() throws IOException {
         // Given
         final Gunzip function = new Gunzip();
-        final byte[] input = "test string".getBytes();
+        final byte[] input = "test string".getBytes(StandardCharsets.UTF_8);
         final byte[] gzip;
         try (final ByteArrayOutputStream out = new ByteArrayOutputStream();
              final GZIPOutputStream gzipOut = new GZIPOutputStream(out)) {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2020 Crown Copyright
+ * Copyright 2019-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -96,11 +96,12 @@ public class CsvLinesToMaps extends KorypheFunction<Iterable<String>, Iterable<M
     }
 
     private CSVFormat getCsvFormat() {
-        CSVFormat format = CSVFormat.DEFAULT.withDelimiter(delimiter);
+        final CSVFormat.Builder formatBuilder = CSVFormat.DEFAULT.builder().setDelimiter(delimiter);
         if (quoted) {
-            format = format.withQuote(quoteChar);
+            formatBuilder.setQuote(quoteChar);
         }
-        return format;
+
+        return formatBuilder.build();
     }
 
     public List<String> getHeader() {

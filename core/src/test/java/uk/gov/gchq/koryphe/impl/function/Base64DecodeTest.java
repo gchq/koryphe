@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2020 Crown Copyright
+ * Copyright 2019-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -74,7 +75,7 @@ public class Base64DecodeTest extends FunctionTest<Base64Decode> {
     public void shouldDecodeBase64() {
         // Given
         final Base64Decode function = new Base64Decode();
-        byte[] input = "test string".getBytes();
+        byte[] input = "test string".getBytes(StandardCharsets.UTF_8);
         final byte[] base64 = Base64.encodeBase64(input);
 
         // When

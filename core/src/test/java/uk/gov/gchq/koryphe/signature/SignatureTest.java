@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -281,7 +281,7 @@ public class SignatureTest {
     @Test
     public void shouldAllowAnyInputsForInlineFunctions() {
         // Given
-        final Function<Integer, String> toString = new KorypheFunction<Integer, String>() {
+        final Function<Integer, String> toString = new KorypheFunction<>() {
             @Override
             public String apply(final Integer integer) {
                 return integer.toString();
@@ -300,7 +300,7 @@ public class SignatureTest {
     @Test
     public void shouldAllowAnyInputsForMultiLambdaFunctions() {
         // Given
-        final KorypheFunction2<Integer, Long, String> toString = new KorypheFunction2<Integer, Long, String>() {
+        final KorypheFunction2<Integer, Long, String> toString = new KorypheFunction2<>() {
             @Override
             public String apply(final Integer a, final Long b) {
                 return a.toString() + b.toString();
@@ -317,7 +317,7 @@ public class SignatureTest {
     }
 
     @Test
-    public void ShouldCheckCollectionConcatInputAndOutput() {
+    public void shouldCheckCollectionConcatInputAndOutput() {
         // Given
         final CollectionConcat function = new CollectionConcat();
 
@@ -356,7 +356,7 @@ public class SignatureTest {
     @Test
     public void shouldCheckApplyBiFunctionTypesForInlineBiFunction() {
         // Given
-        final BiFunction<Long, Double, String> inlineBiFunction = new BiFunction<Long, Double, String>() {
+        final BiFunction<Long, Double, String> inlineBiFunction = new BiFunction<>() {
             @Override
             public String apply(final Long l, final Double d) {
                 return Long.toString(l).concat(Double.toString(d));
@@ -379,7 +379,7 @@ public class SignatureTest {
     @Test
     public void shouldGenerateInputSignatureUsingTupleClassWhenNotParameterised() {
         // Given
-        final Function<TestTuple, String> fromTestTuple = new KorypheFunction<TestTuple, String>() {
+        final Function<TestTuple, String> fromTestTuple = new KorypheFunction<>() {
             @Override
             public String apply(final TestTuple r) {
                 return "something";
@@ -397,7 +397,7 @@ public class SignatureTest {
     @Test
     public void shouldGenerateOutputSignatureUsingTupleClassWhenNotParameterised() {
         // Given
-        final Function<String, TestTuple> toTestTuple = new KorypheFunction<String, TestTuple>() {
+        final Function<String, TestTuple> toTestTuple = new KorypheFunction<>() {
             @Override
             public TestTuple apply(final String s) {
                 return new TestTuple();
@@ -415,7 +415,7 @@ public class SignatureTest {
     @Test
     public void shouldGenerateInputSignatureUsingMapTupleParameterTypes() {
         // Given
-        final Function<MapTuple<String>, String> fromMapTuple = new KorypheFunction<MapTuple<String>, String>() {
+        final Function<MapTuple<String>, String> fromMapTuple = new KorypheFunction<>() {
             @Override
             public String apply(final MapTuple<String> t) {
                 return "anything";
@@ -434,7 +434,7 @@ public class SignatureTest {
     @Test
     public void shouldGenerateOutputSignatureUsingMapTupleParameterTypes() {
         // Given
-        final Function<String, MapTuple<String>> toMapTuple = new KorypheFunction<String, MapTuple<String>>() {
+        final Function<String, MapTuple<String>> toMapTuple = new KorypheFunction<>() {
             @Override
             public MapTuple<String> apply(final String s) {
                 return new MapTuple<>();
@@ -522,14 +522,14 @@ public class SignatureTest {
         assertFalse(signature.assignable(Object.class, Object.class).isValid());
     }
 
-    private class TestIntegerBinaryOperator implements BinaryOperator<Integer> {
+    private static class TestIntegerBinaryOperator implements BinaryOperator<Integer> {
         @Override
         public Integer apply(final Integer integer, final Integer integer2) {
             return integer + integer2;
         }
     }
 
-    private class TestObjectBinaryOperator implements BinaryOperator<Object> {
+    private static class TestObjectBinaryOperator implements BinaryOperator<Object> {
         @Override
         public Object apply(final Object integer, final Object integer2) {
             return integer.toString().concat(integer2.toString());
