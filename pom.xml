@@ -324,6 +324,9 @@
                     <header>Koryphe ${project.version}</header>
                     <footer>Koryphe ${project.version}</footer>
                     <doctitle>Koryphe ${project.version}</doctitle>
+                    <additionalOptions>
+                        <additionalOption>--frames</additionalOption>
+                    </additionalOptions>
                 </configuration>
             </plugin>
             <plugin>
