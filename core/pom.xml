@@ -26,4 +26,45 @@
 
     <artifactId>core</artifactId>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler.plugin.verson}</version>
+                <executions>
+                    <execution>
+                        <id>compile-jdk8</id>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <release>8</release>
+                            <showDeprecation>true</showDeprecation>
+                            <showWarnings>true</showWarnings>
+                            <meminitial>128m</meminitial>
+                            <maxmem>1024m</maxmem>
+                            <fork>true</fork>
+                            <outputDirectory>${project.build.outputDirectory}_jdk8</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>compile-jdk11</id>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <release>11</release>
+                            <fork>true</fork>
+                            <showDeprecation>true</showDeprecation>
+                            <showWarnings>true</showWarnings>
+                            <meminitial>128m</meminitial>
+                            <maxmem>1024m</maxmem>
+                            <outputDirectory>${project.build.outputDirectory}_jdk11</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

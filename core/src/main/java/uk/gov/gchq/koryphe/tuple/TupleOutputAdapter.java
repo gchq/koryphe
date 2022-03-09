@@ -27,7 +27,7 @@ import uk.gov.gchq.koryphe.Summary;
 import java.util.Arrays;
 import java.util.function.BiFunction;
 
-import static java.util.Objects.requireNonNullElse;
+import static uk.gov.gchq.koryphe.util.JavaUtils.requireNonNullElse;
 
 /**
  * @param <R>  The type of reference used by tuples.

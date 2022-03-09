@@ -30,7 +30,8 @@ import uk.gov.gchq.koryphe.tuple.predicate.TupleAdaptedPredicate;
 
 import java.util.function.Predicate;
 
-import static java.util.Objects.requireNonNullElse;
+import static uk.gov.gchq.koryphe.util.JavaUtils.requireNonNullElse;
+
 
 /**
  * An {@code If} is a {@link Predicate} that conditionally applies one of two predicates to a provided input.

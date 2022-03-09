@@ -31,7 +31,7 @@ import uk.gov.gchq.koryphe.tuple.predicate.TupleAdaptedPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static java.util.Objects.requireNonNullElse;
+import static uk.gov.gchq.koryphe.util.JavaUtils.requireNonNullElse;
 import static uk.gov.gchq.koryphe.util.Util.arr;
 
 /**
