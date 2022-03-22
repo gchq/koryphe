@@ -294,8 +294,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${compiler.plugin.verson}</version>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <release>11</release>
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
                     <fork>true</fork>
@@ -327,26 +326,6 @@
                         <goals>
                             <goal>test-jar</goal>
                         </goals>
-                    </execution>
-                    <execution>
-                        <id>jar-jdk8</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                        <configuration>
-                            <classifier>jdk8</classifier>
-                            <classesDirectory>${project.build.outputDirectory}_jdk8</classesDirectory>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>jar-jdk11</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                        <configuration>
-                            <classifier>jdk11</classifier>
-                            <classesDirectory>${project.build.outputDirectory}_jdk11</classesDirectory>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

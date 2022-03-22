@@ -31,7 +31,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${compiler.plugin.verson}</version>
                 <executions>
                     <execution>
                         <id>compile-jdk8</id>
@@ -48,19 +47,20 @@
                             <outputDirectory>${project.build.outputDirectory}_jdk8</outputDirectory>
                         </configuration>
                     </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
                     <execution>
-                        <id>compile-jdk11</id>
+                        <id>jar-jdk8</id>
                         <goals>
-                            <goal>compile</goal>
+                            <goal>jar</goal>
                         </goals>
                         <configuration>
-                            <release>11</release>
-                            <fork>true</fork>
-                            <showDeprecation>true</showDeprecation>
-                            <showWarnings>true</showWarnings>
-                            <meminitial>128m</meminitial>
-                            <maxmem>1024m</maxmem>
-                            <outputDirectory>${project.build.outputDirectory}_jdk11</outputDirectory>
+                            <classifier>jdk8</classifier>
+                            <classesDirectory>${project.build.outputDirectory}_jdk8</classesDirectory>
                         </configuration>
                     </execution>
                 </executions>
