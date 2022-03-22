@@ -39,11 +39,6 @@
                         </goals>
                         <configuration>
                             <release>8</release>
-                            <showDeprecation>true</showDeprecation>
-                            <showWarnings>true</showWarnings>
-                            <meminitial>128m</meminitial>
-                            <maxmem>1024m</maxmem>
-                            <fork>true</fork>
                             <outputDirectory>${project.build.outputDirectory}_jdk8</outputDirectory>
                         </configuration>
                     </execution>
