@@ -49,7 +49,7 @@
                         </goals>
                         <configuration>
                             <release>8</release>
-                            <outputDirectory>${project.build.outputDirectory}_jdk8</outputDirectory>
+                            <outputDirectory>${project.build.testOutputDirectory}_jdk8</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
@@ -75,7 +75,7 @@
                         </goals>
                         <configuration>
                             <classifier>tests-jdk8</classifier>
-                            <classesDirectory>${project.build.outputDirectory}_jdk8</classesDirectory>
+                            <testClassesDirectory>${project.build.testOutputDirectory}_jdk8</testClassesDirectory>
                         </configuration>
                     </execution>
                 </executions>
