@@ -17,11 +17,11 @@
 package uk.gov.gchq.koryphe.util;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 
 /**
- * Copies of various methods/class from the Java 11 JDK.
+ * Copies of various methods/classes from the Java 11 JDK.
+ * Intended as a temporary proxy to assist with migration to Java 11 in future.
  */
 public final class JavaUtils {
 
@@ -39,12 +39,13 @@ public final class JavaUtils {
 
     public static class Set {
 
-        public static <T> HashSet<T> of(final T... item) {
-            return com.google.common.collect.Sets.newHashSet(item);
+        @SafeVarargs
+        public static <T> java.util.Set<T> of(final T... item) {
+            return Collections.unmodifiableSet(com.google.common.collect.Sets.newHashSet(item));
         }
 
-        public static <T> HashSet<T> copyOf(final java.util.Set<T> set) {
-            return new HashSet<>(set);
+        public static <T> java.util.Set<T> copyOf(final java.util.Set<T> set) {
+            return Collections.unmodifiableSet(new HashSet<>(set));
         }
 
         public static <T> java.util.Set<T> immutableCopyOf(final java.util.Set<T> set) {
@@ -53,10 +54,6 @@ public final class JavaUtils {
     }
 
     public static class Map {
-
-        public static <K, V> HashMap<K, V> copyOf(final java.util.Map<K, V> map) {
-            return new HashMap<>(map);
-        }
 
         public static <K, V> java.util.Map<K, V> immutableCopyOf(final java.util.Map<K, V> map) {
             return Collections.unmodifiableMap(map);
