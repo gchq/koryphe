@@ -16,13 +16,20 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.google.common.collect.Sets;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
+import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
+
+import static java.util.Objects.nonNull;
 
 /**
  * A {@code ToSet} is a {@link java.util.function.Function} that takes
@@ -30,27 +37,72 @@ import java.util.Set;
  * the items will be added to a new set. Otherwise a new set is created with
  * the single value as an item.
  */
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @Since("1.6.0")
 @Summary("Converts an object into a Set")
 public class ToSet extends KorypheFunction<Object, Set<?>> {
+    public static final Class DEFAULT_IMPLEMENTATION = HashSet.class;
+
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    private Class implementation;
+
+    public ToSet()  {
+        setImplementation(DEFAULT_IMPLEMENTATION);
+    }
+
+    public ToSet(final String implementationString) throws ClassNotFoundException {
+        setImplementation(Class.forName(implementationString));
+    }
+
+    public ToSet(final Class implementation) {
+        setImplementation(implementation);
+    }
 
     @Override
     public Set<?> apply(final Object value) {
+        final Set<Object> setImpl;
+
+        if (implementation.isAssignableFrom(HashSet.class)) {
+            setImpl = new HashSet<>();
+        } else if (implementation.isAssignableFrom(TreeSet.class)) {
+            setImpl = new TreeSet<>();
+        } else {
+            throw new IllegalArgumentException("Unrecognised Set implementation");
+        }
+
         if (null == value) {
-            return Sets.newHashSet((Object) null);
-        }
-
-        if (value instanceof Object[]) {
-            return Sets.newHashSet((Object[]) value);
-        }
-
-        if (value instanceof Iterable) {
-            if (value instanceof Set) {
-                return (Set<?>) value;
+            if (implementation.isAssignableFrom(TreeSet.class)) {
+                return setImpl;
             }
-            return Sets.newHashSet((Iterable) value);
+            setImpl.add(null);
+        } else if (implementation.isInstance(value)) {
+           return (Set) value;
+        } else if (value instanceof Object[]) {
+            setImpl.addAll(Sets.newHashSet((Object[]) value));
+        } else if (value instanceof Iterable) {
+            setImpl.addAll(Sets.newHashSet((Iterable) value));
+        } else {
+            setImpl.add(value);
         }
 
-        return Sets.newHashSet(value);
+        return setImpl;
+    }
+
+    public Class getImplementation() {
+        return implementation;
+    }
+
+    public void setImplementation(final Class implementation) {
+        this.implementation = nonNull(implementation) ? implementation : DEFAULT_IMPLEMENTATION;
+    }
+
+    @JsonSetter("implementation")
+    public void setImplementation(final String implementationString) throws ClassNotFoundException {
+        setImplementation(nonNull(implementationString) ? Class.forName(implementationString) : DEFAULT_IMPLEMENTATION);
+    }
+
+    @JsonGetter("implementation")
+    public String getImplementationAsString() {
+        return implementation.getTypeName();
     }
 }
