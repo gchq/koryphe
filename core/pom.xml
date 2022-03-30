@@ -42,6 +42,16 @@
                             <outputDirectory>${project.build.outputDirectory}_jdk8</outputDirectory>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>testCompile-jdk8</id>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                        <configuration>
+                            <release>8</release>
+                            <outputDirectory>${project.build.outputDirectory}_jdk8</outputDirectory>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>
@@ -55,6 +65,16 @@
                         </goals>
                         <configuration>
                             <classifier>jdk8</classifier>
+                            <classesDirectory>${project.build.outputDirectory}_jdk8</classesDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>test-jar-jdk8</id>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>tests-jdk8</classifier>
                             <classesDirectory>${project.build.outputDirectory}_jdk8</classesDirectory>
                         </configuration>
                     </execution>
