@@ -51,7 +51,7 @@ public class ToSet extends KorypheFunction<Object, Set<?>> {
     }
 
     public ToSet(final String implementationString) throws ClassNotFoundException {
-        setImplementation(Class.forName(implementationString));
+        setImplementation(implementationString);
     }
 
     public ToSet(final Class implementation) {
@@ -70,11 +70,8 @@ public class ToSet extends KorypheFunction<Object, Set<?>> {
             throw new IllegalArgumentException("Unrecognised Set implementation");
         }
 
-        if (null == value) {
-            if (implementation.isAssignableFrom(TreeSet.class)) {
-                return setImpl;
-            }
-            setImpl.add(null);
+        if (null == value && implementation.isAssignableFrom(TreeSet.class)) {
+            return setImpl;
         } else if (implementation.isInstance(value)) {
            return (Set) value;
         } else if (value instanceof Object[]) {

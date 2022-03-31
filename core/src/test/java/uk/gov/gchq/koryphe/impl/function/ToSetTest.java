@@ -25,6 +25,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -33,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ToSetTest extends FunctionTest<ToSet> {
 
@@ -215,6 +217,15 @@ public class ToSetTest extends FunctionTest<ToSet> {
         assertEquals(Sets.newHashSet(value), result);
     }
 
+    @Test
+    public void shouldThrowExceptionWhenUnrecognisedSetImplementationUsed() {
+        // Given
+        final ToSet function = new ToSet(LinkedHashSet.class);
+
+        // When / Then
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> function.apply(null));
+        assertEquals("Unrecognised Set implementation", e.getMessage());
+    }
 
     @Override
     protected ToSet getInstance() {
