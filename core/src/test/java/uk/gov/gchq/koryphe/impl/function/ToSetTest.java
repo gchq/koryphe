@@ -90,6 +90,34 @@ public class ToSetTest extends FunctionTest<ToSet> {
     }
 
     @Test
+    public void shouldConvertStringToTreeSetUsingfullyQualifiedClassString() throws ClassNotFoundException {
+        // Given
+        final ToSet function = new ToSet("java.util.TreeSet");
+        final Object value = "value1";
+        final Set expected = new TreeSet(Sets.newHashSet(value));
+
+        // When
+        final Object result = function.apply(value);
+
+        // Then
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void shouldConvertStringToTreeSetUsingSimpleClassString() throws ClassNotFoundException {
+        // Given
+        final ToSet function = new ToSet("TreeSet");
+        final Object value = "value1";
+        final Set expected = new TreeSet(Sets.newHashSet(value));
+
+        // When
+        final Object result = function.apply(value);
+
+        // Then
+        assertEquals(expected, result);
+        }
+
+    @Test
     public void shouldConvertArrayToHashSet() {
         // Given
         final ToSet function = new ToSet();
@@ -251,14 +279,15 @@ public class ToSetTest extends FunctionTest<ToSet> {
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
-        final ToSet function = new ToSet();
+        final ToSet function = new ToSet(TreeSet.class);
 
         // When
         final String json = JsonSerialiser.serialise(function);
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
-                "  \"class\" : \"uk.gov.gchq.koryphe.impl.function.ToSet\"%n" +
+                "  \"class\" : \"uk.gov.gchq.koryphe.impl.function.ToSet\",%n" +
+                "  \"implementation\" : \"java.util.TreeSet\"%n" +
                 "}"), json);
 
         // When 2
@@ -266,5 +295,6 @@ public class ToSetTest extends FunctionTest<ToSet> {
 
         // Then 2
         assertNotNull(deserialisedMethod);
+        assertEquals(TreeSet.class, deserialisedMethod.getImplementation());
     }
 }

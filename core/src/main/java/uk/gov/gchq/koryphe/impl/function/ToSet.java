@@ -24,6 +24,7 @@ import com.google.common.collect.Sets;
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
+import uk.gov.gchq.koryphe.serialisation.json.SimpleClassNameIdResolver;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -95,7 +96,7 @@ public class ToSet extends KorypheFunction<Object, Set<?>> {
 
     @JsonSetter("implementation")
     public void setImplementation(final String implementationString) throws ClassNotFoundException {
-        setImplementation(nonNull(implementationString) ? Class.forName(implementationString) : DEFAULT_IMPLEMENTATION);
+        setImplementation(nonNull(implementationString) ? Class.forName(SimpleClassNameIdResolver.getClassName(implementationString)) : DEFAULT_IMPLEMENTATION);
     }
 
     @JsonGetter("implementation")
