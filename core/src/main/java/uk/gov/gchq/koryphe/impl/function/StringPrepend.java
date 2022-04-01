@@ -24,7 +24,7 @@ import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
-import static java.util.Objects.requireNonNullElse;
+import static uk.gov.gchq.koryphe.util.JavaUtils.requireNonNullElse;
 
 /**
  * A {@code StringPrepend} is a {@link java.util.function.Function} which takes a input {@link String} and returns the

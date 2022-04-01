@@ -39,7 +39,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class ReflectionUtil {
     public static final String PACKAGES_KEY = "koryphe.reflection.packages";
-    public static final Set<String> DEFAULT_PACKAGES = Set.of("uk.gov.gchq");
+    public static final Set<String> DEFAULT_PACKAGES = JavaUtils.Set.of("uk.gov.gchq");
 
     private static Set<String> packages;
     private static Map<Class<?>, Map<String, Set<Class>>> simpleClassNamesCache;
@@ -85,7 +85,7 @@ public final class ReflectionUtil {
                 final Set<Class> simpleClasses = simpleClassNames.computeIfAbsent(subType.getSimpleName(), k -> new HashSet<>());
                 simpleClasses.add(subType);
             }
-            simpleClassNames = Map.copyOf(simpleClassNames);
+            simpleClassNames = JavaUtils.Map.immutableCopyOf(simpleClassNames);
             simpleClassNamesCache.put(clazz, simpleClassNames);
         }
         return simpleClassNames;
@@ -116,7 +116,7 @@ public final class ReflectionUtil {
                     }
                 }).scan();
             }
-            subClasses = Set.copyOf(newSubClasses);
+            subClasses = JavaUtils.Set.immutableCopyOf(newSubClasses);
             subclassesCache.put(clazz, subClasses);
         }
         return subClasses;
@@ -134,7 +134,7 @@ public final class ReflectionUtil {
             updateReflectionPackages();
             annoClasses = new HashSet<>();
             getScanner().matchClassesWithAnnotation(annoClass, annoClasses::add).scan();
-            annoClasses = Set.copyOf(annoClasses);
+            annoClasses = JavaUtils.Set.copyOf(annoClasses);
             subclassesCache.put(annoClass, annoClasses);
         }
 
@@ -236,10 +236,10 @@ public final class ReflectionUtil {
     }
 
     public static Set<String> getReflectionPackages() {
-        return Set.copyOf(packages);
+        return JavaUtils.Set.copyOf(packages);
     }
 
     private static FastClasspathScanner getScanner() {
-        return new FastClasspathScanner(packages.toArray(String[]::new));
+        return new FastClasspathScanner(packages.toArray(new String[packages.size()]));
     }
 }
