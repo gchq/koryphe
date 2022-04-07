@@ -24,12 +24,12 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.COLLECTION;
 
 public class ToSetTest extends FunctionTest<ToSet> {
 
@@ -42,7 +42,12 @@ public class ToSetTest extends FunctionTest<ToSet> {
         final Object result = function.apply(null);
 
         // Then
-        assertEquals(Sets.newHashSet((Object) null), result);
+        assertThat(result)
+                .isEqualTo(Sets.newHashSet((Object) null))
+                .asInstanceOf(COLLECTION)
+                .isNotNull()
+                .isNotEmpty()
+                .containsExactly((Object) null);
     }
 
     @Test
@@ -55,7 +60,11 @@ public class ToSetTest extends FunctionTest<ToSet> {
         final Object result = function.apply(value);
 
         // Then
-        assertEquals(Sets.newHashSet(value), result);
+        assertThat(result)
+                .isEqualTo(Sets.newHashSet(value))
+                .isExactlyInstanceOf(HashSet.class)
+                .asInstanceOf(COLLECTION)
+                .containsExactly(value);
     }
 
     @Test
@@ -68,20 +77,28 @@ public class ToSetTest extends FunctionTest<ToSet> {
         Object result = function.apply(value);
 
         // Then
-        assertEquals(Sets.newHashSet((Object[]) value), result);
+        assertThat(result)
+                .isEqualTo(Sets.newHashSet((Object[]) value))
+                .isExactlyInstanceOf(HashSet.class)
+                .asInstanceOf(COLLECTION)
+                .containsExactlyInAnyOrderElementsOf(Lists.newArrayList((Object[]) value));
     }
 
     @Test
     public void shouldConvertListToSet() {
         // Given
         final ToSet function = new ToSet();
-        final Object value = Lists.newArrayList("value1", "value2");
+        final List<String> value = Lists.newArrayList("value1", "value2");
 
         // When
         final Object result = function.apply(value);
 
         // Then
-        assertEquals(Sets.newHashSet((List) value), result);
+        assertThat(result)
+                .isEqualTo(Sets.newHashSet(value))
+                .isExactlyInstanceOf(HashSet.class)
+                .asInstanceOf(COLLECTION)
+                .containsExactlyInAnyOrderElementsOf(value);
     }
 
     @Test
@@ -94,7 +111,7 @@ public class ToSetTest extends FunctionTest<ToSet> {
         final Object result = function.apply(value);
 
         // Then
-        assertSame(value, result);
+        assertThat(result).isSameAs(value);
     }
 
     @Override
@@ -135,6 +152,6 @@ public class ToSetTest extends FunctionTest<ToSet> {
         final ToSet deserialisedMethod = JsonSerialiser.deserialise(json, ToSet.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

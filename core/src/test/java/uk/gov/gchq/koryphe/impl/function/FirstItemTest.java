@@ -24,11 +24,8 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class FirstItemTest extends FunctionTest<FirstItem> {
     @Override
@@ -69,7 +66,7 @@ public class FirstItemTest extends FunctionTest<FirstItem> {
         final FirstItem deserialised = JsonSerialiser.deserialise(json, FirstItem.class);
 
         // Then 2
-        assertNotNull(deserialised);
+        assertThat(deserialised).isNotNull();
     }
 
     @Test
@@ -81,8 +78,9 @@ public class FirstItemTest extends FunctionTest<FirstItem> {
         final Integer result = function.apply(Arrays.asList(1, 2, 3, 4));
 
         // Then
-        assertNotNull(result);
-        assertEquals(1, result);
+        assertThat(result)
+                .isNotNull()
+                .isEqualTo(1);
     }
 
     @Test
@@ -94,8 +92,9 @@ public class FirstItemTest extends FunctionTest<FirstItem> {
         final String result = function.apply(Arrays.asList("these", "are", "test", "strings"));
 
         // Then
-        assertNotNull(result);
-        assertEquals("these", result);
+        assertThat(result)
+                .isNotNull()
+                .isEqualTo("these");
     }
 
     @Test
@@ -107,7 +106,7 @@ public class FirstItemTest extends FunctionTest<FirstItem> {
         final String result = function.apply(Arrays.asList(null, "two", "three"));
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -116,7 +115,8 @@ public class FirstItemTest extends FunctionTest<FirstItem> {
         final FirstItem<String> function = new FirstItem<>();
 
         // When / Then
-        final Exception exception = assertThrows(IllegalArgumentException.class, () -> function.apply(null));
-        assertTrue(exception.getMessage().contains("Input cannot be null"));
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> function.apply(null))
+                .withMessageContaining("Input cannot be null");
     }
 }

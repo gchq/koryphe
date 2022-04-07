@@ -19,16 +19,14 @@ package uk.gov.gchq.koryphe.impl.predicate;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
+import uk.gov.gchq.koryphe.signature.InputValidatorAssert;
 import uk.gov.gchq.koryphe.util.CustomObj;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class IsMoreThanTest extends PredicateTest<IsMoreThan> {
 
@@ -37,11 +35,8 @@ public class IsMoreThanTest extends PredicateTest<IsMoreThan> {
         // Given
         final IsMoreThan filter = new IsMoreThan(5);
 
-        // When
-        boolean accepted = filter.test(6);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(6);
     }
 
     @Test
@@ -49,11 +44,8 @@ public class IsMoreThanTest extends PredicateTest<IsMoreThan> {
         // Given
         final IsMoreThan filter = new IsMoreThan(5, true);
 
-        // When
-        boolean accepted = filter.test(6);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(6);
     }
 
     @Test
@@ -61,11 +53,8 @@ public class IsMoreThanTest extends PredicateTest<IsMoreThan> {
         // Given
         final IsMoreThan filter = new IsMoreThan(5, true);
 
-        // When
-        boolean accepted = filter.test(4);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(4);
     }
 
     @Test
@@ -73,11 +62,8 @@ public class IsMoreThanTest extends PredicateTest<IsMoreThan> {
         // Given
         final IsMoreThan filter = new IsMoreThan(5);
 
-        // When
-        boolean accepted = filter.test(4);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(4);
     }
 
     @Test
@@ -85,11 +71,8 @@ public class IsMoreThanTest extends PredicateTest<IsMoreThan> {
         // Given
         final IsMoreThan filter = new IsMoreThan(5);
 
-        // When
-        boolean accepted = filter.test(5);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(5);
     }
 
 
@@ -98,11 +81,8 @@ public class IsMoreThanTest extends PredicateTest<IsMoreThan> {
         // Given
         final IsMoreThan filter = new IsMoreThan(5, true);
 
-        // When
-        boolean accepted = filter.test(5);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(5);
     }
 
     @Test
@@ -125,8 +105,8 @@ public class IsMoreThanTest extends PredicateTest<IsMoreThan> {
         final IsMoreThan deserialisedFilter = JsonSerialiser.deserialise(json, IsMoreThan.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(controlValue, deserialisedFilter.getControlValue());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getControlValue()).isEqualTo(controlValue);
     }
 
     @Test
@@ -135,9 +115,10 @@ public class IsMoreThanTest extends PredicateTest<IsMoreThan> {
         final IsMoreThan predicate = new IsMoreThan(1);
 
         // Then
-        assertTrue(predicate.isInputValid(Integer.class).isValid());
-        assertFalse(predicate.isInputValid(Double.class).isValid());
-        assertFalse(predicate.isInputValid(Integer.class, Integer.class).isValid());
+        InputValidatorAssert.assertThat(predicate)
+                .acceptsInput(Integer.class)
+                .rejectsInput(Double.class)
+                .rejectsInput(Integer.class, Integer.class);
     }
 
     @Override

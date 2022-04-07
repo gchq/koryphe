@@ -27,7 +27,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class StateAgnosticOutputAdapterTest extends EqualityTest<StateAgnosticOutputAdapter> {
 
@@ -53,7 +53,7 @@ class StateAgnosticOutputAdapterTest extends EqualityTest<StateAgnosticOutputAda
         Object output = soa.apply(null, "input");
 
         // Then
-        assertEquals("input", output);
+        assertThat(output).isEqualTo("input");
     }
 
     @Test
@@ -65,7 +65,7 @@ class StateAgnosticOutputAdapterTest extends EqualityTest<StateAgnosticOutputAda
         Object output = soa.apply(null, 10);
 
         // Then
-        assertEquals(100, output);
+        assertThat(output).isEqualTo(100);
     }
 
     @Test
@@ -85,6 +85,6 @@ class StateAgnosticOutputAdapterTest extends EqualityTest<StateAgnosticOutputAda
 
         // Then
         JsonSerialiser.assertEquals(json, serialised);
-        assertEquals(soa, deserialised);
+        assertThat(deserialised).isEqualTo(soa);
     }
 }

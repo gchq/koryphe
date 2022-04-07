@@ -24,8 +24,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DivideTest extends FunctionTest<Divide> {
 
@@ -37,7 +36,8 @@ public class DivideTest extends FunctionTest<Divide> {
         // When
         Tuple2<Integer, Integer> output = function.apply(4, 2);
 
-        assertEquals(new Tuple2<>(2, 0), output);
+        // Then
+        assertThat(output).isEqualTo(new Tuple2<>(2, 0));
     }
 
     @Test
@@ -48,7 +48,8 @@ public class DivideTest extends FunctionTest<Divide> {
         // When
         Tuple2<Integer, Integer> output = function.apply(5, 2);
 
-        assertEquals(new Tuple2<>(2, 1), output);
+        // Then
+        assertThat(output).isEqualTo(new Tuple2<>(2, 1));
     }
 
     @Test
@@ -59,7 +60,8 @@ public class DivideTest extends FunctionTest<Divide> {
         // When
         Tuple2<Integer, Integer> output = function.apply(9, null);
 
-        assertEquals(new Tuple2<>(9, 0), output);
+        // Then
+        assertThat(output).isEqualTo(new Tuple2<>(9, 0));
     }
 
     @Test
@@ -80,7 +82,7 @@ public class DivideTest extends FunctionTest<Divide> {
         final Divide deserialisedDivide = JsonSerialiser.deserialise(json, Divide.class);
 
         // Then 2
-        assertNotNull(deserialisedDivide);
+        assertThat(deserialisedDivide).isNotNull();
     }
 
     @Override

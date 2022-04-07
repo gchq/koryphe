@@ -25,73 +25,71 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ToStringTest extends FunctionTest<ToString> {
 
     @Test
     public void shouldReturnString() {
         // Given
-        final ToString ts = new ToString();
+        final ToString function = new ToString();
 
         // When
-        final String output = ts.apply("test string");
+        final String output = function.apply("test string");
 
         // Then
-        assertEquals("test string", output);
+        assertThat(output).isEqualTo("test string");
     }
 
     @Test
     public void shouldHandleArray() {
         // Given
-        final ToString ts = new ToString();
+        final ToString function = new ToString();
         final String[] testArray = new String[] {"test", "string"};
 
         // When
-        final String output = ts.apply(testArray);
+        final String output = function.apply(testArray);
 
         // Then
-        assertEquals("[test, string]", output);
+        assertThat(output).isEqualTo("[test, string]");
     }
 
     @Test
     public void shouldHandleByteArrayWithUtf8Charset() {
         // Given
-        final ToString ts = new ToString(StandardCharsets.UTF_8);
+        final ToString function = new ToString(StandardCharsets.UTF_8);
         final byte[] bytes = "test string".getBytes(StandardCharsets.UTF_8);
 
         // When
-        final String output = ts.apply(bytes);
+        final String output = function.apply(bytes);
 
         // Then
-        assertEquals("test string", output);
+        assertThat(output).isEqualTo("test string");
     }
 
     @Test
     public void shouldHandleByteArrayWithUtf16Charset() {
         // Given
-        final ToString ts = new ToString(StandardCharsets.UTF_16);
+        final ToString function = new ToString(StandardCharsets.UTF_16);
         final byte[] bytes = "test string".getBytes(StandardCharsets.UTF_16);
 
         // When
-        final String output = ts.apply(bytes);
+        final String output = function.apply(bytes);
 
         // Then
-        assertEquals("test string", output);
+        assertThat(output).isEqualTo("test string");
     }
 
     @Test
     public void shouldHandleNullObject() {
         // Given
-        final ToString ts = new ToString();
+        final ToString function = new ToString();
 
         // When
-        final String output = ts.apply(null);
+        final String output = function.apply(null);
 
         // Then
-        assertNull(output);
+        assertThat(output).isNull();
     }
 
     @Override
@@ -117,10 +115,10 @@ public class ToStringTest extends FunctionTest<ToString> {
     @Test
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
-        final ToString ts = new ToString();
+        final ToString function = new ToString();
 
         // When
-        final String json = JsonSerialiser.serialise(ts);
+        final String json = JsonSerialiser.serialise(function);
 
         // Then
         JsonSerialiser.assertEquals("{" +
@@ -128,9 +126,9 @@ public class ToStringTest extends FunctionTest<ToString> {
                 "}", json);
 
         // When 2
-        final ToString deserialisedTs = JsonSerialiser.deserialise(json, ToString.class);
+        final ToString deserialisedMethod = JsonSerialiser.deserialise(json, ToString.class);
 
         // Then 2
-        assertNotNull(deserialisedTs);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

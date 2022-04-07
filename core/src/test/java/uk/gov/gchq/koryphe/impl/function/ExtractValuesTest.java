@@ -26,11 +26,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ExtractValuesTest extends FunctionTest<ExtractValues> {
     @Override
@@ -71,7 +67,7 @@ public class ExtractValuesTest extends FunctionTest<ExtractValues> {
         final ExtractValues deserialised = JsonSerialiser.deserialise(json, ExtractValues.class);
 
         // Then
-        assertNotNull(deserialised);
+        assertThat(deserialised).isNotNull();
     }
 
     @Test
@@ -87,7 +83,7 @@ public class ExtractValuesTest extends FunctionTest<ExtractValues> {
         final Iterable<Integer> results = function.apply(input);
 
         // Then
-        assertThat(results, containsInAnyOrder(1, 2, 3));
+        assertThat(results).containsExactlyInAnyOrder(1, 2, 3);
     }
 
     @Test
@@ -99,7 +95,7 @@ public class ExtractValuesTest extends FunctionTest<ExtractValues> {
         final Iterable<Integer> results = function.apply(new HashMap<>());
 
         // Then
-        assertTrue(Iterables.isEmpty(results));
+        assertThat(results).isEmpty();
     }
 
     @Test
@@ -112,6 +108,6 @@ public class ExtractValuesTest extends FunctionTest<ExtractValues> {
         final Iterable result = function.apply(input);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 }

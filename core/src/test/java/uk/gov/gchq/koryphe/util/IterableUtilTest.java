@@ -26,9 +26,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class IterableUtilTest {
 
@@ -44,7 +43,7 @@ public class IterableUtilTest {
         final Iterable<Integer> itrConcat = IterableUtil.concat(Arrays.asList(itr1, itr2, itr3, itr4));
 
         // Then
-        assertEquals(Lists.newArrayList(0, 1, 2, 3, 4, 5, 6), Lists.newArrayList(itrConcat));
+        assertThat(itrConcat).containsExactly(0, 1, 2, 3, 4, 5, 6);
     }
 
     @Test
@@ -64,14 +63,14 @@ public class IterableUtilTest {
 
         // When
         final Iterator<Integer> itr = itrConcat.iterator();
-        assertEquals(0, (int) itr.next());
+        assertThat((int) itr.next()).isEqualTo(0);
         itr.remove();
 
         // Then
-        assertEquals(itr1Size - 1, itr1.size());
-        assertEquals(itr2Size, itr2.size());
-        assertEquals(itr3Size, itr3.size());
-        assertEquals(itr4Size, itr4.size());
+        assertThat(itr1).hasSize(itr1Size - 1);
+        assertThat(itr2).hasSize(itr2Size);
+        assertThat(itr3).hasSize(itr3Size);
+        assertThat(itr4).hasSize(itr4Size);
     }
 
     @Test
@@ -91,15 +90,15 @@ public class IterableUtilTest {
 
         // When
         final Iterator<Integer> itr = itrConcat.iterator();
-        assertEquals(0, (int) itr.next());
-        assertEquals(1, (int) itr.next());
+        assertThat((int) itr.next()).isEqualTo(0);
+        assertThat((int) itr.next()).isEqualTo(1);
         itr.remove();
 
         // Then
-        assertEquals(itr1Size, itr1.size());
-        assertEquals(itr2Size, itr2.size());
-        assertEquals(itr3Size - 1, itr3.size());
-        assertEquals(itr4Size, itr4.size());
+        assertThat(itr1).hasSize(itr1Size);
+        assertThat(itr2).hasSize(itr2Size);
+        assertThat(itr3).hasSize(itr3Size - 1);
+        assertThat(itr4).hasSize(itr4Size);
     }
 
     @Test
@@ -113,7 +112,7 @@ public class IterableUtilTest {
         final Iterable<Integer> limitedValues = IterableUtil.limit(values, start, end, true);
 
         // Then
-        assertEquals(values.subList(start, end), Lists.newArrayList(limitedValues));
+        assertThat(limitedValues).containsExactlyElementsOf(values.subList(start, end));
     }
 
     @Test
@@ -127,7 +126,7 @@ public class IterableUtilTest {
         final Iterable<Integer> limitedValues = IterableUtil.limit(values, start, end, true);
 
         // Then
-        assertEquals(values.subList(start, values.size()), Lists.newArrayList(limitedValues));
+        assertThat(limitedValues).containsExactlyElementsOf(values.subList(start, values.size()));
     }
 
     @Test
@@ -141,7 +140,7 @@ public class IterableUtilTest {
         final Iterable<Integer> limitedValues = IterableUtil.limit(values, start, end, true);
 
         // Then
-        assertEquals(values, Lists.newArrayList(limitedValues));
+        assertThat(limitedValues).containsExactlyElementsOf(values);
     }
 
     @Test
@@ -155,7 +154,7 @@ public class IterableUtilTest {
         final Iterable<Integer> limitedValues = IterableUtil.limit(values, start, end, true);
 
         // Then
-        assertTrue(Lists.newArrayList(limitedValues).isEmpty());
+        assertThat(limitedValues).isEmpty();
     }
 
     @Test
@@ -165,11 +164,10 @@ public class IterableUtilTest {
         final int start = 3;
         final int end = 1;
 
-        // When
-        final Exception exception = assertThrows(IllegalArgumentException.class, () -> IterableUtil.limit(values, start, end, false));
-
-        // Then
-        assertEquals("The start pointer must be less than the end pointer.", exception.getMessage());
+        // When / Then
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> IterableUtil.limit(values, start, end, false))
+                .withMessage("The start pointer must be less than the end pointer.");
     }
 
     @Test
@@ -184,12 +182,13 @@ public class IterableUtilTest {
         final Iterable<Integer> limitedValues = IterableUtil.limit(values, start, end, truncate);
 
         // Then
-        final Exception exception = assertThrows(NoSuchElementException.class, () -> {
-            for (final Integer i : limitedValues) {
-                // Do nothing
-            }
-        });
-        assertEquals("Limit of " + end + " exceeded.", exception.getMessage());
+        assertThatExceptionOfType(NoSuchElementException.class)
+                .isThrownBy(() -> {
+                    for (final Integer i : limitedValues) {
+                        // Do nothing
+                    }
+                })
+                .withMessage("Limit of %s exceeded.", end);
     }
 
     @Test
@@ -197,8 +196,8 @@ public class IterableUtilTest {
         // Given
         final Iterable<Integer> nullIterable = IterableUtil.limit(null, 0, 1, true);
 
-        // Then
-        assertTrue(Lists.newArrayList(nullIterable).isEmpty());
+        // When / Then
+        assertThat(nullIterable).isEmpty();
     }
 
     @Test
@@ -213,6 +212,6 @@ public class IterableUtilTest {
         final Iterable<Integer> equalValues = IterableUtil.limit(values, start, end, truncate);
 
         // Then
-        assertEquals(values, Lists.newArrayList(equalValues));
+        assertThat(values).containsExactlyElementsOf(equalValues);
     }
 }

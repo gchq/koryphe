@@ -28,7 +28,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AdaptedPredicateTest extends PredicateTest<AdaptedPredicate>{
 
@@ -51,15 +51,15 @@ public class AdaptedPredicateTest extends PredicateTest<AdaptedPredicate>{
                     "}" +
                 "}";
 
-        assertEquals(expected, serialised);
+        assertThat(serialised).isEqualTo(expected);
 
         // When
         final AdaptedPredicate deserialised = JsonSerialiser.deserialise(serialised, AdaptedPredicate.class);
 
         // Then
-        assertEquals(original.getPredicate().getClass(), deserialised.getPredicate().getClass());
-        assertEquals(original.getInputAdapter().getClass(), deserialised.getInputAdapter().getClass());
-        assertEquals(((IsEqual) original.getPredicate()).getControlValue(), ((IsEqual) deserialised.getPredicate()).getControlValue());
+        assertThat(deserialised.getPredicate().getClass()).isEqualTo(original.getPredicate().getClass());
+        assertThat(deserialised.getInputAdapter().getClass()).isEqualTo(original.getInputAdapter().getClass());
+        assertThat(((IsEqual) deserialised.getPredicate()).getControlValue()).isEqualTo(((IsEqual) original.getPredicate()).getControlValue());
     }
 
     @Override

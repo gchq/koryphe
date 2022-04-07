@@ -30,11 +30,8 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 class PredicateCompositeTest extends PredicateTest<PredicateComposite> {
     @Override
@@ -60,7 +57,7 @@ class PredicateCompositeTest extends PredicateTest<PredicateComposite> {
 
         // Then
         JsonSerialiser.assertEquals(json, serialised);
-        assertEquals(predicateComposite, deserialised);
+        assertThat(deserialised).isEqualTo(predicateComposite);
 
     }
 
@@ -96,12 +93,10 @@ class PredicateCompositeTest extends PredicateTest<PredicateComposite> {
                 Arrays.asList(new TupleAdaptedPredicate<>(new IsLessThan(10), new Integer[]{0}))
         );
 
-        boolean unpackedTest = predicateComposite.test(unpackedInput);
-        boolean test = predicateComposite.test(input);
-
         // Then
-        assertTrue(unpackedTest);
-        assertTrue(test);
+        assertThat(predicateComposite)
+                .accepts(unpackedInput)
+                .accepts(input);
     }
 
     @Test
@@ -113,12 +108,9 @@ class PredicateCompositeTest extends PredicateTest<PredicateComposite> {
         PredicateComposite predicateComposite = new PredicateComposite(Arrays.asList(new IsA(String.class), new IsFalse()));
 
         // Then
-        try {
-            predicateComposite.test(input);
-            fail("Expected an exception");
-        } catch (final ClassCastException e) {
-            assertNotNull(e.getMessage());
-        }
+        assertThatExceptionOfType(ClassCastException.class).isThrownBy(
+            () -> predicateComposite.test(input)
+        );
     }
 
     @Test
@@ -132,10 +124,8 @@ class PredicateCompositeTest extends PredicateTest<PredicateComposite> {
                 new IsA(Integer.class),
                 new IsLessThan(10)));
 
-        boolean result = predicateComposite.test(notAnInteger);
-
         // Then
-        assertFalse(result);
+        assertThat(predicateComposite).rejects(notAnInteger);
     }
 
     @Test
@@ -149,9 +139,7 @@ class PredicateCompositeTest extends PredicateTest<PredicateComposite> {
                 new IsA(Integer.class),
                 new IsLessThan(10)));
 
-        boolean result = predicateComposite.test(input);
-
         // Then
-        assertTrue(result);
+        assertThat(predicateComposite).accepts(input);
     }
 }

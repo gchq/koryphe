@@ -27,10 +27,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CallMethodTest extends FunctionTest<CallMethod> {
 
@@ -45,7 +42,7 @@ public class CallMethodTest extends FunctionTest<CallMethod> {
         final Object output = function.apply(this);
 
         // Then
-        assertEquals(5, output);
+        assertThat(output).isEqualTo(5);
     }
 
     @Test
@@ -61,18 +58,20 @@ public class CallMethodTest extends FunctionTest<CallMethod> {
 
         // Then - check the cache has been updated
         final Map<Class, Method> interimCache = function.getCache();
-        assertNotSame(initialCache, interimCache);
-        assertEquals(expectedCache, interimCache);
-        assertEquals(5, output);
+        assertThat(interimCache)
+                .isEqualTo(expectedCache)
+                .isNotSameAs(initialCache);
+        assertThat(output).isEqualTo(5);
 
         // When
         Object output2 = function.apply(this);
 
         // Then - check the cache hasn't changed
         final Map<Class, Method> finalCache = function.getCache();
-        assertSame(interimCache, finalCache);
-        assertEquals(expectedCache, finalCache);
-        assertEquals(5, output2);
+        assertThat(finalCache)
+                .isEqualTo(expectedCache)
+                .isSameAs(interimCache);
+        assertThat(output2).isEqualTo(5);
     }
 
     @Test
@@ -94,8 +93,8 @@ public class CallMethodTest extends FunctionTest<CallMethod> {
         final CallMethod deserialisedCallMethod = JsonSerialiser.deserialise(json, CallMethod.class);
 
         // Then 2
-        assertNotNull(deserialisedCallMethod);
-        assertEquals(TEST_METHOD, deserialisedCallMethod.getMethod());
+        assertThat(deserialisedCallMethod).isNotNull();
+        assertThat(deserialisedCallMethod.getMethod()).isEqualTo(TEST_METHOD);
     }
 
     @Override

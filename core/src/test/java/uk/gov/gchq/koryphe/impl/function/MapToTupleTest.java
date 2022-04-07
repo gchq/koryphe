@@ -27,8 +27,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MapToTupleTest extends FunctionTest<MapToTuple> {
 
@@ -45,7 +44,7 @@ public class MapToTupleTest extends FunctionTest<MapToTuple> {
         Tuple output = function.apply(input);
 
         // Then
-        assertEquals(new MapTuple<>(input), output);
+        assertThat(output).isEqualTo(new MapTuple<>(input));
     }
 
     @Override
@@ -86,6 +85,6 @@ public class MapToTupleTest extends FunctionTest<MapToTuple> {
         final MapToTuple deserialisedMethod = JsonSerialiser.deserialise(json, MapToTuple.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

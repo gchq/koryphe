@@ -19,13 +19,12 @@ package uk.gov.gchq.koryphe.impl.predicate;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
+import uk.gov.gchq.koryphe.tuple.n.Tuple2;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AgeOffFromDaysTest extends PredicateTest<AgeOffFromDays> {
 
@@ -40,10 +39,10 @@ public class AgeOffFromDaysTest extends PredicateTest<AgeOffFromDays> {
         final AgeOffFromDays filter = new AgeOffFromDays();
 
         // When
-        final boolean accepted = filter.test(System.currentTimeMillis() - AGE_OFF_MILLISECONDS + MINUTE_IN_MILLISECONDS, AGE_OFF_DAYS);
+        Tuple2<Long, Integer> inputs = new Tuple2<Long, Integer>(System.currentTimeMillis() - AGE_OFF_MILLISECONDS + MINUTE_IN_MILLISECONDS, AGE_OFF_DAYS);
 
         // Then
-        assertTrue(accepted);
+        assertThat(filter).accepts(inputs);
     }
 
     @Test
@@ -52,10 +51,10 @@ public class AgeOffFromDaysTest extends PredicateTest<AgeOffFromDays> {
         final AgeOffFromDays filter = new AgeOffFromDays();
 
         // When
-        final boolean accepted = filter.test(System.currentTimeMillis() - AGE_OFF_MILLISECONDS - DAY_IN_MILLISECONDS, AGE_OFF_DAYS);
+        Tuple2<Long, Integer> inputs = new Tuple2<Long, Integer>(System.currentTimeMillis() - AGE_OFF_MILLISECONDS - DAY_IN_MILLISECONDS, AGE_OFF_DAYS);
 
         // Then
-        assertFalse(accepted);
+        assertThat(filter).rejects(inputs);
     }
 
     @Test
@@ -64,10 +63,10 @@ public class AgeOffFromDaysTest extends PredicateTest<AgeOffFromDays> {
         final AgeOffFromDays filter = new AgeOffFromDays();
 
         // When
-        final boolean accepted = filter.test(null, 0);
+        Tuple2<Long, Integer> inputs = new Tuple2<Long, Integer>(null, 0);
 
         // Then
-        assertFalse(accepted);
+        assertThat(filter).rejects(inputs);
     }
 
     @Test
@@ -76,10 +75,10 @@ public class AgeOffFromDaysTest extends PredicateTest<AgeOffFromDays> {
         final AgeOffFromDays filter = new AgeOffFromDays();
 
         // When
-        final boolean accepted = filter.test(0L, null);
+        Tuple2<Long, Integer> inputs = new Tuple2<Long, Integer>(0L, null);
 
         // Then
-        assertFalse(accepted);
+        assertThat(filter).rejects(inputs);
     }
 
     @Test
@@ -99,7 +98,7 @@ public class AgeOffFromDaysTest extends PredicateTest<AgeOffFromDays> {
         final AgeOffFromDays deserialisedFilter = JsonSerialiser.deserialise(json, AgeOffFromDays.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
+        assertThat(deserialisedFilter).isNotNull();
     }
 
     @Override

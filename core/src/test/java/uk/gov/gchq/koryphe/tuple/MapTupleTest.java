@@ -16,13 +16,12 @@
 
 package uk.gov.gchq.koryphe.tuple;
 
-import com.google.common.collect.Iterables;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MapTupleTest {
 
@@ -32,7 +31,7 @@ public class MapTupleTest {
         final MapTuple<String> tuple = new MapTuple<>();
 
         // Then
-        assertEquals(0, Iterables.size(tuple), "Tuple should be empty.");
+        assertThat(tuple).isEmpty();
     }
 
     @Test
@@ -47,9 +46,6 @@ public class MapTupleTest {
         final MapTuple<String> tuple = new MapTuple<>(initialMap);
 
         // Then
-        for (Object value : tuple) {
-            assertEquals(value, tuple.get("" + value), "Unexpected value at reference " + value);
-        }
-        assertEquals(3, Iterables.size(tuple), "Unexpected number of values");
+        assertThat(tuple).containsExactly(0, 1, 2);
     }
 }

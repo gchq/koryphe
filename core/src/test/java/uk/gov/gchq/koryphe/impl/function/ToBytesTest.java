@@ -25,34 +25,32 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ToBytesTest extends FunctionTest<ToBytes> {
 
     @Test
     public void shouldGetBytes() {
         // Given
-        final ToBytes ts = new ToBytes(StandardCharsets.UTF_16);
+        final ToBytes function = new ToBytes(StandardCharsets.UTF_16);
 
         // When
-        final byte[] output = ts.apply("test string");
+        final byte[] output = function.apply("test string");
 
         // Then
-        assertArrayEquals("test string".getBytes(StandardCharsets.UTF_16), output);
+        assertThat(output).isEqualTo("test string".getBytes(StandardCharsets.UTF_16));
     }
 
     @Test
     public void shouldHandleNullObject() {
         // Given
-        final ToBytes ts = new ToBytes();
+        final ToBytes function = new ToBytes();
 
         // When
-        final byte[] output = ts.apply(null);
+        final byte[] output = function.apply(null);
 
         // Then
-        assertNull(output);
+        assertThat(output).isNull();
     }
 
     @Override
@@ -78,10 +76,10 @@ public class ToBytesTest extends FunctionTest<ToBytes> {
     @Test
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
-        final ToBytes ts = new ToBytes();
+        final ToBytes function = new ToBytes();
 
         // When
-        final String json = JsonSerialiser.serialise(ts);
+        final String json = JsonSerialiser.serialise(function);
 
         // Then
         JsonSerialiser.assertEquals("{" +
@@ -89,9 +87,9 @@ public class ToBytesTest extends FunctionTest<ToBytes> {
                 "}", json);
 
         // When 2
-        final ToBytes deserialisedTs = JsonSerialiser.deserialise(json, ToBytes.class);
+        final ToBytes deserialisedMethod = JsonSerialiser.deserialise(json, ToBytes.class);
 
         // Then 2
-        assertNotNull(deserialisedTs);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

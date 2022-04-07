@@ -16,19 +16,19 @@
 
 package uk.gov.gchq.koryphe;
 
-import com.google.common.collect.Sets;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.util.EqualityTest;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ValidationResultTest extends EqualityTest<ValidationResult> {
+    private static final String EXAMPLE_ERROR = "err";
+    private static final String DIFFERENT_ERROR = "different error";
+
     @Override
     protected ValidationResult getInstance() {
         return new ValidationResult();
@@ -55,7 +55,7 @@ class ValidationResultTest extends EqualityTest<ValidationResult> {
         boolean valid = validationResult.isValid();
 
         // Then
-        assertTrue(valid);
+        assertThat(valid).isTrue();
     }
 
     @Test
@@ -67,7 +67,7 @@ class ValidationResultTest extends EqualityTest<ValidationResult> {
         Set<String> errors = validationResult.getErrors();
 
         // Then
-        assertEquals(new HashSet<>(), errors);
+        assertThat(errors).isEmpty();
     }
 
     @Test
@@ -79,37 +79,37 @@ class ValidationResultTest extends EqualityTest<ValidationResult> {
         String errorString = validationResult.getErrorString();
 
         // Then
-        assertEquals("Validation errors: " + System.lineSeparator(), errorString);
+        assertThat(errorString).isEqualTo("Validation errors: %s", System.lineSeparator());
     }
 
     @Test
     public void shouldDeduplicateErrors() {
         // Given
         ValidationResult validationResult = new ValidationResult();
-        validationResult.addError("err");
-        validationResult.addError("err");
+        validationResult.addError(EXAMPLE_ERROR);
+        validationResult.addError(EXAMPLE_ERROR);
 
         // When
         Set<String> errors = validationResult.getErrors();
 
-        assertEquals(1, errors.size());
+        // Then
+        assertThat(errors).hasSize(1);
     }
 
     @Test
     public void shouldListAllUniqueErrors() {
         // Given
         ValidationResult validationResult = new ValidationResult();
-        validationResult.addError("err");
-        validationResult.addError("different error");
+        validationResult.addError(EXAMPLE_ERROR);
+        validationResult.addError(DIFFERENT_ERROR);
 
         // When
         Set<String> errors = validationResult.getErrors();
 
         // Then
-        assertEquals(2, errors.size());
-        HashSet<String> expected = Sets.newHashSet("err", "different error");
-
-        assertEquals(expected, errors);
+        assertThat(errors)
+                .hasSize(2)
+                .containsExactly(EXAMPLE_ERROR, DIFFERENT_ERROR);
     }
 
     @Test
@@ -117,13 +117,14 @@ class ValidationResultTest extends EqualityTest<ValidationResult> {
         // Given
         String lineSeparator = System.lineSeparator();
         ValidationResult validationResult = new ValidationResult();
-        validationResult.addError("err");
-        validationResult.addError("different error");
+        validationResult.addError(EXAMPLE_ERROR);
+        validationResult.addError(DIFFERENT_ERROR);
 
         // When
         String errorString = validationResult.getErrorString();
 
         // Then
-        assertEquals("Validation errors: " + lineSeparator + "err" + lineSeparator + "different error", errorString);
+        assertThat(errorString)
+                .isEqualTo("Validation errors: %s%s%s%s", lineSeparator, EXAMPLE_ERROR, lineSeparator, DIFFERENT_ERROR);
     }
 }

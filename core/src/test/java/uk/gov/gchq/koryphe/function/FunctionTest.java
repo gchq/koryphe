@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Test;
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.signature.Signature;
+import uk.gov.gchq.koryphe.signature.SignatureAssert;
 import uk.gov.gchq.koryphe.util.EqualityTest;
 import uk.gov.gchq.koryphe.util.SummaryUtil;
 import uk.gov.gchq.koryphe.util.VersionUtil;
@@ -30,8 +31,7 @@ import uk.gov.gchq.koryphe.util.VersionUtil;
 import java.io.IOException;
 import java.util.function.Function;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class FunctionTest<T extends Function> extends EqualityTest<T> {
 
@@ -71,10 +71,15 @@ public abstract class FunctionTest<T extends Function> extends EqualityTest<T> {
         final Since annotation = instance.getClass().getAnnotation(Since.class);
 
         // Then
-        assertNotNull(annotation, "Missing Since annotation on class " + instance.getClass().getName());
-        assertNotNull(annotation.value(), "Missing Since annotation on class " + instance.getClass().getName());
-        assertTrue(VersionUtil.validateVersionString(annotation.value()),
-                annotation.value() + " is not a valid value string.");
+        assertThat(annotation)
+                .isNotNull()
+                .withFailMessage("Missing Since annotation on class %s", instance.getClass().getName());
+        assertThat(annotation.value())
+                .isNotNull()
+                .withFailMessage("Missing Since annotation on class %s", instance.getClass().getName());
+        assertThat(VersionUtil.validateVersionString(annotation.value()))
+                .isTrue()
+                .withFailMessage("%s is not a valid value string.", annotation.value());
     }
 
     @Test
@@ -86,10 +91,15 @@ public abstract class FunctionTest<T extends Function> extends EqualityTest<T> {
         final Summary annotation = instance.getClass().getAnnotation(Summary.class);
 
         // Then
-        assertNotNull(annotation, "Missing Summary annotation on class " + instance.getClass().getName());
-        assertNotNull(annotation.value(), "Missing Summary annotation on class " + instance.getClass().getName());
-        assertTrue(SummaryUtil.validateSummaryString(annotation.value()),
-                annotation.value() + " is not a valid value string.");
+        assertThat(annotation)
+                .isNotNull()
+                .withFailMessage("Missing Summary annotation on class %s", instance.getClass().getName());
+        assertThat(annotation.value())
+                .isNotNull()
+                .withFailMessage("Missing Summary annotation on class %s", instance.getClass().getName());
+        assertThat(SummaryUtil.validateSummaryString(annotation.value()))
+                .isTrue()
+                .withFailMessage("%s is not a valid value string.", annotation.value());
     }
 
     @Test
@@ -101,7 +111,7 @@ public abstract class FunctionTest<T extends Function> extends EqualityTest<T> {
         final Signature signature = Signature.getInputSignature(function);
 
         // Then
-        assertTrue(signature.assignable(getExpectedSignatureInputClasses()).isValid());
+        SignatureAssert.assertThat(signature).isAssignableFrom(getExpectedSignatureInputClasses());
     }
 
     @Test
@@ -113,6 +123,6 @@ public abstract class FunctionTest<T extends Function> extends EqualityTest<T> {
         final Signature signature = Signature.getOutputSignature(function);
 
         // Then
-        assertTrue(signature.assignable(getExpectedSignatureOutputClasses()).isValid());
+        SignatureAssert.assertThat(signature).isAssignableFrom(getExpectedSignatureOutputClasses());
     }
 }

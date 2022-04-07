@@ -28,9 +28,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class StringJoinTest extends FunctionTest<StringJoin> {
 
@@ -43,7 +41,7 @@ public class StringJoinTest extends FunctionTest<StringJoin> {
         final String result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -56,7 +54,7 @@ public class StringJoinTest extends FunctionTest<StringJoin> {
         final String result = function.apply(input);
 
         // Then
-        assertEquals("abc", result);
+        assertThat(result).isEqualTo("abc");
     }
 
     @Test
@@ -69,7 +67,7 @@ public class StringJoinTest extends FunctionTest<StringJoin> {
         final String result = function.apply(input);
 
         // Then
-        assertEquals("abc", result);
+        assertThat(result).isEqualTo("abc");
     }
 
     @Test
@@ -82,7 +80,7 @@ public class StringJoinTest extends FunctionTest<StringJoin> {
         final String result = function.apply(input);
 
         // Then
-        assertEquals("12345", result);
+        assertThat(result).isEqualTo("12345");
     }
 
     @Test
@@ -95,7 +93,7 @@ public class StringJoinTest extends FunctionTest<StringJoin> {
         final String result = function.apply(input);
 
         // Then
-        assertEquals("a,b,c", result);
+        assertThat(result).isEqualTo("a,b,c");
     }
 
     @Test
@@ -108,7 +106,7 @@ public class StringJoinTest extends FunctionTest<StringJoin> {
         final String result = function.apply(input);
 
         // Then
-        assertEquals("1 2 3 4 5", result);
+        assertThat(result).isEqualTo("1 2 3 4 5");
     }
 
     @Override
@@ -150,6 +148,6 @@ public class StringJoinTest extends FunctionTest<StringJoin> {
         final StringJoin deserialisedMethod = JsonSerialiser.deserialise(json, StringJoin.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

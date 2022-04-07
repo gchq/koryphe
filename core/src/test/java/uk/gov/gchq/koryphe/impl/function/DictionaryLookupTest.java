@@ -28,15 +28,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class DictionaryLookupTest extends FunctionTest<DictionaryLookup<?, ?>> {
 
     private Map<String, Integer> dictionary = new HashMap<>();
-    ;
+
     private DictionaryLookup<String, Integer> dictionaryLookUp;
 
     @BeforeEach
@@ -48,26 +46,27 @@ public class DictionaryLookupTest extends FunctionTest<DictionaryLookup<?, ?>> {
 
     @Test
     public void shouldReturnExistingValueInDictionary() {
-        assertEquals(1, (int) dictionaryLookUp.apply("one"));
-        assertEquals(2, (int) dictionaryLookUp.apply("two"));
+        assertThat((int) dictionaryLookUp.apply("one"))
+                .isEqualTo(1);
+        assertThat((int) dictionaryLookUp.apply("two"))
+                .isEqualTo(2);
     }
 
     @Test
     public void shouldReturnNullIfNullKeyIsSupplied() {
-        assertNull(dictionaryLookUp.apply(null));
+        assertThat(dictionaryLookUp.apply(null)).isNull();
     }
 
     @Test
     public void shouldReturnNullIfItemDoesntExistInDictionary() {
-        assertNull(dictionaryLookUp.apply("three"));
+        assertThat(dictionaryLookUp.apply("three")).isNull();
     }
 
     @Test
     public void shouldThrowExceptionIfDictionaryIsSetToNull() {
-        final Exception exception = assertThrows(IllegalArgumentException.class, () -> new DictionaryLookup<>().apply("four"));
-
-        final String expected = "The uk.gov.gchq.koryphe.impl.function.DictionaryLookup KorypheFunction has not been provided with a dictionary";
-        assertEquals(expected, exception.getMessage());
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> new DictionaryLookup<>().apply("four"))
+                .withMessage("The uk.gov.gchq.koryphe.impl.function.DictionaryLookup KorypheFunction has not been provided with a dictionary");
     }
 
     @Override
@@ -113,6 +112,6 @@ public class DictionaryLookupTest extends FunctionTest<DictionaryLookup<?, ?>> {
         final DictionaryLookup deserialised = JsonSerialiser.deserialise(json, DictionaryLookup.class);
 
         // Then
-        assertNotNull(deserialised);
+        assertThat(deserialised).isNotNull();
     }
 }

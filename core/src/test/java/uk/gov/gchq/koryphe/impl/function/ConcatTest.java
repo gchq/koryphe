@@ -24,9 +24,8 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.from;
 
 public class ConcatTest extends FunctionTest<Concat> {
 
@@ -38,7 +37,8 @@ public class ConcatTest extends FunctionTest<Concat> {
         // When
         String output = concat.apply("1", "2");
 
-        assertEquals("1,2", output);
+        // Then
+        assertThat(output).isEqualTo("1,2");
     }
 
     @Test
@@ -50,7 +50,8 @@ public class ConcatTest extends FunctionTest<Concat> {
         // When
         final String output = concat.apply("1", "2");
 
-        assertEquals("1 2", output);
+        // Then
+        assertThat(output).isEqualTo("1 2");
     }
 
     @Test
@@ -61,7 +62,8 @@ public class ConcatTest extends FunctionTest<Concat> {
         // When
         final String output = concat.apply("1", null);
 
-        assertEquals("1", output);
+        // Then
+        assertThat(output).isEqualTo("1");
     }
 
     @Test
@@ -72,7 +74,7 @@ public class ConcatTest extends FunctionTest<Concat> {
         // When
         final String output = concat.apply(null, null);
 
-        assertNull(output);
+        assertThat(output).isNull();
     }
 
     @Override
@@ -106,8 +108,9 @@ public class ConcatTest extends FunctionTest<Concat> {
         final Concat deserialisedConcat = JsonSerialiser.deserialise(json, Concat.class);
 
         // Then 2
-        assertNotNull(deserialisedConcat);
-        assertEquals(separator, deserialisedConcat.getSeparator());
+        assertThat(deserialisedConcat)
+                .isNotNull()
+                .returns(separator, from(Concat::getSeparator));
     }
 
     @Override

@@ -28,10 +28,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class IterableFilterTest extends FunctionTest<IterableFilter> {
 
@@ -48,7 +45,7 @@ public class IterableFilterTest extends FunctionTest<IterableFilter> {
         final Iterable<Integer> result = predicate.apply(items);
 
         // Then
-        assertEquals(Arrays.asList(2, 3), Lists.newArrayList(result));
+        assertThat(result).containsExactly(2, 3);
     }
 
     @Test
@@ -64,8 +61,9 @@ public class IterableFilterTest extends FunctionTest<IterableFilter> {
         final Iterable<Integer> result = predicate.apply(items);
 
         // Then
-        assertEquals(Arrays.asList(1, 2, 3), Lists.newArrayList(result));
-        assertSame(items, result);
+        assertThat(result)
+                .containsExactly(1, 2, 3)
+                .isSameAs(items);
     }
 
     @Test
@@ -81,7 +79,7 @@ public class IterableFilterTest extends FunctionTest<IterableFilter> {
         final Iterable<Integer> result = predicate.apply(items);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Override
@@ -126,7 +124,7 @@ public class IterableFilterTest extends FunctionTest<IterableFilter> {
         final IterableFilter deserialised = JsonSerialiser.deserialise(json, IterableFilter.class);
 
         // Then 2
-        assertNotNull(deserialised);
-        assertEquals(1, ((IsMoreThan) deserialised.getPredicate()).getControlValue());
+        assertThat(deserialised).isNotNull();
+        assertThat(((IsMoreThan) deserialised.getPredicate()).getControlValue()).isEqualTo(1);
     }
 }

@@ -25,8 +25,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class StringConcatTest extends BinaryOperatorTest<StringConcat> {
 
@@ -49,7 +48,22 @@ public class StringConcatTest extends BinaryOperatorTest<StringConcat> {
         state = function.apply(state, null);
 
         // Then
-        assertEquals("1;2", state);
+        assertThat(state).isEqualTo("1;2");
+    }
+
+    @Test
+    public void shouldConcatEmptyStringsTogether() {
+        // Given
+        final StringConcat function = new StringConcat();
+        function.setSeparator(";");
+
+        // When
+        state = function.apply(state, "1");
+        state = function.apply(state, "");
+        state = function.apply(state, "2");
+
+        // Then
+        assertThat(state).isEqualTo("1;;2");
     }
 
     @Test
@@ -70,7 +84,7 @@ public class StringConcatTest extends BinaryOperatorTest<StringConcat> {
         final StringConcat deserialisedAggregator = JsonSerialiser.deserialise(json, StringConcat.class);
 
         // Then 2
-        assertNotNull(deserialisedAggregator);
+        assertThat(deserialisedAggregator).isNotNull();
     }
 
     @Override

@@ -24,10 +24,8 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class LastItemTest extends FunctionTest<LastItem> {
     @Override
@@ -68,7 +66,7 @@ public class LastItemTest extends FunctionTest<LastItem> {
         final LastItem deserialised = JsonSerialiser.deserialise(json, LastItem.class);
 
         // When
-        assertNotNull(deserialised);
+        assertThat(deserialised).isNotNull();
     }
 
     @Test
@@ -80,8 +78,7 @@ public class LastItemTest extends FunctionTest<LastItem> {
         final Integer result = function.apply(Arrays.asList(2, 3, 5, 7, 11));
 
         // Then
-        assertNotNull(result);
-        assertEquals(Integer.valueOf(11), result);
+        assertThat(result).isEqualTo(Integer.valueOf(11));
     }
 
     @Test
@@ -93,8 +90,7 @@ public class LastItemTest extends FunctionTest<LastItem> {
         final String result = function.apply(Arrays.asList("these", "are", "test", "strings"));
 
         // Then
-        assertNotNull(result);
-        assertEquals("strings", result);
+        assertThat(result).isEqualTo("strings");
     }
 
     @Test
@@ -106,7 +102,7 @@ public class LastItemTest extends FunctionTest<LastItem> {
         final Integer result = function.apply(Arrays.asList(1, 2, null));
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -115,7 +111,8 @@ public class LastItemTest extends FunctionTest<LastItem> {
         final LastItem<Integer> function = new LastItem<>();
 
         // When / Then
-        final Exception exception = assertThrows(IllegalArgumentException.class, () -> function.apply(null));
-        assertEquals("Input cannot be null", exception.getMessage());
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> function.apply(null))
+                .withMessage("Input cannot be null");
     }
 }

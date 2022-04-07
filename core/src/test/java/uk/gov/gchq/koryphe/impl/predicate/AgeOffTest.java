@@ -24,10 +24,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AgeOffTest extends PredicateTest<AgeOff> {
 
@@ -40,10 +37,10 @@ public class AgeOffTest extends PredicateTest<AgeOff> {
         final AgeOff filter = new AgeOff();
 
         // When
-        final long ageOfTime = filter.getAgeOffTime();
+        final long ageOffTime = filter.getAgeOffTime();
 
         // Then
-        assertEquals(AgeOff.AGE_OFF_TIME_DEFAULT, ageOfTime);
+        assertThat(ageOffTime).isEqualTo(AgeOff.AGE_OFF_TIME_DEFAULT);
     }
 
     @Test
@@ -54,10 +51,10 @@ public class AgeOffTest extends PredicateTest<AgeOff> {
         filter.setAgeOffDays(ageOffInDays);
 
         // When
-        final long ageOfTime = filter.getAgeOffTime();
+        final long ageOffTime = filter.getAgeOffTime();
 
         // Then
-        assertEquals(ageOffInDays * 24 * 60 * 60 * 1000, ageOfTime);
+        assertThat(ageOffTime).isEqualTo(ageOffInDays * 24 * 60 * 60 * 1000);
     }
 
     @Test
@@ -68,10 +65,10 @@ public class AgeOffTest extends PredicateTest<AgeOff> {
         filter.setAgeOffHours(ageOffInHours);
 
         // When
-        final long ageOfTime = filter.getAgeOffTime();
+        final long ageOffTime = filter.getAgeOffTime();
 
         // Then
-        assertEquals(ageOffInHours * 60 * 60 * 1000, ageOfTime);
+        assertThat(ageOffTime).isEqualTo(ageOffInHours * 60 * 60 * 1000);
     }
 
     @Test
@@ -79,23 +76,17 @@ public class AgeOffTest extends PredicateTest<AgeOff> {
         // Given
         final AgeOff filter = new AgeOff(CUSTOM_AGE_OFF);
 
-        // When
-        final boolean accepted = filter.test(System.currentTimeMillis() - CUSTOM_AGE_OFF + MINUTE_IN_MILLISECONDS);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(System.currentTimeMillis() - CUSTOM_AGE_OFF + MINUTE_IN_MILLISECONDS);
     }
 
     @Test
-    public void shouldAcceptWhenOutsideAgeOffLimit() {
+    public void shouldRejectWhenOutsideAgeOffLimit() {
         // Given
         final AgeOff filter = new AgeOff(CUSTOM_AGE_OFF);
 
-        // When
-        final boolean accepted = filter.test(System.currentTimeMillis() - CUSTOM_AGE_OFF - MINUTE_IN_MILLISECONDS);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(System.currentTimeMillis() - CUSTOM_AGE_OFF - MINUTE_IN_MILLISECONDS);
     }
 
     @Test
@@ -116,8 +107,8 @@ public class AgeOffTest extends PredicateTest<AgeOff> {
         final AgeOff deserialisedFilter = JsonSerialiser.deserialise(json, AgeOff.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(CUSTOM_AGE_OFF, deserialisedFilter.getAgeOffTime());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getAgeOffTime()).isEqualTo(CUSTOM_AGE_OFF);
     }
 
     @Override

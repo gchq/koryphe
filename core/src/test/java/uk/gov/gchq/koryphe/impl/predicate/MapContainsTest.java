@@ -27,10 +27,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MapContainsTest extends PredicateTest<MapContains> {
 
@@ -49,11 +46,8 @@ public class MapContainsTest extends PredicateTest<MapContains> {
         // Given
         final MapContains filter = new MapContains(KEY1);
 
-        // When
-        boolean accepted = filter.test(map1);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(map1);
     }
 
     @Test
@@ -61,11 +55,8 @@ public class MapContainsTest extends PredicateTest<MapContains> {
         // Given
         final MapContains filter = new MapContains(KEY2);
 
-        // When
-        boolean accepted = filter.test(map1);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(map1);
     }
 
     @Test
@@ -73,11 +64,8 @@ public class MapContainsTest extends PredicateTest<MapContains> {
         // Given
         final MapContains filter = new MapContains(KEY1);
 
-        // When
-        boolean accepted = filter.test(new HashMap<>());
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(new HashMap<>());
     }
 
     @Test
@@ -98,8 +86,8 @@ public class MapContainsTest extends PredicateTest<MapContains> {
         final MapContains deserialisedFilter = JsonSerialiser.deserialise(json, MapContains.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(KEY1, deserialisedFilter.getKey());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getKey()).isEqualTo(KEY1);
     }
 
     @Override

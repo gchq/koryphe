@@ -28,9 +28,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.function.Function;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 class FunctionCompositeTest extends FunctionTest<FunctionComposite>{
     @Override
@@ -67,7 +66,7 @@ class FunctionCompositeTest extends FunctionTest<FunctionComposite>{
 
         // Then
         JsonSerialiser.assertEquals(json, serialised);
-        assertEquals(functionComposite, deserialised);
+        assertThat(deserialised).isEqualTo(functionComposite);
     }
 
     @Override
@@ -102,7 +101,7 @@ class FunctionCompositeTest extends FunctionTest<FunctionComposite>{
         String output = functionComposite.apply("test");
 
         // Then
-        assertEquals("test", output);
+        assertThat(output).isEqualTo("test");
     }
 
     @Test
@@ -117,7 +116,7 @@ class FunctionCompositeTest extends FunctionTest<FunctionComposite>{
         Long transformed = functionComposite.apply("4");
 
         // Then
-        assertEquals(400L, transformed);
+        assertThat(transformed).isEqualTo(400L);
     }
 
     @Test
@@ -129,8 +128,8 @@ class FunctionCompositeTest extends FunctionTest<FunctionComposite>{
         ));
 
         // When / Then
-        ClassCastException e = assertThrows(ClassCastException.class, () -> functionComposite.apply(5));
-
-        assertNotNull(e.getMessage());
+        assertThatExceptionOfType(ClassCastException.class)
+                .isThrownBy(() -> functionComposite.apply(5))
+                .withMessageContaining("java.lang.Long cannot be cast to class java.lang.String");
     }
 }

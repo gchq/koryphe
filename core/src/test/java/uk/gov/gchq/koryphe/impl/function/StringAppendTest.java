@@ -24,9 +24,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class StringAppendTest extends FunctionTest<StringAppend> {
 
@@ -39,7 +37,7 @@ public class StringAppendTest extends FunctionTest<StringAppend> {
         final String result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -51,7 +49,7 @@ public class StringAppendTest extends FunctionTest<StringAppend> {
         final String result = function.apply("Hello");
 
         // Then
-        assertEquals("Hello", result);
+        assertThat(result).isEqualTo("Hello");
     }
 
     @Test
@@ -63,7 +61,7 @@ public class StringAppendTest extends FunctionTest<StringAppend> {
         final String result = function.apply("Hello");
 
         // Then
-        assertEquals("Hello!", result);
+        assertThat(result).isEqualTo("Hello!");
     }
 
     @Test
@@ -75,7 +73,7 @@ public class StringAppendTest extends FunctionTest<StringAppend> {
         final String result = function.apply("Hello");
 
         // Then
-        assertEquals("Hello", result); // right now result is Hellonull
+        assertThat(result).isEqualTo("Hello"); // right now result is Hellonull
     }
 
     @Override
@@ -117,6 +115,6 @@ public class StringAppendTest extends FunctionTest<StringAppend> {
         final StringAppend deserialisedMethod = JsonSerialiser.deserialise(json, StringAppend.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

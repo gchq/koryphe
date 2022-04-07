@@ -25,9 +25,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.function.Function;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ToUpperCaseTest extends FunctionTest<ToUpperCase> {
 
@@ -42,7 +40,7 @@ public class ToUpperCaseTest extends FunctionTest<ToUpperCase> {
         final Object output = function.apply(TEST_STRING);
 
         // Then
-        assertEquals(StringUtils.upperCase(TEST_STRING), output);
+        assertThat(output).isEqualTo(StringUtils.upperCase(TEST_STRING));
     }
 
     @Test
@@ -55,7 +53,7 @@ public class ToUpperCaseTest extends FunctionTest<ToUpperCase> {
         final Object output = function.apply(input);
 
         // Then
-        assertEquals(StringUtils.upperCase(input.getClass().getSimpleName().toLowerCase()), output);
+        assertThat(output).isEqualTo(StringUtils.upperCase(input.getClass().getSimpleName().toLowerCase()));
     }
 
     @Test
@@ -67,7 +65,7 @@ public class ToUpperCaseTest extends FunctionTest<ToUpperCase> {
         Object output = function.apply(null);
 
         // Then
-        assertNull(output);
+        assertThat(output).isNull();
     }
 
     @Override
@@ -108,7 +106,7 @@ public class ToUpperCaseTest extends FunctionTest<ToUpperCase> {
         final ToUpperCase deserialisedMethod = JsonSerialiser.deserialise(json, ToUpperCase.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 
     private final static class ToUpperCaseTestObject {

@@ -28,9 +28,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.function.Function;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -122,19 +120,24 @@ public class TupleFunctionTest {
         String json = JsonSerialiser.serialise(function);
         TupleAdaptedFunction<String, Object, String> deserialisedFunction = JsonSerialiser
                 .deserialise(json, TupleAdaptedFunction.class);
-        assertNotSame(function, deserialisedFunction);
+        assertThat(deserialisedFunction)
+                .isNotSameAs(function)
+                .isNotNull();
 
         Function<Object, String> functionCopy = deserialisedFunction.getFunction();
-        assertNotSame(function, functionCopy);
-        assertTrue(functionCopy instanceof MockFunction);
+        assertThat(functionCopy)
+                .isNotSameAs(function)
+                .isExactlyInstanceOf(MockFunction.class);
 
         TupleInputAdapter<String, Object> inputAdapterCopy = deserialisedFunction
                 .getInputAdapter();
         TupleOutputAdapter<String, String> outputAdapterCopy = deserialisedFunction
                 .getOutputAdapter();
-        assertNotSame(inputAdapter, inputAdapterCopy);
-        assertNotNull(inputAdapterCopy);
-        assertNotSame(outputAdapter, outputAdapterCopy);
-        assertNotNull(outputAdapterCopy);
+        assertThat(inputAdapterCopy)
+                .isNotSameAs(inputAdapter)
+                .isNotNull();
+        assertThat(outputAdapterCopy)
+                .isNotSameAs(outputAdapter)
+                .isNotNull();
     }
 }

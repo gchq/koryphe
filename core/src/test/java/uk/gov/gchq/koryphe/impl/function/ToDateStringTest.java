@@ -30,8 +30,7 @@ import java.util.Date;
 import java.util.TimeZone;
 import java.util.function.Function;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ToDateStringTest extends FunctionTest<ToDateString> {
 
@@ -74,7 +73,7 @@ class ToDateStringTest extends FunctionTest<ToDateString> {
 
         // Then
         JsonSerialiser.assertEquals(json, serialised);
-        assertEquals(instance, deserialised);
+        assertThat(deserialised).isEqualTo(instance);
     }
 
     @Override
@@ -99,7 +98,7 @@ class ToDateStringTest extends FunctionTest<ToDateString> {
         String dateString = instance.apply(Date.from(Instant.EPOCH));
 
         // Then
-        assertEquals("1970-01-01 00:00:00.000", dateString);
+        assertThat(dateString).isEqualTo("1970-01-01 00:00:00.000");
     }
 
     @Test
@@ -111,7 +110,7 @@ class ToDateStringTest extends FunctionTest<ToDateString> {
         String dateString = instance.apply(Date.from(Instant.EPOCH));
 
         // Then
-        assertEquals("1970-01-01T00:00:00Z", dateString);
+        assertThat(dateString).isEqualTo("1970-01-01T00:00:00Z");
     }
 
     @Test
@@ -123,6 +122,6 @@ class ToDateStringTest extends FunctionTest<ToDateString> {
         String dateString = instance.apply(null);
 
         // Then
-        assertNull(dateString);
+        assertThat(dateString).isNull();
     }
 }

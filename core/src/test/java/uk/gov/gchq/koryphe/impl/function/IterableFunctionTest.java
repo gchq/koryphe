@@ -16,8 +16,6 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
@@ -30,11 +28,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class IterableFunctionTest extends FunctionTest<IterableFunction> {
     @Override
@@ -84,7 +79,7 @@ public class IterableFunctionTest extends FunctionTest<IterableFunction> {
         final IterableFunction deserialised = JsonSerialiser.deserialise(json, IterableFunction.class);
 
         // Then 2
-        assertNotNull(deserialised);
+        assertThat(deserialised).isNotNull();
     }
 
     @Test
@@ -96,8 +91,9 @@ public class IterableFunctionTest extends FunctionTest<IterableFunction> {
         final Iterable<String> result = function.apply(Arrays.asList(1, 2, 3, 4));
 
         // Then
-        assertNotNull(result);
-        assertEquals(Arrays.asList("1", "2", "3", "4"), Lists.newArrayList(result));
+        assertThat(result)
+                .isNotNull()
+                .containsExactly("1", "2", "3", "4");
     }
 
     @Test
@@ -109,8 +105,9 @@ public class IterableFunctionTest extends FunctionTest<IterableFunction> {
         final Iterable<Integer> result = function.apply(new ArrayList<>());
 
         // Then
-        assertNotNull(result);
-        assertTrue(Iterables.isEmpty(result));
+        assertThat(result)
+                .isNotNull()
+                .isEmpty();
     }
 
     @Test
@@ -126,8 +123,7 @@ public class IterableFunctionTest extends FunctionTest<IterableFunction> {
                 .build();
 
         // Then
-        assertEquals(3, function.getFunctions().size());
-        assertEquals(Arrays.asList(func, func1, func2), function.getFunctions());
+        assertThat(function.getFunctions()).containsExactly(func, func1, func2);
     }
 
     @Test
@@ -142,8 +138,7 @@ public class IterableFunctionTest extends FunctionTest<IterableFunction> {
         final Iterable<Integer> result = function.apply(Arrays.asList(1, 2, 3, 4));
 
         // Then
-        assertEquals(4, Iterables.size(result));
-        assertEquals(Arrays.asList(1, 2, 3, 4), Lists.newArrayList(result));
+        assertThat(result).containsExactly(1, 2, 3, 4);
     }
 
     @Test
@@ -155,7 +150,7 @@ public class IterableFunctionTest extends FunctionTest<IterableFunction> {
         final Object result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -167,7 +162,7 @@ public class IterableFunctionTest extends FunctionTest<IterableFunction> {
         final Iterable<Integer> result = function.apply(Arrays.asList(1, 2, 3));
 
         // Then
-        assertEquals(Arrays.asList(1, 2, 3), Lists.newArrayList(result));
+        assertThat(result).containsExactly(1, 2, 3);
     }
 
     @Test
@@ -177,8 +172,9 @@ public class IterableFunctionTest extends FunctionTest<IterableFunction> {
         final IterableFunction<Integer, Integer> function = new IterableFunction<>(functions);
 
         // When / Then
-        final Exception exception = assertThrows(IllegalArgumentException.class, () -> function.apply(Arrays.asList(1, 2, 3)));
-        assertEquals("List of functions cannot be null", exception.getMessage());
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> function.apply(Arrays.asList(1, 2, 3)))
+                .withMessage("List of functions cannot be null");
     }
 
     @Test
@@ -191,7 +187,8 @@ public class IterableFunctionTest extends FunctionTest<IterableFunction> {
         final IterableFunction<Integer, Integer> function = new IterableFunction<>(functions);
 
         // When / Then
-        final Exception exception = assertThrows(IllegalArgumentException.class, () -> function.apply(Arrays.asList(1, 2, 3)));
-        assertEquals("Functions list cannot contain a null function", exception.getMessage());
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> function.apply(Arrays.asList(1, 2, 3)))
+                .withMessage("Functions list cannot contain a null function");
     }
 }

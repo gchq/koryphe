@@ -23,9 +23,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ExistsTest extends PredicateTest<Exists> {
 
@@ -34,11 +32,8 @@ public class ExistsTest extends PredicateTest<Exists> {
         // Given
         final Exists filter = new Exists();
 
-        // When
-        boolean accepted = filter.test("Not null value");
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts("Not null value");
     }
 
     @Test
@@ -46,11 +41,8 @@ public class ExistsTest extends PredicateTest<Exists> {
         // Given
         final Exists filter = new Exists();
 
-        // When
-        boolean accepted = filter.test(null);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects((Object) null);
     }
 
     @Test
@@ -70,7 +62,7 @@ public class ExistsTest extends PredicateTest<Exists> {
         final Exists deserialisedFilter = JsonSerialiser.deserialise(json, Exists.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
+        assertThat(deserialisedFilter).isNotNull();
     }
 
     @Override

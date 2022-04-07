@@ -24,9 +24,8 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.from;
 
 public class MultiplyLongByTest extends FunctionTest<MultiplyLongBy> {
 
@@ -39,7 +38,7 @@ public class MultiplyLongByTest extends FunctionTest<MultiplyLongBy> {
         long output = function.apply(4L);
 
         // Then
-        assertEquals(8L, output);
+        assertThat(output).isEqualTo(8L);
     }
 
     @Test
@@ -51,7 +50,7 @@ public class MultiplyLongByTest extends FunctionTest<MultiplyLongBy> {
         long output = function.apply(9L);
 
         // Then
-        assertEquals(9L, output);
+        assertThat(output).isEqualTo(9L);
     }
 
     @Test
@@ -63,7 +62,7 @@ public class MultiplyLongByTest extends FunctionTest<MultiplyLongBy> {
         Long output = function.apply(null);
 
         // Then
-        assertNull(output);
+        assertThat(output).isNull();
     }
 
     @Test
@@ -85,8 +84,9 @@ public class MultiplyLongByTest extends FunctionTest<MultiplyLongBy> {
         final MultiplyLongBy deserialisedMultiplyLongBy = JsonSerialiser.deserialise(json, MultiplyLongBy.class);
 
         // Then 2
-        assertNotNull(deserialisedMultiplyLongBy);
-        assertEquals(4L, deserialisedMultiplyLongBy.getBy());
+        assertThat(deserialisedMultiplyLongBy)
+                .isNotNull()
+                .returns(4L, from(MultiplyLongBy::getBy));
     }
 
     @Override

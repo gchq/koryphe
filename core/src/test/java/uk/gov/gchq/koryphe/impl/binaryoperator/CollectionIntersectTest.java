@@ -25,12 +25,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.TreeSet;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CollectionIntersectTest extends BinaryOperatorTest<CollectionIntersect> {
 
@@ -46,7 +44,7 @@ public class CollectionIntersectTest extends BinaryOperatorTest<CollectionInters
         final Collection<Object> result = aggregator.apply(list1, list2);
 
         // Then
-        assertEquals(Arrays.asList(1, 3), result);
+        assertThat(result).containsExactly(1, 3);
     }
 
     @Test
@@ -61,7 +59,7 @@ public class CollectionIntersectTest extends BinaryOperatorTest<CollectionInters
         final Collection<Object> result = aggregator.apply(list1, list2);
 
         // Then
-        assertEquals(Collections.emptyList(), result);
+        assertThat(result).isEmpty();
     }
 
     @Test
@@ -74,17 +72,15 @@ public class CollectionIntersectTest extends BinaryOperatorTest<CollectionInters
         treeSet2.add("string1");
         treeSet2.add("string2");
 
-        final TreeSet<String> expectedResult = new TreeSet<>();
-        expectedResult.add("string1");
-
         final CollectionIntersect<String> aggregator = new CollectionIntersect<>();
 
         // When
         final Collection<String> result = aggregator.apply(treeSet1, treeSet2);
 
         // Then
-        assertEquals(TreeSet.class, result.getClass());
-        assertEquals(expectedResult, result);
+        assertThat(result)
+                .containsExactly("string1")
+                .isExactlyInstanceOf(TreeSet.class);
     }
 
     @Test
@@ -103,10 +99,9 @@ public class CollectionIntersectTest extends BinaryOperatorTest<CollectionInters
         final Collection<Integer> result = aggregator.apply(hashSet1, hashSet2);
 
         // Then
-        assertEquals(HashSet.class, result.getClass());
-        final HashSet<Integer> expectedResult = new HashSet<>();
-        expectedResult.add(1);
-        assertEquals(expectedResult, result);
+        assertThat(result)
+                .containsExactly(1)
+                .isExactlyInstanceOf(HashSet.class);
     }
 
     @Test
@@ -127,7 +122,7 @@ public class CollectionIntersectTest extends BinaryOperatorTest<CollectionInters
         final CollectionIntersect deserialisedAggregator = JsonSerialiser.deserialise(json, CollectionIntersect.class);
 
         // Then 2
-        assertNotNull(deserialisedAggregator);
+        assertThat(deserialisedAggregator).isNotNull();
     }
 
     @Override

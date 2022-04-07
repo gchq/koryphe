@@ -26,9 +26,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.zip.GZIPOutputStream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class GunzipTest extends FunctionTest<Gunzip> {
 
@@ -70,7 +68,7 @@ public class GunzipTest extends FunctionTest<Gunzip> {
         final Gunzip deserialisedMethod = JsonSerialiser.deserialise(json, Gunzip.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 
     @Test
@@ -91,7 +89,7 @@ public class GunzipTest extends FunctionTest<Gunzip> {
         final byte[] result = function.apply(gzip);
 
         // Then
-        assertArrayEquals(input, result);
+        assertThat(result).isEqualTo(input);
     }
 
     @Test
@@ -103,6 +101,6 @@ public class GunzipTest extends FunctionTest<Gunzip> {
         final byte[] result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 }

@@ -36,9 +36,8 @@ import java.util.Arrays;
 import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 
 class AdaptedBinaryOperatorTest extends BinaryOperatorTest<AdaptedBinaryOperator> {
@@ -69,7 +68,7 @@ class AdaptedBinaryOperatorTest extends BinaryOperatorTest<AdaptedBinaryOperator
 
         // Then
         JsonSerialiser.assertEquals(json, serialised);
-        assertEquals(adaptedBinaryOperator, deserialised);
+        assertThat(deserialised).isEqualTo(adaptedBinaryOperator);
     }
 
     @Override
@@ -95,8 +94,8 @@ class AdaptedBinaryOperatorTest extends BinaryOperatorTest<AdaptedBinaryOperator
         // When
         Object aggregated = abo.apply(2, 5);
 
-        // then
-        assertEquals(10L, aggregated);
+        // Then
+        assertThat(aggregated).isEqualTo(10L);
     }
 
     @Test
@@ -107,8 +106,8 @@ class AdaptedBinaryOperatorTest extends BinaryOperatorTest<AdaptedBinaryOperator
         // When
         Object aggregated = abo.apply(2, 5);
 
-        // then
-        assertEquals(50L, aggregated);
+        // Then
+        assertThat(aggregated).isEqualTo(50L);
     }
 
     @Test
@@ -134,8 +133,7 @@ class AdaptedBinaryOperatorTest extends BinaryOperatorTest<AdaptedBinaryOperator
         // Then
         ArrayTuple expected = new ArrayTuple();
         state.put(0, "tuple test");
-
-        assertEquals(expected, aggregated);
+        assertThat(aggregated).isEqualTo(expected);
     }
 
     @Test
@@ -144,13 +142,9 @@ class AdaptedBinaryOperatorTest extends BinaryOperatorTest<AdaptedBinaryOperator
         AdaptedBinaryOperator abo = new AdaptedBinaryOperator();
 
         // When / Then
-
-        try {
-            abo.apply("will", "fail");
-            fail("Expected an exception");
-        } catch (Exception e) {
-            assertNotNull(e.getMessage());
-        }
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> abo.apply("will", "fail"))
+                .withMessage("BinaryOperator cannot be null");
     }
 
     @Test
@@ -161,9 +155,10 @@ class AdaptedBinaryOperatorTest extends BinaryOperatorTest<AdaptedBinaryOperator
         // When
         Object aggregated = abo.apply(2, 5);
 
-        // then
-        assertEquals(Integer.class, aggregated.getClass());
-        assertEquals(100, aggregated);
+        // Then
+        assertThat(aggregated)
+                .isExactlyInstanceOf(Integer.class)
+                .isEqualTo(100);
     }
 
     @Test
@@ -174,10 +169,9 @@ class AdaptedBinaryOperatorTest extends BinaryOperatorTest<AdaptedBinaryOperator
         // When
         Object aggregated = abo.apply(2, 5);
 
-        // then
-        assertEquals(Integer.class, aggregated.getClass());
-        assertEquals(10, aggregated);
+        // Then
+        assertThat(aggregated)
+                .isExactlyInstanceOf(Integer.class)
+                .isEqualTo(10);
     }
-
-
 }

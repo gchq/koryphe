@@ -32,9 +32,7 @@ import java.util.Arrays;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -93,15 +91,17 @@ public class TupleAdaptedBinaryOperatorTest extends BinaryOperatorTest<TupleAdap
         TupleAdaptedBinaryOperator<String, Integer> deserialisedBinaryOperator = JsonSerialiser.deserialise(json, TupleAdaptedBinaryOperator.class);
 
         // check deserialisation
-        assertNotSame(binaryOperator, deserialisedBinaryOperator);
+        assertThat(deserialisedBinaryOperator).isNotSameAs(binaryOperator);
 
         BinaryOperator<Integer> deserialisedFunction = deserialisedBinaryOperator.getBinaryOperator();
-        assertNotSame(function, deserialisedFunction);
-        assertTrue(deserialisedFunction instanceof MockBinaryOperator);
+        assertThat(deserialisedFunction)
+                .isNotSameAs(function)
+                .isExactlyInstanceOf(MockBinaryOperator.class);
 
         Function<Tuple<String>, Integer> deserialisedInputMask = deserialisedBinaryOperator.getInputAdapter();
-        assertNotSame(inputAdapter, deserialisedInputMask);
-        assertNotNull(deserialisedInputMask);
+        assertThat(deserialisedInputMask)
+                .isNotNull()
+                .isNotSameAs(inputAdapter);
     }
 
     @Override

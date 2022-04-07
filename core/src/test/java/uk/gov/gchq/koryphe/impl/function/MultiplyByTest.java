@@ -24,9 +24,8 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.from;
 
 public class MultiplyByTest extends FunctionTest<MultiplyBy> {
 
@@ -39,7 +38,7 @@ public class MultiplyByTest extends FunctionTest<MultiplyBy> {
         int output = function.apply(4);
 
         // Then
-        assertEquals(8, output);
+        assertThat(output).isEqualTo(8);
     }
 
     @Test
@@ -51,7 +50,7 @@ public class MultiplyByTest extends FunctionTest<MultiplyBy> {
         int output = function.apply(9);
 
         // Then
-        assertEquals(9, output);
+        assertThat(output).isEqualTo(9);
     }
 
     @Test
@@ -63,7 +62,7 @@ public class MultiplyByTest extends FunctionTest<MultiplyBy> {
         Integer output = function.apply(null);
 
         // Then
-        assertNull(output);
+        assertThat(output).isNull();
     }
 
     @Test
@@ -85,8 +84,9 @@ public class MultiplyByTest extends FunctionTest<MultiplyBy> {
         final MultiplyBy deserialisedMultiplyBy = JsonSerialiser.deserialise(json, MultiplyBy.class);
 
         // Then 2
-        assertNotNull(deserialisedMultiplyBy);
-        assertEquals(4, deserialisedMultiplyBy.getBy());
+        assertThat(deserialisedMultiplyBy)
+                .isNotNull()
+                .returns(4, from(MultiplyBy::getBy));
     }
 
     @Override

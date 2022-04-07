@@ -30,8 +30,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class IntegerTupleAdaptedPredicateTest extends PredicateTest<IntegerTupleAdaptedPredicate> {
 
@@ -56,7 +55,7 @@ class IntegerTupleAdaptedPredicateTest extends PredicateTest<IntegerTupleAdapted
 
         // Then
         JsonSerialiser.assertEquals(json, serialised);
-        assertEquals(predicate, deserialised);
+        assertThat(deserialised).isEqualTo(predicate);
     }
 
     @Override
@@ -84,7 +83,7 @@ class IntegerTupleAdaptedPredicateTest extends PredicateTest<IntegerTupleAdapted
         IntegerTupleAdaptedPredicate predicate = new IntegerTupleAdaptedPredicate(new IsA(String.class), 0);
 
         // Then
-        assertTrue(predicate.test(input));
+        assertThat(predicate).accepts(input);
     }
 
     @Test
@@ -97,7 +96,7 @@ class IntegerTupleAdaptedPredicateTest extends PredicateTest<IntegerTupleAdapted
         IntegerTupleAdaptedPredicate predicate = new IntegerTupleAdaptedPredicate(new Not<>(new Exists()), 1);
 
         // Then
-        assertTrue(predicate.test(input));
+        assertThat(predicate).accepts(input);
     }
 
     @Test
@@ -110,6 +109,6 @@ class IntegerTupleAdaptedPredicateTest extends PredicateTest<IntegerTupleAdapted
         IntegerTupleAdaptedPredicate predicate = new IntegerTupleAdaptedPredicate(new StringContains("te"), 0);
 
         // Then
-        assertTrue(predicate.test(input));
+        assertThat(predicate).accepts(input);
     }
 }

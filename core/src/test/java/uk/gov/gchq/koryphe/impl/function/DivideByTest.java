@@ -25,8 +25,8 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.from;
 
 public class DivideByTest extends FunctionTest<DivideBy> {
 
@@ -38,7 +38,8 @@ public class DivideByTest extends FunctionTest<DivideBy> {
         // When
         Tuple2<Integer, Integer> output = function.apply(4);
 
-        assertEquals(new Tuple2<>(2, 0), output);
+        // Then
+        assertThat(output).isEqualTo(new Tuple2<>(2, 0));
     }
 
     @Test
@@ -49,7 +50,8 @@ public class DivideByTest extends FunctionTest<DivideBy> {
         // When
         Tuple2<Integer, Integer> output = function.apply(5);
 
-        assertEquals(new Tuple2<>(2, 1), output);
+        // Then
+        assertThat(output).isEqualTo(new Tuple2<>(2, 1));
     }
 
     @Test
@@ -60,7 +62,8 @@ public class DivideByTest extends FunctionTest<DivideBy> {
         // When
         Tuple2<Integer, Integer> output = function.apply(9);
 
-        assertEquals(new Tuple2<>(9, 0), output);
+        // Then
+        assertThat(output).isEqualTo(new Tuple2<>(9, 0));
     }
 
     @Test
@@ -82,8 +85,9 @@ public class DivideByTest extends FunctionTest<DivideBy> {
         final DivideBy deserialisedDivideBy = JsonSerialiser.deserialise(json, DivideBy.class);
 
         // Then 2
-        assertNotNull(deserialisedDivideBy);
-        assertEquals(4, deserialisedDivideBy.getBy());
+        assertThat(deserialisedDivideBy)
+                .isNotNull()
+                .returns(4, from(DivideBy::getBy));
     }
 
     @Override

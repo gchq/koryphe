@@ -22,13 +22,14 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.as;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.LIST;
+import static org.assertj.core.api.InstanceOfAssertFactories.MAP;
+
 
 public class DeserialiseJsonTest extends FunctionTest<DeserialiseJson> {
     @Override
@@ -77,13 +78,13 @@ public class DeserialiseJsonTest extends FunctionTest<DeserialiseJson> {
         Object result = function.apply(input);
 
         // Then
-        Map<String, Object> element2aMap = new HashMap<>();
-        element2aMap.put("value", "value1");
-        Map<String, Object> element2bMap = new HashMap<>();
-        element2bMap.put("value", "value2");
-        HashMap<Object, Object> expectedRootMap = new HashMap<>();
-        expectedRootMap.put("elements", Arrays.asList(element2aMap, element2bMap));
-        assertEquals(expectedRootMap, result);
+        assertThat(result)
+                .asInstanceOf(MAP)
+                .hasSize(1)
+                .extracting("elements", as(LIST))
+                .hasSize(2)
+                .extracting("value")
+                .containsExactly("value1", "value2");
     }
 
     @Test
@@ -95,6 +96,6 @@ public class DeserialiseJsonTest extends FunctionTest<DeserialiseJson> {
         Object result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 }

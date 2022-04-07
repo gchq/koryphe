@@ -24,9 +24,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class StringTruncateTest extends FunctionTest<StringTruncate> {
 
@@ -39,7 +37,7 @@ public class StringTruncateTest extends FunctionTest<StringTruncate> {
         final String result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -52,7 +50,7 @@ public class StringTruncateTest extends FunctionTest<StringTruncate> {
         final String result = function.apply(input);
 
         // Then
-        assertEquals("A long inp", result);
+        assertThat(result).isEqualTo("A long inp");
     }
 
     @Test
@@ -65,7 +63,7 @@ public class StringTruncateTest extends FunctionTest<StringTruncate> {
         final String result = function.apply(input);
 
         // Then
-        assertEquals("A long inp...", result);
+        assertThat(result).isEqualTo("A long inp...");
     }
 
     @Test
@@ -78,7 +76,8 @@ public class StringTruncateTest extends FunctionTest<StringTruncate> {
         final String result = function.apply(input);
 
         //Then
-        assertEquals(result, input);
+        assertThat(result).isEqualTo(input);
+
     }
 
     @Override
@@ -125,6 +124,6 @@ public class StringTruncateTest extends FunctionTest<StringTruncate> {
         final StringTruncate deserialisedMethod = JsonSerialiser.deserialise(json, StringTruncate.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

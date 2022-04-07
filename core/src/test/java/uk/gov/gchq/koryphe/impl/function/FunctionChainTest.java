@@ -26,7 +26,9 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.ARRAY;
+import static org.assertj.core.api.InstanceOfAssertFactories.COLLECTION;
 
 public class FunctionChainTest extends FunctionTest<FunctionChain> {
     @Override
@@ -93,7 +95,10 @@ public class FunctionChainTest extends FunctionTest<FunctionChain> {
         final Object result = function.apply(input);
 
         // Then
-        assertEquals(new ArrayTuple("someString", "SOMESTRING", Sets.newHashSet("SOMESTRING")), result);
+        assertThat(result)
+                .extracting("values")
+                .asInstanceOf(ARRAY)
+                .containsExactly("someString", "SOMESTRING", Sets.newHashSet("SOMESTRING"));
     }
 
     @Test
@@ -106,7 +111,9 @@ public class FunctionChainTest extends FunctionTest<FunctionChain> {
         final Object result = function.apply(input);
 
         // Then
-        assertEquals(Sets.newHashSet("SOMESTRING"), result);
+        assertThat(result)
+                .asInstanceOf(COLLECTION)
+                .containsExactly("SOMESTRING");
     }
 
     @Test
@@ -120,6 +127,6 @@ public class FunctionChainTest extends FunctionTest<FunctionChain> {
         final Object result = function.apply(input);
 
         // Then
-        assertEquals(input, result);
+        assertThat(result).isEqualTo(input);
     }
 }

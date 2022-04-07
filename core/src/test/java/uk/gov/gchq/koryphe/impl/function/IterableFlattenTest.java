@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Crown Copyright
+ * Copyright 2020-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,9 +30,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class IterableFlattenTest extends FunctionTest<IterableFlatten> {
 
@@ -45,7 +43,7 @@ public class IterableFlattenTest extends FunctionTest<IterableFlatten> {
         final Object result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -58,7 +56,7 @@ public class IterableFlattenTest extends FunctionTest<IterableFlatten> {
         final Number result = function.apply(input);
 
         // Then
-        assertEquals(15, result);
+        assertThat(result).isEqualTo(15);
     }
 
     @Test
@@ -71,7 +69,7 @@ public class IterableFlattenTest extends FunctionTest<IterableFlatten> {
         final String result = function.apply(input);
 
         // Then
-        assertEquals("abc", result);
+        assertThat(result).isEqualTo("abc");
     }
 
     @Override
@@ -113,6 +111,6 @@ public class IterableFlattenTest extends FunctionTest<IterableFlatten> {
         final IterableFlatten deserialised = JsonSerialiser.deserialise(json, IterableFlatten.class);
 
         // Then 2
-        assertNotNull(deserialised);
+        assertThat(deserialised).isNotNull();
     }
 }
