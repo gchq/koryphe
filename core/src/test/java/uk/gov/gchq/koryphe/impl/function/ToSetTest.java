@@ -160,7 +160,6 @@ public class ToSetTest extends FunctionTest<ToSet> {
         // Given
         final ToSet function = new ToSet(TreeSet.class);
         final Object value = new String[] {"value1", "value2"};
-        final Set expected = new TreeSet(Sets.newHashSet((Object[]) value));
 
         // When
         Object result = function.apply(value);
@@ -237,8 +236,7 @@ public class ToSetTest extends FunctionTest<ToSet> {
     public void shouldConvertTreeSetToHashSet() {
         // Given
         final ToSet function = new ToSet(HashSet.class);
-        final Set expected = Sets.newHashSet("value1", "value2");
-        final Set value = new TreeSet(expected);
+        final Set value = new TreeSet(Sets.newHashSet("value1", "value2"));
 
         // When
         final Object result = function.apply(value);
