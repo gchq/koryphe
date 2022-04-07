@@ -124,6 +124,6 @@ public class MultiRegex extends KoryphePredicate<String> {
             strings.add(pattern.toString());
         }
 
-        return strings.toArray(String[]::new);
+        return strings.toArray(new String[strings.size()]);
     }
 }

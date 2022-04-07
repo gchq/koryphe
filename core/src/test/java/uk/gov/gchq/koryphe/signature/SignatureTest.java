@@ -279,7 +279,7 @@ public class SignatureTest {
     @Test
     public void shouldAllowAnyInputsForInlineFunctions() {
         // Given
-        final Function<Integer, String> toString = new KorypheFunction<>() {
+        final Function<Integer, String> toString = new KorypheFunction<Integer, String>() {
             @Override
             public String apply(final Integer integer) {
                 return integer.toString();
@@ -299,7 +299,7 @@ public class SignatureTest {
     @Test
     public void shouldAllowAnyInputsForMultiLambdaFunctions() {
         // Given
-        final KorypheFunction2<Integer, Long, String> toString = new KorypheFunction2<>() {
+        final KorypheFunction2<Integer, Long, String> toString = new KorypheFunction2<Integer, Long, String>() {
             @Override
             public String apply(final Integer a, final Long b) {
                 return a.toString() + b.toString();
@@ -355,7 +355,7 @@ public class SignatureTest {
     @Test
     public void shouldCheckApplyBiFunctionTypesForInlineBiFunction() {
         // Given
-        final BiFunction<Long, Double, String> inlineBiFunction = new BiFunction<>() {
+        final BiFunction<Long, Double, String> inlineBiFunction = new BiFunction<Long, Double, String>() {
             @Override
             public String apply(final Long l, final Double d) {
                 return Long.toString(l).concat(Double.toString(d));
@@ -378,7 +378,7 @@ public class SignatureTest {
     @Test
     public void shouldGenerateInputSignatureUsingTupleClassWhenNotParameterised() {
         // Given
-        final Function<TestTuple, String> fromTestTuple = new KorypheFunction<>() {
+        final Function<TestTuple, String> fromTestTuple = new KorypheFunction<TestTuple, String>() {
             @Override
             public String apply(final TestTuple r) {
                 return "something";
@@ -397,7 +397,7 @@ public class SignatureTest {
     @Test
     public void shouldGenerateOutputSignatureUsingTupleClassWhenNotParameterised() {
         // Given
-        final Function<String, TestTuple> toTestTuple = new KorypheFunction<>() {
+        final Function<String, TestTuple> toTestTuple = new KorypheFunction<String, TestTuple>() {
             @Override
             public TestTuple apply(final String s) {
                 return new TestTuple();
@@ -416,7 +416,7 @@ public class SignatureTest {
     @Test
     public void shouldGenerateInputSignatureUsingMapTupleParameterTypes() {
         // Given
-        final Function<MapTuple<String>, String> fromMapTuple = new KorypheFunction<>() {
+        final Function<MapTuple<String>, String> fromMapTuple = new KorypheFunction<MapTuple<String>, String>() {
             @Override
             public String apply(final MapTuple<String> t) {
                 return "anything";
@@ -436,7 +436,7 @@ public class SignatureTest {
     @Test
     public void shouldGenerateOutputSignatureUsingMapTupleParameterTypes() {
         // Given
-        final Function<String, MapTuple<String>> toMapTuple = new KorypheFunction<>() {
+        final Function<String, MapTuple<String>> toMapTuple = new KorypheFunction<String, MapTuple<String>>() {
             @Override
             public MapTuple<String> apply(final String s) {
                 return new MapTuple<>();
