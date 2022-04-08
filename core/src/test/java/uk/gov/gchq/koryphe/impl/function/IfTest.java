@@ -32,9 +32,7 @@ import java.util.Arrays;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -115,10 +113,10 @@ public class IfTest extends FunctionTest<If> {
         final If deserialised = JsonSerialiser.deserialise(json, If.class);
 
         // Then 2
-        assertNotNull(deserialised);
-        assertTrue(deserialised.getCondition());
-        assertEquals("value1", ((SetValue) deserialised.getThen()).getValue());
-        assertEquals("value2", ((SetValue) deserialised.getOtherwise()).getValue());
+        assertThat(deserialised).isNotNull();
+        assertThat(deserialised.getCondition()).isTrue();
+        assertThat(((SetValue) deserialised.getThen()).getValue()).isEqualTo("value1");
+        assertThat(((SetValue) deserialised.getOtherwise()).getValue()).isEqualTo("value2");
     }
 
     @Test
@@ -150,10 +148,10 @@ public class IfTest extends FunctionTest<If> {
         final If deserialised = JsonSerialiser.deserialise(json, If.class);
 
         // Then 2
-        assertNotNull(deserialised);
-        assertEquals(Integer.class.getName(), ((IsA) deserialised.getPredicate()).getType());
-        assertEquals("value2", ((SetValue) deserialised.getThen()).getValue());
-        assertEquals("value3", ((SetValue) deserialised.getOtherwise()).getValue());
+        assertThat(deserialised).isNotNull();
+        assertThat(((IsA) deserialised.getPredicate()).getType()).isEqualTo(Integer.class.getName());
+        assertThat(((SetValue) deserialised.getThen()).getValue()).isEqualTo("value2");
+        assertThat(((SetValue) deserialised.getOtherwise()).getValue()).isEqualTo("value3");
     }
 
     @Test
@@ -166,7 +164,7 @@ public class IfTest extends FunctionTest<If> {
         final Object result = function.apply(input);
 
         // Then
-        assertEquals(input, result);
+        assertThat(result).isEqualTo(input);
     }
 
     @Test
@@ -186,7 +184,7 @@ public class IfTest extends FunctionTest<If> {
         final Object result = function.apply(input);
 
         // Then
-        assertEquals(0, result);
+        assertThat(result).isEqualTo(0);
         verify(predicate).test(input);
         verify(then).apply(input);
         verify(otherwise, never()).apply(input);
@@ -209,7 +207,7 @@ public class IfTest extends FunctionTest<If> {
         final Object result = function.apply(input);
 
         // Then
-        assertEquals(0, result);
+        assertThat(result).isEqualTo(0);
         verify(predicate).test(input);
         verify(then, never()).apply(input);
         verify(otherwise).apply(input);
@@ -231,7 +229,7 @@ public class IfTest extends FunctionTest<If> {
         final Object result = function.apply(input);
 
         // Then
-        assertEquals(input, result);
+        assertThat(result).isEqualTo(input);
         verify(predicate).test(input);
         verify(then, never()).apply(input);
         verify(otherwise).apply(input);
@@ -250,7 +248,7 @@ public class IfTest extends FunctionTest<If> {
         final Object result = function.apply(input);
 
         // Then
-        assertEquals(input, result);
+        assertThat(result).isEqualTo(input);
         verify(then, never()).apply(input);
     }
 
@@ -270,7 +268,7 @@ public class IfTest extends FunctionTest<If> {
         final Object result = function.apply(input);
 
         // Then
-        assertEquals(input, result);
+        assertThat(result).isEqualTo(input);
         verify(predicate).test(input);
     }
 
@@ -294,11 +292,10 @@ public class IfTest extends FunctionTest<If> {
         given(then.apply(secondVal)).willReturn(1);
 
         // When
-        final Object result = function.apply(input);
+        final Tuple<Integer> result = function.apply(input);
 
         // Then
-        final ArrayTuple expectedResult = new ArrayTuple(firstVal, 1, thirdVal);
-        assertEquals(expectedResult, result);
+        assertThat(result).containsExactly(firstVal, 1, thirdVal);
         verify(predicate).test(firstVal);
         verify(then).apply(secondVal);
     }
@@ -323,11 +320,10 @@ public class IfTest extends FunctionTest<If> {
         given(then.apply(refTuple)).willReturn(1);
 
         // When
-        final Object result = function.apply(input);
+        final Tuple<Integer> result = function.apply(input);
 
         // Then
-        final ArrayTuple expectedResult = new ArrayTuple(firstInput, 1, thirdInput);
-        assertEquals(expectedResult, result);
+        assertThat(result).containsExactly(firstInput, 1, thirdInput);
         verify(predicate).test(firstInput);
         verify(then).apply(refTuple);
         verify(otherwise, never()).apply(refTuple);
@@ -342,7 +338,7 @@ public class IfTest extends FunctionTest<If> {
                 .otherwise(new SetValue(2));
 
         // When / Then
-        assertEquals(Integer.valueOf(1), function.apply(1));
-        assertEquals(Integer.valueOf(2), function.apply(3));
+        assertThat(function.apply(1)).isEqualTo(Integer.valueOf(1));
+        assertThat(function.apply(3)).isEqualTo(Integer.valueOf(2));
     }
 }

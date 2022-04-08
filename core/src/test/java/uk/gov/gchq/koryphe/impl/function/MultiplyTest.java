@@ -23,8 +23,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MultiplyTest extends FunctionTest<Multiply> {
 
@@ -37,7 +36,7 @@ public class MultiplyTest extends FunctionTest<Multiply> {
         final int output = function.apply(4, 2);
 
         // Then
-        assertEquals(8, output);
+        assertThat(output).isEqualTo(8);
     }
 
     @Test
@@ -49,7 +48,7 @@ public class MultiplyTest extends FunctionTest<Multiply> {
         final int output = function.apply(9, null);
 
         // Then
-        assertEquals(9, output);
+        assertThat(output).isEqualTo(9);
     }
 
     @Test
@@ -61,7 +60,7 @@ public class MultiplyTest extends FunctionTest<Multiply> {
         final Integer output = function.apply(null, 9);
 
         // Then
-        assertEquals(null, output);
+        assertThat(output).isNull();
     }
 
     @Test
@@ -82,7 +81,7 @@ public class MultiplyTest extends FunctionTest<Multiply> {
         final Multiply deserialisedMultiply = JsonSerialiser.deserialise(json, Multiply.class);
 
         // Then 2
-        assertNotNull(deserialisedMultiply);
+        assertThat(deserialisedMultiply).isNotNull();
     }
 
     @Override

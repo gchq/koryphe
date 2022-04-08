@@ -19,13 +19,13 @@ package uk.gov.gchq.koryphe.impl.predicate;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
+import uk.gov.gchq.koryphe.signature.InputValidatorAssert;
+import uk.gov.gchq.koryphe.tuple.n.Tuple2;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class IsXLessThanYTest extends PredicateTest<IsXLessThanY> {
 
@@ -35,10 +35,10 @@ public class IsXLessThanYTest extends PredicateTest<IsXLessThanY> {
         final IsXLessThanY filter = new IsXLessThanY();
 
         // When
-        boolean accepted = filter.test(1, 2);
+        Tuple2 inputs = new Tuple2<>(1, 2);
 
         // Then
-        assertTrue(accepted);
+        assertThat(filter).accepts(inputs);
     }
 
     @Test
@@ -47,10 +47,10 @@ public class IsXLessThanYTest extends PredicateTest<IsXLessThanY> {
         final IsXLessThanY filter = new IsXLessThanY();
 
         // When
-        boolean accepted = filter.test(6, 5);
+        Tuple2 inputs = new Tuple2<>(6, 5);
 
         // Then
-        assertFalse(accepted);
+        assertThat(filter).rejects(inputs);
     }
 
     @Test
@@ -59,10 +59,10 @@ public class IsXLessThanYTest extends PredicateTest<IsXLessThanY> {
         final IsXLessThanY filter = new IsXLessThanY();
 
         // When
-        boolean accepted = filter.test(5, 5);
+        Tuple2 inputs = new Tuple2<>(5, 5);
 
         // Then
-        assertFalse(accepted);
+        assertThat(filter).rejects(inputs);
     }
 
     @Test
@@ -82,7 +82,7 @@ public class IsXLessThanYTest extends PredicateTest<IsXLessThanY> {
         final IsXLessThanY deserialisedFilter = JsonSerialiser.deserialise(json, IsXLessThanY.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
+        assertThat(deserialisedFilter).isNotNull();
     }
 
     @Test
@@ -91,11 +91,11 @@ public class IsXLessThanYTest extends PredicateTest<IsXLessThanY> {
         final IsXLessThanY predicate = new IsXLessThanY();
 
         // Then
-        assertTrue(predicate.isInputValid(Integer.class, Integer.class).isValid());
-        assertTrue(predicate.isInputValid(String.class, String.class).isValid());
-
-        assertFalse(predicate.isInputValid(Double.class).isValid());
-        assertFalse(predicate.isInputValid(Integer.class, Double.class).isValid());
+        InputValidatorAssert.assertThat(predicate)
+                .acceptsInput(Integer.class, Integer.class)
+                .acceptsInput(String.class, String.class)
+                .rejectsInput(Double.class)
+                .rejectsInput(Integer.class, Double.class);
     }
 
     @Override

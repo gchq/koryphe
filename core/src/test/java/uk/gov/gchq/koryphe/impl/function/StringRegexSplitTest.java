@@ -25,10 +25,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsCollectionContaining.hasItems;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class StringRegexSplitTest extends FunctionTest<StringRegexSplit> {
 
@@ -41,7 +38,7 @@ public class StringRegexSplitTest extends FunctionTest<StringRegexSplit> {
         final List<String> result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -54,7 +51,7 @@ public class StringRegexSplitTest extends FunctionTest<StringRegexSplit> {
         final List<String> result = function.apply(input);
 
         // Then
-        assertThat(result, hasItems("first", "second", "third"));
+        assertThat(result).contains("first", "second", "third");
     }
 
     @Override
@@ -99,6 +96,6 @@ public class StringRegexSplitTest extends FunctionTest<StringRegexSplit> {
         final StringRegexSplit deserialisedMethod = JsonSerialiser.deserialise(json, StringRegexSplit.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

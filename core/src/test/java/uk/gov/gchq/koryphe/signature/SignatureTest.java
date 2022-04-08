@@ -18,7 +18,6 @@ package uk.gov.gchq.koryphe.signature;
 
 import org.junit.jupiter.api.Test;
 
-import uk.gov.gchq.koryphe.ValidationResult;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 import uk.gov.gchq.koryphe.function.MockFunction;
 import uk.gov.gchq.koryphe.function.MockFunction2;
@@ -48,10 +47,7 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.from;
 import static org.mockito.Mockito.mock;
 
 public class SignatureTest {
@@ -66,18 +62,18 @@ public class SignatureTest {
         final Signature output = Signature.getOutputSignature(function);
 
         // Then
-        assertTrue(input.assignable(Object.class).isValid());
-        assertTrue(input.assignable(String.class).isValid());
-        assertTrue(output.assignable(String.class).isValid());
+        SignatureAssert.assertThat(input)
+                .isAssignableFrom(Object.class)
+                .isAssignableFrom(String.class)
+                .isNotAssignableFrom(Object.class, Long.class)
+                .returns(new Class[] {Object.class}, from(Signature::getClasses))
+                .returns((Integer) 1, from(Signature::getNumClasses));
 
-        assertFalse(input.assignable(Object.class, Long.class).isValid());
-        assertFalse(output.assignable(Long.class).isValid());
-
-        assertArrayEquals(new Class[] {Object.class}, input.getClasses());
-        assertEquals((Integer) 1, input.getNumClasses());
-
-        assertArrayEquals(new Class[] {String.class}, output.getClasses());
-        assertEquals((Integer) 1, output.getNumClasses());
+        SignatureAssert.assertThat(output)
+                .isAssignableFrom(String.class)
+                .isNotAssignableFrom(Long.class)
+                .returns(new Class[] {String.class}, from(Signature::getClasses))
+                .returns((Integer) 1, from(Signature::getNumClasses));
     }
 
     @Test
@@ -86,8 +82,9 @@ public class SignatureTest {
         final Signature input = Signature.getInputSignature(new InRange());
 
         // Then
-        assertTrue(input.assignable(Long.class).isValid());
-        assertFalse(input.assignable(Map.class).isValid());
+        SignatureAssert.assertThat(input)
+                .isAssignableFrom(Long.class)
+                .isNotAssignableFrom(Map.class);
     }
 
     @Test
@@ -96,8 +93,9 @@ public class SignatureTest {
         final Signature input = Signature.getInputSignature(new InvalidSignatureTestPredicate());
 
         // Then
-        assertTrue(input.assignable(String.class).isValid());
-        assertFalse(input.assignable(Long.class).isValid());
+        SignatureAssert.assertThat(input)
+                .isAssignableFrom(String.class)
+                .isNotAssignableFrom(Long.class);
     }
 
     @Test
@@ -110,17 +108,17 @@ public class SignatureTest {
         final Signature output = Signature.getOutputSignature(function);
 
         // Then
-        assertTrue(input.assignable(Double.class, Object.class).isValid());
-        assertTrue(output.assignable(String.class).isValid());
+        SignatureAssert.assertThat(input)
+                .isAssignableFrom(Double.class, Object.class)
+                .isNotAssignableFrom(String.class)
+                .returns(new Class[] {Double.class, Object.class}, from(Signature::getClasses))
+                .returns((Integer) 2, from(Signature::getNumClasses));
 
-        assertFalse(input.assignable(String.class).isValid());
-        assertFalse(output.assignable(Double.class, Object.class).isValid());
-
-        assertArrayEquals(new Class[] {Double.class, Object.class}, input.getClasses());
-        assertEquals((Integer) 2, input.getNumClasses());
-
-        assertArrayEquals(new Class[] {String.class}, output.getClasses());
-        assertEquals((Integer) 1, output.getNumClasses());
+        SignatureAssert.assertThat(output)
+                .isAssignableFrom(String.class)
+                .isNotAssignableFrom(Double.class, Object.class)
+                .returns(new Class[] {String.class}, from(Signature::getClasses))
+                .returns((Integer) 1, from(Signature::getNumClasses));
     }
 
     @Test
@@ -133,18 +131,18 @@ public class SignatureTest {
         final Signature output = Signature.getOutputSignature(function);
 
         // Then
-        assertTrue(input.assignable(Double.class, Object.class, Integer.class).isValid());
-        assertTrue(input.assignable(Double.class, String.class, Integer.class).isValid());
-        assertTrue(output.assignable(String.class).isValid());
+        SignatureAssert.assertThat(input)
+                .isAssignableFrom(Double.class, Object.class, Integer.class)
+                .isAssignableFrom(Double.class, String.class, Integer.class)
+                .isNotAssignableFrom(String.class)
+                .returns(new Class[] {Double.class, Object.class, Integer.class}, from(Signature::getClasses))
+                .returns(3, from(Signature::getNumClasses));
 
-        assertFalse(input.assignable(String.class).isValid());
-        assertFalse(output.assignable(Double.class, Object.class, Integer.class).isValid());
-
-        assertArrayEquals(new Class[] {Double.class, Object.class, Integer.class}, input.getClasses());
-        assertEquals((Integer) 3, input.getNumClasses());
-
-        assertArrayEquals(new Class[] {String.class}, output.getClasses());
-        assertEquals((Integer) 1, output.getNumClasses());
+        SignatureAssert.assertThat(output)
+                .isAssignableFrom(String.class)
+                .isNotAssignableFrom(Double.class, Object.class, Integer.class)
+                .returns(new Class[] {String.class}, from(Signature::getClasses))
+                .returns(1, from(Signature::getNumClasses));
     }
 
     @Test
@@ -157,18 +155,18 @@ public class SignatureTest {
         final Signature output = Signature.getOutputSignature(function);
 
         // Then
-        assertTrue(input.assignable(Double.class, Object.class).isValid());
-        assertTrue(input.assignable(Double.class, Long.class).isValid());
-        assertTrue(output.assignable(String.class).isValid());
+        SignatureAssert.assertThat(input)
+                .isAssignableFrom(Double.class, Object.class)
+                .isAssignableFrom(Double.class, Long.class)
+                .isNotAssignableFrom(String.class)
+                .returns(new Class[] {Double.class, Object.class}, from(Signature::getClasses))
+                .returns(2, from(Signature::getNumClasses));
 
-        assertFalse(input.assignable(String.class).isValid());
-        assertFalse(output.assignable(Integer.class, Double.class, Object.class).isValid());
-
-        assertArrayEquals(new Class[] {Double.class, Object.class}, input.getClasses());
-        assertEquals((Integer) 2, input.getNumClasses());
-
-        assertArrayEquals(new Class[] {String.class}, output.getClasses());
-        assertEquals((Integer) 1, output.getNumClasses());
+        SignatureAssert.assertThat(output)
+                .isAssignableFrom(String.class)
+                .isNotAssignableFrom(Integer.class, Double.class, Object.class)
+                .returns(new Class[] {String.class}, from(Signature::getClasses))
+                .returns(1, from(Signature::getNumClasses));
     }
 
     @Test
@@ -180,17 +178,18 @@ public class SignatureTest {
         final Signature input = Signature.getInputSignature(function);
         final Signature output = Signature.getOutputSignature(function);
 
-        assertTrue(input.assignable(Integer.class, Double.class, Object.class).isValid());
-        assertTrue(output.assignable(String.class).isValid());
+        // Then
+        SignatureAssert.assertThat(input)
+                .isAssignableFrom(Integer.class, Double.class, Object.class)
+                .isNotAssignableFrom(String.class)
+                .returns(new Class[] {Integer.class, Double.class, Object.class}, from(Signature::getClasses))
+                .returns(3, from(Signature::getNumClasses));
 
-        assertFalse(input.assignable(String.class).isValid());
-        assertFalse(output.assignable(Integer.class, Double.class, Object.class).isValid());
-
-        assertArrayEquals(new Class[] {Integer.class, Double.class, Object.class}, input.getClasses());
-        assertEquals((Integer) 3, input.getNumClasses());
-
-        assertArrayEquals(new Class[] {String.class}, output.getClasses());
-        assertEquals((Integer) 1, output.getNumClasses());
+        SignatureAssert.assertThat(output)
+                .isAssignableFrom(String.class)
+                .isNotAssignableFrom(Integer.class, Double.class, Object.class)
+                .returns(new Class[] {String.class}, from(Signature::getClasses))
+                .returns(1, from(Signature::getNumClasses));
     }
 
     @Test
@@ -202,12 +201,12 @@ public class SignatureTest {
         final Signature input = Signature.getInputSignature(predicate);
 
         // Then
-        assertTrue(input.assignable(Double.class).isValid());
-        assertFalse(input.assignable(String.class).isValid());
-        assertFalse(input.assignable(Double.class, Double.class).isValid());
-
-        assertArrayEquals(new Class[] {Double.class}, input.getClasses());
-        assertEquals((Integer) 1, input.getNumClasses());
+        SignatureAssert.assertThat(input)
+                .isAssignableFrom(Double.class)
+                .isNotAssignableFrom(String.class)
+                .isNotAssignableFrom(Double.class, Double.class)
+                .returns(new Class[] {Double.class}, from(Signature::getClasses))
+                .returns(1, from(Signature::getNumClasses));
     }
 
     @Test
@@ -219,11 +218,12 @@ public class SignatureTest {
         final Signature input = Signature.getInputSignature(predicate);
 
         // Then
-        assertTrue(input.assignable(Double.class).isValid());
-        assertFalse(input.assignable(String.class).isValid());
-        assertFalse(input.assignable(Double.class, Integer.class).isValid());
-        assertArrayEquals(new Class[] {Double.class}, input.getClasses());
-        assertEquals((Integer) 1, input.getNumClasses());
+        SignatureAssert.assertThat(input)
+                .isAssignableFrom(Double.class)
+                .isNotAssignableFrom(String.class)
+                .isNotAssignableFrom(Double.class, Integer.class)
+                .returns(new Class[] {Double.class}, from(Signature::getClasses))
+                .returns(1, from(Signature::getNumClasses));
     }
 
     @Test
@@ -235,12 +235,12 @@ public class SignatureTest {
         final Signature input = Signature.getInputSignature(predicate);
 
         // Then
-        assertTrue(input.assignable(Double.class, Integer.class).isValid());
-        assertFalse(input.assignable(String.class, Integer.class).isValid());
-        assertFalse(input.assignable(Double.class, Integer.class, Integer.class).isValid());
-
-        assertArrayEquals(new Class[] {Double.class, Integer.class}, input.getClasses());
-        assertEquals((Integer) 2, input.getNumClasses());
+        SignatureAssert.assertThat(input)
+                .isAssignableFrom(Double.class, Integer.class)
+                .isNotAssignableFrom(String.class, Integer.class)
+                .isNotAssignableFrom(Double.class, Integer.class, Integer.class)
+                .returns(new Class[] {Double.class, Integer.class}, from(Signature::getClasses))
+                .returns(2, from(Signature::getNumClasses));
     }
 
     @Test
@@ -254,14 +254,11 @@ public class SignatureTest {
                 .build();
         final Signature input = Signature.getInputSignature(predicate);
 
-        // When
-        final ValidationResult result = input.assignable(Integer.class, Double.class);
-
-        // Then
-        assertTrue(result.isValid(), result.getErrorString());
-
-        assertFalse(input.assignable(Integer.class, Collection.class).isValid());
-        assertFalse(input.assignable(Double.class).isValid());
+        // When / Then
+        SignatureAssert.assertThat(input)
+                .isAssignableFrom(Integer.class, Double.class)
+                .isNotAssignableFrom(Integer.class, Collection.class)
+                .isNotAssignableFrom(Double.class);
     }
 
     @Test
@@ -273,9 +270,10 @@ public class SignatureTest {
         final Signature input = Signature.getInputSignature(toString);
 
         // Then
-        assertTrue(input.assignable(Integer.class).isValid());
-        assertFalse(input.assignable(Integer.class, Integer.class).isValid());
-        assertTrue(input.assignable(Object.class).isValid());
+        SignatureAssert.assertThat(input)
+                .isAssignableFrom(Integer.class)
+                .isNotAssignableFrom(Integer.class, Integer.class)
+                .isAssignableFrom(Object.class);
     }
 
     @Test
@@ -292,9 +290,10 @@ public class SignatureTest {
         final Signature input = Signature.getInputSignature(toString);
 
         // Then
-        assertTrue(input.assignable(Integer.class).isValid());
-        assertFalse(input.assignable(Integer.class, Integer.class).isValid());
-        assertFalse(input.assignable(Object.class).isValid());
+        SignatureAssert.assertThat(input)
+                .isAssignableFrom(Integer.class)
+                .isNotAssignableFrom(Integer.class, Integer.class)
+                .isNotAssignableFrom(Object.class);
     }
 
     @Test
@@ -311,9 +310,10 @@ public class SignatureTest {
         final Signature input = Signature.getInputSignature(toString);
 
         // Then
-        assertTrue(input.assignable(Integer.class, Long.class).isValid());
-        assertFalse(input.assignable(Integer.class, Integer.class).isValid());
-        assertFalse(input.assignable(Object.class).isValid());
+        SignatureAssert.assertThat(input)
+                .isAssignableFrom(Integer.class, Long.class)
+                .isNotAssignableFrom(Integer.class, Integer.class)
+                .isNotAssignableFrom(Object.class);
     }
 
     @Test
@@ -323,17 +323,16 @@ public class SignatureTest {
 
         // When
         final Signature input = Signature.getInputSignature(function);
-
-        // Then
-        assertTrue(input.assignable(Collection.class).isValid());
-        assertFalse(input.assignable(Object.class).isValid());
-
-        // When
         final Signature output = Signature.getOutputSignature(function);
 
         // Then
-        assertTrue(output.assignable(Collection.class).isValid());
-        assertFalse(output.assignable(Object.class).isValid());
+        SignatureAssert.assertThat(input)
+                .isAssignableFrom(Collection.class)
+                .isNotAssignableFrom(Object.class);
+
+        SignatureAssert.assertThat(output)
+                .isAssignableFrom(Collection.class)
+                .isNotAssignableFrom(Object.class);
     }
 
     @Test
@@ -342,15 +341,15 @@ public class SignatureTest {
         final ApplyBiFunction applyBiFunction = new ApplyBiFunction(new Sum());
 
         // When
-        final Signature signature = Signature.getInputSignature(applyBiFunction);
+        final Signature input = Signature.getInputSignature(applyBiFunction);
 
         // Then
-        assertTrue(signature.assignable(Integer.class, Integer.class).isValid());
-        assertTrue(signature.assignable(Long.class, Long.class).isValid());
-
-        assertFalse(signature.assignable(Integer.class).isValid());
-        assertFalse(signature.assignable(Integer.class, Integer.class, Integer.class).isValid());
-        assertFalse(signature.assignable(String.class, String.class).isValid());
+        SignatureAssert.assertThat(input)
+                .isAssignableFrom(Integer.class, Integer.class)
+                .isAssignableFrom(Long.class, Long.class)
+                .isNotAssignableFrom(Integer.class)
+                .isNotAssignableFrom(Integer.class, Integer.class, Integer.class)
+                .isNotAssignableFrom(String.class, String.class);
     }
 
     @Test
@@ -366,14 +365,14 @@ public class SignatureTest {
         final ApplyBiFunction applyBiFunction = new ApplyBiFunction(inlineBiFunction);
 
         // When
-        final Signature signature = Signature.getInputSignature(applyBiFunction);
+        final Signature input = Signature.getInputSignature(applyBiFunction);
 
         // Then
-        assertTrue(signature.assignable(Long.class, Double.class).isValid());
-
-        assertFalse(signature.assignable(Long.class).isValid());
-        assertFalse(signature.assignable(Integer.class, Double.class, String.class).isValid());
-        assertFalse(signature.assignable(Double.class, Long.class).isValid());
+        SignatureAssert.assertThat(input)
+                .isAssignableFrom(Long.class, Double.class)
+                .isNotAssignableFrom(Long.class)
+                .isNotAssignableFrom(Integer.class, Double.class, String.class)
+                .isNotAssignableFrom(Double.class, Long.class);
     }
 
     @Test
@@ -387,11 +386,12 @@ public class SignatureTest {
         };
 
         // When
-        final Signature signature = Signature.getInputSignature(fromTestTuple);
+        final Signature input = Signature.getInputSignature(fromTestTuple);
 
         // Then
-        assertTrue(signature.assignable(TestTuple.class).isValid());
-        assertFalse(signature.assignable(Object.class).isValid());
+        SignatureAssert.assertThat(input)
+                .isAssignableFrom(TestTuple.class)
+                .isNotAssignableFrom(Object.class);
     }
 
     @Test
@@ -405,11 +405,12 @@ public class SignatureTest {
         };
 
         // When
-        final Signature signature = Signature.getOutputSignature(toTestTuple);
+        final Signature output = Signature.getOutputSignature(toTestTuple);
 
         // Then
-        assertTrue(signature.assignable(TestTuple.class).isValid());
-        assertFalse(signature.assignable(Object.class).isValid());
+        SignatureAssert.assertThat(output)
+                .isAssignableFrom(TestTuple.class)
+                .isNotAssignableFrom(Object.class);
     }
 
     @Test
@@ -423,12 +424,13 @@ public class SignatureTest {
         };
 
         // When
-        final Signature signature = Signature.getInputSignature(fromMapTuple);
+        final Signature input = Signature.getInputSignature(fromMapTuple);
 
         // Then
-        assertTrue(signature.assignable(String.class).isValid());
-        assertTrue(signature.assignable(String.class, String.class).isValid());
-        assertFalse(signature.assignable(Object.class).isValid());
+        SignatureAssert.assertThat(input)
+                .isAssignableFrom(String.class)
+                .isAssignableFrom(String.class, String.class)
+                .isNotAssignableFrom(Object.class);
     }
 
     @Test
@@ -442,12 +444,13 @@ public class SignatureTest {
         };
 
         // When
-        final Signature signature = Signature.getOutputSignature(toMapTuple);
+        final Signature output = Signature.getOutputSignature(toMapTuple);
 
         // Then
-        assertTrue(signature.assignable(String.class).isValid());
-        assertTrue(signature.assignable(String.class, String.class).isValid());
-        assertFalse(signature.assignable(Object.class).isValid());
+        SignatureAssert.assertThat(output)
+                .isAssignableFrom(String.class)
+                .isAssignableFrom(String.class, String.class)
+                .isNotAssignableFrom(Object.class);
     }
 
     private static class TestTuple implements Tuple<String> {
@@ -475,11 +478,12 @@ public class SignatureTest {
         final BinaryOperator<Integer> mockBinaryOperator = mock(BinaryOperator.class);
 
         // When
-        final Signature signature = Signature.getInputSignature(mockBinaryOperator);
+        final Signature input = Signature.getInputSignature(mockBinaryOperator);
 
         // Then
-        assertTrue(signature.assignable(Object.class).isValid());
-        assertTrue(signature.assignable(Object.class, Object.class).isValid());
+        SignatureAssert.assertThat(input)
+                .isAssignableFrom(Object.class)
+                .isAssignableFrom(Object.class, Object.class);
     }
 
     @Test
@@ -488,11 +492,12 @@ public class SignatureTest {
         final BinaryOperator<Integer> inlineBinaryOperator = Integer::sum;
 
         // When
-        final Signature signature = Signature.getInputSignature(inlineBinaryOperator);
+        final Signature input = Signature.getInputSignature(inlineBinaryOperator);
 
         // Then
-        assertTrue(signature.assignable(Object.class).isValid());
-        assertTrue(signature.assignable(Object.class, Object.class).isValid());
+        SignatureAssert.assertThat(input)
+                .isAssignableFrom(Object.class)
+                .isAssignableFrom(Object.class, Object.class);
     }
 
     @Test
@@ -501,12 +506,13 @@ public class SignatureTest {
         final TestIntegerBinaryOperator testBinaryOperator = new TestIntegerBinaryOperator();
 
         // When
-        final Signature signature = Signature.getInputSignature(testBinaryOperator);
+        final Signature input = Signature.getInputSignature(testBinaryOperator);
 
         // Then
-        assertTrue(signature.assignable(Integer.class).isValid());
-        assertFalse(signature.assignable(String.class).isValid());
-        assertFalse(signature.assignable(Integer.class, Integer.class).isValid());
+        SignatureAssert.assertThat(input)
+                .isAssignableFrom(Integer.class)
+                .isNotAssignableFrom(String.class)
+                .isNotAssignableFrom(Integer.class, Integer.class);
     }
 
     @Test
@@ -515,11 +521,12 @@ public class SignatureTest {
         final TestObjectBinaryOperator objectBinaryOperator = new TestObjectBinaryOperator();
 
         // When
-        final Signature signature = Signature.getInputSignature(objectBinaryOperator);
+        final Signature input = Signature.getInputSignature(objectBinaryOperator);
 
         // Then
-        assertTrue(signature.assignable(Object.class).isValid());
-        assertFalse(signature.assignable(Object.class, Object.class).isValid());
+        SignatureAssert.assertThat(input)
+                .isAssignableFrom(Object.class)
+                .isNotAssignableFrom(Object.class, Object.class);
     }
 
     private static class TestIntegerBinaryOperator implements BinaryOperator<Integer> {

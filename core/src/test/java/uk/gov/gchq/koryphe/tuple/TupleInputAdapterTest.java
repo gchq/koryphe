@@ -24,8 +24,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class TupleInputAdapterTest extends FunctionTest<TupleInputAdapter> {
     @Override
@@ -55,7 +54,7 @@ class TupleInputAdapterTest extends FunctionTest<TupleInputAdapter> {
 
         // Then
         JsonSerialiser.assertEquals(json, serialised);
-        assertEquals(instance, deserialised);
+        assertThat(deserialised).isEqualTo(instance);
     }
 
     @Override
@@ -85,7 +84,7 @@ class TupleInputAdapterTest extends FunctionTest<TupleInputAdapter> {
         Object adapted = inputAdapter.apply(objects);
 
         // Then
-        assertEquals(1, adapted);
+        assertThat(adapted).isEqualTo(1);
     }
 
     @Test
@@ -101,7 +100,7 @@ class TupleInputAdapterTest extends FunctionTest<TupleInputAdapter> {
         Object adapted = inputAdapter.apply(objects);
 
         // Then
-        assertNull(adapted);
+        assertThat(adapted).isNull();
     }
 
     @Test
@@ -119,6 +118,6 @@ class TupleInputAdapterTest extends FunctionTest<TupleInputAdapter> {
 
         // Then
         ReferenceArrayTuple<String> expected = new ReferenceArrayTuple<>(objects, new String[]{"one", "two"});
-        assertEquals(expected, adapted);
+        assertThat(adapted).isEqualTo(expected);
     }
 }

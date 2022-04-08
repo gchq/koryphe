@@ -19,6 +19,7 @@ package uk.gov.gchq.koryphe.impl.function;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
+import uk.gov.gchq.koryphe.signature.InputValidatorAssert;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
@@ -31,11 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class LengthTest extends FunctionTest<Length> {
     @Override
@@ -77,7 +75,7 @@ public class LengthTest extends FunctionTest<Length> {
         final Length deserialised = JsonSerialiser.deserialise(json, Length.class);
 
         // Then
-        assertNotNull(deserialised);
+        assertThat(deserialised).isNotNull();
     }
 
     @Test
@@ -89,7 +87,7 @@ public class LengthTest extends FunctionTest<Length> {
         final Integer result = function.apply(null);
 
         // Then
-        assertEquals(Integer.valueOf(0), result);
+        assertThat(result).isEqualTo(Integer.valueOf(0));
     }
 
     @Test
@@ -102,7 +100,7 @@ public class LengthTest extends FunctionTest<Length> {
         final Integer result = function.apply(input);
 
         // Then
-        assertEquals(Integer.valueOf(10), result);
+        assertThat(result).isEqualTo(Integer.valueOf(10));
     }
 
     @Test
@@ -115,7 +113,7 @@ public class LengthTest extends FunctionTest<Length> {
         final Integer result = function.apply(input);
 
         // Then
-        assertEquals(Integer.valueOf(5), result);
+        assertThat(result).isEqualTo(Integer.valueOf(5));
     }
 
     @Test
@@ -132,7 +130,7 @@ public class LengthTest extends FunctionTest<Length> {
         final Integer result = function.apply(input);
 
         // Then
-        assertEquals(Integer.valueOf(4), result);
+        assertThat(result).isEqualTo(Integer.valueOf(4));
     }
 
     @Test
@@ -148,7 +146,7 @@ public class LengthTest extends FunctionTest<Length> {
         final Integer result = function.apply(input);
 
         // Then
-        assertEquals(Integer.valueOf(3), result);
+        assertThat(result).isEqualTo(Integer.valueOf(3));
     }
 
     @Test
@@ -165,7 +163,7 @@ public class LengthTest extends FunctionTest<Length> {
         final Integer result = function.apply(input);
 
         // Then
-        assertEquals(Integer.valueOf(4), result);
+        assertThat(result).isEqualTo(Integer.valueOf(4));
     }
 
     @Test
@@ -175,24 +173,27 @@ public class LengthTest extends FunctionTest<Length> {
         final Concat input = new Concat();
 
         // When / Then
-        final Exception exception = assertThrows(IllegalArgumentException.class, () -> function.apply(input));
-        assertEquals("Could not determine the size of the provided value", exception.getMessage());
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> function.apply(input))
+                .withMessage("Could not determine the size of the provided value");
     }
 
     @Test
     public void shouldCheckInputClass() {
+        // Given
         final Length function = new Length();
 
-        assertTrue(function.isInputValid(String.class).isValid());
-        assertTrue(function.isInputValid(Object[].class).isValid());
-        assertTrue(function.isInputValid(Integer[].class).isValid());
-        assertTrue(function.isInputValid(Collection.class).isValid());
-        assertTrue(function.isInputValid(List.class).isValid());
-        assertTrue(function.isInputValid(Map.class).isValid());
-        assertTrue(function.isInputValid(HashMap.class).isValid());
-
-        assertFalse(function.isInputValid(String.class, HashMap.class).isValid());
-        assertFalse(function.isInputValid(Double.class).isValid());
-        assertFalse(function.isInputValid(Integer.class, Integer.class).isValid());
+        // When / Then
+        InputValidatorAssert.assertThat(function)
+                .acceptsInput(String.class)
+                .acceptsInput(Object[].class)
+                .acceptsInput(Integer[].class)
+                .acceptsInput(Collection.class)
+                .acceptsInput(List.class)
+                .acceptsInput(Map.class)
+                .acceptsInput(HashMap.class)
+                .rejectsInput(String.class, HashMap.class)
+                .rejectsInput(Double.class)
+                .rejectsInput(Integer.class, Integer.class);
     }
 }

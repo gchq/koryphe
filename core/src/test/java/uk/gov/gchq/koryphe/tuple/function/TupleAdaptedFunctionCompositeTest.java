@@ -29,9 +29,8 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 class TupleAdaptedFunctionCompositeTest extends FunctionTest<TupleAdaptedFunctionComposite> {
 
@@ -76,7 +75,7 @@ class TupleAdaptedFunctionCompositeTest extends FunctionTest<TupleAdaptedFunctio
 
         // Then
         JsonSerialiser.assertEquals(json, serialised);
-        assertEquals(instance, deserialised);
+        assertThat(deserialised).isEqualTo(instance);
     }
 
     @Override
@@ -133,12 +132,9 @@ class TupleAdaptedFunctionCompositeTest extends FunctionTest<TupleAdaptedFunctio
         inputTuple.put("input", "aString");
 
         // When / Then
-        try {
-            instance.apply(inputTuple);
-            fail("Expected Function to fail as the input should be a number but was a String");
-        } catch (NumberFormatException e) {
-            assertNotNull(e.getMessage());
-        }
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> instance.apply(inputTuple))
+                .withFailMessage("Expected Function to fail as the input should be a number but was a String");
     }
 
     @Test
@@ -152,7 +148,6 @@ class TupleAdaptedFunctionCompositeTest extends FunctionTest<TupleAdaptedFunctio
         Tuple<String> transformed = instance.apply(inputTuple);
 
         // Then
-        assertEquals(30L, transformed.get("output"));
-
+        assertThat(transformed.get("output")).isEqualTo(30L);
     }
 }

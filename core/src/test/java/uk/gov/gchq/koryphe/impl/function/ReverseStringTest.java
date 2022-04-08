@@ -23,8 +23,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ReverseStringTest extends FunctionTest<ReverseString> {
 
@@ -37,7 +36,7 @@ public class ReverseStringTest extends FunctionTest<ReverseString> {
         final String result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -50,7 +49,7 @@ public class ReverseStringTest extends FunctionTest<ReverseString> {
         final String result = function.apply(input);
 
         // Then
-        assertEquals("54321", result);
+        assertThat(result).isEqualTo("54321");
     }
 
     @Override
@@ -79,7 +78,7 @@ public class ReverseStringTest extends FunctionTest<ReverseString> {
 
         // Then
         JsonSerialiser.assertEquals(json, serialised);
-        assertEquals(instance, deserialised);
+        assertThat(deserialised).isEqualTo(instance);
 
     }
 

@@ -23,9 +23,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class OrTest extends BinaryOperatorTest<Or> {
 
@@ -41,10 +39,10 @@ public class OrTest extends BinaryOperatorTest<Or> {
         final boolean tt = function.apply(true, true);
 
         // Then
-        assertFalse(ff);
-        assertTrue(ft);
-        assertTrue(tf);
-        assertTrue(tt);
+        assertThat(ff).isFalse();
+        assertThat(ft).isTrue();
+        assertThat(tf).isTrue();
+        assertThat(tt).isTrue();
     }
 
     @Test
@@ -57,8 +55,8 @@ public class OrTest extends BinaryOperatorTest<Or> {
         final boolean fn = function.apply(false, null);
 
         // Then
-        assertFalse(nf);
-        assertFalse(fn);
+        assertThat(nf).isFalse();
+        assertThat(fn).isFalse();
     }
 
     @Override
@@ -89,6 +87,6 @@ public class OrTest extends BinaryOperatorTest<Or> {
         final Or deserialisedFunction = JsonSerialiser.deserialise(json, Or.class);
 
         // Then 2
-        assertNotNull(deserialisedFunction);
+        assertThat(deserialisedFunction).isNotNull();
     }
 }

@@ -24,8 +24,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DefaultIfNullTest extends FunctionTest<DefaultIfNull> {
 
@@ -70,7 +69,7 @@ public class DefaultIfNullTest extends FunctionTest<DefaultIfNull> {
         final DefaultIfNull deserialised = JsonSerialiser.deserialise(json, DefaultIfNull.class);
 
         // Then
-        assertNotNull(deserialised);
+        assertThat(deserialised).isNotNull();
     }
 
     @Test
@@ -82,7 +81,7 @@ public class DefaultIfNullTest extends FunctionTest<DefaultIfNull> {
         final Object result = defaultIfNull.apply(null);
 
         // Then
-        assertEquals(result, DEFAULT_VALUE);
+        assertThat(result).isEqualTo(DEFAULT_VALUE);
     }
 
     @Test
@@ -94,6 +93,6 @@ public class DefaultIfNullTest extends FunctionTest<DefaultIfNull> {
         final Object result = defaultIfNull.apply("input");
 
         // Then
-        assertEquals(result, "input");
+        assertThat(result).isEqualTo("input");
     }
 }

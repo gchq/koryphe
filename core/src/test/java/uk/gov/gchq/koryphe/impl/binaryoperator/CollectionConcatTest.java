@@ -28,8 +28,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.TreeSet;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CollectionConcatTest extends BinaryOperatorTest<CollectionConcat> {
 
@@ -45,7 +44,7 @@ public class CollectionConcatTest extends BinaryOperatorTest<CollectionConcat> {
         final Collection<Object> result = aggregator.apply(list1, list2);
 
         // Then
-        assertEquals(Arrays.asList(1, 2, 3, "3", "4", 5L), result);
+        assertThat(result).containsExactly(1, 2, 3, "3", "4", 5L);
     }
 
     @Test
@@ -64,12 +63,9 @@ public class CollectionConcatTest extends BinaryOperatorTest<CollectionConcat> {
         final Collection<String> result = aggregator.apply(treeSet1, treeSet2);
 
         // Then
-        final TreeSet<String> expectedResult = new TreeSet<>();
-        expectedResult.add("string1");
-        expectedResult.add("string2");
-        expectedResult.add("string3");
-        assertEquals(expectedResult, result);
-        assertEquals(TreeSet.class, result.getClass());
+        assertThat(result)
+                .containsExactly("string1", "string2", "string3")
+                .isExactlyInstanceOf(TreeSet.class);
     }
 
     @Test
@@ -88,12 +84,9 @@ public class CollectionConcatTest extends BinaryOperatorTest<CollectionConcat> {
         final Collection<Integer> result = aggregator.apply(hashSet1, hashSet2);
 
         // Then
-        final HashSet<Integer> expectedResult = new HashSet<>();
-        expectedResult.add(1);
-        expectedResult.add(2);
-        expectedResult.add(3);
-        assertEquals(expectedResult, result);
-        assertEquals(HashSet.class, result.getClass());
+        assertThat(result)
+                .containsExactly(1, 2, 3)
+                .isExactlyInstanceOf(HashSet.class);
     }
 
     @Test
@@ -114,7 +107,7 @@ public class CollectionConcatTest extends BinaryOperatorTest<CollectionConcat> {
         final CollectionConcat deserialisedAggregator = JsonSerialiser.deserialise(json, CollectionConcat.class);
 
         // Then 2
-        assertNotNull(deserialisedAggregator);
+        assertThat(deserialisedAggregator).isNotNull();
     }
 
     @Override

@@ -16,8 +16,6 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
@@ -27,10 +25,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ExtractKeysTest extends FunctionTest<ExtractKeys> {
     @Override
@@ -71,7 +66,7 @@ public class ExtractKeysTest extends FunctionTest<ExtractKeys> {
         final ExtractKeys deserialised = JsonSerialiser.deserialise(json, ExtractKeys.class);
 
         // Then 2
-        assertNotNull(deserialised);
+        assertThat(deserialised).isNotNull();
     }
 
     @Test
@@ -87,7 +82,7 @@ public class ExtractKeysTest extends FunctionTest<ExtractKeys> {
         final Iterable<String> results = function.apply(input);
 
         // Then
-        assertEquals(Sets.newHashSet("first", "second", "third"), results);
+        assertThat(results).containsExactlyInAnyOrder("first", "second", "third");
     }
 
     @Test
@@ -99,7 +94,7 @@ public class ExtractKeysTest extends FunctionTest<ExtractKeys> {
         final Iterable<String> results = function.apply(new HashMap<>());
 
         // Then
-        assertTrue(Iterables.isEmpty(results));
+        assertThat(results).isEmpty();
     }
 
     @Test
@@ -109,9 +104,9 @@ public class ExtractKeysTest extends FunctionTest<ExtractKeys> {
         final Map<String, String> input = null;
 
         // When
-        final Iterable result = function.apply(input);
+        final Iterable<String> result = function.apply(input);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 }

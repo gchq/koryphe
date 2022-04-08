@@ -31,10 +31,8 @@ import uk.gov.gchq.koryphe.util.ReflectionUtil;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class SimpleClassNameIdResolverTest {
 
@@ -57,7 +55,7 @@ public class SimpleClassNameIdResolverTest {
         final KorypheFunction function = JsonSerialiser.deserialise(json, KorypheFunction.class);
 
         // Then
-        assertNotNull(function);
+        assertThat(function).isNotNull();
     }
 
     @Test
@@ -69,7 +67,7 @@ public class SimpleClassNameIdResolverTest {
         final KorypheBinaryOperator binaryOperator = JsonSerialiser.deserialise(json, KorypheBinaryOperator.class);
 
         // Then
-        assertNotNull(binaryOperator);
+        assertThat(binaryOperator).isNotNull();
     }
 
 
@@ -82,7 +80,7 @@ public class SimpleClassNameIdResolverTest {
         final IsA predicate = (IsA) JsonSerialiser.deserialise(json, KoryphePredicate.class);
 
         // Then
-        assertEquals(Integer.class.getName(), predicate.getType());
+        assertThat(predicate.getType()).isEqualTo(Integer.class.getName());
     }
 
     @Test
@@ -94,7 +92,7 @@ public class SimpleClassNameIdResolverTest {
         final IsA predicate = (IsA) JsonSerialiser.deserialise(json, KoryphePredicate.class);
 
         // Then
-        assertEquals(Integer[].class.getName(), predicate.getType());
+        assertThat(predicate.getType()).isEqualTo(Integer[].class.getName());
     }
 
     @Test
@@ -106,7 +104,7 @@ public class SimpleClassNameIdResolverTest {
         final IsA predicate = (IsA) JsonSerialiser.deserialise(json, KoryphePredicate.class);
 
         // Then
-        assertEquals(Integer.class.getName(), predicate.getType());
+        assertThat(predicate.getType()).isEqualTo(Integer.class.getName());
     }
 
     @Test
@@ -118,7 +116,7 @@ public class SimpleClassNameIdResolverTest {
         final IsA predicate = (IsA) JsonSerialiser.deserialise(json, KoryphePredicate.class);
 
         // Then
-        assertEquals(Integer[].class.getName(), predicate.getType());
+        assertThat(predicate.getType()).isEqualTo(Integer[].class.getName());
     }
 
     @Test
@@ -181,13 +179,11 @@ public class SimpleClassNameIdResolverTest {
         SimpleClassNameCache.addSimpleClassNames(true, TestCustomObj.class);
 
         // When / Then
-        final Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                JsonSerialiser.deserialise("{\"class\":\"TestCustomObjImpl\"}", TestCustomObj.class));
-
-        assertTrue(exception.getMessage().contains("Multiple TestCustomObjImpl classes exist")
-                        && exception.getMessage().contains(TestCustomObjImpl.class.getName())
-                        && exception.getMessage().contains(uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomObjImpl.class.getName()),
-                exception.getMessage());
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> JsonSerialiser.deserialise("{\"class\":\"TestCustomObjImpl\"}", TestCustomObj.class))
+                .withMessageContaining("Multiple TestCustomObjImpl classes exist")
+                .withMessageContaining(TestCustomObjImpl.class.getName())
+                .withMessageContaining(uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomObjImpl.class.getName());
     }
 
     @Test
@@ -199,6 +195,6 @@ public class SimpleClassNameIdResolverTest {
         final TestCustomObj obj = JsonSerialiser.deserialise("{\"class\":\"TestCustomObjImplUnique\"}", TestCustomObj.class);
 
         // Then
-        assertNotNull(obj);
+        assertThat(obj).isNotNull();
     }
 }

@@ -32,10 +32,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AreInTest extends PredicateTest<AreIn> {
 
@@ -58,11 +55,8 @@ public class AreInTest extends PredicateTest<AreIn> {
         // Given
         final AreIn filter = new AreIn();
 
-        // When
-        boolean accepted = filter.test((Collection) null);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts((Collection) null);
     }
 
     @Test
@@ -70,11 +64,17 @@ public class AreInTest extends PredicateTest<AreIn> {
         // Given
         final AreIn filter = new AreIn();
 
-        // When
-        boolean accepted = filter.test(list);
+        // When / Then
+        assertThat(filter).accepts(list);
+    }
 
-        // Then
-        assertTrue(accepted);
+    @Test
+    public void shouldRejectWhenInputIsNullAndValuesNotEmpty() {
+        // Given
+        final AreIn filter = new AreIn(VALUE1, VALUE2);
+
+        // When / Then
+        assertThat(filter).rejects((Collection) null);
     }
 
     @Test
@@ -82,11 +82,8 @@ public class AreInTest extends PredicateTest<AreIn> {
         // Given
         final AreIn filter = new AreIn(VALUE1, VALUE2);
 
-        // When
-        boolean accepted = filter.test(list);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(list);
     }
 
     @Test
@@ -94,11 +91,8 @@ public class AreInTest extends PredicateTest<AreIn> {
         // Given
         final AreIn filter = new AreIn(VALUE1, VALUE2);
 
-        // When
-        boolean accepted = filter.test(set);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(set);
     }
 
     @Test
@@ -106,11 +100,8 @@ public class AreInTest extends PredicateTest<AreIn> {
         // Given
         final AreIn filter = new AreIn(VALUE1);
 
-        // When
-        boolean accepted = filter.test(list);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(list);
     }
 
     @Test
@@ -118,11 +109,8 @@ public class AreInTest extends PredicateTest<AreIn> {
         // Given
         final AreIn filter = new AreIn(VALUE1);
 
-        // When
-        boolean accepted = filter.test(set);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(set);
     }
 
     @Test
@@ -130,11 +118,8 @@ public class AreInTest extends PredicateTest<AreIn> {
         // Given
         final AreIn filter = new AreIn(VALUE1);
 
-        // When
-        boolean accepted = filter.test(new ArrayList<>());
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(new ArrayList<>());
     }
 
     @Test
@@ -142,11 +127,8 @@ public class AreInTest extends PredicateTest<AreIn> {
         // Given
         final AreIn filter = new AreIn(VALUE1);
 
-        // When
-        boolean accepted = filter.test(new HashSet<>());
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(new HashSet<>());
     }
 
     @Test
@@ -167,8 +149,8 @@ public class AreInTest extends PredicateTest<AreIn> {
         final AreIn deserialisedFilter = JsonSerialiser.deserialise(json, AreIn.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertArrayEquals(Collections.singleton(VALUE1).toArray(), deserialisedFilter.getValues().toArray());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getValues().toArray()).isEqualTo(Collections.singleton(VALUE1).toArray());
     }
 
     @Override

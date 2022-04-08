@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import java.io.Closeable;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -56,11 +56,11 @@ public class CloseableUtilTest {
 
     @Test
     public void shouldNotThrowExceptionForNullObject() {
-        assertDoesNotThrow(() -> CloseableUtil.close((Object) null));
+        assertThatNoException().isThrownBy(() -> CloseableUtil.close((Object) null));
     }
 
     @Test
     public void shouldNotThrowExceptionForNonCloseableObject() {
-        assertDoesNotThrow(() -> CloseableUtil.close("Some string"));
+        assertThatNoException().isThrownBy(() -> CloseableUtil.close("Some string"));
     }
 }

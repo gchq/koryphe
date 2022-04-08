@@ -16,41 +16,34 @@
 
 package uk.gov.gchq.koryphe.tuple;
 
-import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ArrayTupleTest {
 
     @Test
     public void testConstructorsSize() {
-        // Test size constructor
         // When
         final ArrayTuple tuple = new ArrayTuple(3);
 
         // Then
-        for (Object value : tuple) {
-            assertNull(value, "Found unexpected non-null value");
-        }
-        assertEquals(3, Iterables.size(tuple), "Found unexpected number of values");
+        assertThat(tuple)
+                .containsOnlyNulls()
+                .hasSize(3);
     }
 
     @Test
     public void testInitialArrayConstructors() {
-        // Test initial array constructor
         // Given
         final Object[] initialValues = new String[] {"a", "b", "c", "d", "e"};
 
         // When
         final ArrayTuple tuple = new ArrayTuple(initialValues);
 
-        int i = 0;
-        for (Object value : tuple) {
-            assertEquals(initialValues[i], value, "Found unexpected tuple value");
-            i++;
-        }
-        assertEquals(initialValues.length, Iterables.size(tuple), "Found unexpected number of values");
+        // Then
+        assertThat(tuple).containsExactlyElementsOf(Lists.newArrayList(initialValues));
     }
 }

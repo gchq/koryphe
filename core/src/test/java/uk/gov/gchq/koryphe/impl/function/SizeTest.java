@@ -24,8 +24,8 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class SizeTest extends FunctionTest<Size> {
     @Override
@@ -56,11 +56,13 @@ public class SizeTest extends FunctionTest<Size> {
 
         // When
         final String json = JsonSerialiser.serialise(function);
+        final Size deserialised = JsonSerialiser.deserialise(json, Size.class);
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
                 "   \"class\" : \"uk.gov.gchq.koryphe.impl.function.Size\"%n" +
                 "}"), json);
+        assertThat(deserialised).isEqualTo(function);
     }
 
     @Test
@@ -73,7 +75,7 @@ public class SizeTest extends FunctionTest<Size> {
         final int result = function.apply(input);
 
         // Then
-        assertEquals(5, result);
+        assertThat(result).isEqualTo(5);
     }
 
     @Test
@@ -86,7 +88,7 @@ public class SizeTest extends FunctionTest<Size> {
         final int result = function.apply(input);
 
         // Then
-        assertEquals(5, result);
+        assertThat(result).isEqualTo(5);
     }
 
     @Test
@@ -99,7 +101,7 @@ public class SizeTest extends FunctionTest<Size> {
         final int result = function.apply(input);
 
         // Then
-        assertEquals(3, result);
+        assertThat(result).isEqualTo(3);
     }
 
     @Test
@@ -108,7 +110,8 @@ public class SizeTest extends FunctionTest<Size> {
         final Size function = new Size();
 
         // When / Then
-        final Exception exception = assertThrows(IllegalArgumentException.class, () -> function.apply(null));
-        assertEquals("Input cannot be null", exception.getMessage());
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> function.apply(null))
+                .withMessage("Input cannot be null");
     }
 }

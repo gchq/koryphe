@@ -25,9 +25,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class IterableLongestTest extends FunctionTest<IterableLongest> {
 
@@ -40,7 +38,7 @@ public class IterableLongestTest extends FunctionTest<IterableLongest> {
         final Object result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -53,7 +51,7 @@ public class IterableLongestTest extends FunctionTest<IterableLongest> {
         final Object result = function.apply(list);
 
         // Then
-        assertEquals("abc", result);
+        assertThat(result).isEqualTo("abc");
     }
 
     @Override
@@ -93,6 +91,6 @@ public class IterableLongestTest extends FunctionTest<IterableLongest> {
         final IterableLongest deserialised = JsonSerialiser.deserialise(json, IterableLongest.class);
 
         // Then
-        assertNotNull(deserialised);
+        assertThat(deserialised).isNotNull();
     }
 }

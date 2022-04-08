@@ -16,8 +16,6 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
@@ -27,10 +25,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class IterableConcatTest extends FunctionTest<IterableConcat> {
     @Override
@@ -71,7 +67,7 @@ public class IterableConcatTest extends FunctionTest<IterableConcat> {
         final IterableConcat deserialised = JsonSerialiser.deserialise(json, IterableConcat.class);
 
         // Then 2
-        assertNotNull(deserialised);
+        assertThat(deserialised).isNotNull();
     }
 
     @Test
@@ -85,8 +81,9 @@ public class IterableConcatTest extends FunctionTest<IterableConcat> {
                 Arrays.asList(4, 5, 6)));
 
         // Then
-        assertNotNull(result);
-        assertEquals(Arrays.asList(1, 2, 3, 4, 5, 6), Lists.newArrayList(result));
+        assertThat(result)
+                .isNotNull()
+                .containsExactly(1, 2, 3, 4, 5, 6);
     }
 
     @Test
@@ -95,8 +92,9 @@ public class IterableConcatTest extends FunctionTest<IterableConcat> {
         final IterableConcat<Integer> function = new IterableConcat<>();
 
         // When / Then
-        final Exception exception = assertThrows(IllegalArgumentException.class, () -> function.apply(null));
-        assertEquals("iterables are required", exception.getMessage());
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> function.apply(null))
+                .withMessageContaining("iterables are required");
     }
 
     @Test
@@ -109,7 +107,7 @@ public class IterableConcatTest extends FunctionTest<IterableConcat> {
         final Iterable<Integer> results = function.apply(input);
 
         // Then
-        assertTrue(Iterables.isEmpty(results));
+        assertThat(results).isEmpty();
     }
 
     @Test
@@ -124,6 +122,7 @@ public class IterableConcatTest extends FunctionTest<IterableConcat> {
         final Iterable<Integer> results = function.apply(input);
 
         // Then
-        assertEquals(Arrays.asList(1, 2, null, 4, 5, null, 7), Lists.newArrayList(results));
+        assertThat(results)
+                .containsExactly(1, 2, null, 4, 5, null, 7);
     }
 }

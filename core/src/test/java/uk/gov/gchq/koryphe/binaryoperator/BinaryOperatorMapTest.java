@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BinaryOperator;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -63,7 +63,7 @@ public class BinaryOperatorMapTest {
             state = mapBinaryOperator.apply(state, input);
         }
 
-        assertEquals(noInputs * inA, (int) state.get("a"));
-        assertEquals(noInputs * inB, (int) state.get("b"));
+        assertThat((int) state.get("a")).isEqualTo(noInputs * inA);
+        assertThat((int) state.get("b")).isEqualTo(noInputs * inB);
     }
 }

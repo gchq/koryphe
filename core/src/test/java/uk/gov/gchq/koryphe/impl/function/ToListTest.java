@@ -24,13 +24,12 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ToListTest extends FunctionTest<ToList> {
 
@@ -43,7 +42,12 @@ public class ToListTest extends FunctionTest<ToList> {
         final Object result = function.apply(null);
 
         // Then
-        assertEquals(Lists.newArrayList((Object) null), result);
+        assertThat(result)
+                .isEqualTo(Lists.newArrayList((Object) null))
+                .asList()
+                .isNotNull()
+                .isNotEmpty()
+                .containsExactly((Object) null);
     }
 
     @Test
@@ -56,7 +60,11 @@ public class ToListTest extends FunctionTest<ToList> {
         final Object result = function.apply(value);
 
         // Then
-        assertEquals(Lists.newArrayList(value), result);
+        assertThat(result)
+                .isEqualTo(Lists.newArrayList(value))
+                .isExactlyInstanceOf(ArrayList.class)
+                .asList()
+                .containsExactly(value);
     }
 
     @Test
@@ -69,7 +77,11 @@ public class ToListTest extends FunctionTest<ToList> {
         final Object result = function.apply(value);
 
         // Then
-        assertEquals(Lists.newArrayList((Object[]) value), result);
+        assertThat(result)
+                .isEqualTo(Lists.newArrayList((Object []) value))
+                .isExactlyInstanceOf(ArrayList.class)
+                .asList()
+                .containsExactlyElementsOf(Lists.newArrayList((Object[]) value));
     }
 
     @Test
@@ -82,7 +94,11 @@ public class ToListTest extends FunctionTest<ToList> {
         final Object result = function.apply(value);
 
         // Then
-        assertEquals(Lists.newArrayList(value), result);
+        assertThat(result)
+                .isEqualTo(Lists.newArrayList(value))
+                .isExactlyInstanceOf(ArrayList.class)
+                .asList()
+                .containsExactlyElementsOf(value);
     }
 
     @Test
@@ -95,7 +111,7 @@ public class ToListTest extends FunctionTest<ToList> {
         final Object result = function.apply(value);
 
         // Then
-        assertSame(value, result);
+        assertThat(result).isSameAs(value);
     }
 
     @Override
@@ -136,6 +152,6 @@ public class ToListTest extends FunctionTest<ToList> {
         final ToList deserialisedMethod = JsonSerialiser.deserialise(json, ToList.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

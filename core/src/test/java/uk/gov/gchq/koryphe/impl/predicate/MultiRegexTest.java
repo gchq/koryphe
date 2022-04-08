@@ -25,10 +25,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MultiRegexTest extends PredicateTest<MultiRegex> {
 
@@ -40,11 +37,8 @@ public class MultiRegexTest extends PredicateTest<MultiRegex> {
         patterns[1] = Pattern.compile("pass");
         final MultiRegex filter = new MultiRegex(patterns);
 
-        // When
-        boolean accepted = filter.test("pass");
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts("pass");
     }
 
     @Test
@@ -55,11 +49,8 @@ public class MultiRegexTest extends PredicateTest<MultiRegex> {
         patterns[1] = Pattern.compile("reallyFail");
         final MultiRegex filter = new MultiRegex(patterns);
 
-        // When
-        boolean accepted = filter.test("pass");
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects("pass");
     }
 
     @Test
@@ -87,9 +78,9 @@ public class MultiRegexTest extends PredicateTest<MultiRegex> {
         final MultiRegex deserialisedFilter = JsonSerialiser.deserialise(json, MultiRegex.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(patterns[0].pattern(), deserialisedFilter.getPatterns()[0].pattern());
-        assertEquals(patterns[1].pattern(), deserialisedFilter.getPatterns()[1].pattern());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getPatterns()[0].pattern()).isEqualTo(patterns[0].pattern());
+        assertThat(deserialisedFilter.getPatterns()[1].pattern()).isEqualTo(patterns[1].pattern());
     }
 
     @Override
@@ -108,5 +99,4 @@ public class MultiRegexTest extends PredicateTest<MultiRegex> {
                 new MultiRegex(Pattern.compile("different"), Pattern.compile("[t,T].*[t,T]"))
         );
     }
-
-    }
+}

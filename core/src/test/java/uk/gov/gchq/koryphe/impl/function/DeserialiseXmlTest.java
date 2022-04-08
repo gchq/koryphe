@@ -22,12 +22,12 @@ import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.as;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
+import static org.assertj.core.api.InstanceOfAssertFactories.MAP;
 
 public class DeserialiseXmlTest extends FunctionTest<DeserialiseXml> {
     @Override
@@ -75,18 +75,21 @@ public class DeserialiseXmlTest extends FunctionTest<DeserialiseXml> {
         Map<String, Object> result = function.apply(input);
 
         // Then
-        Map<String, Object> element2aMap = new HashMap<>();
-        Map<String, Object> element2aAttrContentMap = new HashMap<>();
-        element2aAttrContentMap.put("attr", "attr1");
-        element2aAttrContentMap.put("content", "value1");
-        element2aMap.put("element2", element2aAttrContentMap);
-        Map<String, Object> element2bMap = new HashMap<>();
-        element2bMap.put("element2", "value2");
-        HashMap<Object, Object> element1Map = new HashMap<>();
-        element1Map.put("element1", Arrays.asList(element2aMap, element2bMap));
-        HashMap<Object, Object> expectedRootMap = new HashMap<>();
-        expectedRootMap.put("root", element1Map);
-        assertEquals(expectedRootMap, result);
+        assertThat(result)
+                .hasSize(1)
+                .extracting("root", as(MAP))
+                .hasSize(1)
+                .flatExtracting("element1")
+                .hasSize(2)
+                .extracting("element2")
+                .hasSize(2)
+                .contains("value2")
+                .first(as(MAP))
+                .containsOnly(
+                        entry("attr", "attr1"),
+                        entry("content", "value1")
+                );
+
     }
 
     @Test
@@ -98,6 +101,6 @@ public class DeserialiseXmlTest extends FunctionTest<DeserialiseXml> {
         Map<String, Object> result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 }

@@ -25,8 +25,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class DateUtilTest {
 
@@ -39,7 +39,7 @@ public class DateUtilTest {
         final Long result = DateUtil.parseTime(Long.toString(timestamp));
 
         // Then
-        assertEquals(timestamp, (long) result);
+        assertThat((long) result).isEqualTo(timestamp);
     }
 
     @Test
@@ -51,7 +51,7 @@ public class DateUtilTest {
         final Long result = DateUtil.parseTime(Long.toString(timestamp), TimeZone.getTimeZone("Etc/GMT+6"));
 
         // Then
-        assertEquals(timestamp, (long) result);
+        assertThat((long) result).isEqualTo(timestamp);
     }
 
     @Test
@@ -87,25 +87,24 @@ public class DateUtilTest {
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         sdf.setTimeZone(TimeZone.getTimeZone(timeZone));
         final Date expected = sdf.parse(dateString);
-        assertEquals(expected, result);
+        assertThat(result).isEqualTo(expected);
     }
 
     @Test
     public void shouldNotParseInvalidDate() {
-        // When
-        final Exception exception = assertThrows(IllegalArgumentException.class, () -> DateUtil.parse("2017/1"));
-
-        // Then
-        final String expected = "The provided date string 2017/1 could not be parsed. Please use a timestamp in " +
+        // When / Then
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> DateUtil.parse("2017/1"))
+                .withMessage("The provided date string 2017/1 could not be parsed. Please use a timestamp in " +
                 "milliseconds or one of the following formats: [yyyy/MM, yyyy/MM/dd, yyyy/MM/dd HH, yyyy/MM/dd HH:mm, " +
                 "yyyy/MM/dd HH:mm:ss, yyyy/MM/dd HH:mm:ss.SSS]. You can use a space, '-', '/', '_', ':', '|', or '.' " +
-                "to separate the parts.";
-        assertEquals(expected, exception.getMessage());
+                "to separate the parts.");
     }
 
     private void assertDate(final String expected, final String testDate, final String format) throws ParseException {
         final Date expectedDate = DateUtils.parseDate(expected, Locale.getDefault(), format);
-
-        assertEquals(expectedDate, DateUtil.parse(testDate), "Failed to parse date: " + testDate);
+        assertThat(DateUtil.parse(testDate))
+                .isEqualTo(expectedDate)
+                .withFailMessage("Failed to parse date: %s", testDate);
     }
 }

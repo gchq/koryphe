@@ -30,9 +30,8 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 class TupleAdaptedFunctionTest extends FunctionTest<TupleAdaptedFunction> {
 
@@ -66,7 +65,7 @@ class TupleAdaptedFunctionTest extends FunctionTest<TupleAdaptedFunction> {
 
         // Then
         JsonSerialiser.assertEquals(json, serialised);
-        assertEquals(instance, deserialised);
+        assertThat(deserialised).isEqualTo(instance);
     }
 
     @Override
@@ -92,9 +91,7 @@ class TupleAdaptedFunctionTest extends FunctionTest<TupleAdaptedFunction> {
         inputs.put("input", "aString");
 
         // When / Then
-        NumberFormatException e = assertThrows(NumberFormatException.class, () -> function.apply(inputs));
-
-        assertNotNull(e.getMessage());
+        assertThatExceptionOfType(NumberFormatException.class).isThrownBy(() -> function.apply(inputs));
     }
 
     @Test
@@ -107,7 +104,7 @@ class TupleAdaptedFunctionTest extends FunctionTest<TupleAdaptedFunction> {
         ArrayTuple returnedTuple = (ArrayTuple) instance.apply(objects);
 
         // Then
-        assertEquals("test", returnedTuple.get(0));
-        assertEquals("TEST", returnedTuple.get(1));
+        assertThat(returnedTuple.get(0)).isEqualTo("test");
+        assertThat(returnedTuple.get(1)).isEqualTo("TEST");
     }
 }

@@ -24,9 +24,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class StringRegexReplaceTest extends FunctionTest<StringRegexReplace> {
 
@@ -39,7 +37,7 @@ public class StringRegexReplaceTest extends FunctionTest<StringRegexReplace> {
         final String result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -52,7 +50,7 @@ public class StringRegexReplaceTest extends FunctionTest<StringRegexReplace> {
         final String result = function.apply(input);
 
         // Then
-        assertEquals("An output string.", result);
+        assertThat(result).isEqualTo("An output string.");
     }
 
     @Test
@@ -65,7 +63,7 @@ public class StringRegexReplaceTest extends FunctionTest<StringRegexReplace> {
         final String result = function.apply(input);
 
         // Then
-        assertEquals("An inpu tring.", result);
+        assertThat(result).isEqualTo("An inpu tring.");
     }
 
     @Override
@@ -112,6 +110,6 @@ public class StringRegexReplaceTest extends FunctionTest<StringRegexReplace> {
         final StringRegexReplace deserialisedMethod = JsonSerialiser.deserialise(json, StringRegexReplace.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

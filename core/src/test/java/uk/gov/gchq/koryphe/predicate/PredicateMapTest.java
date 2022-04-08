@@ -29,15 +29,12 @@ import java.util.Date;
 import java.util.Map;
 import java.util.function.Predicate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 /**
- * Tests the MapFilter class can be used to mapFilter {@code FreqMap} frequencies.
+ * Tests the MapFilter class can be used to filter {@code FreqMap} frequencies.
  */
 public class PredicateMapTest extends PredicateTest<PredicateMap> {
 
@@ -60,74 +57,59 @@ public class PredicateMapTest extends PredicateTest<PredicateMap> {
     @Test
     public void shouldAcceptWhenNotPredicateGiven() {
         // Given
-        final PredicateMap<String> mapFilter = new PredicateMap<>(KEY1, null);
+        final PredicateMap<String> filter = new PredicateMap<>(KEY1, null);
 
-        // When
-        boolean accepted = mapFilter.test(map);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(map);
     }
 
     @Test
     public void shouldAcceptWhenPredicateAccepts() {
         // Given
-        final PredicateMap<String> mapFilter = new PredicateMap<>(KEY1, predicate);
+        final PredicateMap<String> filter = new PredicateMap<>(KEY1, predicate);
         given(predicate.test(VALUE1)).willReturn(true);
 
-        // When
-        boolean accepted = mapFilter.test(map);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(map);
     }
 
     @Test
     public void shouldRejectWhenPredicateRejects() {
         // Given
-        final PredicateMap<String> mapFilter = new PredicateMap<>(KEY1, predicate);
+        final PredicateMap<String> filter = new PredicateMap<>(KEY1, predicate);
         given(predicate.test(VALUE1)).willReturn(false);
 
-        // When
-        boolean accepted = mapFilter.test(map);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(map);
     }
 
 
     @Test
     public void shouldNotErrorWhenKeyIsNotPresentForPredicate() {
         // Given
-        final PredicateMap<String> mapFilter = new PredicateMap<>(KEY2, predicate);
+        final PredicateMap<String> filter = new PredicateMap<>(KEY2, predicate);
         given(predicate.test(null)).willReturn(false);
 
-        // When
-        boolean accepted = mapFilter.test(map);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(map);
     }
 
     @Test
     public void shouldRejectNullMaps() {
         // Given
-        final PredicateMap<String> mapFilter = new PredicateMap<>(KEY1, predicate);
+        final PredicateMap<String> filter = new PredicateMap<>(KEY1, predicate);
 
-        // When
-        boolean accepted = mapFilter.test(null);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects((Map) null);
     }
 
     @Test
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
-        final PredicateMap<String> mapFilter = new PredicateMap<>(DATE_KEY, new IsA(Map.class));
+        final PredicateMap<String> filter = new PredicateMap<>(DATE_KEY, new IsA(Map.class));
 
         // When
-        final String json = JsonSerialiser.serialise(mapFilter);
+        final String json = JsonSerialiser.serialise(filter);
 
         // Then
         JsonSerialiser.assertEquals(String.format("{\n" +
@@ -145,8 +127,8 @@ public class PredicateMapTest extends PredicateTest<PredicateMap> {
         final PredicateMap deserialisedFilter = JsonSerialiser.deserialise(json, PredicateMap.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(DATE_KEY, deserialisedFilter.getKey());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getKey()).isEqualTo(DATE_KEY);
     }
 
     @Override

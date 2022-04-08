@@ -25,9 +25,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class Base64DecodeTest extends FunctionTest<Base64Decode> {
     @Override
@@ -68,7 +66,7 @@ public class Base64DecodeTest extends FunctionTest<Base64Decode> {
         final Base64Decode deserialisedMethod = JsonSerialiser.deserialise(json, Base64Decode.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 
     @Test
@@ -82,7 +80,7 @@ public class Base64DecodeTest extends FunctionTest<Base64Decode> {
         final byte[] result = function.apply(base64);
 
         // Then
-        assertArrayEquals(input, result);
+        assertThat(result).isEqualTo(input);
     }
 
     @Test
@@ -94,6 +92,6 @@ public class Base64DecodeTest extends FunctionTest<Base64Decode> {
         final byte[] result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 }

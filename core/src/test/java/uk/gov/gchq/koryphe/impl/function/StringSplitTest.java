@@ -25,13 +25,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.collection.IsEmptyCollection.empty;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsCollectionContaining.hasItems;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class StringSplitTest extends FunctionTest<StringSplit> {
 
@@ -44,7 +38,7 @@ public class StringSplitTest extends FunctionTest<StringSplit> {
         final List<String> result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -57,8 +51,9 @@ public class StringSplitTest extends FunctionTest<StringSplit> {
         final List<String> result = function.apply(input);
 
         // Then
-        assertThat(result, hasItems("first,second,third"));
-        assertThat(result, hasSize(1));
+        assertThat(result)
+                .contains("first,second,third")
+                .hasSize(1);
     }
 
     @Test
@@ -71,7 +66,9 @@ public class StringSplitTest extends FunctionTest<StringSplit> {
         final List<String> result = function.apply(input);
 
         // Then
-        assertThat(result, hasItems("first", "second", "third"));
+        assertThat(result)
+                .contains("first", "second", "third")
+                .hasSize(3);
     }
 
     @Test
@@ -84,7 +81,7 @@ public class StringSplitTest extends FunctionTest<StringSplit> {
         final List<String> result = function.apply(input);
 
         // Then
-        assertThat(result, is(empty()));
+        assertThat(result).isEmpty();
     }
 
     @Override
@@ -126,6 +123,6 @@ public class StringSplitTest extends FunctionTest<StringSplit> {
         final StringSplit deserialisedMethod = JsonSerialiser.deserialise(json, StringSplit.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

@@ -25,10 +25,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class IsEqualTest extends PredicateTest<IsEqual> {
 
@@ -37,11 +34,8 @@ public class IsEqualTest extends PredicateTest<IsEqual> {
         // Given
         final IsEqual filter = new IsEqual("test");
 
-        // When
-        boolean accepted = filter.test("test");
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts("test");
     }
 
     @Test
@@ -49,11 +43,8 @@ public class IsEqualTest extends PredicateTest<IsEqual> {
         // Given
         final IsEqual filter = new IsEqual();
 
-        // When
-        boolean accepted = filter.test(null);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts((Object) null);
     }
 
     @Test
@@ -61,11 +52,8 @@ public class IsEqualTest extends PredicateTest<IsEqual> {
         // Given
         final IsEqual filter = new IsEqual("test");
 
-        // When
-        boolean accepted = filter.test("a different value");
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects("a different value");
     }
 
     @Test
@@ -87,8 +75,8 @@ public class IsEqualTest extends PredicateTest<IsEqual> {
         final IsEqual deserialisedFilter = JsonSerialiser.deserialise(json, IsEqual.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(controlValue, deserialisedFilter.getControlValue());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getControlValue()).isEqualTo(controlValue);
     }
 
     @Override

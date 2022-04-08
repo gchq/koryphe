@@ -24,7 +24,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CurrentDateTest extends FunctionTest<CurrentDate> {
 
@@ -43,16 +43,15 @@ public class CurrentDateTest extends FunctionTest<CurrentDate> {
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
         String json = "{ \"class\": \"uk.gov.gchq.koryphe.impl.function.CurrentDate\" }";
-        CurrentDate CurrentDate = new CurrentDate();
+        CurrentDate currentDate = new CurrentDate();
 
         // When
-        String serialised = JsonSerialiser.serialise(CurrentDate);
+        String serialised = JsonSerialiser.serialise(currentDate);
         CurrentDate deserialised = JsonSerialiser.deserialise(json, CurrentDate.class);
 
         // Then
         JsonSerialiser.assertEquals(json, serialised);
-        assertEquals(CurrentDate, deserialised);
-
+        assertThat(deserialised).isEqualTo(currentDate);
     }
 
     @Override

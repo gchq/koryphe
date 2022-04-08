@@ -29,10 +29,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.from;
 
 public class CreateObjectTest extends FunctionTest<CreateObject> {
 
@@ -45,7 +44,8 @@ public class CreateObjectTest extends FunctionTest<CreateObject> {
         Object output = function.apply(null);
 
         // Then
-        assertEquals(new ArrayList<>(), output);
+        assertThat(output)
+                .isEqualTo(new ArrayList<>());
     }
 
     @Test
@@ -58,8 +58,9 @@ public class CreateObjectTest extends FunctionTest<CreateObject> {
         Object output = function.apply(value);
 
         // Then
-        assertEquals(value, output);
-        assertNotSame(value, output);
+        assertThat(output)
+                .isEqualTo(value)
+                .isNotSameAs(value);
     }
 
     @Test
@@ -69,10 +70,10 @@ public class CreateObjectTest extends FunctionTest<CreateObject> {
         Map<String, String> value = new HashMap<>();
 
         // When / Then
-        final Exception exception = assertThrows(RuntimeException.class, () -> function.apply(value));
-        final String expected = "Unable to create a new instance of java.util.ArrayList. No constructors were found " +
-                "that accept a java.util.HashMap";
-        assertEquals(expected, exception.getMessage());
+        assertThatExceptionOfType(RuntimeException.class)
+                .isThrownBy(() -> function.apply(value))
+                .withMessage("Unable to create a new instance of java.util.ArrayList. No constructors were found " +
+                    "that accept a java.util.HashMap");
     }
 
     @Test
@@ -81,10 +82,10 @@ public class CreateObjectTest extends FunctionTest<CreateObject> {
         final CreateObject function = new CreateObject(TestClass.class);
 
         // When / Then
-        final Exception exception = assertThrows(RuntimeException.class, () -> function.apply(null));
-        final String expected = "Unable to create a new instance of " +
-                "uk.gov.gchq.koryphe.impl.function.CreateObjectTest$TestClass using the no-arg constructor";
-        assertEquals(expected, exception.getMessage());
+        assertThatExceptionOfType(RuntimeException.class)
+                .isThrownBy(() -> function.apply(null))
+                .withMessage("Unable to create a new instance of " +
+                    "uk.gov.gchq.koryphe.impl.function.CreateObjectTest$TestClass using the no-arg constructor");
     }
 
     @Test
@@ -106,8 +107,9 @@ public class CreateObjectTest extends FunctionTest<CreateObject> {
         final CreateObject deserialised = JsonSerialiser.deserialise(json, CreateObject.class);
 
         // Then 2
-        assertNotNull(deserialised);
-        assertEquals(ArrayList.class, deserialised.getObjectClass());
+        assertThat(deserialised)
+                .isNotNull()
+                .returns(ArrayList.class, from(CreateObject::getObjectClass));
     }
 
     @Override

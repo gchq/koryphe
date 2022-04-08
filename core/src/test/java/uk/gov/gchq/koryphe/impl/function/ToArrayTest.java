@@ -26,9 +26,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ToArrayTest extends FunctionTest<ToArray> {
 
@@ -41,7 +39,7 @@ public class ToArrayTest extends FunctionTest<ToArray> {
         final Object[] result = function.apply(null);
 
         // Then
-        assertArrayEquals(new Object[] {null}, result);
+        assertThat(result).isEqualTo(new Object[] {null});
     }
 
     @Test
@@ -54,7 +52,7 @@ public class ToArrayTest extends FunctionTest<ToArray> {
         final Object[] result = function.apply(value);
 
         // Then
-        assertArrayEquals(new Object[] {value}, result);
+        assertThat(result).isEqualTo(new Object[] {value});
     }
 
     @Test
@@ -67,7 +65,7 @@ public class ToArrayTest extends FunctionTest<ToArray> {
         final Object[] result = function.apply(value);
 
         // Then
-        assertArrayEquals(new Object[] {"value1", "value2"}, result);
+        assertThat(result).isEqualTo(new Object[] {"value1", "value2"});
     }
 
     @Test
@@ -80,7 +78,7 @@ public class ToArrayTest extends FunctionTest<ToArray> {
         final Object[] result = function.apply(value);
 
         // Then
-        assertArrayEquals(new Object[] {"value1", "value2"}, result);
+        assertThat(result).isEqualTo(new Object[] {"value1", "value2"});
     }
 
     @Test
@@ -93,7 +91,7 @@ public class ToArrayTest extends FunctionTest<ToArray> {
         final Object[] result = function.apply(value);
 
         // Then
-        assertSame(value, result);
+        assertThat(result).isSameAs(value);
     }
 
     @Override
@@ -134,6 +132,6 @@ public class ToArrayTest extends FunctionTest<ToArray> {
         final ToArray deserialisedMethod = JsonSerialiser.deserialise(json, ToArray.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }
