@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2018-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,44 +13,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class ExtractValueTest extends FunctionTest {
+public class ExtractValueTest extends FunctionTest<ExtractValue> {
     @Override
-    protected Function getInstance() {
-        return new ExtractValue<String, Integer>("testKey");
+    protected ExtractValue<String, Integer> getInstance() {
+        return new ExtractValue<>("testKey");
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ExtractValue.class;
+    protected Iterable<ExtractValue> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new ExtractValue("differentKey"));
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Map.class };
+        return new Class[] {Map.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -69,8 +68,8 @@ public class ExtractValueTest extends FunctionTest {
         final ExtractValue deserialised = JsonSerialiser.deserialise(json, ExtractValue.class);
 
         // Then 2
-        assertNotNull(deserialised);
-        assertEquals("test", deserialised.getKey());
+        assertThat(deserialised).isNotNull();
+        assertThat(deserialised.getKey()).isEqualTo("test");
     }
 
     @Test
@@ -87,32 +86,18 @@ public class ExtractValueTest extends FunctionTest {
         final Integer result = function.apply(input);
 
         // Then
-        assertEquals(new Integer(3), result);
-    }
-
-    @Test
-    public void shouldThrowExceptionForNullInput() {
-        // Given
-        final ExtractValue<String, Integer> function = new ExtractValue<>();
-
-        // When / Then
-        try {
-            final Integer result = function.apply(null);
-        } catch (final IllegalArgumentException e) {
-            assertTrue(e.getMessage().contains("Input cannot be null"));
-        }
+        assertThat(result).isEqualTo(3);
     }
 
     @Test
     public void shouldThrowExceptionForEmptyInput() {
         // Given
         final ExtractValue<String, Integer> function = new ExtractValue<>();
-        final Map<String, Integer> input = null;
 
         // When
-        final Integer result = function.apply(input);
+        final Integer result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Crown Copyright
+ * Copyright 2020-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class StringPrependTest extends FunctionTest {
+public class StringPrependTest extends FunctionTest<StringPrepend> {
+
     @Test
     public void shouldHandleNullInput() {
         // Given
@@ -36,7 +37,7 @@ public class StringPrependTest extends FunctionTest {
         final String result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -48,7 +49,7 @@ public class StringPrependTest extends FunctionTest {
         final String result = function.apply("Hello");
 
         // Then
-        assertEquals("Hello", result);
+        assertThat(result).isEqualTo("Hello");
     }
     @Test
     public void shouldHandleUnsetSuffix() {
@@ -59,7 +60,7 @@ public class StringPrependTest extends FunctionTest {
         final String result = function.apply("Hello");
 
         // Then
-        assertEquals("Hello", result);
+        assertThat(result).isEqualTo("Hello");
     }
     @Test
     public void shouldPrependInputWithString() {
@@ -70,7 +71,7 @@ public class StringPrependTest extends FunctionTest {
         final String result = function.apply("Hello");
 
         // Then
-        assertEquals("!Hello", result);
+        assertThat(result).isEqualTo("!Hello");
     }
 
     @Override
@@ -79,8 +80,8 @@ public class StringPrependTest extends FunctionTest {
     }
 
     @Override
-    protected Class<? extends StringPrepend> getFunctionClass() {
-        return StringPrepend.class;
+    protected Iterable<StringPrepend> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new StringPrepend("different"));
     }
 
     @Override
@@ -93,6 +94,7 @@ public class StringPrependTest extends FunctionTest {
         return new Class[]{ String.class };
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -111,6 +113,6 @@ public class StringPrependTest extends FunctionTest {
         final StringPrepend deserialisedMethod = JsonSerialiser.deserialise(json, StringPrepend.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

@@ -13,21 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import uk.gov.gchq.koryphe.function.FunctionTest;
+import uk.gov.gchq.koryphe.impl.predicate.IsLessThan;
 import uk.gov.gchq.koryphe.impl.predicate.IsMoreThan;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class FirstValidTest extends FunctionTest {
+public class FirstValidTest extends FunctionTest<FirstValid> {
 
     @Test
     public void shouldApplyKeyPredicate() {
@@ -42,7 +44,7 @@ public class FirstValidTest extends FunctionTest {
         final Integer result = predicate.apply(items);
 
         // Then
-        assertEquals(Integer.valueOf(2), result);
+        assertThat(result).isEqualTo(Integer.valueOf(2));
     }
 
     @Test
@@ -58,23 +60,21 @@ public class FirstValidTest extends FunctionTest {
         final Integer result = predicate.apply(items);
 
         // Then
-        assertEquals(null, result);
+        assertThat(result).isNull();
     }
 
     @Test
     public void shouldReturnNullForNullPredicate() {
         // Given
-        final List<Integer> items = null;
-
         final FirstValid<Integer> predicate =
                 new FirstValid<Integer>()
                         .predicate(new IsMoreThan(1));
 
         // When
-        final Integer result = predicate.apply(items);
+        final Integer result = predicate.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Override
@@ -83,20 +83,24 @@ public class FirstValidTest extends FunctionTest {
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return FirstValid.class;
+    protected Iterable<FirstValid> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new FirstValid<>(new IsMoreThan(4)),
+                new FirstValid<>(new IsLessThan(3))
+        );
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[]{ Iterable.class };
+        return new Class[] {Iterable.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[]{ Object.class };
+        return new Class[] {Object.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -115,7 +119,7 @@ public class FirstValidTest extends FunctionTest {
         final FirstValid deserialised = JsonSerialiser.deserialise(json, FirstValid.class);
 
         // Then 2
-        assertNotNull(deserialised);
-        assertEquals(1, ((IsMoreThan) deserialised.getPredicate()).getControlValue());
+        assertThat(deserialised).isNotNull();
+        assertThat(((IsMoreThan) deserialised.getPredicate()).getControlValue()).isEqualTo(1);
     }
 }

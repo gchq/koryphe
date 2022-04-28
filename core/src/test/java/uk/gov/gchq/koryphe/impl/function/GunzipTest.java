@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2020 Crown Copyright
+ * Copyright 2019-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,41 +16,41 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.function.Function;
+import java.nio.charset.StandardCharsets;
 import java.util.zip.GZIPOutputStream;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class GunzipTest extends FunctionTest {
+public class GunzipTest extends FunctionTest<Gunzip> {
+
     @Override
-    protected Function getInstance() {
+    protected Gunzip getInstance() {
         return new Gunzip();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return Gunzip.class;
+    protected Iterable<Gunzip> getDifferentInstancesOrNull() {
+        return null;
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { byte[].class };
+        return new Class[]{byte[].class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { byte[].class };
+        return new Class[]{byte[].class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -68,14 +68,14 @@ public class GunzipTest extends FunctionTest {
         final Gunzip deserialisedMethod = JsonSerialiser.deserialise(json, Gunzip.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 
     @Test
     public void shouldUncompressString() throws IOException {
         // Given
         final Gunzip function = new Gunzip();
-        final byte[] input = "test string".getBytes();
+        final byte[] input = "test string".getBytes(StandardCharsets.UTF_8);
         final byte[] gzip;
         try (final ByteArrayOutputStream out = new ByteArrayOutputStream();
              final GZIPOutputStream gzipOut = new GZIPOutputStream(out)) {
@@ -89,19 +89,18 @@ public class GunzipTest extends FunctionTest {
         final byte[] result = function.apply(gzip);
 
         // Then
-        assertArrayEquals(input, result);
+        assertThat(result).isEqualTo(input);
     }
 
     @Test
     public void shouldReturnNullForNullInput() {
         // Given
         final Gunzip function = new Gunzip();
-        byte[] input = null;
 
         // When
-        final byte[] result = function.apply(input);
+        final byte[] result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 }

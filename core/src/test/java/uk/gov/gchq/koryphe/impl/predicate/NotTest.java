@@ -16,24 +16,24 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.signature.Signature;
+import uk.gov.gchq.koryphe.signature.SignatureAssert;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.function.Predicate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class NotTest extends PredicateTest {
+public class NotTest extends PredicateTest<Not> {
+
     @Test
     public void shouldAcceptTheValueWhenTheWrappedFunctionReturnsFalse() {
         // Given
@@ -41,11 +41,8 @@ public class NotTest extends PredicateTest {
         final Not<String> filter = new Not<>(function);
         given(function.test("some value")).willReturn(false);
 
-        // When
-        boolean accepted = filter.test("some value");
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts("some value");
         verify(function).test("some value");
     }
 
@@ -56,11 +53,8 @@ public class NotTest extends PredicateTest {
         final Not<String> filter = new Not<>(function);
         given(function.test("some value")).willReturn(true);
 
-        // When
-        boolean accepted = filter.test("some value");
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects("some value");
         verify(function).test("some value");
     }
 
@@ -69,11 +63,8 @@ public class NotTest extends PredicateTest {
         // Given
         final Not<String> filter = new Not<>();
 
-        // When
-        boolean accepted = filter.test("some value");
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects("some value");
     }
 
     @Test
@@ -98,13 +89,8 @@ public class NotTest extends PredicateTest {
         final Not deserialisedFilter = JsonSerialiser.deserialise(json, Not.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(String.class.getName(), ((IsA) deserialisedFilter.getPredicate()).getType());
-    }
-
-    @Override
-    protected Class<Not> getPredicateClass() {
-        return Not.class;
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(((IsA) deserialisedFilter.getPredicate()).getType()).isEqualTo(String.class.getName());
     }
 
     @Override
@@ -112,19 +98,40 @@ public class NotTest extends PredicateTest {
         return new Not<>(new IsA(String.class));
     }
 
+    @Override
+    protected Iterable<Not> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new Not<>(),
+                new Not<>(new IsEqual("test")),
+                new Not<>(new IsA(Long.class))
+        );
+    }
+
     @Test
     public void shouldCheckInputClass() {
+        // Given
         Predicate predicate = new Not<>(new IsMoreThan(1));
-        Signature input = Signature.getInputSignature(predicate);
-        assertTrue(input.assignable(Integer.class).isValid());
-        assertFalse(input.assignable(Double.class).isValid());
-        assertFalse(input.assignable(Integer.class, Integer.class).isValid());
 
+        // When
+        Signature input = Signature.getInputSignature(predicate);
+
+        // Then
+        SignatureAssert.assertThat(input)
+                .isAssignableFrom(Integer.class)
+                .isNotAssignableFrom(Double.class)
+                .isNotAssignableFrom(Integer.class, Integer.class);
+
+        // Given 2
         predicate = new Not<>(new IsXLessThanY());
+
+        // When 2
         input = Signature.getInputSignature(predicate);
-        assertTrue(input.assignable(Integer.class, Integer.class).isValid());
-        assertTrue(input.assignable(Double.class, Double.class).isValid());
-        assertFalse(input.assignable(Integer.class).isValid());
-        assertFalse(input.assignable(Double.class, Integer.class).isValid());
+
+        // Then 2
+        SignatureAssert.assertThat(input)
+                .isAssignableFrom(Integer.class, Integer.class)
+                .isAssignableFrom(Double.class, Double.class)
+                .isNotAssignableFrom(Integer.class)
+                .isNotAssignableFrom(Double.class, Integer.class);
     }
 }

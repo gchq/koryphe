@@ -16,34 +16,36 @@
 
 package uk.gov.gchq.koryphe.tuple;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MapTupleTest {
-    @Test
-    public void testConstructors() {
-        MapTuple<String> tuple = new MapTuple<String>();
-        int i = 0;
-        for (Object value : tuple) {
-            i++;
-        }
-        assertEquals("Unexpected number of values", 0, i);
 
-        int size = 3;
-        Map<String, Object> initialMap = new HashMap<>();
-        for (i = 0; i < size; i++) {
-            initialMap.put("" + i, i);
-        }
-        tuple = new MapTuple<>(initialMap);
-        i = 0;
-        for (Object value : tuple) {
-            assertEquals("Unexpected value at reference " + value, value, tuple.get("" + value));
-            i++;
-        }
-        assertEquals("Unexpected number of values", size, i);
+    @Test
+    public void testConstructorsWithEmptyTuple() {
+        // When
+        final MapTuple<String> tuple = new MapTuple<>();
+
+        // Then
+        assertThat(tuple).isEmpty();
+    }
+
+    @Test
+    public void testConstructorsWithHashMapTuple() {
+        // Given
+        final Map<String, Object> initialMap = new HashMap<>();
+        initialMap.put("0", 0);
+        initialMap.put("1", 1);
+        initialMap.put("2", 2);
+
+        // When
+        final MapTuple<String> tuple = new MapTuple<>(initialMap);
+
+        // Then
+        assertThat(tuple).containsExactly(0, 1, 2);
     }
 }

@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -25,35 +25,31 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class ExtractValuesTest extends FunctionTest {
+public class ExtractValuesTest extends FunctionTest<ExtractValues> {
     @Override
-    protected Function getInstance() {
+    protected ExtractValues getInstance() {
         return new ExtractValues();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ExtractValues.class;
+    protected Iterable<ExtractValues> getDifferentInstancesOrNull() {
+        return null;
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Map.class };
+        return new Class[] {Map.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Iterable.class };
+        return new Class[] {Iterable.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -71,7 +67,7 @@ public class ExtractValuesTest extends FunctionTest {
         final ExtractValues deserialised = JsonSerialiser.deserialise(json, ExtractValues.class);
 
         // Then
-        assertNotNull(deserialised);
+        assertThat(deserialised).isNotNull();
     }
 
     @Test
@@ -87,7 +83,7 @@ public class ExtractValuesTest extends FunctionTest {
         final Iterable<Integer> results = function.apply(input);
 
         // Then
-        assertThat(results, containsInAnyOrder(1, 2, 3));
+        assertThat(results).containsExactlyInAnyOrder(1, 2, 3);
     }
 
     @Test
@@ -99,7 +95,7 @@ public class ExtractValuesTest extends FunctionTest {
         final Iterable<Integer> results = function.apply(new HashMap<>());
 
         // Then
-        assertTrue(Iterables.isEmpty(results));
+        assertThat(results).isEmpty();
     }
 
     @Test
@@ -112,6 +108,6 @@ public class ExtractValuesTest extends FunctionTest {
         final Iterable result = function.apply(input);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 }

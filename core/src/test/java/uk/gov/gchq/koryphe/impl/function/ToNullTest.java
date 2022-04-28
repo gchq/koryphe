@@ -14,49 +14,62 @@ package uk.gov.gchq.koryphe.impl.function;/*
  * limitations under the License.
  */
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.function.Function;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class ToNullTest extends FunctionTest {
+public class ToNullTest extends FunctionTest<ToNull> {
+
     @Test
-    public void shouldReturnNull() {
+    public void shouldReturnNullWhenValueIsNotNull() {
         // Given
         final ToNull function = new ToNull();
 
         // When
-        Object output = function.apply(new String("test"));
+        final Object output = function.apply("test");
 
         // Then
-        assertNull(output);
+        assertThat(output).isNull();
     }
+
+    @Test
+    public void shouldReturnNullWhenValueIsNull() {
+        // Given
+        final ToNull function = new ToNull();
+
+        // When
+        final Object output = function.apply(null);
+
+        // Then
+        assertThat(output).isNull();
+    }
+
     @Override
-    protected Function getInstance() {
+    protected ToNull getInstance() {
         return new ToNull();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ToNull.class;
+    protected Iterable<ToNull> getDifferentInstancesOrNull() {
+        return null;
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -74,6 +87,6 @@ public class ToNullTest extends FunctionTest {
         final ToNull deserialisedMethod = JsonSerialiser.deserialise(json, ToNull.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

@@ -13,9 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
 import com.google.common.collect.Iterables;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
@@ -37,6 +40,10 @@ public class Length extends KorypheFunction<Object, Integer> implements InputVal
 
     public Length() {
         // For Serialisation
+    }
+
+    public Length(final Integer maxLength) {
+        this.maxLength = maxLength;
     }
 
     @Override
@@ -96,5 +103,29 @@ public class Length extends KorypheFunction<Object, Integer> implements InputVal
 
     public void setMaxLength(final Integer maxLength) {
         this.maxLength = maxLength;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o)) {
+            return false; // Does class checking
+        }
+
+        Length that = (Length) o;
+        return new EqualsBuilder()
+                .append(maxLength, that.maxLength)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(43, 67)
+                .appendSuper(super.hashCode())
+                .append(maxLength)
+                .toHashCode();
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Crown Copyright
+ * Copyright 2020-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,25 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
+import uk.gov.gchq.koryphe.impl.binaryoperator.StringConcat;
 import uk.gov.gchq.koryphe.impl.binaryoperator.Sum;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class IterableFlattenTest extends FunctionTest {
+public class IterableFlattenTest extends FunctionTest<IterableFlatten> {
 
     @Test
     public void shouldHandleNullInput() {
@@ -42,7 +43,7 @@ public class IterableFlattenTest extends FunctionTest {
         final Object result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -55,7 +56,7 @@ public class IterableFlattenTest extends FunctionTest {
         final Number result = function.apply(input);
 
         // Then
-        assertEquals(15, result);
+        assertThat(result).isEqualTo(15);
     }
 
     @Test
@@ -81,7 +82,7 @@ public class IterableFlattenTest extends FunctionTest {
         final String result = function.apply(input);
 
         // Then
-        assertEquals("abc", result);
+        assertThat(result).isEqualTo("abc");
     }
 
     @Override
@@ -90,8 +91,8 @@ public class IterableFlattenTest extends FunctionTest {
     }
 
     @Override
-    protected Class<? extends IterableFlatten> getFunctionClass() {
-        return IterableFlatten.class;
+    protected Iterable<IterableFlatten> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new IterableFlatten(new StringConcat()));
     }
 
     @Override
@@ -104,6 +105,7 @@ public class IterableFlattenTest extends FunctionTest {
         return new Class[]{Object.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -122,6 +124,6 @@ public class IterableFlattenTest extends FunctionTest {
         final IterableFlatten deserialised = JsonSerialiser.deserialise(json, IterableFlatten.class);
 
         // Then 2
-        assertNotNull(deserialised);
+        assertThat(deserialised).isNotNull();
     }
 }

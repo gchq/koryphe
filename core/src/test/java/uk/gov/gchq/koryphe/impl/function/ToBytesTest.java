@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2020 Crown Copyright
+ * Copyright 2019-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,83 +13,83 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.function.Function;
+import java.util.Collections;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class ToBytesTest extends FunctionTest {
+public class ToBytesTest extends FunctionTest<ToBytes> {
 
     @Test
     public void shouldGetBytes() {
         // Given
-        final ToBytes ts = new ToBytes(StandardCharsets.UTF_16);
+        final ToBytes function = new ToBytes(StandardCharsets.UTF_16);
 
         // When
-        byte[] output = ts.apply("test string");
+        final byte[] output = function.apply("test string");
 
         // Then
-        assertArrayEquals("test string".getBytes(StandardCharsets.UTF_16), output);
+        assertThat(output).isEqualTo("test string".getBytes(StandardCharsets.UTF_16));
     }
+
     @Test
     public void shouldHandleNullObject() {
         // Given
-        final ToBytes ts = new ToBytes();
+        final ToBytes function = new ToBytes();
 
         // When
-        byte[] output = ts.apply(null);
+        final byte[] output = function.apply(null);
 
         // Then
-        assertNull(output);
+        assertThat(output).isNull();
     }
 
     @Override
-    protected Function getInstance() {
+    protected ToBytes getInstance() {
         return new ToBytes();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ToBytes.class;
+    protected Iterable<ToBytes> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new ToBytes(StandardCharsets.US_ASCII));
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { String.class };
+        return new Class[] {String.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { byte[].class };
+        return new Class[] {byte[].class};
     }
 
     @Test
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
-        final ToBytes ts = new ToBytes();
+        final ToBytes function = new ToBytes();
 
         // When
-        final String json = JsonSerialiser.serialise(ts);
+        final String json = JsonSerialiser.serialise(function);
 
         // Then
-        JsonSerialiser.assertEquals(String.format("{" +
+        JsonSerialiser.assertEquals("{" +
                 "  \"class\" : \"uk.gov.gchq.koryphe.impl.function.ToBytes\"" +
-                "}"), json);
+                "}", json);
 
         // When 2
-        final ToBytes deserialisedTs = JsonSerialiser.deserialise(json, ToBytes.class);
+        final ToBytes deserialisedMethod = JsonSerialiser.deserialise(json, ToBytes.class);
 
         // Then 2
-        assertNotNull(deserialisedTs);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

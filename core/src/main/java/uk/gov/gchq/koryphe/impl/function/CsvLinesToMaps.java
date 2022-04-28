@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2020 Crown Copyright
+ * Copyright 2019-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,11 +21,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
-import uk.gov.gchq.koryphe.iterable.CloseableIterable;
 import uk.gov.gchq.koryphe.util.IterableUtil;
 
 import java.io.IOException;
@@ -43,10 +44,10 @@ import static java.util.Objects.isNull;
 
 @Since("1.8.0")
 @Summary("Parses CSV lines into Maps")
-@JsonPropertyOrder(value = {"header", "firstRow", "delimiter", "quoted", "quoteChar"},
-        alphabetic = true)
+@JsonPropertyOrder(value = { "header", "firstRow", "delimiter", "quoted", "quoteChar" }, alphabetic = true)
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-public class CsvLinesToMaps extends KorypheFunction<Iterable<String>, Iterable<Map<String, Object>>> implements Serializable {
+public class CsvLinesToMaps extends KorypheFunction<Iterable<String>, Iterable<Map<String, Object>>>
+        implements Serializable {
     private static final long serialVersionUID = -4225921410795200955L;
     private List<String> header = new ArrayList<>();
     private int firstRow = 0;
@@ -60,7 +61,7 @@ public class CsvLinesToMaps extends KorypheFunction<Iterable<String>, Iterable<M
             return null;
         }
 
-        final CloseableIterable<String> csvRecords = IterableUtil.limit(csvStrings, firstRow, null, false);
+        final Iterable<String> csvRecords = IterableUtil.limit(csvStrings, firstRow, null, false);
         return IterableUtil.map(csvRecords, (item) -> createMap((String) item));
     }
 
@@ -79,8 +80,8 @@ public class CsvLinesToMaps extends KorypheFunction<Iterable<String>, Iterable<M
 
     private CSVRecord parseCsv(final String csv) {
         final CSVRecord csvRecord;
-        try {
-            csvRecord = new CSVParser(new StringReader(csv), getCsvFormat()).iterator().next();
+        try (final CSVParser csvParser = new CSVParser(new StringReader(csv), getCsvFormat())) {
+            csvRecord = csvParser.iterator().next();
         } catch (final IOException e) {
             throw new RuntimeException(e);
         }
@@ -89,18 +90,18 @@ public class CsvLinesToMaps extends KorypheFunction<Iterable<String>, Iterable<M
             throw new IllegalArgumentException(
                     "CSV has " + csvRecord.size()
                             + " columns, but there are " + header.size()
-                            + " provided column names"
-            );
+                            + " provided column names");
         }
         return csvRecord;
     }
 
     private CSVFormat getCsvFormat() {
-        CSVFormat format = CSVFormat.DEFAULT.withDelimiter(delimiter);
+        final CSVFormat.Builder formatBuilder = CSVFormat.DEFAULT.builder().setDelimiter(delimiter);
         if (quoted) {
-            format = format.withQuote(quoteChar);
+            formatBuilder.setQuote(quoteChar);
         }
-        return format;
+
+        return formatBuilder.build();
     }
 
     public List<String> getHeader() {
@@ -177,5 +178,37 @@ public class CsvLinesToMaps extends KorypheFunction<Iterable<String>, Iterable<M
     public CsvLinesToMaps quoteChar(final char quoteChar) {
         this.quoteChar = quoteChar;
         return this;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o)) {
+            return false; // Does class checking
+        }
+
+        final CsvLinesToMaps that = (CsvLinesToMaps) o;
+        return new EqualsBuilder()
+                .append(header, that.header)
+                .append(quoted, that.quoted)
+                .append(quoteChar, that.quoteChar)
+                .append(firstRow, that.firstRow)
+                .append(delimiter, that.delimiter)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(7, 19)
+                .appendSuper(super.hashCode())
+                .append(header)
+                .append(quoted)
+                .append(quoteChar)
+                .append(firstRow)
+                .append(delimiter)
+                .toHashCode();
     }
 }

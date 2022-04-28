@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package uk.gov.gchq.koryphe.tuple.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.MockPredicateObject;
 import uk.gov.gchq.koryphe.tuple.Tuple;
@@ -28,16 +28,14 @@ import java.io.IOException;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 public class TuplePredicateTest {
+
     @Test
     public void testSingleFunctionTransformation() {
         String input = "input";
@@ -54,7 +52,7 @@ public class TuplePredicateTest {
         given(function.test(input)).willReturn(true);
 
         // validate
-        assertTrue(predicate.test(tuple));
+        assertThat(predicate).accepts(tuple);
 
         // function should have been tested
         verify(inputAdapter, times(1)).apply(tuple);
@@ -64,7 +62,7 @@ public class TuplePredicateTest {
         given(function.test(input)).willReturn(false);
 
         // and try again
-        assertFalse(predicate.test(tuple));
+        assertThat(predicate).rejects(tuple);
 
         // function should have been tested again
         verify(inputAdapter, times(2)).apply(tuple);
@@ -99,8 +97,11 @@ public class TuplePredicateTest {
 
         // check tuple validation
         for (int i = 0; i < times; i++) {
-            boolean result = i != falseResult;
-            assertEquals(result, predicate.test(tuples[i]));
+            if (i != falseResult) {
+                assertThat(predicate).accepts(tuples[i]);
+            } else {
+                assertThat(predicate).rejects(tuples[i]);
+            }
         }
 
         // and check components were called expected number of times
@@ -122,13 +123,18 @@ public class TuplePredicateTest {
         String json = JsonSerialiser.serialise(predicate);
 
         TupleAdaptedPredicate<String, Object> deserialisedPredicate = JsonSerialiser.deserialise(json, TupleAdaptedPredicate.class);
-        assertNotSame(predicate, deserialisedPredicate);
+        assertThat(deserialisedPredicate)
+                .isNotSameAs(predicate)
+                .isNotNull();
 
         Predicate deserialisedFunction = deserialisedPredicate.getPredicate();
-        assertNotSame(function, deserialisedFunction);
+        assertThat(deserialisedFunction)
+                .isNotSameAs(function)
+                .isNotNull();
 
         Function<Tuple<String>, Object> deserialisedInputAdapter = deserialisedPredicate.getInputAdapter();
-        assertNotSame(inputAdapter, deserialisedInputAdapter);
-        assertTrue(deserialisedInputAdapter instanceof Function);
+        assertThat(deserialisedInputAdapter)
+                .isNotSameAs(inputAdapter)
+                .isNotNull();
     }
 }

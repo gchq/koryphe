@@ -38,7 +38,7 @@ public class ToUpperCase extends KorypheFunction<Object, String> {
         }
 
         if (value instanceof String) {
-            StringUtils.upperCase((String) value);
+            return StringUtils.upperCase((String) value);
         }
 
         return StringUtils.upperCase(value.toString());

@@ -13,26 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
 import com.google.common.collect.Lists;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
+import uk.gov.gchq.koryphe.impl.predicate.IsLessThan;
 import uk.gov.gchq.koryphe.impl.predicate.IsMoreThan;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class IterableFilterTest extends FunctionTest {
+public class IterableFilterTest extends FunctionTest<IterableFilter> {
 
     @Test
     public void shouldApplyKeyPredicate() {
@@ -47,7 +45,7 @@ public class IterableFilterTest extends FunctionTest {
         final Iterable<Integer> result = predicate.apply(items);
 
         // Then
-        assertEquals(Arrays.asList(2, 3), Lists.newArrayList(result));
+        assertThat(result).containsExactly(2, 3);
     }
 
     @Test
@@ -63,8 +61,9 @@ public class IterableFilterTest extends FunctionTest {
         final Iterable<Integer> result = predicate.apply(items);
 
         // Then
-        assertEquals(Arrays.asList(1, 2, 3), Lists.newArrayList(result));
-        assertSame(items, result);
+        assertThat(result)
+                .containsExactly(1, 2, 3)
+                .isSameAs(items);
     }
 
     @Test
@@ -80,7 +79,7 @@ public class IterableFilterTest extends FunctionTest {
         final Iterable<Integer> result = predicate.apply(items);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Override
@@ -89,8 +88,11 @@ public class IterableFilterTest extends FunctionTest {
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return IterableFilter.class;
+    protected Iterable<IterableFilter> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new IterableFilter(),
+                new IterableFilter(new IsLessThan(4L))
+        );
     }
 
     @Override
@@ -103,6 +105,7 @@ public class IterableFilterTest extends FunctionTest {
         return new Class[] { Iterable.class };
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -121,7 +124,7 @@ public class IterableFilterTest extends FunctionTest {
         final IterableFilter deserialised = JsonSerialiser.deserialise(json, IterableFilter.class);
 
         // Then 2
-        assertNotNull(deserialised);
-        assertEquals(1, ((IsMoreThan) deserialised.getPredicate()).getControlValue());
+        assertThat(deserialised).isNotNull();
+        assertThat(((IsMoreThan) deserialised.getPredicate()).getControlValue()).isEqualTo(1);
     }
 }

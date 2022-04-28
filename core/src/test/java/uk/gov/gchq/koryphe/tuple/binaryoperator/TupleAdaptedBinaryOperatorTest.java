@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2020-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,31 @@
  * limitations under the License.
  */
 
-package uk.gov.gchq.koryphe.tuple.function;
+package uk.gov.gchq.koryphe.tuple.binaryoperator;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
+import uk.gov.gchq.koryphe.binaryoperator.BinaryOperatorTest;
 import uk.gov.gchq.koryphe.binaryoperator.MockBinaryOperator;
+import uk.gov.gchq.koryphe.impl.binaryoperator.Product;
+import uk.gov.gchq.koryphe.impl.binaryoperator.Sum;
 import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.tuple.TupleInputAdapter;
 import uk.gov.gchq.koryphe.tuple.TupleOutputAdapter;
-import uk.gov.gchq.koryphe.tuple.binaryoperator.TupleAdaptedBinaryOperator;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public class TupleAdaptedBinaryOperatorTest {
+public class TupleAdaptedBinaryOperatorTest extends BinaryOperatorTest<TupleAdaptedBinaryOperator> {
 
     @Test
     public void testTupleAggregation() {
@@ -89,14 +91,30 @@ public class TupleAdaptedBinaryOperatorTest {
         TupleAdaptedBinaryOperator<String, Integer> deserialisedBinaryOperator = JsonSerialiser.deserialise(json, TupleAdaptedBinaryOperator.class);
 
         // check deserialisation
-        assertNotSame(binaryOperator, deserialisedBinaryOperator);
+        assertThat(deserialisedBinaryOperator).isNotSameAs(binaryOperator);
 
         BinaryOperator<Integer> deserialisedFunction = deserialisedBinaryOperator.getBinaryOperator();
-        assertNotSame(function, deserialisedFunction);
-        assertTrue(deserialisedFunction instanceof MockBinaryOperator);
+        assertThat(deserialisedFunction)
+                .isNotSameAs(function)
+                .isExactlyInstanceOf(MockBinaryOperator.class);
 
         Function<Tuple<String>, Integer> deserialisedInputMask = deserialisedBinaryOperator.getInputAdapter();
-        assertNotSame(inputAdapter, deserialisedInputMask);
-        assertTrue(deserialisedInputMask instanceof Function);
+        assertThat(deserialisedInputMask)
+                .isNotNull()
+                .isNotSameAs(inputAdapter);
+    }
+
+    @Override
+    protected TupleAdaptedBinaryOperator getInstance() {
+        return new TupleAdaptedBinaryOperator(new Sum(), new String[] { "a", "b"});
+    }
+
+    @Override
+    protected Iterable<TupleAdaptedBinaryOperator> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new TupleAdaptedBinaryOperator(new Product(), new String[] { "a", "b"}),
+                new TupleAdaptedBinaryOperator(new Sum(), new String[] { "c", "d"}),
+                new TupleAdaptedBinaryOperator()
+        );
     }
 }

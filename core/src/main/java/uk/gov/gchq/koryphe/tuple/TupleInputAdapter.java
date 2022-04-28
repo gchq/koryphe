@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,16 @@
 package uk.gov.gchq.koryphe.tuple;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
+import uk.gov.gchq.koryphe.function.KorypheFunction;
 
 import java.util.Arrays;
-import java.util.function.Function;
+
+import static uk.gov.gchq.koryphe.util.JavaUtils.requireNonNullElse;
 
 /**
  * @param <R>  The type of reference used by tuples.
@@ -30,7 +34,7 @@ import java.util.function.Function;
  */
 @Since("1.0.0")
 @Summary("Extracts items from a tuple")
-public class TupleInputAdapter<R, FI> implements Function<Tuple<R>, FI> {
+public class TupleInputAdapter<R, FI> extends KorypheFunction<Tuple<R>, FI> {
     private R[] selection;
 
     /**
@@ -78,10 +82,30 @@ public class TupleInputAdapter<R, FI> implements Function<Tuple<R>, FI> {
      */
     @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "Cloning the array would be expensive - we will have to reply on users not modifying the array")
     public void setSelection(final R[] selection) {
-        if (null == selection) {
-            this.selection = (R[]) new Object[0];
-        } else {
-            this.selection = selection;
+        this.selection = requireNonNullElse(selection, (R[]) new Object[0]);
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
         }
+
+        if (!super.equals(o)) {
+            return false; // Does class checking
+        }
+
+        final TupleInputAdapter that = (TupleInputAdapter) o;
+        return new EqualsBuilder()
+                .append(selection, that.selection)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(43, 67)
+                .appendSuper(super.hashCode())
+                .append(selection)
+                .toHashCode();
     }
 }

@@ -13,21 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.binaryoperator.BinaryOperatorTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.function.BinaryOperator;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class AndTest extends BinaryOperatorTest {
+public class AndTest extends BinaryOperatorTest<And> {
 
     @Test
     public void shouldCompareBooleans() {
@@ -41,10 +39,10 @@ public class AndTest extends BinaryOperatorTest {
         final boolean tt = function.apply(true, true);
 
         // Then
-        assertFalse(ff);
-        assertFalse(ft);
-        assertFalse(tf);
-        assertTrue(tt);
+        assertThat(ff).isFalse();
+        assertThat(ft).isFalse();
+        assertThat(tf).isFalse();
+        assertThat(tt).isTrue();
     }
 
     @Test
@@ -57,20 +55,21 @@ public class AndTest extends BinaryOperatorTest {
         final boolean fn = function.apply(false, null);
 
         // Then
-        assertFalse(nf);
-        assertFalse(fn);
+        assertThat(nf).isFalse();
+        assertThat(fn).isFalse();
     }
 
     @Override
-    protected BinaryOperator getInstance() {
+    protected And getInstance() {
         return new And();
     }
 
     @Override
-    protected Class<? extends BinaryOperator> getFunctionClass() {
-        return And.class;
+    protected Iterable<And> getDifferentInstancesOrNull() {
+        return null;
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -88,6 +87,6 @@ public class AndTest extends BinaryOperatorTest {
         final And deserialisedFunction = JsonSerialiser.deserialise(json, And.class);
 
         // Then 2
-        assertNotNull(deserialisedFunction);
+        assertThat(deserialisedFunction).isNotNull();
     }
 }

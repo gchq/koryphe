@@ -16,26 +16,17 @@
 
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.binaryoperator.BinaryOperatorTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-public class MaxTest extends BinaryOperatorTest {
-    private Comparable state;
-
-    @Before
-    public void before() {
-        state = null;
-    }
+public class MaxTest extends BinaryOperatorTest<Max> {
 
     @Test
     public void testAggregateInIntMode() {
@@ -43,25 +34,28 @@ public class MaxTest extends BinaryOperatorTest {
         final Max max = new Max();
 
         // When 1
-        state = max.apply(1, null);
+        Comparable state = max.apply(1, null);
 
         // Then 1
-        assertTrue(state instanceof Integer);
-        assertEquals(1, state);
+        assertThat(state)
+                .isEqualTo(1)
+                .isExactlyInstanceOf(Integer.class);
 
         // When 2
         state = max.apply(3, state);
 
         // Then 2
-        assertTrue(state instanceof Integer);
-        assertEquals(3, state);
+        assertThat(state)
+                .isEqualTo(3)
+                .isExactlyInstanceOf(Integer.class);
 
         // When 3
         state = max.apply(2, state);
 
         // Then 3
-        assertTrue(state instanceof Integer);
-        assertEquals(3, state);
+        assertThat(state)
+                .isEqualTo(3)
+                .isExactlyInstanceOf(Integer.class);
     }
 
     @Test
@@ -70,25 +64,28 @@ public class MaxTest extends BinaryOperatorTest {
         final Max max = new Max();
 
         // When 1
-        state = max.apply(2l, state);
+        Comparable state = max.apply(2L, null);
 
         // Then 1
-        assertTrue(state instanceof Long);
-        assertEquals(2l, state);
+        assertThat(state)
+                .isEqualTo(2L)
+                .isExactlyInstanceOf(Long.class);
 
         // When 2
-        state = max.apply(1l, state);
+        state = max.apply(1L, state);
 
         // Then 2
-        assertTrue(state instanceof Long);
-        assertEquals(2l, state);
+        assertThat(state)
+                .isEqualTo(2L)
+                .isExactlyInstanceOf(Long.class);
 
         // When 3
-        state = max.apply(3l, state);
+        state = max.apply(3L, state);
 
         // Then 3
-        assertTrue(state instanceof Long);
-        assertEquals(3l, state);
+        assertThat(state)
+                .isEqualTo(3L)
+                .isExactlyInstanceOf(Long.class);
     }
 
     @Test
@@ -97,25 +94,28 @@ public class MaxTest extends BinaryOperatorTest {
         final Max max = new Max();
 
         // When 1
-        state = max.apply(1.1d, state);
+        Comparable state = max.apply(1.1d, null);
 
         // Then 1
-        assertTrue(state instanceof Double);
-        assertEquals(1.1d, state);
+        assertThat(state)
+                .isEqualTo(1.1d)
+                .isExactlyInstanceOf(Double.class);
 
         // When 2
         state = max.apply(2.1d, state);
 
         // Then 2
-        assertTrue(state instanceof Double);
-        assertEquals(2.1d, state);
+        assertThat(state)
+                .isEqualTo(2.1d)
+                .isExactlyInstanceOf(Double.class);
 
         // When 3
         state = max.apply(1.5d, state);
 
         // Then 3
-        assertTrue(state instanceof Double);
-        assertEquals(2.1d, state);
+        assertThat(state)
+                .isEqualTo(2.1d)
+                .isExactlyInstanceOf(Double.class);
     }
 
     @Test
@@ -124,25 +124,21 @@ public class MaxTest extends BinaryOperatorTest {
         final Max max = new Max();
 
         // When 1
-        state = max.apply(state, 1);
+        final Comparable newState = max.apply(null, 1);
 
         // When 2
-        try {
-            max.apply(state, 3l);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThatExceptionOfType(ClassCastException.class).isThrownBy(
+            () -> max.apply(newState, 3L)
+        );
 
         // When 3
-        try {
-            max.apply(state, 2.1d);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
-
+        assertThatExceptionOfType(ClassCastException.class).isThrownBy(
+            () -> max.apply(newState, 2.1d)
+        );
         // Then 3
-        assertTrue(state instanceof Integer);
-        assertEquals(1, state);
+        assertThat(newState)
+                .isEqualTo(1)
+                .isExactlyInstanceOf(Integer.class);
     }
 
     @Test
@@ -162,7 +158,7 @@ public class MaxTest extends BinaryOperatorTest {
         final Max deserialisedAggregator = JsonSerialiser.deserialise(json, Max.class);
 
         // Then 2
-        assertNotNull(deserialisedAggregator);
+        assertThat(deserialisedAggregator).isNotNull();
     }
 
     @Override
@@ -171,7 +167,7 @@ public class MaxTest extends BinaryOperatorTest {
     }
 
     @Override
-    protected Class<Max> getFunctionClass() {
-        return Max.class;
+    protected Iterable<Max> getDifferentInstancesOrNull() {
+        return null;
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2018-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,51 +13,51 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
+import uk.gov.gchq.koryphe.signature.InputValidatorAssert;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-public class LengthTest extends FunctionTest {
+public class LengthTest extends FunctionTest<Length> {
     @Override
-    protected Function getInstance() {
+    protected Length getInstance() {
         return new Length();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return Length.class;
+    protected Iterable<Length> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new Length(5));
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
         // Must be one of String, Object[], Iterable or Map to pass InputValidation
-        return new Class[] { String.class };
+        return new Class[] {String.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Integer.class };
+        return new Class[] {Integer.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -75,20 +75,19 @@ public class LengthTest extends FunctionTest {
         final Length deserialised = JsonSerialiser.deserialise(json, Length.class);
 
         // Then
-        assertNotNull(deserialised);
+        assertThat(deserialised).isNotNull();
     }
 
     @Test
     public void shouldReturnZeroForNullInputValue() {
         // Given
         final Length function = new Length();
-        final Object input = null;
 
         // When
-        final Integer result = function.apply(input);
+        final Integer result = function.apply(null);
 
         // Then
-        assertEquals(new Integer(0), result);
+        assertThat(result).isEqualTo(Integer.valueOf(0));
     }
 
     @Test
@@ -101,22 +100,22 @@ public class LengthTest extends FunctionTest {
         final Integer result = function.apply(input);
 
         // Then
-        assertEquals(new Integer(10), result);
+        assertThat(result).isEqualTo(Integer.valueOf(10));
     }
-    
+
     @Test
     public void shouldReturnLengthForObjectArrayInput() {
         // Given
         final Length function = new Length();
         final Object[] input = new Object[5];
-        
+
         // When
         final Integer result = function.apply(input);
-        
+
         // Then
-        assertEquals(new Integer(5), result);
+        assertThat(result).isEqualTo(Integer.valueOf(5));
     }
-    
+
     @Test
     public void shouldReturnLengthForListInput() {
         // Given
@@ -126,30 +125,30 @@ public class LengthTest extends FunctionTest {
         input.add(7.2);
         input.add("test");
         input.add("string");
-        
+
         // When
         final Integer result = function.apply(input);
-        
+
         // Then
-        assertEquals(new Integer(4), result);
+        assertThat(result).isEqualTo(Integer.valueOf(4));
     }
-    
+
     @Test
     public void shouldReturnLengthForSetInput() {
         // Given
         final Length function = new Length();
         final Set<Object> input = new HashSet<>();
-        input.add(2.718);
-        input.add(3.142);
+        input.add(2.142);
+        input.add(3.718);
         input.add("constants");
-        
+
         // When
         final Integer result = function.apply(input);
-        
+
         // Then
-        assertEquals(new Integer(3), result);
+        assertThat(result).isEqualTo(Integer.valueOf(3));
     }
-    
+
     @Test
     public void shouldReturnLengthForMapInput() {
         // Given
@@ -159,43 +158,42 @@ public class LengthTest extends FunctionTest {
         input.put("three", "four");
         input.put("five", "six");
         input.put("seven", "eight");
-        
+
         // When
         final Integer result = function.apply(input);
-        
+
         // Then
-        assertEquals(new Integer(4), result);
+        assertThat(result).isEqualTo(Integer.valueOf(4));
     }
-    
+
     @Test
     public void shouldThrowExceptionForIncompatibleInputType() {
         // Given
         final Length function = new Length();
         final Concat input = new Concat();
-        
+
         // When / Then
-        try {
-            function.apply(input);
-            fail("Exception expected");
-        } catch (final IllegalArgumentException e) {
-            assertTrue(e.getMessage().contains("Could not determine the size of the provided value"));
-        }
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> function.apply(input))
+                .withMessage("Could not determine the size of the provided value");
     }
-    
+
     @Test
     public void shouldCheckInputClass() {
+        // Given
         final Length function = new Length();
 
-        assertTrue(function.isInputValid(String.class).isValid());
-        assertTrue(function.isInputValid(Object[].class).isValid());
-        assertTrue(function.isInputValid(Integer[].class).isValid());
-        assertTrue(function.isInputValid(Collection.class).isValid());
-        assertTrue(function.isInputValid(List.class).isValid());
-        assertTrue(function.isInputValid(Map.class).isValid());
-        assertTrue(function.isInputValid(HashMap.class).isValid());
-
-        assertFalse(function.isInputValid(String.class, HashMap.class).isValid());
-        assertFalse(function.isInputValid(Double.class).isValid());
-        assertFalse(function.isInputValid(Integer.class, Integer.class).isValid());
+        // When / Then
+        InputValidatorAssert.assertThat(function)
+                .acceptsInput(String.class)
+                .acceptsInput(Object[].class)
+                .acceptsInput(Integer[].class)
+                .acceptsInput(Collection.class)
+                .acceptsInput(List.class)
+                .acceptsInput(Map.class)
+                .acceptsInput(HashMap.class)
+                .rejectsInput(String.class, HashMap.class)
+                .rejectsInput(Double.class)
+                .rejectsInput(Integer.class, Integer.class);
     }
 }

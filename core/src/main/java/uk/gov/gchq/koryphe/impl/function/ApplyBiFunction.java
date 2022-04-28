@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2020 Crown Copyright
+ * Copyright 2019-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
@@ -36,7 +38,7 @@ import static java.util.Objects.nonNull;
  * @param <U> Type of second input
  * @param <R> Type of output
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
 @Since("1.8.0")
 @Summary("Applies the given BiFunction")
 public class ApplyBiFunction<T, U, R> extends KorypheFunction2<T, U, R> implements WrappedBiFunction<T, U, R> {
@@ -55,12 +57,36 @@ public class ApplyBiFunction<T, U, R> extends KorypheFunction2<T, U, R> implemen
     }
 
     @Override
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
     public BiFunction<T, U, R> getFunction() {
         return function;
     }
 
     public void setFunction(final BiFunction<T, U, R> function) {
         this.function = function;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o)) {
+            return false; // Does class checking
+        }
+
+        ApplyBiFunction<?, ?, ?> that = (ApplyBiFunction<?, ?, ?>) o;
+        return new EqualsBuilder()
+                .append(function, that.function)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(11, 89)
+                .appendSuper(super.hashCode())
+                .append(function)
+                .toHashCode();
     }
 }

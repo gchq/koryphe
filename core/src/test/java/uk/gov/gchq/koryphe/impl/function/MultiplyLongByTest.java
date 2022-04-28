@@ -13,20 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.from;
 
-public class MultiplyLongByTest extends FunctionTest {
+public class MultiplyLongByTest extends FunctionTest<MultiplyLongBy> {
+
     @Test
     public void shouldMultiplyBy2() {
         // Given
@@ -36,7 +38,7 @@ public class MultiplyLongByTest extends FunctionTest {
         long output = function.apply(4L);
 
         // Then
-        assertEquals(8L, output);
+        assertThat(output).isEqualTo(8L);
     }
 
     @Test
@@ -48,7 +50,7 @@ public class MultiplyLongByTest extends FunctionTest {
         long output = function.apply(9L);
 
         // Then
-        assertEquals(9L, output);
+        assertThat(output).isEqualTo(9L);
     }
 
     @Test
@@ -60,9 +62,10 @@ public class MultiplyLongByTest extends FunctionTest {
         Long output = function.apply(null);
 
         // Then
-        assertNull(output);
+        assertThat(output).isNull();
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -81,8 +84,9 @@ public class MultiplyLongByTest extends FunctionTest {
         final MultiplyLongBy deserialisedMultiplyLongBy = JsonSerialiser.deserialise(json, MultiplyLongBy.class);
 
         // Then 2
-        assertNotNull(deserialisedMultiplyLongBy);
-        assertEquals(4L, deserialisedMultiplyLongBy.getBy());
+        assertThat(deserialisedMultiplyLongBy)
+                .isNotNull()
+                .returns(4L, from(MultiplyLongBy::getBy));
     }
 
     @Override
@@ -91,8 +95,11 @@ public class MultiplyLongByTest extends FunctionTest {
     }
 
     @Override
-    protected Class<MultiplyLongBy> getFunctionClass() {
-        return MultiplyLongBy.class;
+    protected Iterable<MultiplyLongBy> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new MultiplyLongBy(),
+                new MultiplyLongBy(100L)
+        );
     }
 
     @Override

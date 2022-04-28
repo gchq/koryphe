@@ -16,35 +16,33 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class CallMethodTest extends FunctionTest {
+public class CallMethodTest extends FunctionTest<CallMethod> {
+
     private static final String TEST_METHOD = "testMethod";
 
     @Test
-    public void shouldCallMethod() throws Exception {
+    public void shouldCallMethod() {
         // Given
         final CallMethod function = new CallMethod(TEST_METHOD);
 
         // When
-        Object output = function.apply(this);
+        final Object output = function.apply(this);
 
         // Then
-        assertEquals(5, output);
+        assertThat(output).isEqualTo(5);
     }
 
     @Test
@@ -60,20 +58,23 @@ public class CallMethodTest extends FunctionTest {
 
         // Then - check the cache has been updated
         final Map<Class, Method> interimCache = function.getCache();
-        assertNotSame(initialCache, interimCache);
-        assertEquals(expectedCache, interimCache);
-        assertEquals(5, output);
+        assertThat(interimCache)
+                .isEqualTo(expectedCache)
+                .isNotSameAs(initialCache);
+        assertThat(output).isEqualTo(5);
 
         // When
         Object output2 = function.apply(this);
 
         // Then - check the cache hasn't changed
         final Map<Class, Method> finalCache = function.getCache();
-        assertSame(interimCache, finalCache);
-        assertEquals(expectedCache, finalCache);
-        assertEquals(5, output2);
+        assertThat(finalCache)
+                .isEqualTo(expectedCache)
+                .isSameAs(interimCache);
+        assertThat(output2).isEqualTo(5);
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -92,28 +93,28 @@ public class CallMethodTest extends FunctionTest {
         final CallMethod deserialisedCallMethod = JsonSerialiser.deserialise(json, CallMethod.class);
 
         // Then 2
-        assertNotNull(deserialisedCallMethod);
-        assertEquals(TEST_METHOD, deserialisedCallMethod.getMethod());
+        assertThat(deserialisedCallMethod).isNotNull();
+        assertThat(deserialisedCallMethod.getMethod()).isEqualTo(TEST_METHOD);
     }
 
     @Override
-    protected Function getInstance() {
+    protected CallMethod getInstance() {
         return new CallMethod();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return CallMethod.class;
+    protected Iterable<CallMethod> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new CallMethod("toString"));
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
     // Test method for use when testing the CallMethod function

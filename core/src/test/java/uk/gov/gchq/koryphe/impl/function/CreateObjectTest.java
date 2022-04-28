@@ -16,7 +16,7 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -24,18 +24,16 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.from;
 
-public class CreateObjectTest extends FunctionTest {
+public class CreateObjectTest extends FunctionTest<CreateObject> {
 
     @Test
     public void shouldCreateNewObjectUsingNoArgConstructor() {
@@ -46,7 +44,8 @@ public class CreateObjectTest extends FunctionTest {
         Object output = function.apply(null);
 
         // Then
-        assertEquals(new ArrayList<>(), output);
+        assertThat(output)
+                .isEqualTo(new ArrayList<>());
     }
 
     @Test
@@ -59,8 +58,9 @@ public class CreateObjectTest extends FunctionTest {
         Object output = function.apply(value);
 
         // Then
-        assertEquals(value, output);
-        assertNotSame(value, output);
+        assertThat(output)
+                .isEqualTo(value)
+                .isNotSameAs(value);
     }
 
     @Test
@@ -70,12 +70,10 @@ public class CreateObjectTest extends FunctionTest {
         Map<String, String> value = new HashMap<>();
 
         // When / Then
-        try {
-            function.apply(value);
-            fail("Exception expected");
-        } catch (final RuntimeException e) {
-            assertTrue(e.getMessage().contains("Unable to create a new instance"));
-        }
+        assertThatExceptionOfType(RuntimeException.class)
+                .isThrownBy(() -> function.apply(value))
+                .withMessage("Unable to create a new instance of java.util.ArrayList. No constructors were found " +
+                    "that accept a java.util.HashMap");
     }
 
     @Test
@@ -84,14 +82,13 @@ public class CreateObjectTest extends FunctionTest {
         final CreateObject function = new CreateObject(TestClass.class);
 
         // When / Then
-        try {
-            function.apply(null);
-            fail("Exception expected");
-        } catch (final RuntimeException e) {
-            assertTrue(e.getMessage().contains("Unable to create a new instance"));
-        }
+        assertThatExceptionOfType(RuntimeException.class)
+                .isThrownBy(() -> function.apply(null))
+                .withMessage("Unable to create a new instance of " +
+                    "uk.gov.gchq.koryphe.impl.function.CreateObjectTest$TestClass using the no-arg constructor");
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -110,28 +107,29 @@ public class CreateObjectTest extends FunctionTest {
         final CreateObject deserialised = JsonSerialiser.deserialise(json, CreateObject.class);
 
         // Then 2
-        assertNotNull(deserialised);
-        assertEquals(ArrayList.class, deserialised.getObjectClass());
+        assertThat(deserialised)
+                .isNotNull()
+                .returns(ArrayList.class, from(CreateObject::getObjectClass));
     }
 
     @Override
-    protected Function getInstance() {
+    protected CreateObject getInstance() {
         return new CreateObject();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return CreateObject.class;
+    protected Iterable<CreateObject> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new CreateObject(Integer.class));
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
     private static final class TestClass {

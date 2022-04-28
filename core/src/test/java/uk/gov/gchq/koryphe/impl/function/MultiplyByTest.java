@@ -16,17 +16,19 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.from;
 
-public class MultiplyByTest extends FunctionTest {
+public class MultiplyByTest extends FunctionTest<MultiplyBy> {
+
     @Test
     public void shouldMultiplyBy2() {
         // Given
@@ -35,7 +37,8 @@ public class MultiplyByTest extends FunctionTest {
         // When
         int output = function.apply(4);
 
-        assertEquals(8, output);
+        // Then
+        assertThat(output).isEqualTo(8);
     }
 
     @Test
@@ -46,7 +49,8 @@ public class MultiplyByTest extends FunctionTest {
         // When
         int output = function.apply(9);
 
-        assertEquals(9, output);
+        // Then
+        assertThat(output).isEqualTo(9);
     }
 
     @Test
@@ -57,9 +61,11 @@ public class MultiplyByTest extends FunctionTest {
         // When
         Integer output = function.apply(null);
 
-        assertEquals(null, output);
+        // Then
+        assertThat(output).isNull();
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -78,8 +84,9 @@ public class MultiplyByTest extends FunctionTest {
         final MultiplyBy deserialisedMultiplyBy = JsonSerialiser.deserialise(json, MultiplyBy.class);
 
         // Then 2
-        assertNotNull(deserialisedMultiplyBy);
-        assertEquals(4, deserialisedMultiplyBy.getBy());
+        assertThat(deserialisedMultiplyBy)
+                .isNotNull()
+                .returns(4, from(MultiplyBy::getBy));
     }
 
     @Override
@@ -88,8 +95,11 @@ public class MultiplyByTest extends FunctionTest {
     }
 
     @Override
-    protected Class<MultiplyBy> getFunctionClass() {
-        return MultiplyBy.class;
+    protected Iterable<MultiplyBy> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new MultiplyBy(),
+                new MultiplyBy(4)
+        );
     }
 
     @Override

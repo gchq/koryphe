@@ -16,18 +16,18 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.function.Function;
+import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class SetValueTest extends FunctionTest {
+public class SetValueTest extends FunctionTest<SetValue> {
+
     private static final String SET_VALUE = "testVal";
 
     @Test
@@ -39,17 +39,20 @@ public class SetValueTest extends FunctionTest {
         Object output = function.apply("test");
 
         // Then
-        assertEquals(SET_VALUE, output);
+        assertThat(output).isEqualTo(SET_VALUE);
     }
 
     @Override
-    protected Function getInstance() {
+    protected SetValue getInstance() {
         return new SetValue(SET_VALUE);
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return SetValue.class;
+    protected Iterable<SetValue> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new SetValue(1L),
+                new SetValue(new SetValue())
+        );
     }
 
     @Override
@@ -62,6 +65,7 @@ public class SetValueTest extends FunctionTest {
         return new Class[] { Object.class };
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -80,7 +84,7 @@ public class SetValueTest extends FunctionTest {
         final SetValue deserialisedMethod = JsonSerialiser.deserialise(json, SetValue.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 
     @Test
@@ -101,6 +105,6 @@ public class SetValueTest extends FunctionTest {
         final SetValue deserialisedFunction = JsonSerialiser.deserialise(json, SetValue.class);
 
         // Then 2
-        assertEquals(1L, deserialisedFunction.getValue());
+        assertThat(deserialisedFunction.getValue()).isEqualTo(1L);
     }
 }

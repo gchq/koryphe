@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 Crown Copyright
+ * Copyright 2018-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
@@ -52,7 +54,7 @@ public class IterableFilter<I_ITEM> extends KorypheFunction<Iterable<I_ITEM>, It
         return items;
     }
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
     public Predicate<I_ITEM> getPredicate() {
         return predicate;
     }
@@ -64,5 +66,29 @@ public class IterableFilter<I_ITEM> extends KorypheFunction<Iterable<I_ITEM>, It
     public IterableFilter<I_ITEM> setPredicate(final Predicate<I_ITEM> predicate) {
         this.predicate = predicate;
         return this;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o)) {
+            return false; // Does exact equals and class checking
+        }
+
+        IterableFilter that = (IterableFilter) o;
+        return new EqualsBuilder()
+                .append(predicate, that.predicate)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(3, 97)
+                .appendSuper(super.hashCode())
+                .append(predicate)
+                .toHashCode();
     }
 }

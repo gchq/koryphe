@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2018-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class ReflectionUtil {
     public static final String PACKAGES_KEY = "koryphe.reflection.packages";
-    public static final Set<String> DEFAULT_PACKAGES = Collections.unmodifiableSet(Sets.newHashSet("uk.gov.gchq"));
+    public static final Set<String> DEFAULT_PACKAGES = JavaUtils.Set.of("uk.gov.gchq");
 
     private static Set<String> packages;
     private static Map<Class<?>, Map<String, Set<Class>>> simpleClassNamesCache;
@@ -85,7 +85,7 @@ public final class ReflectionUtil {
                 final Set<Class> simpleClasses = simpleClassNames.computeIfAbsent(subType.getSimpleName(), k -> new HashSet<>());
                 simpleClasses.add(subType);
             }
-            simpleClassNames = Collections.unmodifiableMap(simpleClassNames);
+            simpleClassNames = JavaUtils.Map.immutableCopyOf(simpleClassNames);
             simpleClassNamesCache.put(clazz, simpleClassNames);
         }
         return simpleClassNames;
@@ -116,7 +116,7 @@ public final class ReflectionUtil {
                     }
                 }).scan();
             }
-            subClasses = Collections.unmodifiableSet(newSubClasses);
+            subClasses = JavaUtils.Set.immutableCopyOf(newSubClasses);
             subclassesCache.put(clazz, subClasses);
         }
         return subClasses;
@@ -134,7 +134,7 @@ public final class ReflectionUtil {
             updateReflectionPackages();
             annoClasses = new HashSet<>();
             getScanner().matchClassesWithAnnotation(annoClass, annoClasses::add).scan();
-            annoClasses = Collections.unmodifiableSet(annoClasses);
+            annoClasses = JavaUtils.Set.copyOf(annoClasses);
             subclassesCache.put(annoClass, annoClasses);
         }
 
@@ -236,7 +236,7 @@ public final class ReflectionUtil {
     }
 
     public static Set<String> getReflectionPackages() {
-        return Collections.unmodifiableSet(packages);
+        return JavaUtils.Set.copyOf(packages);
     }
 
     private static FastClasspathScanner getScanner() {

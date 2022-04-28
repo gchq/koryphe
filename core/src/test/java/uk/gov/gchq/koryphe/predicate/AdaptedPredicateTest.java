@@ -13,19 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.predicate;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
+import uk.gov.gchq.koryphe.impl.function.ToLowerCase;
 import uk.gov.gchq.koryphe.impl.function.ToString;
+import uk.gov.gchq.koryphe.impl.function.ToUpperCase;
 import uk.gov.gchq.koryphe.impl.predicate.IsEqual;
+import uk.gov.gchq.koryphe.impl.predicate.StringContains;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class AdaptedPredicateTest {
+public class AdaptedPredicateTest extends PredicateTest<AdaptedPredicate>{
 
     @Test
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
@@ -46,14 +51,28 @@ public class AdaptedPredicateTest {
                     "}" +
                 "}";
 
-        assertEquals(expected, serialised);
+        assertThat(serialised).isEqualTo(expected);
 
         // When
         final AdaptedPredicate deserialised = JsonSerialiser.deserialise(serialised, AdaptedPredicate.class);
 
         // Then
-        assertEquals(original.getPredicate().getClass(), deserialised.getPredicate().getClass());
-        assertEquals(original.getInputAdapter().getClass(), deserialised.getInputAdapter().getClass());
-        assertEquals(((IsEqual) original.getPredicate()).getControlValue(), ((IsEqual) deserialised.getPredicate()).getControlValue());
+        assertThat(deserialised.getPredicate().getClass()).isEqualTo(original.getPredicate().getClass());
+        assertThat(deserialised.getInputAdapter().getClass()).isEqualTo(original.getInputAdapter().getClass());
+        assertThat(((IsEqual) deserialised.getPredicate()).getControlValue()).isEqualTo(((IsEqual) original.getPredicate()).getControlValue());
+    }
+
+    @Override
+    protected AdaptedPredicate getInstance() {
+        return new AdaptedPredicate(new ToUpperCase(), new StringContains("TEST"));
+    }
+
+    @Override
+    protected Iterable<AdaptedPredicate> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new AdaptedPredicate(new ToLowerCase(), new StringContains("TEST")),
+                new AdaptedPredicate(new ToUpperCase(), new StringContains("DIFFERENT")),
+                new AdaptedPredicate()
+        );
     }
 }

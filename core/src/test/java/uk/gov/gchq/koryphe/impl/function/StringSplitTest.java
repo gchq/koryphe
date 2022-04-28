@@ -13,25 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.collection.IsEmptyCollection.empty;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsCollectionContaining.hasItems;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class StringSplitTest extends FunctionTest {
+public class StringSplitTest extends FunctionTest<StringSplit> {
+
     @Test
     public void shouldHandleNullInput() {
         // Given
@@ -41,7 +38,7 @@ public class StringSplitTest extends FunctionTest {
         final List<String> result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -54,8 +51,9 @@ public class StringSplitTest extends FunctionTest {
         final List<String> result = function.apply(input);
 
         // Then
-        assertThat(result, hasItems("first,second,third"));
-        assertThat(result, hasSize(1));
+        assertThat(result)
+                .contains("first,second,third")
+                .hasSize(1);
     }
 
     @Test
@@ -68,7 +66,9 @@ public class StringSplitTest extends FunctionTest {
         final List<String> result = function.apply(input);
 
         // Then
-        assertThat(result, hasItems("first", "second", "third"));
+        assertThat(result)
+                .contains("first", "second", "third")
+                .hasSize(3);
     }
 
     @Test
@@ -81,7 +81,7 @@ public class StringSplitTest extends FunctionTest {
         final List<String> result = function.apply(input);
 
         // Then
-        assertThat(result, is(empty()));
+        assertThat(result).isEmpty();
     }
 
     @Override
@@ -90,8 +90,8 @@ public class StringSplitTest extends FunctionTest {
     }
 
     @Override
-    protected Class<? extends StringSplit> getFunctionClass() {
-        return StringSplit.class;
+    protected Iterable<StringSplit> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new StringSplit(" "));
     }
 
     @Override
@@ -104,6 +104,7 @@ public class StringSplitTest extends FunctionTest {
         return new Class[]{ List.class };
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -122,6 +123,6 @@ public class StringSplitTest extends FunctionTest {
         final StringSplit deserialisedMethod = JsonSerialiser.deserialise(json, StringSplit.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

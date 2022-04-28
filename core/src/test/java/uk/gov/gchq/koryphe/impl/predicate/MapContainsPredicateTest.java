@@ -16,29 +16,28 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class MapContainsPredicateTest extends PredicateTest {
+public class MapContainsPredicateTest extends PredicateTest<MapContainsPredicate> {
+
     private static final IsEqual KEY_PREDICATE_1 = new IsEqual("key1");
     private static final Regex KEY_PREDICATE_2 = new Regex("key.*");
     private static final IsEqual KEY_PREDICATE_NOT_IN_MAP = new IsEqual("key2");
 
     private final Map<Object, Integer> map1 = new HashMap<>();
 
-    @Before
+    @BeforeEach
     public void setup() {
         map1.put(KEY_PREDICATE_1.getControlValue(), 1);
     }
@@ -48,11 +47,8 @@ public class MapContainsPredicateTest extends PredicateTest {
         // Given
         final MapContainsPredicate filter = new MapContainsPredicate(KEY_PREDICATE_1);
 
-        // When
-        boolean accepted = filter.test(map1);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(map1);
     }
 
     @Test
@@ -60,11 +56,8 @@ public class MapContainsPredicateTest extends PredicateTest {
         // Given
         final MapContainsPredicate filter = new MapContainsPredicate(KEY_PREDICATE_2);
 
-        // When
-        boolean accepted = filter.test(map1);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(map1);
     }
 
     @Test
@@ -72,11 +65,8 @@ public class MapContainsPredicateTest extends PredicateTest {
         // Given
         final MapContainsPredicate filter = new MapContainsPredicate(KEY_PREDICATE_NOT_IN_MAP);
 
-        // When
-        boolean accepted = filter.test(map1);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(map1);
     }
 
     @Test
@@ -84,11 +74,8 @@ public class MapContainsPredicateTest extends PredicateTest {
         // Given
         final MapContainsPredicate filter = new MapContainsPredicate(KEY_PREDICATE_1);
 
-        // When
-        boolean accepted = filter.test(new HashMap());
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(new HashMap());
     }
 
     @Test
@@ -112,17 +99,21 @@ public class MapContainsPredicateTest extends PredicateTest {
         final MapContainsPredicate deserialisedFilter = JsonSerialiser.deserialise(json, MapContainsPredicate.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(KEY_PREDICATE_1, deserialisedFilter.getKeyPredicate());
-    }
-
-    @Override
-    protected Class<MapContainsPredicate> getPredicateClass() {
-        return MapContainsPredicate.class;
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getKeyPredicate()).isEqualTo(KEY_PREDICATE_1);
     }
 
     @Override
     protected MapContainsPredicate getInstance() {
         return new MapContainsPredicate(KEY_PREDICATE_1);
+    }
+
+    @Override
+    protected Iterable<MapContainsPredicate> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new MapContainsPredicate(),
+                new MapContainsPredicate(new IsEqual("differentValue")),
+                new MapContainsPredicate(KEY_PREDICATE_2)
+        );
     }
 }

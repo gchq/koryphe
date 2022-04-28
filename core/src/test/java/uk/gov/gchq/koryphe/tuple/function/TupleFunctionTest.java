@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package uk.gov.gchq.koryphe.tuple.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.MockFunction;
 import uk.gov.gchq.koryphe.tuple.Tuple;
@@ -28,14 +28,14 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 public class TupleFunctionTest {
+
     @Test
     public void testSingleFunctionTransformation() {
         String input1 = "input1";
@@ -120,19 +120,24 @@ public class TupleFunctionTest {
         String json = JsonSerialiser.serialise(function);
         TupleAdaptedFunction<String, Object, String> deserialisedFunction = JsonSerialiser
                 .deserialise(json, TupleAdaptedFunction.class);
-        assertNotSame(function, deserialisedFunction);
+        assertThat(deserialisedFunction)
+                .isNotSameAs(function)
+                .isNotNull();
 
         Function<Object, String> functionCopy = deserialisedFunction.getFunction();
-        assertNotSame(function, functionCopy);
-        assertTrue(functionCopy instanceof MockFunction);
+        assertThat(functionCopy)
+                .isNotSameAs(function)
+                .isExactlyInstanceOf(MockFunction.class);
 
         TupleInputAdapter<String, Object> inputAdapterCopy = deserialisedFunction
                 .getInputAdapter();
         TupleOutputAdapter<String, String> outputAdapterCopy = deserialisedFunction
                 .getOutputAdapter();
-        assertNotSame(inputAdapter, inputAdapterCopy);
-        assertTrue(inputAdapterCopy instanceof Function);
-        assertNotSame(outputAdapter, outputAdapterCopy);
-        assertTrue(outputAdapterCopy instanceof TupleOutputAdapter);
+        assertThat(inputAdapterCopy)
+                .isNotSameAs(inputAdapter)
+                .isNotNull();
+        assertThat(outputAdapterCopy)
+                .isNotSameAs(outputAdapter)
+                .isNotNull();
     }
 }

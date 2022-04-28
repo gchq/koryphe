@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 Crown Copyright
+ * Copyright 2018-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,38 +16,39 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class ToIntegerTest extends FunctionTest {
+public class ToIntegerTest extends FunctionTest<ToInteger> {
+
     @Test
     public void shouldConvertToInteger() {
         // Given
         final ToInteger function = new ToInteger();
 
         // When
-        Object output = function.apply(new Long(5));
+        Object output = function.apply(5L);
 
         // Then
-        assertEquals(5, output);
-        assertEquals(Integer.class, output.getClass());
+        assertThat(output)
+                .isEqualTo(5)
+                .isExactlyInstanceOf(Integer.class);
     }
+
     @Override
-    protected Function getInstance() {
+    protected ToInteger getInstance() {
         return new ToInteger();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ToInteger.class;
+    protected Iterable<ToInteger> getDifferentInstancesOrNull() {
+        return null;
     }
 
     @Override
@@ -60,6 +61,7 @@ public class ToIntegerTest extends FunctionTest {
         return new Class[] { Integer.class };
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -77,6 +79,6 @@ public class ToIntegerTest extends FunctionTest {
         final ToInteger deserialisedMethod = JsonSerialiser.deserialise(json, ToInteger.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

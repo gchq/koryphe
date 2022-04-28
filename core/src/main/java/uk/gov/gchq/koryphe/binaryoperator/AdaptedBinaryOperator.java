@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@
 package uk.gov.gchq.koryphe.binaryoperator;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
@@ -35,7 +37,7 @@ import java.util.function.Function;
 @Since("1.0.0")
 @Summary("Applies a function and adapts the input/output")
 public class AdaptedBinaryOperator<T, OT> extends Adapted<T, OT, OT, T, T> implements BinaryOperator<T> {
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+
     protected BinaryOperator<OT> binaryOperator;
 
     /**
@@ -69,6 +71,9 @@ public class AdaptedBinaryOperator<T, OT> extends Adapted<T, OT, OT, T, T> imple
      */
     @Override
     public T apply(final T state, final T input) {
+        if (binaryOperator == null) {
+            throw new IllegalArgumentException("BinaryOperator cannot be null");
+        }
         return adaptOutput(binaryOperator.apply(adaptInput(state), adaptInput(input)), state);
     }
 
@@ -76,7 +81,32 @@ public class AdaptedBinaryOperator<T, OT> extends Adapted<T, OT, OT, T, T> imple
         return binaryOperator;
     }
 
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
     public void setBinaryOperator(final BinaryOperator<OT> binaryOperator) {
         this.binaryOperator = binaryOperator;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o)) {
+            return false; // Does class checking
+        }
+
+        final AdaptedBinaryOperator that = (AdaptedBinaryOperator) o;
+        return new EqualsBuilder()
+                .append(binaryOperator, that.binaryOperator)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(43, 67)
+                .appendSuper(super.hashCode())
+                .append(binaryOperator)
+                .toHashCode();
     }
 }

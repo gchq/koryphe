@@ -16,18 +16,20 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.tuple.n.Tuple2;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.from;
 
-public class DivideByTest extends FunctionTest {
+public class DivideByTest extends FunctionTest<DivideBy> {
+
     @Test
     public void shouldDivideBy2() {
         // Given
@@ -36,7 +38,8 @@ public class DivideByTest extends FunctionTest {
         // When
         Tuple2<Integer, Integer> output = function.apply(4);
 
-        assertEquals(new Tuple2<>(2, 0), output);
+        // Then
+        assertThat(output).isEqualTo(new Tuple2<>(2, 0));
     }
 
     @Test
@@ -47,7 +50,8 @@ public class DivideByTest extends FunctionTest {
         // When
         Tuple2<Integer, Integer> output = function.apply(5);
 
-        assertEquals(new Tuple2<>(2, 1), output);
+        // Then
+        assertThat(output).isEqualTo(new Tuple2<>(2, 1));
     }
 
     @Test
@@ -58,10 +62,11 @@ public class DivideByTest extends FunctionTest {
         // When
         Tuple2<Integer, Integer> output = function.apply(9);
 
-        assertEquals(new Tuple2<>(9, 0), output);
+        // Then
+        assertThat(output).isEqualTo(new Tuple2<>(9, 0));
     }
 
-
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -80,8 +85,9 @@ public class DivideByTest extends FunctionTest {
         final DivideBy deserialisedDivideBy = JsonSerialiser.deserialise(json, DivideBy.class);
 
         // Then 2
-        assertNotNull(deserialisedDivideBy);
-        assertEquals(4, deserialisedDivideBy.getBy());
+        assertThat(deserialisedDivideBy)
+                .isNotNull()
+                .returns(4, from(DivideBy::getBy));
     }
 
     @Override
@@ -90,17 +96,17 @@ public class DivideByTest extends FunctionTest {
     }
 
     @Override
-    protected Class<DivideBy> getFunctionClass() {
-        return DivideBy.class;
+    protected Iterable<DivideBy> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new DivideBy(5));
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Integer.class };
+        return new Class[] {Integer.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Integer.class, Integer.class };
+        return new Class[] {Integer.class, Integer.class};
     }
 }

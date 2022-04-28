@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
 import com.google.common.collect.Lists;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -24,33 +25,31 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class DefaultIfEmptyTest extends FunctionTest {
+public class DefaultIfEmptyTest extends FunctionTest<DefaultIfEmpty> {
+
     private final static String DEFAULT_VALUE = "default";
 
     @Override
-    protected Function getInstance() {
+    protected DefaultIfEmpty getInstance() {
         return new DefaultIfEmpty();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return DefaultIfEmpty.class;
+    protected Iterable<DefaultIfEmpty> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new DefaultIfEmpty("Default"));
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[]{ Object.class };
+        return new Class[] {Object.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[]{ Object.class };
+        return new Class[] {Object.class};
     }
 
     @Test
@@ -62,9 +61,10 @@ public class DefaultIfEmptyTest extends FunctionTest {
         final Object result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -83,7 +83,7 @@ public class DefaultIfEmptyTest extends FunctionTest {
         final DefaultIfEmpty deserialised = JsonSerialiser.deserialise(json, DefaultIfEmpty.class);
 
         // Then
-        assertNotNull(deserialised);
+        assertThat(deserialised).isNotNull();
     }
 
     @Test
@@ -95,7 +95,7 @@ public class DefaultIfEmptyTest extends FunctionTest {
         final Object result = defaultIfEmpty.apply(Collections.emptyList());
 
         // Then
-        assertEquals(result, DEFAULT_VALUE);
+        assertThat(result).isEqualTo(DEFAULT_VALUE);
     }
 
     @Test
@@ -108,6 +108,6 @@ public class DefaultIfEmptyTest extends FunctionTest {
         final Object result = defaultIfEmpty.apply(iterable);
 
         // Then
-        assertEquals(result, iterable);
+        assertThat(result).isEqualTo(iterable);
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@
 package uk.gov.gchq.koryphe.predicate;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
@@ -35,7 +37,7 @@ import java.util.function.Predicate;
 @Summary("Applies a predicate and adapts the input")
 public class AdaptedPredicate<I, PI> extends InputAdapted<I, PI> implements Predicate<I> {
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
     protected Predicate<PI> predicate;
 
     /**
@@ -66,5 +68,29 @@ public class AdaptedPredicate<I, PI> extends InputAdapted<I, PI> implements Pred
 
     public void setPredicate(final Predicate<PI> predicate) {
         this.predicate = predicate;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o)) {
+            return false; // Does class checking
+        }
+
+        final AdaptedPredicate that = (AdaptedPredicate) o;
+        return new EqualsBuilder()
+                .append(predicate, that.predicate)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(43, 67)
+                .appendSuper(super.hashCode())
+                .append(predicate)
+                .toHashCode();
     }
 }

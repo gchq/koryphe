@@ -13,10 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
 import com.google.common.collect.Iterables;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
@@ -62,5 +65,29 @@ public class NthItem<T> extends KorypheFunction<Iterable<T>, T> {
 
     public int getSelection() {
         return selection;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o)) {
+            return false; // Does exact equals and class checking
+        }
+
+        NthItem that = (NthItem) o;
+        return new EqualsBuilder()
+                .append(selection, that.selection)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(67, 23)
+                .appendSuper(super.hashCode())
+                .append(selection)
+                .toHashCode();
     }
 }

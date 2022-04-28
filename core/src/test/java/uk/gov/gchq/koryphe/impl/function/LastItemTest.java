@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,43 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-public class LastItemTest extends FunctionTest {
+public class LastItemTest extends FunctionTest<LastItem> {
     @Override
-    protected Function getInstance() {
+    protected LastItem getInstance() {
         return new LastItem();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return LastItem.class;
+    protected Iterable<LastItem> getDifferentInstancesOrNull() {
+        return null;
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Iterable.class };
+        return new Class[] {Iterable.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -67,7 +66,7 @@ public class LastItemTest extends FunctionTest {
         final LastItem deserialised = JsonSerialiser.deserialise(json, LastItem.class);
 
         // When
-        assertNotNull(deserialised);
+        assertThat(deserialised).isNotNull();
     }
 
     @Test
@@ -79,8 +78,7 @@ public class LastItemTest extends FunctionTest {
         final Integer result = function.apply(Arrays.asList(2, 3, 5, 7, 11));
 
         // Then
-        assertNotNull(result);
-        assertEquals(new Integer(11), result);
+        assertThat(result).isEqualTo(Integer.valueOf(11));
     }
 
     @Test
@@ -92,8 +90,7 @@ public class LastItemTest extends FunctionTest {
         final String result = function.apply(Arrays.asList("these", "are", "test", "strings"));
 
         // Then
-        assertNotNull(result);
-        assertEquals("strings", result);
+        assertThat(result).isEqualTo("strings");
     }
 
     @Test
@@ -105,7 +102,7 @@ public class LastItemTest extends FunctionTest {
         final Integer result = function.apply(Arrays.asList(1, 2, null));
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -114,10 +111,8 @@ public class LastItemTest extends FunctionTest {
         final LastItem<Integer> function = new LastItem<>();
 
         // When / Then
-        try {
-            function.apply(null);
-        } catch (final IllegalArgumentException e) {
-            assertTrue(e.getMessage().contains("Input cannot be null"));
-        }
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> function.apply(null))
+                .withMessage("Input cannot be null");
     }
 }

@@ -13,46 +13,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
-import com.google.common.collect.Lists;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.as;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
+import static org.assertj.core.api.InstanceOfAssertFactories.MAP;
 
-public class CsvLinesToMapsTest extends FunctionTest {
+public class CsvLinesToMapsTest extends FunctionTest<CsvLinesToMaps> {
     @Override
-    protected Function getInstance() {
+    protected CsvLinesToMaps getInstance() {
         return new CsvLinesToMaps();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return CsvLinesToMaps.class;
+    protected Iterable<CsvLinesToMaps> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new CsvLinesToMaps().delimiter('\t'),
+                new CsvLinesToMaps().firstRow(8),
+                new CsvLinesToMaps().quoteChar('\''),
+                new CsvLinesToMaps().quoted(),
+                new CsvLinesToMaps().header("myHeader")
+        );
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Iterable.class };
+        return new Class[] {Iterable.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Iterable.class };
+        return new Class[] {Iterable.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -87,14 +93,16 @@ public class CsvLinesToMapsTest extends FunctionTest {
         );
 
         // When
-        Iterable<Map<String, Object>> result = function.apply(input);
+        final Iterable<Map<String, Object>> result = function.apply(input);
 
         // Then
-        HashMap<Object, Object> map = new HashMap<>();
-        map.put("header1", "value1");
-        map.put("header2", "value2");
-        map.put("header3", "value3");
-        assertEquals(Collections.singletonList(map), Lists.newArrayList(result));
+        assertThat(result)
+                .hasSize(1)
+                .first(as(MAP))
+                .containsOnly(
+                        entry("header1", "value1"),
+                        entry("header2", "value2"),
+                        entry("header3", "value3"));
     }
 
     @Test
@@ -104,9 +112,9 @@ public class CsvLinesToMapsTest extends FunctionTest {
         final List<String> input = null;
 
         // When
-        Object result = function.apply(input);
+        final Object result = function.apply(input);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 }

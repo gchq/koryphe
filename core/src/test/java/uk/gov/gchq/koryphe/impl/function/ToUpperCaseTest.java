@@ -1,4 +1,4 @@
-package uk.gov.gchq.koryphe.impl.function;/*
+/*
  * Copyright 2018-2020 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,10 @@ package uk.gov.gchq.koryphe.impl.function;/*
  * limitations under the License.
  */
 
+package uk.gov.gchq.koryphe.impl.function;
+
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -23,41 +25,70 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class ToUpperCaseTest extends FunctionTest {
+public class ToUpperCaseTest extends FunctionTest<ToUpperCase> {
+
     private static final String TEST_STRING = "test string";
+
     @Test
-    public void shouldUpperCaseInput() {
+    public void shouldUpperCaseInputString() {
         // Given
-        final ToUpperCase function = new ToUpperCase();
+        final Function function = getInstance();
 
         // When
-        Object output = function.apply(TEST_STRING);
+        final Object output = function.apply(TEST_STRING);
 
-        assertEquals(StringUtils.upperCase(TEST_STRING), output);
+        // Then
+        assertThat(output).isEqualTo(StringUtils.upperCase(TEST_STRING));
     }
+
+    @Test
+    public void shouldUpperCaseInputObject() {
+        // Given
+        final Function function = getInstance();
+        final ToUpperCaseTestObject input = new ToUpperCaseTestObject();
+
+        // When
+        final Object output = function.apply(input);
+
+        // Then
+        assertThat(output).isEqualTo(StringUtils.upperCase(input.getClass().getSimpleName().toLowerCase()));
+    }
+
+    @Test
+    public void shouldHandleNullInput() {
+        // Given
+        final Function function = getInstance();
+
+        // When
+        Object output = function.apply(null);
+
+        // Then
+        assertThat(output).isNull();
+    }
+
     @Override
-    protected Function getInstance() {
+    protected ToUpperCase getInstance() {
         return new ToUpperCase();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ToUpperCase.class;
+    protected Iterable<ToUpperCase> getDifferentInstancesOrNull() {
+        return null;
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { String.class };
+        return new Class[] {String.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -75,6 +106,14 @@ public class ToUpperCaseTest extends FunctionTest {
         final ToUpperCase deserialisedMethod = JsonSerialiser.deserialise(json, ToUpperCase.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
+    }
+
+    private final static class ToUpperCaseTestObject {
+
+        @Override
+        public String toString() {
+            return this.getClass().getSimpleName().toLowerCase();
+        }
     }
 }

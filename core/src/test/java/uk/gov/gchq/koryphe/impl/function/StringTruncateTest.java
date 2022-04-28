@@ -13,20 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class StringTruncateTest extends FunctionTest {
+public class StringTruncateTest extends FunctionTest<StringTruncate> {
+
     @Test
     public void shouldHandleNullInput() {
         // Given
@@ -36,7 +37,7 @@ public class StringTruncateTest extends FunctionTest {
         final String result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -49,7 +50,7 @@ public class StringTruncateTest extends FunctionTest {
         final String result = function.apply(input);
 
         // Then
-        assertEquals("A long inp", result);
+        assertThat(result).isEqualTo("A long inp");
     }
 
     @Test
@@ -62,17 +63,35 @@ public class StringTruncateTest extends FunctionTest {
         final String result = function.apply(input);
 
         // Then
-        assertEquals("A long inp...", result);
+        assertThat(result).isEqualTo("A long inp...");
+    }
+
+    @Test
+    public void shouldReturnFullStringIfInputShorterThanMaxLength() {
+        //Given
+        final StringTruncate function = new StringTruncate(10);
+        final String input = "123 56";
+
+        //When
+        final String result = function.apply(input);
+
+        //Then
+        assertThat(result).isEqualTo(input);
+
     }
 
     @Override
     protected StringTruncate getInstance() {
-        return new StringTruncate();
+        return new StringTruncate(10, true);
     }
 
     @Override
-    protected Class<? extends StringTruncate> getFunctionClass() {
-        return StringTruncate.class;
+    protected Iterable<StringTruncate> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new StringTruncate(),
+                new StringTruncate(5, true),
+                new StringTruncate(10, false)
+        );
     }
 
     @Override
@@ -85,6 +104,7 @@ public class StringTruncateTest extends FunctionTest {
         return new Class[]{ String.class };
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -104,6 +124,6 @@ public class StringTruncateTest extends FunctionTest {
         final StringTruncate deserialisedMethod = JsonSerialiser.deserialise(json, StringTruncate.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

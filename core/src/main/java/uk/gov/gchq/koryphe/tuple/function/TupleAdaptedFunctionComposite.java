@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ public class TupleAdaptedFunctionComposite<R>
         private final TupleAdaptedFunctionComposite<R> transformer;
 
         public Builder() {
-            this(new TupleAdaptedFunctionComposite<R>());
+            this(new TupleAdaptedFunctionComposite<>());
         }
 
         private Builder(final TupleAdaptedFunctionComposite<R> transformer) {
@@ -55,7 +55,7 @@ public class TupleAdaptedFunctionComposite<R>
         public SelectedBuilder<R> select(final R[] selection) {
             final TupleAdaptedFunction<R, ?, ?> current = new TupleAdaptedFunction<>();
             current.setSelection(selection);
-            return new SelectedBuilder<R>(transformer, current);
+            return new SelectedBuilder<>(transformer, current);
         }
 
         public TupleAdaptedFunctionComposite<R> build() {
@@ -74,7 +74,7 @@ public class TupleAdaptedFunctionComposite<R>
 
         public ExecutedBuilder<R> execute(final Function function) {
             current.setFunction(function);
-            return new ExecutedBuilder<R>(transformer, current);
+            return new ExecutedBuilder<>(transformer, current);
         }
     }
 
@@ -90,7 +90,7 @@ public class TupleAdaptedFunctionComposite<R>
         public Builder<R> project(final R[] projection) {
             current.setProjection(projection);
             transformer.components.add(current);
-            return new Builder<R>(transformer);
+            return new Builder<>(transformer);
         }
     }
 }

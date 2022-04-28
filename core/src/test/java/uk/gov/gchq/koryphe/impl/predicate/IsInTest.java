@@ -17,7 +17,7 @@
 package uk.gov.gchq.koryphe.impl.predicate;
 
 import com.google.common.collect.Sets;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.CustomObj;
@@ -27,34 +27,26 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class IsInTest extends PredicateTest {
+public class IsInTest extends PredicateTest<IsIn> {
+
     @Test
     public void shouldAcceptWhenValueInList() {
         // Given
-        final IsIn filter = new IsIn(Arrays.asList((Object) "A", "B", "C"));
+        final IsIn filter = new IsIn(Arrays.asList("A", "B", "C"));
 
-        // When
-        boolean accepted = filter.test("B");
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts("B");
     }
 
     @Test
     public void shouldRejectWhenValueNotInList() {
         // Given
-        final IsIn filter = new IsIn(Arrays.asList((Object) "A", "B", "C"));
+        final IsIn filter = new IsIn(Arrays.asList("A", "B", "C"));
 
-        // When
-        boolean accepted = filter.test("D");
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects("D");
     }
 
     @Test
@@ -76,17 +68,17 @@ public class IsInTest extends PredicateTest {
         final IsIn deserialisedFilter = JsonSerialiser.deserialise(json, IsIn.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(Sets.newHashSet(controlData), deserialisedFilter.getAllowedValues());
-    }
-
-    @Override
-    protected Class<IsIn> getPredicateClass() {
-        return IsIn.class;
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getAllowedValues()).containsExactlyElementsOf(Sets.newHashSet(controlData));
     }
 
     @Override
     protected IsIn getInstance() {
         return new IsIn(Collections.singletonList("someValue"));
+    }
+
+    @Override
+    protected Iterable<IsIn> getDifferentInstancesOrNull() {
+        return null;
     }
 }

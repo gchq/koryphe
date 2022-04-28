@@ -13,24 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class StringJoinTest extends FunctionTest {
+public class StringJoinTest extends FunctionTest<StringJoin> {
 
     @Test
     public void shouldHandleNullInput() {
@@ -41,7 +41,7 @@ public class StringJoinTest extends FunctionTest {
         final String result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -54,7 +54,7 @@ public class StringJoinTest extends FunctionTest {
         final String result = function.apply(input);
 
         // Then
-        assertEquals("abc", result);
+        assertThat(result).isEqualTo("abc");
     }
 
     @Test
@@ -67,7 +67,7 @@ public class StringJoinTest extends FunctionTest {
         final String result = function.apply(input);
 
         // Then
-        assertEquals("abc", result);
+        assertThat(result).isEqualTo("abc");
     }
 
     @Test
@@ -80,7 +80,7 @@ public class StringJoinTest extends FunctionTest {
         final String result = function.apply(input);
 
         // Then
-        assertEquals("12345", result);
+        assertThat(result).isEqualTo("12345");
     }
 
     @Test
@@ -93,7 +93,7 @@ public class StringJoinTest extends FunctionTest {
         final String result = function.apply(input);
 
         // Then
-        assertEquals("a,b,c", result);
+        assertThat(result).isEqualTo("a,b,c");
     }
 
     @Test
@@ -106,7 +106,7 @@ public class StringJoinTest extends FunctionTest {
         final String result = function.apply(input);
 
         // Then
-        assertEquals("1 2 3 4 5", result);
+        assertThat(result).isEqualTo("1 2 3 4 5");
     }
 
     @Override
@@ -115,8 +115,8 @@ public class StringJoinTest extends FunctionTest {
     }
 
     @Override
-    protected Class<? extends StringJoin> getFunctionClass() {
-        return StringJoin.class;
+    protected Iterable<StringJoin> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new StringJoin("\t"));
     }
 
     @Override
@@ -129,6 +129,7 @@ public class StringJoinTest extends FunctionTest {
         return new Class[]{ String.class };
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -147,6 +148,6 @@ public class StringJoinTest extends FunctionTest {
         final StringJoin deserialisedMethod = JsonSerialiser.deserialise(json, StringJoin.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

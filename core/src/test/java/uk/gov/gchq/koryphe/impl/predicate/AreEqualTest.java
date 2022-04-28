@@ -16,57 +16,64 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
+import uk.gov.gchq.koryphe.tuple.n.Tuple2;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class AreEqualTest extends PredicateTest {
+public class AreEqualTest extends PredicateTest<AreEqual> {
 
     @Test
     public void shouldAcceptTheWhenEqualValues() {
-
+        // Given
         final AreEqual equals = new AreEqual();
 
-        boolean accepted = equals.test("test", "test");
+        // When
+        Tuple2<Object, Object> inputs = new Tuple2<>("test", "test");
 
-        assertTrue(accepted);
+        // Then
+        assertThat(equals).accepts(inputs);
     }
 
     @Test
     public void shouldAcceptWhenAllNull() {
-
+        // Given
         final AreEqual equals = new AreEqual();
 
-        boolean accepted = equals.test(null, null);
+        // When
+        Tuple2<Object, Object> inputs = new Tuple2<>(null, null);
 
-        assertTrue(accepted);
+        // Then
+        assertThat(equals).accepts(inputs);
     }
 
     @Test
     public void shouldRejectWhenOneIsNull() {
-
+        // Given
         final AreEqual equals = new AreEqual();
 
-        boolean accepted = equals.test(null, "test");
+        // When
+        Tuple2<Object, Object> inputs = new Tuple2<>(null, "test");
 
-        assertFalse(accepted);
+        // Then
+        assertThat(equals).rejects(inputs);
     }
 
     @Test
     public void shouldRejectWhenNotEqual() {
-
+        // Given
         final AreEqual equals = new AreEqual();
 
-        boolean accepted = equals.test("test", "test2");
+        // When
+        Tuple2<Object, Object> inputs = new Tuple2<>("test", "test2");
 
-        assertFalse(accepted);
+        // Then
+        assertThat(equals).rejects(inputs);
     }
 
     @Test
@@ -86,16 +93,16 @@ public class AreEqualTest extends PredicateTest {
         final AreEqual deserialisedFilter = JsonSerialiser.deserialise(json, AreEqual.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-    }
-
-    @Override
-    protected Class<AreEqual> getPredicateClass() {
-        return AreEqual.class;
+        assertThat(deserialisedFilter).isNotNull();
     }
 
     @Override
     protected AreEqual getInstance() {
         return new AreEqual();
+    }
+
+    @Override
+    protected Iterable<AreEqual> getDifferentInstancesOrNull() {
+        return null;
     }
 }

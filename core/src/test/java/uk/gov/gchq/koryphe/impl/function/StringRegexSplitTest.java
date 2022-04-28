@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.core.IsCollectionContaining.hasItems;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class StringRegexSplitTest extends FunctionTest {
+public class StringRegexSplitTest extends FunctionTest<StringRegexSplit> {
+
     @Test
     public void shouldHandleNullInput() {
         // Given
@@ -38,7 +38,7 @@ public class StringRegexSplitTest extends FunctionTest {
         final List<String> result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -51,17 +51,20 @@ public class StringRegexSplitTest extends FunctionTest {
         final List<String> result = function.apply(input);
 
         // Then
-        assertThat(result, hasItems("first", "second", "third"));
+        assertThat(result).contains("first", "second", "third");
     }
 
     @Override
     protected StringRegexSplit getInstance() {
-        return new StringRegexSplit();
+        return new StringRegexSplit("test");
     }
 
     @Override
-    protected Class<? extends StringRegexSplit> getFunctionClass() {
-        return StringRegexSplit.class;
+    protected Iterable<StringRegexSplit> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new StringRegexSplit("hello"),
+                new StringRegexSplit(".*")
+        );
     }
 
     @Override
@@ -74,6 +77,7 @@ public class StringRegexSplitTest extends FunctionTest {
         return new Class[]{ List.class };
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -92,6 +96,6 @@ public class StringRegexSplitTest extends FunctionTest {
         final StringRegexSplit deserialisedMethod = JsonSerialiser.deserialise(json, StringRegexSplit.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

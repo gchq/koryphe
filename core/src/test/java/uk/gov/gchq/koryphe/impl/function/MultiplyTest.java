@@ -16,26 +16,27 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class MultiplyTest extends FunctionTest {
+public class MultiplyTest extends FunctionTest<Multiply> {
+
     @Test
     public void shouldMultiply2() {
         // Given
         final Multiply function = new Multiply();
 
         // When
-        int output = function.apply(4, 2);
+        final int output = function.apply(4, 2);
 
-        assertEquals(8, output);
+        // Then
+        assertThat(output).isEqualTo(8);
     }
 
     @Test
@@ -44,9 +45,10 @@ public class MultiplyTest extends FunctionTest {
         final Multiply function = new Multiply();
 
         // When
-        int output = function.apply(9, null);
+        final int output = function.apply(9, null);
 
-        assertEquals(9, output);
+        // Then
+        assertThat(output).isEqualTo(9);
     }
 
     @Test
@@ -55,11 +57,13 @@ public class MultiplyTest extends FunctionTest {
         final Multiply function = new Multiply();
 
         // When
-        Integer output = function.apply(null, 9);
+        final Integer output = function.apply(null, 9);
 
-        assertEquals(null, output);
+        // Then
+        assertThat(output).isNull();
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -77,7 +81,7 @@ public class MultiplyTest extends FunctionTest {
         final Multiply deserialisedMultiply = JsonSerialiser.deserialise(json, Multiply.class);
 
         // Then 2
-        assertNotNull(deserialisedMultiply);
+        assertThat(deserialisedMultiply).isNotNull();
     }
 
     @Override
@@ -86,17 +90,17 @@ public class MultiplyTest extends FunctionTest {
     }
 
     @Override
-    protected Class<Multiply> getFunctionClass() {
-        return Multiply.class;
+    protected Iterable<Multiply> getDifferentInstancesOrNull() {
+        return null;
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Integer.class, Integer.class };
+        return new Class[] {Integer.class, Integer.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Integer.class };
+        return new Class[] {Integer.class};
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,93 +13,76 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.predicate;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
+
 import java.io.IOException;
-import java.util.function.Predicate;
+import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class StringContainsTest extends PredicateTest {
+public class StringContainsTest extends PredicateTest<StringContains> {
+
     private static final String INPUT = "This is a test string, used for the StringContains test";
 
     @Test
     public void shouldAcceptWhenStringInValue() {
         // Given
-        final StringContains stringContains = new StringContains("used");
+        final StringContains filter = new StringContains("used");
 
-        // When
-        boolean accepted = stringContains.test(INPUT);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(INPUT);
     }
 
     @Test
     public void shouldRejectMismatchedCases() {
         // Given
-        final StringContains stringContains = new StringContains("stringcontains");
+        final StringContains filter = new StringContains("stringcontains");
 
-        // When
-        boolean accepted = stringContains.test(INPUT);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(INPUT);
     }
 
     @Test
     public void shouldAcceptEmptyString() {
         // Given
-        final StringContains stringContains = new StringContains("");
+        final StringContains filter = new StringContains("");
 
-        // When
-        boolean accepted = stringContains.test(INPUT);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(INPUT);
     }
 
     @Test
     public void shouldRejectNullValue() {
         // Given
-        final StringContains stringContains = new StringContains(null);
+        final StringContains filter = new StringContains(null);
 
-        // When
-        boolean accepted = stringContains.test(INPUT);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(INPUT);
     }
 
     @Test
     public void shouldRejectNullInput() {
         // Given
-        final StringContains stringContains = new StringContains("test");
+        final StringContains filter = new StringContains("test");
 
-        // When
-        boolean accepted = stringContains.test(null);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects((String) null);
     }
 
     @Test
     public void shouldMatchWhenIgnoreCaseSet() {
         // Given
-        final StringContains stringContains = new StringContains("stringcontains");
-        stringContains.setIgnoreCase(true);
+        final StringContains filter = new StringContains("stringcontains");
+        filter.setIgnoreCase(true);
 
-        // When
-        boolean accepted = stringContains.test(INPUT);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(INPUT);
     }
 
     @Override
@@ -122,17 +105,22 @@ public class StringContainsTest extends PredicateTest {
         final StringContains deserialisedFilter = JsonSerialiser.deserialise(json, StringContains.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(value, deserialisedFilter.getValue());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getValue()).isEqualTo(value);
     }
 
     @Override
-    protected Predicate getInstance() {
+    protected StringContains getInstance() {
         return new StringContains("");
     }
 
     @Override
-    protected Class<? extends Predicate> getPredicateClass() {
-        return StringContains.class;
+    protected Iterable<StringContains> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+//                new StringContains(), Empty string and null have the same hashCode
+                new StringContains("different"),
+                new StringContains("", true)
+        );
     }
-}
+
+    }

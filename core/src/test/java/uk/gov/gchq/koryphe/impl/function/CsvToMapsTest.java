@@ -13,44 +13,51 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
-import com.google.common.collect.Lists;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.Map;
-import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.as;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
+import static org.assertj.core.api.InstanceOfAssertFactories.MAP;
 
-public class CsvToMapsTest extends FunctionTest {
+public class CsvToMapsTest extends FunctionTest<CsvToMaps> {
     @Override
-    protected Function getInstance() {
+    protected CsvToMaps getInstance() {
         return new CsvToMaps();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return CsvToMaps.class;
+    protected Iterable<CsvToMaps> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new CsvToMaps().delimiter('\t'),
+                new CsvToMaps().firstRow(8),
+                new CsvToMaps().quoteChar('\''),
+                new CsvToMaps().quoted(),
+                new CsvToMaps().header("myHeader")
+        );
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { String.class };
+        return new Class[] {String.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Iterable.class };
+        return new Class[] {Iterable.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -85,23 +92,24 @@ public class CsvToMapsTest extends FunctionTest {
         Iterable<Map<String, Object>> result = function.apply(input);
 
         // Then
-        HashMap<Object, Object> map = new HashMap<>();
-        map.put("header1", "value1");
-        map.put("header2", "value2");
-        map.put("header3", "value3");
-        assertEquals(Collections.singletonList(map), Lists.newArrayList(result));
+        assertThat(result)
+                .hasSize(1)
+                .first(as(MAP))
+                .containsOnly(
+                        entry("header1", "value1"),
+                        entry("header2", "value2"),
+                        entry("header3", "value3"));
     }
 
     @Test
     public void shouldReturnNullForNullInput() {
         // Given
         final CsvToMaps function = new CsvToMaps();
-        final String input = null;
 
         // When
-        Object result = function.apply(input);
+        Object result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 }

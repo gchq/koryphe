@@ -16,28 +16,24 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class IsTrueTest extends PredicateTest {
+public class IsTrueTest extends PredicateTest<IsTrue> {
+
     @Test
     public void shouldAcceptTheValueWhenTrue() {
         // Given
         final IsTrue filter = new IsTrue();
 
-        // When
-        boolean accepted = filter.test(true);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(true);
     }
 
     @Test
@@ -45,11 +41,8 @@ public class IsTrueTest extends PredicateTest {
         // Given
         final IsTrue filter = new IsTrue();
 
-        // When
-        boolean accepted = filter.test(Boolean.TRUE);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(Boolean.TRUE);
     }
 
     @Test
@@ -57,11 +50,8 @@ public class IsTrueTest extends PredicateTest {
         // Given
         final IsTrue filter = new IsTrue();
 
-        // When
-        boolean accepted = filter.test((Boolean) null);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects((Boolean) null);
     }
 
     @Test
@@ -69,11 +59,8 @@ public class IsTrueTest extends PredicateTest {
         // Given
         final IsTrue filter = new IsTrue();
 
-        // When
-        boolean accepted = filter.test(false);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(false);
     }
 
     @Test
@@ -93,16 +80,16 @@ public class IsTrueTest extends PredicateTest {
         final IsTrue deserialisedFilter = JsonSerialiser.deserialise(json, IsTrue.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-    }
-
-    @Override
-    protected Class<IsTrue> getPredicateClass() {
-        return IsTrue.class;
+        assertThat(deserialisedFilter).isNotNull();
     }
 
     @Override
     protected IsTrue getInstance() {
         return new IsTrue();
+    }
+
+    @Override
+    protected Iterable<IsTrue> getDifferentInstancesOrNull() {
+        return null;
     }
 }

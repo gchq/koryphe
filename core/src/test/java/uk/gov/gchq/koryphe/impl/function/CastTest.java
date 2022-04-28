@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 Crown Copyright
+ * Copyright 2018-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,48 +16,55 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.function.Function;
+import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class CastTest extends FunctionTest {
-    //@Test
+public class CastTest extends FunctionTest<Cast> {
+
+    @Disabled
+    @Test
     public void shouldCast() {
         // Given
         final Cast function = new Cast(Integer.class);
 
         // When
-        Object output = function.apply(new Long(5));
+        Object output = function.apply(5L);
 
         // Then
-        assertEquals(Integer.class, output.getClass());
+        assertThat(output)
+                .isExactlyInstanceOf(Integer.class)
+                .isEqualTo(5L);
     }
 
     @Override
-    protected Function getInstance() {
+    protected Cast getInstance() {
         return new Cast<>();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return Cast.class;
+    protected Iterable<Cast> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new Cast<>(Integer.class));
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -76,6 +83,6 @@ public class CastTest extends FunctionTest {
         final Cast deserialisedMethod = JsonSerialiser.deserialise(json, Cast.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

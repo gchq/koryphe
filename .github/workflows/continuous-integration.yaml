@@ -1,0 +1,39 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+  push:
+    branches:
+      - 'release/**'
+      - 'hotfix/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+     MAVEN_OPTS: -Dmaven.wagon.http.retryHandler.count=3 -Dmaven.wagon.httpconnectionManager.ttlSeconds=25
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup JDK
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'zulu'
+        java-version: '11'
+
+    - name: Cache dependencies
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.m2/repository
+          !~/.m2/repository/uk
+        key: koryphe-dependencies
+
+    - name: Install
+      run: mvn -B -q clean install -P quick
+
+    - name: Test
+      run: mvn -B -q verify -P coverage
+
+    - name: Upload Coverage
+      uses: codecov/codecov-action@v2

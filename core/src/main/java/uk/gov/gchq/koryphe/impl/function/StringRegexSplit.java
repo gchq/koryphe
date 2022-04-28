@@ -16,6 +16,9 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
@@ -59,5 +62,29 @@ public class StringRegexSplit extends KorypheFunction<String, List<String>> {
 
     public void setRegex(final String regex) {
         this.regex = regex;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o)) {
+            return false; // Does exact equals and class checking
+        }
+
+        StringRegexSplit that = (StringRegexSplit) o;
+        return new EqualsBuilder()
+                .append(regex, that.regex)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(53, 59)
+                .appendSuper(super.hashCode())
+                .append(regex)
+                .toHashCode();
     }
 }

@@ -16,26 +16,28 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import com.google.common.collect.Maps;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
+
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
-public class DictionaryLookupTest extends FunctionTest {
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-    private Map<String, Integer> dictionary = new HashMap<>();;
+public class DictionaryLookupTest extends FunctionTest<DictionaryLookup<?, ?>> {
+
+    private Map<String, Integer> dictionary = new HashMap<>();
+
     private DictionaryLookup<String, Integer> dictionaryLookUp;
 
-    @Before
+    @BeforeEach
     public void setup() {
         dictionary.put("one", 1);
         dictionary.put("two", 2);
@@ -44,50 +46,57 @@ public class DictionaryLookupTest extends FunctionTest {
 
     @Test
     public void shouldReturnExistingValueInDictionary() {
-        assertEquals(1, (int) dictionaryLookUp.apply("one"));
-        assertEquals(2, (int) dictionaryLookUp.apply("two"));
+        assertThat((int) dictionaryLookUp.apply("one"))
+                .isEqualTo(1);
+        assertThat((int) dictionaryLookUp.apply("two"))
+                .isEqualTo(2);
     }
 
     @Test
     public void shouldReturnNullIfNullKeyIsSupplied() {
-        assertNull(dictionaryLookUp.apply(null));
+        assertThat(dictionaryLookUp.apply(null)).isNull();
     }
 
     @Test
     public void shouldReturnNullIfItemDoesntExistInDictionary() {
-        assertNull(dictionaryLookUp.apply("three"));
+        assertThat(dictionaryLookUp.apply("three")).isNull();
     }
 
     @Test
     public void shouldThrowExceptionIfDictionaryIsSetToNull() {
-        try {
-            new DictionaryLookup<>().apply("four");
-            Assert.fail("expected IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            assertEquals("The uk.gov.gchq.koryphe.impl.function.DictionaryLookup KorypheFunction has not been provided with a dictionary", e.getMessage());
-        }
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> new DictionaryLookup<>().apply("four"))
+                .withMessage("The uk.gov.gchq.koryphe.impl.function.DictionaryLookup KorypheFunction has not been provided with a dictionary");
     }
 
     @Override
-    protected Function getInstance() {
-        return new DictionaryLookup();
+    protected DictionaryLookup<String, Integer> getInstance() {
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("one", 1);
+        map.put("two", 2);
+
+        return new DictionaryLookup(map);
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return DictionaryLookup.class;
+    protected Iterable<DictionaryLookup<?, ?>> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new DictionaryLookup<>(null),
+                new DictionaryLookup<>(Maps.newHashMap())
+        );
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // When
@@ -103,6 +112,6 @@ public class DictionaryLookupTest extends FunctionTest {
         final DictionaryLookup deserialised = JsonSerialiser.deserialise(json, DictionaryLookup.class);
 
         // Then
-        assertNotNull(deserialised);
+        assertThat(deserialised).isNotNull();
     }
 }

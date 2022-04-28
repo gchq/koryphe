@@ -16,30 +16,27 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
+import uk.gov.gchq.koryphe.signature.InputValidatorAssert;
 import uk.gov.gchq.koryphe.util.CustomObj;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class IsMoreThanTest extends PredicateTest {
+public class IsMoreThanTest extends PredicateTest<IsMoreThan> {
+
     @Test
     public void shouldAcceptTheValueWhenMoreThan() {
         // Given
         final IsMoreThan filter = new IsMoreThan(5);
 
-        // When
-        boolean accepted = filter.test(6);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(6);
     }
 
     @Test
@@ -47,11 +44,8 @@ public class IsMoreThanTest extends PredicateTest {
         // Given
         final IsMoreThan filter = new IsMoreThan(5, true);
 
-        // When
-        boolean accepted = filter.test(6);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(6);
     }
 
     @Test
@@ -59,11 +53,8 @@ public class IsMoreThanTest extends PredicateTest {
         // Given
         final IsMoreThan filter = new IsMoreThan(5, true);
 
-        // When
-        boolean accepted = filter.test(4);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(4);
     }
 
     @Test
@@ -71,11 +62,8 @@ public class IsMoreThanTest extends PredicateTest {
         // Given
         final IsMoreThan filter = new IsMoreThan(5);
 
-        // When
-        boolean accepted = filter.test(4);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(4);
     }
 
     @Test
@@ -83,11 +71,8 @@ public class IsMoreThanTest extends PredicateTest {
         // Given
         final IsMoreThan filter = new IsMoreThan(5);
 
-        // When
-        boolean accepted = filter.test(5);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(5);
     }
 
 
@@ -96,11 +81,8 @@ public class IsMoreThanTest extends PredicateTest {
         // Given
         final IsMoreThan filter = new IsMoreThan(5, true);
 
-        // When
-        boolean accepted = filter.test(5);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(5);
     }
 
     @Test
@@ -123,26 +105,32 @@ public class IsMoreThanTest extends PredicateTest {
         final IsMoreThan deserialisedFilter = JsonSerialiser.deserialise(json, IsMoreThan.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(controlValue, deserialisedFilter.getControlValue());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getControlValue()).isEqualTo(controlValue);
     }
 
     @Test
     public void shouldCheckInputClass() {
+        // When
         final IsMoreThan predicate = new IsMoreThan(1);
 
-        assertTrue(predicate.isInputValid(Integer.class).isValid());
-        assertFalse(predicate.isInputValid(Double.class).isValid());
-        assertFalse(predicate.isInputValid(Integer.class, Integer.class).isValid());
-    }
-
-    @Override
-    protected Class<IsMoreThan> getPredicateClass() {
-        return IsMoreThan.class;
+        // Then
+        InputValidatorAssert.assertThat(predicate)
+                .acceptsInput(Integer.class)
+                .rejectsInput(Double.class)
+                .rejectsInput(Integer.class, Integer.class);
     }
 
     @Override
     protected IsMoreThan getInstance() {
         return new IsMoreThan(5);
+    }
+
+    @Override
+    protected Iterable<IsMoreThan> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new IsMoreThan(),
+                new IsMoreThan(10L)
+        );
     }
 }

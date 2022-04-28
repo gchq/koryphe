@@ -16,7 +16,7 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.tuple.n.Tuple2;
@@ -24,10 +24,10 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class DivideTest extends FunctionTest {
+public class DivideTest extends FunctionTest<Divide> {
+
     @Test
     public void shouldDivide2() {
         // Given
@@ -36,7 +36,8 @@ public class DivideTest extends FunctionTest {
         // When
         Tuple2<Integer, Integer> output = function.apply(4, 2);
 
-        assertEquals(new Tuple2<>(2, 0), output);
+        // Then
+        assertThat(output).isEqualTo(new Tuple2<>(2, 0));
     }
 
     @Test
@@ -47,7 +48,8 @@ public class DivideTest extends FunctionTest {
         // When
         Tuple2<Integer, Integer> output = function.apply(5, 2);
 
-        assertEquals(new Tuple2<>(2, 1), output);
+        // Then
+        assertThat(output).isEqualTo(new Tuple2<>(2, 1));
     }
 
     @Test
@@ -58,9 +60,11 @@ public class DivideTest extends FunctionTest {
         // When
         Tuple2<Integer, Integer> output = function.apply(9, null);
 
-        assertEquals(new Tuple2<>(9, 0), output);
+        // Then
+        assertThat(output).isEqualTo(new Tuple2<>(9, 0));
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -78,7 +82,7 @@ public class DivideTest extends FunctionTest {
         final Divide deserialisedDivide = JsonSerialiser.deserialise(json, Divide.class);
 
         // Then 2
-        assertNotNull(deserialisedDivide);
+        assertThat(deserialisedDivide).isNotNull();
     }
 
     @Override
@@ -87,17 +91,17 @@ public class DivideTest extends FunctionTest {
     }
 
     @Override
-    protected Class<Divide> getFunctionClass() {
-        return Divide.class;
+    protected Iterable getDifferentInstancesOrNull() {
+        return null;
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Integer.class, Integer.class };
+        return new Class[] {Integer.class, Integer.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Integer.class, Integer.class };
+        return new Class[] {Integer.class, Integer.class};
     }
 }

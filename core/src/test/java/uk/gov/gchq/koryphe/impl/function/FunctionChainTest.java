@@ -13,47 +13,60 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
 import com.google.common.collect.Sets;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.tuple.ArrayTuple;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.function.Function;
+import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.ARRAY;
+import static org.assertj.core.api.InstanceOfAssertFactories.COLLECTION;
 
-public class FunctionChainTest extends FunctionTest {
+public class FunctionChainTest extends FunctionTest<FunctionChain> {
     @Override
-    protected Function getInstance() {
-        return new FunctionChain();
+    protected FunctionChain getInstance() {
+        return new FunctionChain.Builder<>()
+                .execute(new ToInteger())
+                .execute(new DivideBy(3))
+                .build();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return FunctionChain.class;
+    protected Iterable<FunctionChain> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new FunctionChain<>(),
+                new FunctionChain.Builder<>()
+                        .execute(new ToString())
+                        .execute(new StringSplit())
+                .build()
+        );
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
         final FunctionChain function = new FunctionChain.Builder<>()
-                .execute(new Integer[]{1}, new ToUpperCase(), new Integer[]{2})
-                .execute(new Integer[]{2}, new ToSet(), new Integer[]{3})
+                .execute(new Integer[] {1}, new ToUpperCase(), new Integer[] {2})
+                .execute(new Integer[] {2}, new ToSet(), new Integer[] {3})
                 .build();
 
         // When
@@ -73,8 +86,8 @@ public class FunctionChainTest extends FunctionTest {
     public void shouldApplyAllTupleFunctions() {
         // Given
         final FunctionChain function = new FunctionChain.Builder<>()
-                .execute(new Integer[]{0}, new ToUpperCase(), new Integer[]{1})
-                .execute(new Integer[]{1}, new ToSet(), new Integer[]{2})
+                .execute(new Integer[] {0}, new ToUpperCase(), new Integer[] {1})
+                .execute(new Integer[] {1}, new ToSet(), new Integer[] {2})
                 .build();
         final ArrayTuple input = new ArrayTuple("someString", null, null);
 
@@ -82,7 +95,10 @@ public class FunctionChainTest extends FunctionTest {
         final Object result = function.apply(input);
 
         // Then
-        assertEquals(new ArrayTuple("someString", "SOMESTRING", Sets.newHashSet("SOMESTRING")), result);
+        assertThat(result)
+                .extracting("values")
+                .asInstanceOf(ARRAY)
+                .containsExactly("someString", "SOMESTRING", Sets.newHashSet("SOMESTRING"));
     }
 
     @Test
@@ -95,7 +111,9 @@ public class FunctionChainTest extends FunctionTest {
         final Object result = function.apply(input);
 
         // Then
-        assertEquals(Sets.newHashSet("SOMESTRING"), result);
+        assertThat(result)
+                .asInstanceOf(COLLECTION)
+                .containsExactly("SOMESTRING");
     }
 
     @Test
@@ -109,6 +127,6 @@ public class FunctionChainTest extends FunctionTest {
         final Object result = function.apply(input);
 
         // Then
-        assertEquals(input, result);
+        assertThat(result).isEqualTo(input);
     }
 }

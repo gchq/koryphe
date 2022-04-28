@@ -13,12 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.google.common.base.Charsets;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
@@ -83,5 +86,29 @@ public class ToString extends KorypheFunction<Object, String> {
     @JsonGetter("charset")
     public String getCharsetAsString() {
         return charset.name();
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o)) {
+            return false; // Does exact equals and class checking
+        }
+
+        ToString that = (ToString) o;
+        return new EqualsBuilder()
+                .append(charset, that.charset)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(43, 67)
+                .appendSuper(super.hashCode())
+                .append(charset)
+                .toHashCode();
     }
 }

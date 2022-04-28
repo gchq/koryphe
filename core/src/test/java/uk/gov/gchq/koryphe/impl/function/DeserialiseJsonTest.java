@@ -13,43 +13,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
-import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.as;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.LIST;
+import static org.assertj.core.api.InstanceOfAssertFactories.MAP;
 
-public class DeserialiseJsonTest extends FunctionTest {
+
+public class DeserialiseJsonTest extends FunctionTest<DeserialiseJson> {
     @Override
-    protected Function getInstance() {
+    protected DeserialiseJson getInstance() {
         return new DeserialiseJson();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return DeserialiseJson.class;
+    protected Iterable<DeserialiseJson> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new DeserialiseJson(Long.class));
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { String.class };
+        return new Class[] {String.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -75,25 +78,24 @@ public class DeserialiseJsonTest extends FunctionTest {
         Object result = function.apply(input);
 
         // Then
-        Map<String, Object> element2aMap = new HashMap<>();
-        element2aMap.put("value", "value1");
-        Map<String, Object> element2bMap = new HashMap<>();
-        element2bMap.put("value", "value2");
-        HashMap<Object, Object> rootMap = new HashMap<>();
-        rootMap.put("elements", Arrays.asList(element2aMap, element2bMap));
-        assertEquals(rootMap, result);
+        assertThat(result)
+                .asInstanceOf(MAP)
+                .hasSize(1)
+                .extracting("elements", as(LIST))
+                .hasSize(2)
+                .extracting("value")
+                .containsExactly("value1", "value2");
     }
 
     @Test
     public void shouldReturnNullForNullInput() {
         // Given
         final DeserialiseJson function = new DeserialiseJson();
-        final String input = null;
 
         // When
-        Object result = function.apply(input);
+        Object result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 }

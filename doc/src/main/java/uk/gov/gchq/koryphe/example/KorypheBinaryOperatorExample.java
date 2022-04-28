@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,13 +30,11 @@ public abstract class KorypheBinaryOperatorExample<T> extends KorypheExample<T, 
         System.out.println(JsonSerialiser.serialise(getBinaryOperator()));
         System.out.println();
         System.out.println("Binary Operator inputs: ");
-        getInput().forEach(i -> printInput(i));
+        getInput().forEach(this::printInput);
         System.out.println();
         System.out.println("Binary Operator output: ");
         Optional<T> result = getInput().reduce(getBinaryOperator());
-        if (result.isPresent()) {
-            printOutput(result.get());
-        }
+        result.ifPresent(this::printOutput);
         System.out.println();
     }
 }

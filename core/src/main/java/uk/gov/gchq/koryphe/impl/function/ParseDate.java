@@ -13,10 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
@@ -39,6 +42,7 @@ import static java.util.Objects.nonNull;
 public class ParseDate extends KorypheFunction<String, Date> {
     private String format;
     private TimeZone timeZone;
+    private boolean microseconds;
 
     public ParseDate() {
         setTimeZone((TimeZone) null);
@@ -53,7 +57,7 @@ public class ParseDate extends KorypheFunction<String, Date> {
         try {
             final Date date;
             if (isNull(format)) {
-                date = DateUtil.parse(dateString, timeZone);
+                date = DateUtil.parse(dateString, timeZone, microseconds);
             } else {
                 final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
                 if (nonNull(timeZone)) {
@@ -110,5 +114,47 @@ public class ParseDate extends KorypheFunction<String, Date> {
     public ParseDate timeZone(final TimeZone timeZone) {
         setTimeZone(timeZone);
         return this;
+    }
+
+    public boolean isMicroseconds() {
+        return microseconds;
+    }
+
+    @JsonSetter
+    public void setMicroseconds(final boolean microseconds) {
+        this.microseconds = microseconds;
+    }
+
+    public ParseDate microseconds(final boolean microseconds) {
+        setMicroseconds(microseconds);
+        return this;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o)) {
+            return false; // Does exact equals and class checking
+        }
+
+        ParseDate that = (ParseDate) o;
+        return new EqualsBuilder()
+                .append(timeZone, that.timeZone)
+                .append(format, that.format)
+                .append(microseconds, that.microseconds)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(73, 41)
+                .appendSuper(super.hashCode())
+                .append(timeZone)
+                .append(format)
+                .append(microseconds)
+                .toHashCode();
     }
 }

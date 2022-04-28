@@ -16,6 +16,9 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
@@ -61,5 +64,30 @@ public class ToDateString extends KorypheFunction<Date, String> {
 
     public void setFormat(final String format) {
         this.format = format;
+    }
+
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o)) {
+            return false; // Does exact equals and class checking
+        }
+
+        ToDateString that = (ToDateString) o;
+        return new EqualsBuilder()
+                .append(format, that.format)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(61, 47)
+                .appendSuper(super.hashCode())
+                .append(format)
+                .toHashCode();
     }
 }

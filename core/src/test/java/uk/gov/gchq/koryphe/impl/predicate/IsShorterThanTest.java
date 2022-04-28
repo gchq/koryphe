@@ -16,25 +16,25 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
+import uk.gov.gchq.koryphe.signature.InputValidatorAssert;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-public class IsShorterThanTest extends PredicateTest {
+public class IsShorterThanTest extends PredicateTest<IsShorterThan> {
+
     @Test
     public void shouldSetAndGetMaxLength() {
         // Given
@@ -46,8 +46,8 @@ public class IsShorterThanTest extends PredicateTest {
         final int maxLength2 = filter.getMaxLength();
 
         // Then
-        assertEquals(5, maxLength1);
-        assertEquals(10, maxLength2);
+        assertThat(maxLength1).isEqualTo(5);
+        assertThat(maxLength2).isEqualTo(10);
     }
 
     @Test
@@ -55,11 +55,8 @@ public class IsShorterThanTest extends PredicateTest {
         // Given
         final IsShorterThan filter = new IsShorterThan(5);
 
-        // When
-        final boolean accepted = filter.test("1234");
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts("1234");
     }
 
     @Test
@@ -67,11 +64,8 @@ public class IsShorterThanTest extends PredicateTest {
         // Given
         final IsShorterThan filter = new IsShorterThan(5);
 
-        // When
-        final boolean accepted = filter.test("123456");
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects("123456");
     }
 
     @Test
@@ -79,11 +73,8 @@ public class IsShorterThanTest extends PredicateTest {
         // Given
         final IsShorterThan filter = new IsShorterThan(5, true);
 
-        // When
-        final boolean accepted = filter.test(Collections.nCopies(5, "item"));
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(Collections.nCopies(5, "item"));
     }
 
     @Test
@@ -91,11 +82,8 @@ public class IsShorterThanTest extends PredicateTest {
         // Given
         final IsShorterThan filter = new IsShorterThan(5, false);
 
-        // When
-        final boolean accepted = filter.test(Collections.nCopies(5, "item"));
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(Collections.nCopies(5, "item"));
     }
 
     @Test
@@ -103,11 +91,8 @@ public class IsShorterThanTest extends PredicateTest {
         // Given
         final IsShorterThan filter = new IsShorterThan(5, true);
 
-        // When
-        final boolean accepted = filter.test(Collections.nCopies(4, "item"));
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(Collections.nCopies(4, "item"));
     }
 
     @Test
@@ -115,11 +100,8 @@ public class IsShorterThanTest extends PredicateTest {
         // Given
         final IsShorterThan filter = new IsShorterThan(5);
 
-        // When
-        final boolean accepted = filter.test(Collections.nCopies(6, "item"));
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(Collections.nCopies(6, "item"));
     }
 
     @Test
@@ -127,11 +109,8 @@ public class IsShorterThanTest extends PredicateTest {
         // Given
         final IsShorterThan filter = new IsShorterThan(5);
 
-        // When
-        final boolean accepted = filter.test("12345");
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects("12345");
     }
 
     @Test
@@ -140,12 +119,8 @@ public class IsShorterThanTest extends PredicateTest {
         final IsShorterThan filter = new IsShorterThan(5);
 
         // When / Then
-        try {
-            filter.test(4);
-            fail("Exception expected");
-        } catch (final IllegalArgumentException e) {
-            assertNotNull(e);
-        }
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> filter.test(4));
     }
 
     @Test
@@ -168,34 +143,39 @@ public class IsShorterThanTest extends PredicateTest {
         final IsShorterThan deserialisedFilter = JsonSerialiser.deserialise(json, IsShorterThan.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(max, deserialisedFilter.getMaxLength());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getMaxLength()).isEqualTo(max);
     }
 
     @Test
     public void shouldCheckInputClass() {
+        // When
         final IsShorterThan predicate = new IsShorterThan(10);
 
-        assertTrue(predicate.isInputValid(String.class).isValid());
-        assertTrue(predicate.isInputValid(Object[].class).isValid());
-        assertTrue(predicate.isInputValid(Integer[].class).isValid());
-        assertTrue(predicate.isInputValid(Collection.class).isValid());
-        assertTrue(predicate.isInputValid(List.class).isValid());
-        assertTrue(predicate.isInputValid(Map.class).isValid());
-        assertTrue(predicate.isInputValid(HashMap.class).isValid());
-
-        assertFalse(predicate.isInputValid(String.class, HashMap.class).isValid());
-        assertFalse(predicate.isInputValid(Double.class).isValid());
-        assertFalse(predicate.isInputValid(Integer.class, Integer.class).isValid());
-    }
-
-    @Override
-    protected Class<IsShorterThan> getPredicateClass() {
-        return IsShorterThan.class;
+        // Then
+        InputValidatorAssert.assertThat(predicate)
+                .acceptsInput(String.class)
+                .acceptsInput(Object[].class)
+                .acceptsInput(Integer[].class)
+                .acceptsInput(Collection.class)
+                .acceptsInput(List.class)
+                .acceptsInput(Map.class)
+                .acceptsInput(HashMap.class)
+                .rejectsInput(String.class, HashMap.class)
+                .rejectsInput(Double.class)
+                .rejectsInput(Integer.class, Integer.class);
     }
 
     @Override
     protected IsShorterThan getInstance() {
         return new IsShorterThan(5);
+    }
+
+    @Override
+    protected Iterable<IsShorterThan> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new IsShorterThan(10),
+                new IsShorterThan()
+        );
     }
 }

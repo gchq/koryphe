@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2018-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.predicate;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -28,6 +29,9 @@ import uk.gov.gchq.koryphe.tuple.predicate.IntegerTupleAdaptedPredicate;
 import uk.gov.gchq.koryphe.tuple.predicate.TupleAdaptedPredicate;
 
 import java.util.function.Predicate;
+
+import static uk.gov.gchq.koryphe.util.JavaUtils.requireNonNullElse;
+
 
 /**
  * An {@code If} is a {@link Predicate} that conditionally applies one of two predicates to a provided input.
@@ -52,23 +56,24 @@ import java.util.function.Predicate;
  *
  * @param <I> the type of input to be validated
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
 @Since("1.3.0")
 @Summary("Conditionally applies a predicate")
 public class If<I> extends KoryphePredicate<I> {
 
     private Boolean condition;
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class", defaultImpl = TupleAdaptedPredicate.class)
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class", defaultImpl = TupleAdaptedPredicate.class)
     private Predicate<? super I> predicate;
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class", defaultImpl = TupleAdaptedPredicate.class)
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class", defaultImpl = TupleAdaptedPredicate.class)
     private Predicate<? super I> then;
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class", defaultImpl = TupleAdaptedPredicate.class)
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class", defaultImpl = TupleAdaptedPredicate.class)
     private Predicate<? super I> otherwise;
 
     public If() {
+        // Empty
     }
 
     /**
@@ -135,14 +140,7 @@ public class If<I> extends KoryphePredicate<I> {
      */
     @Override
     public boolean test(final I input) {
-        boolean conditionTmp;
-        if (null == condition) {
-            conditionTmp = null != predicate && predicate.test(input);
-        } else {
-            conditionTmp = condition;
-        }
-
-        if (conditionTmp) {
+        if (requireNonNullElse(condition, null != predicate && predicate.test(input))) {
             return null != then && then.test(input);
         }
 

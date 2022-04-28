@@ -13,31 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
+import uk.gov.gchq.koryphe.util.TimeUnit;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.function.Function;
+import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class ParseTimeTest extends FunctionTest {
+public class ParseTimeTest extends FunctionTest<ParseTime> {
     @Override
-    protected Function getInstance() {
-        return new ParseTime();
+    protected ParseTime getInstance() {
+        return new ParseTime().timeZone("UTC");
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ParseTime.class;
+    protected Iterable<ParseTime> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new ParseTime().format("dd-MMM-YYYY hh:mm:ss"),
+                new ParseTime().timeZone("PST"),
+                new ParseTime().timeUnit(TimeUnit.DAY)
+        );
     }
 
     @Override
@@ -50,6 +54,7 @@ public class ParseTimeTest extends FunctionTest {
         return new Class[] { Long.class };
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -72,7 +77,7 @@ public class ParseTimeTest extends FunctionTest {
         long result = function.apply(input);
 
         // Then
-        assertEquals(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS").parse(input).getTime(), result);
+        assertThat(result).isEqualTo(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS").parse(input).getTime());
     }
 
     @Test
@@ -85,19 +90,18 @@ public class ParseTimeTest extends FunctionTest {
         long result = function.apply(input);
 
         // Then
-        assertEquals(new SimpleDateFormat("yyyy-MM hh:mm:ss.SSS").parse(input).getTime(), result);
+        assertThat(result).isEqualTo(new SimpleDateFormat("yyyy-MM hh:mm:ss.SSS").parse(input).getTime());
     }
 
     @Test
     public void shouldReturnNullForNullInput() {
         // Given
         final ParseTime function = new ParseTime();
-        final String input = null;
 
         // When
-        Object result = function.apply(input);
+        final Object result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 }

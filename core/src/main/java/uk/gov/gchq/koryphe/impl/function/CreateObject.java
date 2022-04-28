@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2020 Crown Copyright
+ * Copyright 2019-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,9 @@
  */
 
 package uk.gov.gchq.koryphe.impl.function;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
@@ -53,8 +56,8 @@ public class CreateObject extends KorypheFunction<Object, Object> {
 
         if (isNull(value)) {
             try {
-                return objectClass.newInstance();
-            } catch (final InstantiationException | IllegalAccessException e) {
+                return objectClass.getDeclaredConstructor().newInstance();
+            } catch (final InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                 throw new RuntimeException("Unable to create a new instance of " + objectClass.getName() + " using the no-arg constructor", e);
             }
         }
@@ -79,5 +82,29 @@ public class CreateObject extends KorypheFunction<Object, Object> {
 
     public void setObjectClass(final Class<?> objectClass) {
         this.objectClass = objectClass;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o)) {
+            return false; // Does class checking
+        }
+
+        CreateObject that = (CreateObject) o;
+        return new EqualsBuilder()
+                .append(objectClass, that.objectClass)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(3, 29)
+                .appendSuper(super.hashCode())
+                .append(objectClass)
+                .toHashCode();
     }
 }

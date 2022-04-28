@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2021 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 package uk.gov.gchq.koryphe.predicate;
 
-import org.junit.AssumptionViolatedException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
+import uk.gov.gchq.koryphe.util.EqualityTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import uk.gov.gchq.koryphe.util.SummaryUtil;
 import uk.gov.gchq.koryphe.util.VersionUtil;
@@ -28,14 +28,13 @@ import uk.gov.gchq.koryphe.util.VersionUtil;
 import java.io.IOException;
 import java.util.function.Predicate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assume.assumeTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public abstract class PredicateTest {
-    protected abstract Predicate getInstance();
+public abstract class PredicateTest<T extends Predicate> extends EqualityTest<T> {
 
-    protected abstract Class<? extends Predicate> getPredicateClass();
+    protected Class<? extends Predicate> getPredicateClass() {
+        return getInstance().getClass();
+    }
 
     @Test
     public abstract void shouldJsonSerialiseAndDeserialise() throws IOException;
@@ -49,51 +48,6 @@ public abstract class PredicateTest {
     }
 
     @Test
-    public void shouldEquals() {
-        // Given
-        final Predicate instance = getInstance();
-
-        // When
-        final Predicate other = getInstance();
-
-        // Then
-        assertEquals(instance, other);
-        assertEquals(instance.hashCode(), other.hashCode());
-    }
-
-    @Test
-    public void shouldEqualsWhenSameObject() {
-        // Given
-        final Predicate instance = getInstance();
-
-        // Then
-        assertEquals(instance, instance);
-        assertEquals(instance.hashCode(), instance.hashCode());
-    }
-
-    @Test
-    public void shouldNotEqualsWhenDifferentClass() {
-        // Given
-        final Predicate instance = getInstance();
-
-        // When
-        final Object other = new Object();
-
-        // Then
-        assertNotEquals(instance, other);
-        assertNotEquals(instance.hashCode(), other.hashCode());
-    }
-
-    @Test
-    public void shouldNotEqualsNull() {
-        // Given
-        final Predicate instance = getInstance();
-
-        // Then
-        assertNotEquals(instance, null);
-    }
-
-    @Test
     public void shouldHaveSinceAnnotation() {
         // Given
         final Predicate instance = getInstance();
@@ -102,11 +56,15 @@ public abstract class PredicateTest {
         final Since annotation = instance.getClass().getAnnotation(Since.class);
 
         // Then
-        if (null == annotation || null == annotation.value()) {
-            throw new AssumptionViolatedException("Missing Since annotation on class " + instance.getClass().getName());
-        }
-        assumeTrue(annotation.value() + " is not a valid value string.",
-                VersionUtil.validateVersionString(annotation.value()));
+        assertThat(annotation)
+                .isNotNull()
+                .withFailMessage("Missing Since annotation on class %s", instance.getClass().getName());
+        assertThat(annotation)
+                .isNotNull()
+                .withFailMessage("Missing Since annotation on class %s", instance.getClass().getName());
+        assertThat(VersionUtil.validateVersionString(annotation.value()))
+                .isTrue()
+                .withFailMessage("%s is not a valid value string.", annotation.value());
     }
 
     @Test
@@ -118,10 +76,14 @@ public abstract class PredicateTest {
         final Summary annotation = instance.getClass().getAnnotation(Summary.class);
 
         // Then
-        if (null == annotation || null == annotation.value()) {
-            throw new AssumptionViolatedException("Missing Summary annotation on class " + instance.getClass().getName());
-        }
-        assumeTrue(annotation.value() + " is not a valid value string.",
-                SummaryUtil.validateSummaryString(annotation.value()));
+        assertThat(annotation)
+                .isNotNull()
+                .withFailMessage("Missing Summary annotation on class %s", instance.getClass().getName());
+        assertThat(annotation)
+                .isNotNull()
+                .withFailMessage("Missing Summary annotation on class %s", instance.getClass().getName());
+        assertThat(SummaryUtil.validateSummaryString(annotation.value()))
+                .isTrue()
+                .withFailMessage("%s is not a valid value string.", annotation.value());
     }
 }

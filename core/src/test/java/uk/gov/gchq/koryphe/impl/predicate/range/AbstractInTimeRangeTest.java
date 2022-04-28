@@ -16,31 +16,28 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import uk.gov.gchq.koryphe.util.TimeUnit;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static uk.gov.gchq.koryphe.util.DateUtil.DAYS_TO_MILLISECONDS;
 import static uk.gov.gchq.koryphe.util.DateUtil.HOURS_TO_MILLISECONDS;
 import static uk.gov.gchq.koryphe.util.DateUtil.MINUTES_TO_MILLISECONDS;
 
-public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends PredicateTest {
+public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends PredicateTest<AbstractInTimeRange> {
+
     @Test
-    public void shouldAcceptValuesInRange() throws IOException {
+    public void shouldAcceptValuesInRange() {
         // Given
         final AbstractInTimeRange<T> filter = createBuilder()
                 .start("1")
@@ -56,7 +53,7 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
     }
 
     @Test
-    public void shouldAcceptValuesInUpperUnboundedRange() throws IOException {
+    public void shouldAcceptValuesInUpperUnboundedRange() {
         // Given
         final AbstractInTimeRange<T> filter = createBuilder()
                 .start("1")
@@ -71,7 +68,7 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
     }
 
     @Test
-    public void shouldAcceptValuesInLowerUnboundedRange() throws IOException {
+    public void shouldAcceptValuesInLowerUnboundedRange() {
         // Given
         final AbstractInTimeRange<T> filter = createBuilder()
                 .end("10")
@@ -86,7 +83,7 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
     }
 
     @Test
-    public void shouldRejectNullValue() throws IOException {
+    public void shouldRejectNullValue() {
         // Given
         final AbstractInTimeRange<T> filter = createBuilder()
                 .start("1")
@@ -100,7 +97,7 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
     }
 
     @Test
-    public void shouldRejectValuesNotInRange() throws IOException {
+    public void shouldRejectValuesNotInRange() {
         // Given
         final AbstractInTimeRange<T> filter = createBuilder()
                 .start("1")
@@ -116,7 +113,7 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
     }
 
     @Test
-    public void shouldRejectValuesNotInExclusiveRange() throws IOException {
+    public void shouldRejectValuesNotInExclusiveRange() {
         // Given
         final AbstractInTimeRange<T> filter = createBuilder()
                 .start("1")
@@ -161,11 +158,11 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
         final AbstractInTimeRange<T> deserialisedFilter = (AbstractInTimeRange<T>) deserialise(json);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(start, deserialisedFilter.getStart());
-        assertEquals(end, deserialisedFilter.getEnd());
-        assertFalse(deserialisedFilter.isStartInclusive());
-        assertFalse(deserialisedFilter.isEndInclusive());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getStart()).isEqualTo(start);
+        assertThat(deserialisedFilter.getEnd()).isEqualTo(end);
+        assertThat(deserialisedFilter.isStartInclusive()).isFalse();
+        assertThat(deserialisedFilter.isEndInclusive()).isFalse();
     }
 
     @Test
@@ -192,13 +189,13 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
         final AbstractInTimeRange<T> deserialisedFilter = (AbstractInTimeRange<T>) deserialise(json);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(start, deserialisedFilter.getStart());
-        assertEquals(end, deserialisedFilter.getEnd());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getStart()).isEqualTo(start);
+        assertThat(deserialisedFilter.getEnd()).isEqualTo(end);
     }
 
     @Test
-    public void shouldAcceptValuesInRangeDayOffset() throws IOException {
+    public void shouldAcceptValuesInRangeDayOffset() {
         // Given
         final AbstractInTimeRange<T> filter = createBuilder()
                 .startOffset(-7L)
@@ -224,7 +221,7 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
     }
 
     @Test
-    public void shouldAcceptValuesInRangeDayOffsetFromStart() throws IOException {
+    public void shouldAcceptValuesInRangeDayOffsetFromStart() {
         // Given
         final long start = System.currentTimeMillis() - 100 * DAYS_TO_MILLISECONDS;
         final long end = System.currentTimeMillis() - 60 * DAYS_TO_MILLISECONDS;
@@ -253,7 +250,7 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
     }
 
     @Test
-    public void shouldAcceptValuesInRangeHourOffset() throws IOException {
+    public void shouldAcceptValuesInRangeHourOffset() {
         // Given
         final AbstractInTimeRange<T> filter = createBuilder()
                 .startOffset(-100L)
@@ -279,7 +276,7 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
     }
 
     @Test
-    public void shouldAcceptValuesInRangeMinuteOffset() throws IOException {
+    public void shouldAcceptValuesInRangeMinuteOffset() {
         // Given
         final AbstractInTimeRange<T> filter = createBuilder()
                 .startOffset(-100L)
@@ -305,7 +302,7 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
     }
 
     @Test
-    public void shouldAcceptValuesInRangeSecondOffset() throws IOException {
+    public void shouldAcceptValuesInRangeSecondOffset() {
         // Given
         final AbstractInTimeRange<T> filter = createBuilder()
                 .startOffset(-100L)
@@ -331,7 +328,7 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
     }
 
     @Test
-    public void shouldAcceptValuesInRangeMilliOffset() throws IOException {
+    public void shouldAcceptValuesInRangeMilliOffset() {
         // Given
         final AbstractInTimeRange<T> filter = createBuilder()
                 .startOffset(-100000L)
@@ -357,7 +354,7 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
     }
 
     @Test
-    public void shouldAcceptValuesInRangeDayOffsetLowerUnbounded() throws IOException {
+    public void shouldAcceptValuesInRangeDayOffsetLowerUnbounded() {
         // Given
         final AbstractInTimeRange<T> filter = createBuilder()
                 .endOffset(-2L)
@@ -375,7 +372,7 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
     }
 
     @Test
-    public void shouldAcceptValuesInRangeDayOffsetUpperUnbounded() throws IOException {
+    public void shouldAcceptValuesInRangeDayOffsetUpperUnbounded() {
         // Given
         final AbstractInTimeRange<T> filter = createBuilder()
                 .startOffset(-7L)
@@ -394,7 +391,7 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
     }
 
     @Test
-    public void shouldConstructFromOffsetMillis() throws IOException {
+    public void shouldConstructFromOffsetMillis() {
         // When
         final AbstractInTimeRange<T> filter = createBuilder()
                 .startOffset(-10000L)
@@ -403,14 +400,14 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
                 .build();
 
         // Then
-        assertEquals(-10000L, (long) filter.getStartOffset());
-        assertEquals(1000L, (long) filter.getEndOffset());
-        assertEquals(TimeUnit.MILLISECOND, filter.getOffsetUnit());
+        assertThat((long) filter.getStartOffset()).isEqualTo(-10000L);
+        assertThat((long) filter.getEndOffset()).isEqualTo(1000L);
+        assertThat(filter.getOffsetUnit()).isEqualTo(TimeUnit.MILLISECOND);
     }
 
 
     @Test
-    public void shouldConstructFromOffsetSecond() throws IOException {
+    public void shouldConstructFromOffsetSecond() {
         // When
         final AbstractInTimeRange<T> filter = createBuilder()
                 .startOffset(10000L)
@@ -419,13 +416,13 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
                 .build();
 
         // Then
-        assertEquals(10000L, (long) filter.getStartOffset());
-        assertEquals(1000L, (long) filter.getEndOffset());
-        assertEquals(TimeUnit.SECOND, filter.getOffsetUnit());
+        assertThat((long) filter.getStartOffset()).isEqualTo(10000L);
+        assertThat((long) filter.getEndOffset()).isEqualTo(1000L);
+        assertThat(filter.getOffsetUnit()).isEqualTo(TimeUnit.SECOND);
     }
 
     @Test
-    public void shouldConstructFromOffsetMinute() throws IOException {
+    public void shouldConstructFromOffsetMinute() {
         // When
         final AbstractInTimeRange<T> filter = createBuilder()
                 .startOffset(10000L)
@@ -434,13 +431,13 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
                 .build();
 
         // Then
-        assertEquals(10000L, (long) filter.getStartOffset());
-        assertEquals(1000L, (long) filter.getEndOffset());
-        assertEquals(TimeUnit.MINUTE, filter.getOffsetUnit());
+        assertThat((long) filter.getStartOffset()).isEqualTo(10000L);
+        assertThat((long) filter.getEndOffset()).isEqualTo(1000L);
+        assertThat(filter.getOffsetUnit()).isEqualTo(TimeUnit.MINUTE);
     }
 
     @Test
-    public void shouldConstructFromOffsetHours() throws IOException {
+    public void shouldConstructFromOffsetHours() {
         // When
         final AbstractInTimeRange<T> filter = createBuilder()
                 .startOffset(-1000L)
@@ -449,14 +446,14 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
                 .build();
 
         // Then
-        assertEquals(-1000L, (long) filter.getStartOffset());
-        assertEquals(100L, (long) filter.getEndOffset());
-        assertEquals(TimeUnit.HOUR, filter.getOffsetUnit());
+        assertThat((long) filter.getStartOffset()).isEqualTo(-1000L);
+        assertThat((long) filter.getEndOffset()).isEqualTo(100L);
+        assertThat(filter.getOffsetUnit()).isEqualTo(TimeUnit.HOUR);
     }
 
 
     @Test
-    public void shouldConstructFromOffsetDays() throws IOException {
+    public void shouldConstructFromOffsetDays() {
         // When
         final AbstractInTimeRange<T> filter = createBuilder()
                 .startOffset(7L)
@@ -464,10 +461,10 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
                 .build();
 
         // Then
-        assertEquals(7L, (long) filter.getStartOffset());
-        assertEquals(2L, (long) filter.getEndOffset());
+        assertThat((long) filter.getStartOffset()).isEqualTo(7L);
+        assertThat((long) filter.getEndOffset()).isEqualTo(2L);
         // default is DAY
-        assertNull(filter.getOffsetUnit());
+        assertThat(filter.getOffsetUnit()).isNull();
     }
 
     @Test
@@ -492,9 +489,9 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
         final AbstractInTimeRange<T> deserialisedFilter = (AbstractInTimeRange<T>) deserialise(json);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(7L, (long) deserialisedFilter.getStartOffset());
-        assertEquals(0L, (long) deserialisedFilter.getEndOffset());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat((long) filter.getStartOffset()).isEqualTo(7L);
+        assertThat((long) filter.getEndOffset()).isEqualTo(0L);
     }
 
     @Test
@@ -510,9 +507,9 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
         final AbstractInTimeRange<T> deserialisedFilter = (AbstractInTimeRange<T>) deserialise(json);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(10000L, (long) deserialisedFilter.getStartOffset());
-        assertEquals(1000L, (long) deserialisedFilter.getEndOffset());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat((long) deserialisedFilter.getStartOffset()).isEqualTo(10000L);
+        assertThat((long) deserialisedFilter.getEndOffset()).isEqualTo(1000L);
     }
 
     @Test
@@ -528,9 +525,9 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
         final AbstractInTimeRange<T> deserialisedFilter = (AbstractInTimeRange<T>) deserialise(json);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(1000L, (long) deserialisedFilter.getStartOffset());
-        assertEquals(100L, (long) deserialisedFilter.getEndOffset());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat((long) deserialisedFilter.getStartOffset()).isEqualTo(1000L);
+        assertThat((long) deserialisedFilter.getEndOffset()).isEqualTo(100L);
     }
 
     @Test
@@ -546,14 +543,14 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
         final AbstractInTimeRange<T> deserialisedFilter = (AbstractInTimeRange<T>) deserialise(json);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(7L, (long) deserialisedFilter.getStartOffset());
-        assertEquals(2L, (long) deserialisedFilter.getEndOffset());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat((long) deserialisedFilter.getStartOffset()).isEqualTo(7L);
+        assertThat((long) deserialisedFilter.getEndOffset()).isEqualTo(2L);
     }
 
 
     @Test
-    public void shouldDeserialiseWithDateStrings() throws IOException, ParseException {
+    public void shouldDeserialiseWithDateStrings() throws IOException {
         // Given
         final String start = "2017-01-02 00:30:45";
         final String end = "2016-02-03 00:45:30";
@@ -567,13 +564,13 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
         final AbstractInTimeRange<T> deserialisedFilter = (AbstractInTimeRange<T>) deserialise(json);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(start, deserialisedFilter.getStart());
-        assertEquals(end, deserialisedFilter.getEnd());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getStart()).isEqualTo(start);
+        assertThat(deserialisedFilter.getEnd()).isEqualTo(end);
     }
 
     @Test
-    public void shouldJsonSerialiseAndDeserialiseWithDateStrings() throws IOException, ParseException {
+    public void shouldJsonSerialiseAndDeserialiseWithDateStrings() throws IOException {
         // Given
         final String start = "2017-01-02 00:30:45";
         final String end = "2016-02-03 00:45:30";
@@ -596,20 +593,30 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
         final AbstractInTimeRange<T> deserialisedFilter = (AbstractInTimeRange<T>) deserialise(json);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(start, deserialisedFilter.getStart());
-        assertEquals(end, deserialisedFilter.getEnd());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getStart()).isEqualTo(start);
+        assertThat(deserialisedFilter.getEnd()).isEqualTo(end);
     }
 
-    protected Class<? extends AbstractInTimeRange> getPredicateClass() {
-        return getInstance().getClass();
-    }
-
-    protected AbstractInTimeRange<T> getInstance() {
+    protected AbstractInTimeRange getInstance() {
         return createBuilder()
                 .start("1000")
                 .end("1010")
                 .build();
+    }
+
+    @Override
+    protected Iterable<AbstractInTimeRange> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                createBuilder()
+                    .start("1000")
+                    .end("2000")
+                    .build(),
+                createBuilder()
+                        .start("10")
+                        .end("1010")
+                        .build()
+        );
     }
 
     protected T convert(final Long value) {
@@ -624,7 +631,9 @@ public abstract class AbstractInTimeRangeTest<T extends Comparable<T>> extends P
 
         // Then
         for (int i = 0; i < values.size(); i++) {
-            assertEquals("Failed for value: " + values.get(i), expectedResult, results.get(i));
+            assertThat(results.get(i))
+                    .isEqualTo(expectedResult)
+                    .withFailMessage("Failed for value: %s", values.get(i));
         }
     }
 

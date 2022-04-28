@@ -16,28 +16,24 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class ExistsTest extends PredicateTest {
+public class ExistsTest extends PredicateTest<Exists> {
+
     @Test
     public void shouldAcceptTheValueWhenNotNull() {
         // Given
         final Exists filter = new Exists();
 
-        // When
-        boolean accepted = filter.test("Not null value");
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts("Not null value");
     }
 
     @Test
@@ -45,11 +41,8 @@ public class ExistsTest extends PredicateTest {
         // Given
         final Exists filter = new Exists();
 
-        // When
-        boolean accepted = filter.test((Object) null);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects((Object) null);
     }
 
     @Test
@@ -69,16 +62,16 @@ public class ExistsTest extends PredicateTest {
         final Exists deserialisedFilter = JsonSerialiser.deserialise(json, Exists.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-    }
-
-    @Override
-    protected Class<Exists> getPredicateClass() {
-        return Exists.class;
+        assertThat(deserialisedFilter).isNotNull();
     }
 
     @Override
     protected Exists getInstance() {
         return new Exists();
+    }
+
+    @Override
+    protected Iterable<Exists> getDifferentInstancesOrNull() {
+        return null;
     }
 }

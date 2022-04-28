@@ -13,42 +13,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
+import uk.gov.gchq.koryphe.impl.binaryoperator.And;
 import uk.gov.gchq.koryphe.impl.binaryoperator.Sum;
 import uk.gov.gchq.koryphe.tuple.n.Tuple2;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.function.Function;
+import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class ApplyBiFunctionTest extends FunctionTest {
+public class ApplyBiFunctionTest extends FunctionTest<ApplyBiFunction> {
     @Override
-    protected Function getInstance() {
+    protected ApplyBiFunction getInstance() {
         return new ApplyBiFunction(new Sum());
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ApplyBiFunction.class;
+    protected Iterable<ApplyBiFunction> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new ApplyBiFunction(new And()));
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[]{Long.class, Long.class};
+        return new Class[] {Long.class, Long.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[]{Long.class};
+        return new Class[] {Long.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -68,10 +70,10 @@ public class ApplyBiFunctionTest extends FunctionTest {
         final Tuple2<Number, Number> input = new Tuple2<>(1, 2);
 
         // When
-        Number result = function.apply(input);
+        final Number result = function.apply(input);
 
         // Then
-        assertEquals(3, result);
+        assertThat(result).isEqualTo(3);
     }
 
     @Test
@@ -81,9 +83,9 @@ public class ApplyBiFunctionTest extends FunctionTest {
         final Tuple2<Number, Number> input = new Tuple2<>(1, 2);
 
         // When
-        Object result = function.apply(input);
+        final Object result = function.apply(input);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 }

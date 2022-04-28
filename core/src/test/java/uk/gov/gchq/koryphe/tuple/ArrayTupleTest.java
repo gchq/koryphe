@@ -16,33 +16,34 @@
 
 package uk.gov.gchq.koryphe.tuple;
 
-import org.junit.Test;
+import com.google.common.collect.Lists;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ArrayTupleTest {
+
     @Test
-    public void testConstructors() {
-        // test size constructor
-        int size = 3;
-        ArrayTuple tuple = new ArrayTuple(size);
-        int i = 0;
-        for (Object value : tuple) {
-            i++;
-            if (value != null) fail("Found unexpected non-null value");
-        }
-        assertEquals("Found unexpected number of values", size, i);
+    public void testConstructorsSize() {
+        // When
+        final ArrayTuple tuple = new ArrayTuple(3);
 
+        // Then
+        assertThat(tuple)
+                .containsOnlyNulls()
+                .hasSize(3);
+    }
 
-        // test initial array constructor
-        Object[] initialValues = new String[]{"a", "b", "c", "d", "e"};
-        tuple = new ArrayTuple(initialValues);
-        i = 0;
-        for (Object value : tuple) {
-            assertEquals("Found unexpected tuple value", value, initialValues[i]);
-            i ++;
-        }
-        assertEquals("Found unexpected number of values", initialValues.length, i);
+    @Test
+    public void testInitialArrayConstructors() {
+        // Given
+        final Object[] initialValues = new String[] {"a", "b", "c", "d", "e"};
+
+        // When
+        final ArrayTuple tuple = new ArrayTuple(initialValues);
+
+        // Then
+        assertThat(tuple).containsExactlyElementsOf(Lists.newArrayList(initialValues));
     }
 }

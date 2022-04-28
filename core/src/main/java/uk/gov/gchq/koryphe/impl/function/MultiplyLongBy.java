@@ -16,6 +16,9 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
@@ -51,5 +54,29 @@ public class MultiplyLongBy extends KorypheFunction<Long, Long> {
         } else {
             return input * by;
         }
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o)) {
+            return false; // Does exact equals and class checking
+        }
+
+        MultiplyLongBy that = (MultiplyLongBy) o;
+        return new EqualsBuilder()
+                .append(by, that.by)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(83, 11)
+                .appendSuper(super.hashCode())
+                .append(by)
+                .toHashCode();
     }
 }

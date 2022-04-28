@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Crown Copyright
+ * Copyright 2020-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,10 +17,14 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
+
+import static uk.gov.gchq.koryphe.util.JavaUtils.requireNonNullElse;
 
 /**
  * A {@code StringPrepend} is a {@link java.util.function.Function} which takes a input {@link String} and returns the
@@ -55,10 +59,30 @@ public class StringPrepend extends KorypheFunction<String, String> {
     }
 
     public void setPrefix(final String prefix) {
-        if (null == prefix) {
-            this.prefix = StringUtils.EMPTY;
-        } else {
-            this.prefix = prefix;
+        this.prefix = requireNonNullElse(prefix, StringUtils.EMPTY);
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
         }
+
+        if (!super.equals(o)) {
+            return false; // Does exact equals and class checking
+        }
+
+        StringPrepend that = (StringPrepend) o;
+        return new EqualsBuilder()
+                .append(prefix, that.prefix)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(63, 37)
+                .appendSuper(super.hashCode())
+                .append(prefix)
+                .toHashCode();
     }
 }

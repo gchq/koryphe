@@ -16,18 +16,17 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class ToLongTest extends FunctionTest {
+public class ToLongTest extends FunctionTest<ToLong> {
+
     @Test
     public void shouldConvertToLong() {
         // Given
@@ -37,18 +36,31 @@ public class ToLongTest extends FunctionTest {
         Object output = function.apply(5);
 
         // Then
-        assertEquals(new Long(5), output);
-        assertEquals(Long.class, output.getClass());
+        assertThat(output)
+                .isExactlyInstanceOf(Long.class)
+                .isEqualTo(5L);
+    }
+
+    @Test
+    public void shouldReturnNullWhenValueIsNull() {
+        // Given
+        final ToLong function = new ToLong();
+
+        // When
+        final Object output = function.apply(null);
+
+        // Then
+        assertThat(output).isNull();
     }
 
     @Override
-    protected Function getInstance() {
+    protected ToLong getInstance() {
         return new ToLong();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ToLong.class;
+    protected Iterable<ToLong> getDifferentInstancesOrNull() {
+        return null;
     }
 
     @Override
@@ -61,6 +73,7 @@ public class ToLongTest extends FunctionTest {
         return new Class[] { Long.class };
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -78,6 +91,6 @@ public class ToLongTest extends FunctionTest {
         final ToLong deserialisedMethod = JsonSerialiser.deserialise(json, ToLong.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

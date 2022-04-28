@@ -16,15 +16,17 @@
 
 package uk.gov.gchq.koryphe.util;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.Closeable;
 import java.io.IOException;
 
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 public class CloseableUtilTest {
+
     @Test
     public void shouldCloseACloseable() throws IOException {
         // Given
@@ -53,24 +55,12 @@ public class CloseableUtilTest {
     }
 
     @Test
-    public void shouldNotThrowExceptionForNullObject() throws IOException {
-        // Given
-        final Object obj = null;
-
-        // When
-        CloseableUtil.close(obj);
-
-        // Then - no exceptions
+    public void shouldNotThrowExceptionForNullObject() {
+        assertThatNoException().isThrownBy(() -> CloseableUtil.close((Object) null));
     }
 
     @Test
-    public void shouldNotThrowExceptionForNonCloseableObject() throws IOException {
-        // Given
-        final Object obj = "Some string";
-
-        // When
-        CloseableUtil.close(obj);
-
-        // Then - no exceptions
+    public void shouldNotThrowExceptionForNonCloseableObject() {
+        assertThatNoException().isThrownBy(() -> CloseableUtil.close("Some string"));
     }
 }

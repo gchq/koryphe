@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2018-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.serialisation.json;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -21,6 +22,9 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.TypeIdResolver;
 import com.fasterxml.jackson.databind.jsontype.impl.ClassNameIdResolver;
+import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
+
+import java.io.IOException;
 
 /**
  * <p>A {@code SimpleClassNameIdResolver} is a {@link TypeIdResolver} that allows
@@ -101,12 +105,10 @@ public class SimpleClassNameIdResolver implements TypeIdResolver {
     @Override
     public void init(final JavaType baseType) {
         this.baseType = baseType;
-        if (null == baseType.getContentType()) {
-            this.baseType = baseType;
-        } else {
+        if (null != baseType.getContentType()) {
             this.baseType = baseType.getContentType();
         }
-        final ClassNameIdResolver newDefaultResolver = new ClassNameIdResolver(this.baseType, null);
+        final ClassNameIdResolver newDefaultResolver = new ClassNameIdResolver(this.baseType, null, LaissezFaireSubTypeValidator.instance);
         newDefaultResolver.init(this.baseType);
         init(newDefaultResolver);
     }
@@ -143,13 +145,13 @@ public class SimpleClassNameIdResolver implements TypeIdResolver {
     }
 
     @Override
-    public JavaType typeFromId(final String id) {
-        return defaultResolver.typeFromId(getClassName(id, baseType));
+    public JavaType typeFromId(final DatabindContext context, final String id) throws IOException {
+        return defaultResolver.typeFromId(context, getClassName(id, baseType));
     }
 
     @Override
-    public JavaType typeFromId(final DatabindContext context, final String id) {
-        return defaultResolver.typeFromId(context, getClassName(id, baseType));
+    public String getDescForKnownTypeIds() {
+        return defaultResolver.getDescForKnownTypeIds();
     }
 
     @Override

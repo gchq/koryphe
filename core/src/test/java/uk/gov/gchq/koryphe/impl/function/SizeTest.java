@@ -13,42 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-public class SizeTest extends FunctionTest
-{
+public class SizeTest extends FunctionTest<Size> {
     @Override
-    protected Function getInstance() {
+    protected Size getInstance() {
         return new Size();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return Size.class;
+    protected Iterable<Size> getDifferentInstancesOrNull() {
+        return null;
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Iterable.class };
+        return new Class[] {Iterable.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Integer.class };
+        return new Class[] {Integer.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -56,11 +56,13 @@ public class SizeTest extends FunctionTest
 
         // When
         final String json = JsonSerialiser.serialise(function);
+        final Size deserialised = JsonSerialiser.deserialise(json, Size.class);
 
         // Then
         JsonSerialiser.assertEquals(String.format("{%n" +
                 "   \"class\" : \"uk.gov.gchq.koryphe.impl.function.Size\"%n" +
                 "}"), json);
+        assertThat(deserialised).isEqualTo(function);
     }
 
     @Test
@@ -70,10 +72,10 @@ public class SizeTest extends FunctionTest
         final Iterable input = Arrays.asList(1, 2, 3, 4, 5);
 
         // When
-        final Integer result = function.apply(input);
+        final int result = function.apply(input);
 
         // Then
-        assertEquals(new Integer(5), result);
+        assertThat(result).isEqualTo(5);
     }
 
     @Test
@@ -83,10 +85,10 @@ public class SizeTest extends FunctionTest
         final Iterable<Integer> input = Arrays.asList(1, 2, null, 4, 5);
 
         // When
-        final Integer result = function.apply(input);
+        final int result = function.apply(input);
 
         // Then
-        assertEquals(new Integer(5), result);
+        assertThat(result).isEqualTo(5);
     }
 
     @Test
@@ -96,22 +98,20 @@ public class SizeTest extends FunctionTest
         final Iterable<Object> input = Arrays.asList(null, null, null);
 
         // When
-        final Integer result = function.apply(input);
+        final int result = function.apply(input);
 
         // Then
-        assertEquals(new Integer(3), result);
+        assertThat(result).isEqualTo(3);
     }
+
     @Test
     public void shouldThrowExceptionForNullInput() {
         // Given
         final Size function = new Size();
-        final Iterable input = null;
 
         // When / Then
-        try {
-            function.apply(input);
-        } catch (final IllegalArgumentException e) {
-            assertTrue(e.getMessage().contains("Input cannot be null"));
-        }
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> function.apply(null))
+                .withMessage("Input cannot be null");
     }
 }

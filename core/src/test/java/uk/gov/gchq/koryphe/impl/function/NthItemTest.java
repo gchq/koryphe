@@ -13,32 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.from;
 
-public class NthItemTest extends FunctionTest {
+public class NthItemTest extends FunctionTest<NthItem> {
 
     @Override
-    protected Function getInstance() {
+    protected NthItem getInstance() {
         return new NthItem();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return NthItem.class;
+    protected Iterable<NthItem> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new NthItem(5),
+                new NthItem(10)
+        );
     }
 
     @Override
@@ -51,6 +53,7 @@ public class NthItemTest extends FunctionTest {
         return new Class[] { Object.class };
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -69,8 +72,9 @@ public class NthItemTest extends FunctionTest {
         final NthItem deserialised = JsonSerialiser.deserialise(json, NthItem.class);
 
         // Then 2
-        assertNotNull(deserialised);
-        assertEquals(2, deserialised.getSelection());
+        assertThat(deserialised)
+                .isNotNull()
+                .returns(2, from(NthItem::getSelection));
     }
 
     @Test
@@ -82,8 +86,7 @@ public class NthItemTest extends FunctionTest {
         final Integer result = function.apply(Arrays.asList(1, 2, 3, 4, 5));
 
         // Then
-        assertNotNull(result);
-        assertEquals(new Integer(3), result);
+        assertThat(result).isEqualTo(3);
     }
 
     @Test
@@ -95,8 +98,7 @@ public class NthItemTest extends FunctionTest {
         final String result = function.apply(Arrays.asList("these", "are", "test", "strings"));
 
         // Then
-        assertNotNull(result);
-        assertEquals("are", result);
+        assertThat(result).isEqualTo("are");
     }
 
     @Test
@@ -108,7 +110,7 @@ public class NthItemTest extends FunctionTest {
         final Integer result = function.apply(Arrays.asList(1, null, 3));
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -117,10 +119,8 @@ public class NthItemTest extends FunctionTest {
         final NthItem<Integer> function = new NthItem<>();
 
         // When / Then
-        try {
-            function.apply(null);
-        } catch (final IllegalArgumentException e) {
-            assertTrue(e.getMessage().contains("Input cannot be null"));
-        }
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> function.apply(null))
+                .withMessage("Input cannot be null");
     }
 }

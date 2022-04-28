@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,124 +13,122 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
-import java.util.function.Function;
+import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class ToStringTest extends FunctionTest {
+public class ToStringTest extends FunctionTest<ToString> {
 
     @Test
     public void shouldReturnString() {
         // Given
-        final ToString ts = new ToString();
+        final ToString function = new ToString();
 
         // When
-        String output = ts.apply("test string");
+        final String output = function.apply("test string");
 
         // Then
-        assertEquals("test string", output);
+        assertThat(output).isEqualTo("test string");
     }
 
     @Test
     public void shouldHandleArray() {
         // Given
-        final ToString ts = new ToString();
-        final String[] testArray = new String[]{"test", "string"};
+        final ToString function = new ToString();
+        final String[] testArray = new String[] {"test", "string"};
 
         // When
-        String output = ts.apply(testArray);
+        final String output = function.apply(testArray);
 
         // Then
-        assertEquals("[test, string]", output);
+        assertThat(output).isEqualTo("[test, string]");
     }
 
     @Test
     public void shouldHandleByteArrayWithUtf8Charset() {
         // Given
-        final ToString ts = new ToString(StandardCharsets.UTF_8);
+        final ToString function = new ToString(StandardCharsets.UTF_8);
         final byte[] bytes = "test string".getBytes(StandardCharsets.UTF_8);
 
         // When
-        String output = ts.apply(bytes);
+        final String output = function.apply(bytes);
 
         // Then
-        assertEquals("test string", output);
+        assertThat(output).isEqualTo("test string");
     }
 
     @Test
     public void shouldHandleByteArrayWithUtf16Charset() {
         // Given
-        final ToString ts = new ToString(StandardCharsets.UTF_16);
+        final ToString function = new ToString(StandardCharsets.UTF_16);
         final byte[] bytes = "test string".getBytes(StandardCharsets.UTF_16);
 
         // When
-        String output = ts.apply(bytes);
+        final String output = function.apply(bytes);
 
         // Then
-        assertEquals("test string", output);
+        assertThat(output).isEqualTo("test string");
     }
 
     @Test
     public void shouldHandleNullObject() {
         // Given
-        final ToString ts = new ToString();
+        final ToString function = new ToString();
 
         // When
-        String output = ts.apply(null);
+        final String output = function.apply(null);
 
         // Then
-        assertNull(output);
+        assertThat(output).isNull();
     }
 
     @Override
-    protected Function getInstance() {
+    protected ToString getInstance() {
         return new ToString();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ToString.class;
+    protected Iterable<ToString> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new ToString(StandardCharsets.ISO_8859_1));
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { String.class };
+        return new Class[] {String.class};
     }
 
     @Test
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
-        final ToString ts = new ToString();
+        final ToString function = new ToString();
 
         // When
-        final String json = JsonSerialiser.serialise(ts);
+        final String json = JsonSerialiser.serialise(function);
 
         // Then
-        JsonSerialiser.assertEquals(String.format("{" +
+        JsonSerialiser.assertEquals("{" +
                 "  \"class\" : \"uk.gov.gchq.koryphe.impl.function.ToString\"" +
-                "}"), json);
+                "}", json);
 
         // When 2
-        final ToString deserialisedTs = JsonSerialiser.deserialise(json, ToString.class);
+        final ToString deserialisedMethod = JsonSerialiser.deserialise(json, ToString.class);
 
         // Then 2
-        assertNotNull(deserialisedTs);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2020 Crown Copyright
+ * Copyright 2019-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,11 +21,13 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
-import uk.gov.gchq.koryphe.iterable.CloseableIterable;
+import uk.gov.gchq.koryphe.util.CloseableUtil;
 import uk.gov.gchq.koryphe.util.IterableUtil;
 
 import java.io.IOException;
@@ -43,8 +45,7 @@ import static java.util.Objects.isNull;
 
 @Since("1.8.0")
 @Summary("Parses a CSV into Maps")
-@JsonPropertyOrder(value = {"header", "firstRow", "delimiter", "quoted", "quoteChar"},
-        alphabetic = true)
+@JsonPropertyOrder(value = { "header", "firstRow", "delimiter", "quoted", "quoteChar" }, alphabetic = true)
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class CsvToMaps extends KorypheFunction<String, Iterable<Map<String, Object>>> implements Serializable {
     private static final long serialVersionUID = 891938487168606844L;
@@ -60,12 +61,14 @@ public class CsvToMaps extends KorypheFunction<String, Iterable<Map<String, Obje
             return null;
         }
 
-        try {
-            final CSVParser csvParser = new CSVParser(new StringReader(csv), getCsvFormat());
-            final CloseableIterable<CSVRecord> csvRecords = IterableUtil.limit(csvParser.getRecords(), firstRow, null, false);
+        Iterable<CSVRecord> csvRecords = null;
+        try (final CSVParser csvParser = new CSVParser(new StringReader(csv), getCsvFormat())) {
+            csvRecords = IterableUtil.limit(csvParser.getRecords(), firstRow, null, false);
             return IterableUtil.map(csvRecords, (item) -> extractMap((CSVRecord) item));
         } catch (final IOException e) {
             throw new RuntimeException("Unable to parse csv", e);
+        } finally {
+            CloseableUtil.close(csvRecords);
         }
     }
 
@@ -79,11 +82,11 @@ public class CsvToMaps extends KorypheFunction<String, Iterable<Map<String, Obje
     }
 
     private CSVFormat getCsvFormat() {
-        CSVFormat format = CSVFormat.DEFAULT.withDelimiter(delimiter);
+        final CSVFormat.Builder formatBuilder = CSVFormat.DEFAULT.builder().setDelimiter(delimiter);
         if (quoted) {
-            format = format.withQuote(quoteChar);
+            formatBuilder.setQuote(quoteChar);
         }
-        return format;
+        return formatBuilder.build();
     }
 
     public List<String> getHeader() {
@@ -160,5 +163,37 @@ public class CsvToMaps extends KorypheFunction<String, Iterable<Map<String, Obje
     public CsvToMaps quoteChar(final char quoteChar) {
         this.quoteChar = quoteChar;
         return this;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o)) {
+            return false; // Does class checking
+        }
+
+        final CsvToMaps that = (CsvToMaps) o;
+        return new EqualsBuilder()
+                .append(header, that.header)
+                .append(quoted, that.quoted)
+                .append(quoteChar, that.quoteChar)
+                .append(firstRow, that.firstRow)
+                .append(delimiter, that.delimiter)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(7, 23)
+                .appendSuper(super.hashCode())
+                .append(header)
+                .append(quoted)
+                .append(quoteChar)
+                .append(firstRow)
+                .append(delimiter)
+                .toHashCode();
     }
 }

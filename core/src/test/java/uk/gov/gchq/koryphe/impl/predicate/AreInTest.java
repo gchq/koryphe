@@ -16,8 +16,8 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.CustomObj;
@@ -25,25 +25,24 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class AreInTest extends PredicateTest {
+public class AreInTest extends PredicateTest<AreIn> {
+
     private static final CustomObj VALUE1 = new CustomObj();
     private static final String VALUE2 = "value2";
 
     private final List<Object> list = new ArrayList<>();
     private final Set<Object> set = new HashSet<>();
 
-    @Before
+    @BeforeEach
     public void setup() {
         list.add(VALUE1);
         list.add(VALUE2);
@@ -56,11 +55,8 @@ public class AreInTest extends PredicateTest {
         // Given
         final AreIn filter = new AreIn();
 
-        // When
-        boolean accepted = filter.test((Collection) null);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts((Collection) null);
     }
 
     @Test
@@ -68,11 +64,17 @@ public class AreInTest extends PredicateTest {
         // Given
         final AreIn filter = new AreIn();
 
-        // When
-        boolean accepted = filter.test(list);
+        // When / Then
+        assertThat(filter).accepts(list);
+    }
 
-        // Then
-        assertTrue(accepted);
+    @Test
+    public void shouldRejectWhenInputIsNullAndValuesNotEmpty() {
+        // Given
+        final AreIn filter = new AreIn(VALUE1, VALUE2);
+
+        // When / Then
+        assertThat(filter).rejects((Collection) null);
     }
 
     @Test
@@ -80,11 +82,8 @@ public class AreInTest extends PredicateTest {
         // Given
         final AreIn filter = new AreIn(VALUE1, VALUE2);
 
-        // When
-        boolean accepted = filter.test(list);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(list);
     }
 
     @Test
@@ -92,11 +91,8 @@ public class AreInTest extends PredicateTest {
         // Given
         final AreIn filter = new AreIn(VALUE1, VALUE2);
 
-        // When
-        boolean accepted = filter.test(set);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(set);
     }
 
     @Test
@@ -104,11 +100,8 @@ public class AreInTest extends PredicateTest {
         // Given
         final AreIn filter = new AreIn(VALUE1);
 
-        // When
-        boolean accepted = filter.test(list);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(list);
     }
 
     @Test
@@ -116,11 +109,8 @@ public class AreInTest extends PredicateTest {
         // Given
         final AreIn filter = new AreIn(VALUE1);
 
-        // When
-        boolean accepted = filter.test(set);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(set);
     }
 
     @Test
@@ -128,11 +118,8 @@ public class AreInTest extends PredicateTest {
         // Given
         final AreIn filter = new AreIn(VALUE1);
 
-        // When
-        boolean accepted = filter.test(new ArrayList<>());
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(new ArrayList<>());
     }
 
     @Test
@@ -140,11 +127,8 @@ public class AreInTest extends PredicateTest {
         // Given
         final AreIn filter = new AreIn(VALUE1);
 
-        // When
-        boolean accepted = filter.test(new HashSet<>());
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(new HashSet<>());
     }
 
     @Test
@@ -165,17 +149,21 @@ public class AreInTest extends PredicateTest {
         final AreIn deserialisedFilter = JsonSerialiser.deserialise(json, AreIn.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertArrayEquals(Collections.singleton(VALUE1).toArray(), deserialisedFilter.getValues().toArray());
-    }
-
-    @Override
-    protected Class<AreIn> getPredicateClass() {
-        return AreIn.class;
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getValues().toArray()).isEqualTo(Collections.singleton(VALUE1).toArray());
     }
 
     @Override
     protected AreIn getInstance() {
         return new AreIn(VALUE1);
+    }
+
+    @Override
+    protected Iterable<AreIn> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new AreIn(),
+                new AreIn(VALUE1, VALUE2),
+                new AreIn(VALUE2)
+        );
     }
 }

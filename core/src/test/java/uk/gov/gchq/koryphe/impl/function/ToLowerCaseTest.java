@@ -17,7 +17,7 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -25,43 +25,70 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class ToLowerCaseTest extends FunctionTest {
+public class ToLowerCaseTest extends FunctionTest<ToLowerCase> {
+
     private static final String TEST_STRING = "TEST STRING";
 
     @Test
-    public void shouldLowerCaseInput() {
+    public void shouldLowerCaseInputString() {
         // Given
-        final ToLowerCase function = new ToLowerCase();
+        final Function function = getInstance();
 
         // When
-        Object output = function.apply(TEST_STRING);
+        final Object output = function.apply(TEST_STRING);
 
-        assertEquals(StringUtils.lowerCase(TEST_STRING), output);
+        // Then
+        assertThat(output).isEqualTo(StringUtils.lowerCase(TEST_STRING));
+    }
+
+    @Test
+    public void shouldLowerCaseInputObject() {
+        // Given
+        final Function function = getInstance();
+        final ToLowerCaseTestObject input = new ToLowerCaseTestObject();
+
+        // When
+        final Object output = function.apply(input);
+
+        // Then
+        assertThat(output).isEqualTo(StringUtils.lowerCase(input.getClass().getSimpleName().toUpperCase()));
+    }
+
+    @Test
+    public void shouldHandleNullInput() {
+        // Given
+        final Function function = getInstance();
+
+        // When
+        Object output = function.apply(null);
+
+        // Then
+        assertThat(output).isNull();
     }
 
     @Override
-    protected Function getInstance() {
+    protected ToLowerCase getInstance() {
         return new ToLowerCase();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ToLowerCase.class;
+    protected Iterable<ToLowerCase> getDifferentInstancesOrNull() {
+        return null;
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Object.class };
+        return new Class[] {Object.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { String.class };
+        return new Class[] {String.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -79,6 +106,14 @@ public class ToLowerCaseTest extends FunctionTest {
         final ToLowerCase deserialisedMethod = JsonSerialiser.deserialise(json, ToLowerCase.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
+    }
+
+    public final static class ToLowerCaseTestObject {
+
+        @Override
+        public String toString() {
+            return this.getClass().getSimpleName().toUpperCase();
+        }
     }
 }

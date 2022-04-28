@@ -13,43 +13,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.as;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
+import static org.assertj.core.api.InstanceOfAssertFactories.MAP;
 
-public class DeserialiseXmlTest extends FunctionTest {
+public class DeserialiseXmlTest extends FunctionTest<DeserialiseXml> {
     @Override
-    protected Function getInstance() {
+    protected DeserialiseXml getInstance() {
         return new DeserialiseXml();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return DeserialiseXml.class;
+    protected Iterable<DeserialiseXml> getDifferentInstancesOrNull() {
+        return null;
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { String.class };
+        return new Class[] {String.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { Map.class };
+        return new Class[] {Map.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -74,30 +75,32 @@ public class DeserialiseXmlTest extends FunctionTest {
         Map<String, Object> result = function.apply(input);
 
         // Then
-        Map<String, Object> element2aMap = new HashMap<>();
-        Map<String, Object> element2aAttrContentMap = new HashMap<>();
-        element2aAttrContentMap.put("attr", "attr1");
-        element2aAttrContentMap.put("content", "value1");
-        element2aMap.put("element2", element2aAttrContentMap);
-        Map<String, Object> element2bMap = new HashMap<>();
-        element2bMap.put("element2", "value2");
-        HashMap<Object, Object> element1Map = new HashMap<>();
-        element1Map.put("element1", Arrays.asList(element2aMap, element2bMap));
-        HashMap<Object, Object> rootMap = new HashMap<>();
-        rootMap.put("root", element1Map);
-        assertEquals(rootMap, result);
+        assertThat(result)
+                .hasSize(1)
+                .extracting("root", as(MAP))
+                .hasSize(1)
+                .flatExtracting("element1")
+                .hasSize(2)
+                .extracting("element2")
+                .hasSize(2)
+                .contains("value2")
+                .first(as(MAP))
+                .containsOnly(
+                        entry("attr", "attr1"),
+                        entry("content", "value1")
+                );
+
     }
 
     @Test
     public void shouldReturnNullForNullInput() {
         // Given
         final DeserialiseXml function = new DeserialiseXml();
-        final String input = null;
 
         // When
-        Map<String, Object> result = function.apply(input);
+        Map<String, Object> result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 }

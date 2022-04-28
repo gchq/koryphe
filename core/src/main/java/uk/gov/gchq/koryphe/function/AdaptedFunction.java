@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@
 package uk.gov.gchq.koryphe.function;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import uk.gov.gchq.koryphe.adapted.Adapted;
 
@@ -32,7 +34,7 @@ import java.util.function.Function;
  * @param <O>  Output type
  */
 public abstract class AdaptedFunction<I, FI, FO, O> extends Adapted<I, FI, FO, O, I> implements Function<I, O> {
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
     protected Function<FI, FO> function;
 
     /**
@@ -74,5 +76,29 @@ public abstract class AdaptedFunction<I, FI, FO, O> extends Adapted<I, FI, FO, O
 
     public void setFunction(final Function<FI, FO> function) {
         this.function = function;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o)) {
+            return false; // Does class checking
+        }
+
+        final AdaptedFunction that = (AdaptedFunction) o;
+        return new EqualsBuilder()
+                .append(function, that.function)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(43, 67)
+                .appendSuper(super.hashCode())
+                .append(function)
+                .toHashCode();
     }
 }

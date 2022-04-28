@@ -16,7 +16,7 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -28,14 +28,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class InRangeTest<T extends Comparable<T>> extends PredicateTest {
+public class InRangeTest<T extends Comparable<T>> extends PredicateTest<InRange> {
 
     @Test
-    public void shouldAcceptValuesInRange() throws IOException {
+    public void shouldAcceptValuesInRange() {
         // Given
         final InRange<T> filter = createBuilder()
                 .start(convert(1L))
@@ -51,7 +49,7 @@ public class InRangeTest<T extends Comparable<T>> extends PredicateTest {
     }
 
     @Test
-    public void shouldAcceptValuesInUpperUnboundedRange() throws IOException {
+    public void shouldAcceptValuesInUpperUnboundedRange() {
         // Given
         final InRange<T> filter = createBuilder()
                 .start(convert(1L))
@@ -66,7 +64,7 @@ public class InRangeTest<T extends Comparable<T>> extends PredicateTest {
     }
 
     @Test
-    public void shouldAcceptValuesInLowerUnboundedRange() throws IOException {
+    public void shouldAcceptValuesInLowerUnboundedRange() {
         // Given
         final InRange<T> filter = createBuilder()
                 .end(convert(10L))
@@ -81,7 +79,7 @@ public class InRangeTest<T extends Comparable<T>> extends PredicateTest {
     }
 
     @Test
-    public void shouldRejectNullValue() throws IOException {
+    public void shouldRejectNullValue() {
         // Given
         final InRange<T> filter = createBuilder()
                 .start(convert(1L))
@@ -95,7 +93,7 @@ public class InRangeTest<T extends Comparable<T>> extends PredicateTest {
     }
 
     @Test
-    public void shouldRejectValuesNotInRange() throws IOException {
+    public void shouldRejectValuesNotInRange() {
         // Given
         final InRange<T> filter = createBuilder()
                 .start(convert(1L))
@@ -111,7 +109,7 @@ public class InRangeTest<T extends Comparable<T>> extends PredicateTest {
     }
 
     @Test
-    public void shouldRejectValuesNotInExclusiveRange() throws IOException {
+    public void shouldRejectValuesNotInExclusiveRange() {
         // Given
         final InRange<T> filter = createBuilder()
                 .start(convert(1L))
@@ -154,11 +152,11 @@ public class InRangeTest<T extends Comparable<T>> extends PredicateTest {
         final InRange<T> deserialisedFilter = (InRange<T>) deserialise(json);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(convert(1000L), deserialisedFilter.getStart());
-        assertEquals(convert(1010L), deserialisedFilter.getEnd());
-        assertFalse(deserialisedFilter.isStartInclusive());
-        assertFalse(deserialisedFilter.isEndInclusive());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getStart()).isEqualTo(convert(1000L));
+        assertThat(deserialisedFilter.getEnd()).isEqualTo(convert(1010L));
+        assertThat(deserialisedFilter.isStartInclusive()).isFalse();
+        assertThat(deserialisedFilter.isEndInclusive()).isFalse();
     }
 
     @Test
@@ -183,9 +181,9 @@ public class InRangeTest<T extends Comparable<T>> extends PredicateTest {
         final InRange<T> deserialisedFilter = (InRange<T>) deserialise(json);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(convert(1000L), deserialisedFilter.getStart());
-        assertEquals(convert(1010L), deserialisedFilter.getEnd());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getStart()).isEqualTo(convert(1000L));
+        assertThat(deserialisedFilter.getEnd()).isEqualTo(convert(1010L));
     }
 
     protected String getStartJson(final T value) {
@@ -197,16 +195,25 @@ public class InRangeTest<T extends Comparable<T>> extends PredicateTest {
     }
 
     @Override
-    protected Class<? extends InRange> getPredicateClass() {
-        return getInstance().getClass();
-    }
-
-    @Override
     protected InRange<T> getInstance() {
         return createBuilder()
                 .start(convert(1000L))
                 .end(convert(1010L))
                 .build();
+    }
+
+    @Override
+    protected Iterable<InRange> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                createBuilder()
+                    .start(convert(100L))
+                    .end(convert(1010L))
+                    .build(),
+                createBuilder()
+                    .start(convert(1000L))
+                    .end(convert(2000L))
+                    .build()
+        );
     }
 
     protected T convert(final Long value) {
@@ -229,7 +236,9 @@ public class InRangeTest<T extends Comparable<T>> extends PredicateTest {
 
         // Then
         for (int i = 0; i < values.size(); i++) {
-            assertEquals("Failed for value: " + values.get(i), expectedResult, results.get(i));
+            assertThat(results.get(i))
+                    .isEqualTo(expectedResult)
+                    .withFailMessage("Failed for value: %s", values.get(i));
         }
     }
 }

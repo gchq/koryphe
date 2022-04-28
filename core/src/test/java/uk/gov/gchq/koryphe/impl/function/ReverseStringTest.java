@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
+import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class ReverseStringTest extends FunctionTest {
+public class ReverseStringTest extends FunctionTest<ReverseString> {
 
     @Test
     public void shouldHandleNullInput() {
@@ -35,7 +36,7 @@ public class ReverseStringTest extends FunctionTest {
         final String result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -48,7 +49,7 @@ public class ReverseStringTest extends FunctionTest {
         final String result = function.apply(input);
 
         // Then
-        assertEquals("54321", result);
+        assertThat(result).isEqualTo("54321");
     }
 
     @Override
@@ -57,12 +58,27 @@ public class ReverseStringTest extends FunctionTest {
     }
 
     @Override
-    protected Class<? extends ReverseString> getFunctionClass() {
-        return ReverseString.class;
+    protected Iterable<ReverseString> getDifferentInstancesOrNull() {
+        return null;
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
+        // Given
+        ReverseString instance = getInstance();
+        String json = "" +
+                "{" +
+                    "\"class\": \"uk.gov.gchq.koryphe.impl.function.ReverseString\"" +
+                "}";
+
+        // When
+        String serialised = JsonSerialiser.serialise(instance);
+        ReverseString deserialised = JsonSerialiser.deserialise(json, ReverseString.class);
+
+        // Then
+        JsonSerialiser.assertEquals(json, serialised);
+        assertThat(deserialised).isEqualTo(instance);
 
     }
 

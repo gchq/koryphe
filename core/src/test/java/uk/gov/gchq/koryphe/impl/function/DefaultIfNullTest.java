@@ -13,42 +13,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.function.Function;
+import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class DefaultIfNullTest extends FunctionTest {
+public class DefaultIfNullTest extends FunctionTest<DefaultIfNull> {
+
     private final static String DEFAULT_VALUE = "default";
 
     @Override
-    protected Function getInstance() {
+    protected DefaultIfNull getInstance() {
         return new DefaultIfNull();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return DefaultIfNull.class;
+    protected Iterable<DefaultIfNull> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new DefaultIfNull(42L));
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[]{ Object.class };
+        return new Class[] {Object.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[]{ Object.class };
+        return new Class[] {Object.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -67,7 +69,7 @@ public class DefaultIfNullTest extends FunctionTest {
         final DefaultIfNull deserialised = JsonSerialiser.deserialise(json, DefaultIfNull.class);
 
         // Then
-        assertNotNull(deserialised);
+        assertThat(deserialised).isNotNull();
     }
 
     @Test
@@ -79,7 +81,7 @@ public class DefaultIfNullTest extends FunctionTest {
         final Object result = defaultIfNull.apply(null);
 
         // Then
-        assertEquals(result, DEFAULT_VALUE);
+        assertThat(result).isEqualTo(DEFAULT_VALUE);
     }
 
     @Test
@@ -91,6 +93,6 @@ public class DefaultIfNullTest extends FunctionTest {
         final Object result = defaultIfNull.apply("input");
 
         // Then
-        assertEquals(result, "input");
+        assertThat(result).isEqualTo("input");
     }
 }

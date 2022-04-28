@@ -13,20 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class StringReplaceTest extends FunctionTest {
+public class StringReplaceTest extends FunctionTest<StringReplace> {
+
     @Test
     public void shouldHandleNullInput() {
         // Given
@@ -36,7 +37,7 @@ public class StringReplaceTest extends FunctionTest {
         final String result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -49,7 +50,7 @@ public class StringReplaceTest extends FunctionTest {
         final String result = function.apply(input);
 
         //Then
-        assertEquals("An input string.", result);
+        assertThat(result).isEqualTo("An input string.");
     }
 
     @Test
@@ -62,7 +63,7 @@ public class StringReplaceTest extends FunctionTest {
         final String result = function.apply(input);
 
         //Then
-        assertEquals("An input string.", result);
+        assertThat(result).isEqualTo("An input string.");
     }
 
     @Test
@@ -75,7 +76,7 @@ public class StringReplaceTest extends FunctionTest {
         final String result = function.apply(input);
 
         //Then
-        assertEquals("An input string.", result);
+        assertThat(result).isEqualTo("An input string.");
     }
 
     @Test
@@ -88,17 +89,20 @@ public class StringReplaceTest extends FunctionTest {
         final String result = function.apply(input);
 
         //Then
-        assertEquals("An output string.", result);
+        assertThat(result).isEqualTo("An output string.");
     }
 
     @Override
     protected StringReplace getInstance() {
-        return new StringReplace();
+        return new StringReplace("searchForThis", "replaceWithThis");
     }
 
     @Override
-    protected Class<? extends StringReplace> getFunctionClass() {
-        return StringReplace.class;
+    protected Iterable<StringReplace> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new StringReplace("searchForThis", "test"),
+                new StringReplace("test", "replaceWithThis")
+        );
     }
 
     @Override
@@ -111,6 +115,7 @@ public class StringReplaceTest extends FunctionTest {
         return new Class[]{ String.class };
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -130,6 +135,6 @@ public class StringReplaceTest extends FunctionTest {
         final StringReplace deserialisedMethod = JsonSerialiser.deserialise(json, StringReplace.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

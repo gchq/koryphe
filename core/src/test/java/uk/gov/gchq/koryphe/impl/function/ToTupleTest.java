@@ -19,7 +19,7 @@ package uk.gov.gchq.koryphe.impl.function;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.tuple.ArrayTuple;
@@ -31,12 +31,10 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class ToTupleTest extends FunctionTest {
+public class ToTupleTest extends FunctionTest<ToTuple> {
 
     @Test
     public void shouldConvertListIntoArrayTuple() {
@@ -47,7 +45,7 @@ public class ToTupleTest extends FunctionTest {
         Tuple output = function.apply(Lists.newArrayList(1, 2, 3, 4));
 
         // Then
-        assertEquals(new ArrayTuple(1, 2, 3, 4), output);
+        assertThat(output).isEqualTo(new ArrayTuple(1, 2, 3, 4));
     }
 
     @Test
@@ -59,7 +57,7 @@ public class ToTupleTest extends FunctionTest {
         Tuple output = function.apply(new int[]{1, 2, 3, 4});
 
         // Then
-        assertEquals(new ArrayTuple(1, 2, 3, 4), output);
+        assertThat(output).isEqualTo(new ArrayTuple(1, 2, 3, 4));
     }
 
     @Test
@@ -71,7 +69,7 @@ public class ToTupleTest extends FunctionTest {
         Tuple output = function.apply(new Integer[]{1, 2, 3, 4});
 
         // Then
-        assertEquals(new ArrayTuple(1, 2, 3, 4), output);
+        assertThat(output).isEqualTo(new ArrayTuple(1, 2, 3, 4));
     }
 
     @Test
@@ -87,7 +85,7 @@ public class ToTupleTest extends FunctionTest {
         Tuple output = function.apply(input);
 
         // Then
-        assertEquals(new MapTuple<>(input), output);
+        assertThat(output).isEqualTo(new MapTuple<>(input));
     }
 
     @Test
@@ -95,21 +93,22 @@ public class ToTupleTest extends FunctionTest {
         // Given
         final ToTuple function = new ToTuple();
         Object input = new SimpleObj("value1");
+
         // When
         Tuple output = function.apply(input);
 
         // Then
-        assertEquals(new ReflectiveTuple(input), output);
+        assertThat(output).isEqualTo(new ReflectiveTuple(input));
     }
 
     @Override
-    protected Function getInstance() {
+    protected ToTuple getInstance() {
         return new ToTuple();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return ToTuple.class;
+    protected Iterable<ToTuple> getDifferentInstancesOrNull() {
+        return null;
     }
 
     @Override
@@ -122,6 +121,7 @@ public class ToTupleTest extends FunctionTest {
         return new Class[] { Tuple.class };
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -139,7 +139,7 @@ public class ToTupleTest extends FunctionTest {
         final ToTuple deserialisedMethod = JsonSerialiser.deserialise(json, ToTuple.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 
     private static class SimpleObj {

@@ -16,22 +16,21 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.tuple.n.Tuple2;
 import uk.gov.gchq.koryphe.util.DateUtil;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.TimeZone;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class InDateRangeDualTest extends AbstractInTimeRangeDualTest<Date> {
 
     @Test
-    public void shouldTestValuesInRangeWithTimeZone() throws IOException {
+    public void shouldTestValuesInRangeWithTimeZone() {
         // Given
         final String timeZone = "Etc/GMT+6";
         final InDateRangeDual filter = new InDateRangeDual.Builder()
@@ -42,17 +41,14 @@ public class InDateRangeDualTest extends AbstractInTimeRangeDualTest<Date> {
                 .timeZone(timeZone)
                 .build();
 
-        // When
-        final boolean outOfTimeRange = filter.test(
-                new Tuple2<>(DateUtil.parse("2018/01/01 12:01", TimeZone.getTimeZone("Etc/GMT+0")),
-                        DateUtil.parse("2018/01/01 12:02", TimeZone.getTimeZone("Etc/GMT+0"))));
-        final boolean inTimeRange = filter.test(
-                new Tuple2<>(DateUtil.parse("2018/01/01 12:01", TimeZone.getTimeZone("Etc/GMT+6")),
-                        DateUtil.parse("2018/01/01 12:02", TimeZone.getTimeZone("Etc/GMT+6"))));
-
-        // Then
-        assertFalse(outOfTimeRange);
-        assertTrue(inTimeRange);
+        // When / Then
+        assertThat(filter)
+                // out of time range
+                .rejects(new Tuple2<>(DateUtil.parse("2018/01/01 12:01", TimeZone.getTimeZone("Etc/GMT+0")),
+                            DateUtil.parse("2018/01/01 12:02", TimeZone.getTimeZone("Etc/GMT+0"))))
+                // inside time range
+                .accepts(new Tuple2<>(DateUtil.parse("2018/01/01 12:01", TimeZone.getTimeZone("Etc/GMT+6")),
+                            DateUtil.parse("2018/01/01 12:02", TimeZone.getTimeZone("Etc/GMT+6"))));
     }
 
     @Override

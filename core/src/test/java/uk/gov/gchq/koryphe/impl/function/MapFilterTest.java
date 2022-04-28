@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.impl.predicate.AreEqual;
@@ -23,18 +24,19 @@ import uk.gov.gchq.koryphe.impl.predicate.IsA;
 import uk.gov.gchq.koryphe.impl.predicate.IsIn;
 import uk.gov.gchq.koryphe.impl.predicate.IsLessThan;
 import uk.gov.gchq.koryphe.impl.predicate.IsMoreThan;
+import uk.gov.gchq.koryphe.impl.predicate.IsXLessThanY;
 import uk.gov.gchq.koryphe.impl.predicate.Not;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class MapFilterTest extends FunctionTest {
+public class MapFilterTest extends FunctionTest<MapFilter> {
 
     @Test
     public void shouldApplyKeyPredicate() {
@@ -48,14 +50,13 @@ public class MapFilterTest extends FunctionTest {
                 new MapFilter<Integer, Integer>()
                         .keyPredicate(new IsLessThan(2));
 
-
         // When
         predicate.apply(map);
 
         // Then
-        final Map<Integer, Integer> expectedMap = new HashMap<>();
-        expectedMap.put(1, 10);
-        assertEquals(expectedMap, map);
+        assertThat(map)
+                .containsEntry(1, 10)
+                .hasSize(1);
     }
 
     @Test
@@ -70,14 +71,13 @@ public class MapFilterTest extends FunctionTest {
                 new MapFilter<Integer, Integer>()
                         .valuePredicate(new IsLessThan(20));
 
-
         // When
         predicate.apply(map);
 
         // Then
-        final Map<Integer, Integer> expectedMap = new HashMap<>();
-        expectedMap.put(1, 10);
-        assertEquals(expectedMap, map);
+        assertThat(map)
+                .containsEntry(1, 10)
+                .hasSize(1);
     }
 
     @Test
@@ -92,14 +92,13 @@ public class MapFilterTest extends FunctionTest {
                 new MapFilter<Integer, Integer>()
                         .keyValuePredicate(new AreEqual());
 
-
         // When
         predicate.apply(map);
 
         // Then
-        final Map<Integer, Integer> expectedMap = new HashMap<>();
-        expectedMap.put(1, 1);
-        assertEquals(expectedMap, map);
+        assertThat(map)
+                .containsEntry(1, 1)
+                .hasSize(1);
     }
 
     @Test
@@ -123,9 +122,9 @@ public class MapFilterTest extends FunctionTest {
         predicate.apply(map);
 
         // Then
-        final Map<Integer, Integer> expectedMap = new HashMap<>();
-        expectedMap.put(1, 1);
-        assertEquals(expectedMap, map);
+        assertThat(map)
+                .containsEntry(1, 1)
+                .hasSize(1);
     }
 
     @Override
@@ -137,8 +136,21 @@ public class MapFilterTest extends FunctionTest {
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return MapFilter.class;
+    protected Iterable<MapFilter> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new MapFilter()
+                        .keyPredicate(new IsA(String.class))
+                        .valuePredicate(new IsMoreThan(1))
+                        .keyValuePredicate(new AreEqual()),
+                new MapFilter<>()
+                        .keyPredicate(new Not<>(new IsA(String.class)))
+                        .valuePredicate(new IsLessThan(5))
+                        .keyValuePredicate(new AreEqual()),
+                new MapFilter<>()
+                        .keyPredicate(new Not<>(new IsA(String.class)))
+                        .valuePredicate(new IsMoreThan(1))
+                        .keyValuePredicate(new IsXLessThanY())
+        );
     }
 
     @Override
@@ -151,6 +163,7 @@ public class MapFilterTest extends FunctionTest {
         return new Class[] { Map.class };
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -171,10 +184,10 @@ public class MapFilterTest extends FunctionTest {
         final MapFilter deserialised = JsonSerialiser.deserialise(json, MapFilter.class);
 
         // Then 2
-        assertNotNull(deserialised);
-        assertEquals(Not.class, deserialised.getKeyPredicate().getClass());
-        assertEquals(IsA.class, ((Not) deserialised.getKeyPredicate()).getPredicate().getClass());
-        assertEquals(1, ((IsMoreThan) deserialised.getValuePredicate()).getControlValue());
-        assertEquals(AreEqual.class, deserialised.getKeyValuePredicate().getClass());
+        assertThat(deserialised).isNotNull();
+        assertThat(deserialised.getKeyPredicate().getClass()).isEqualTo(Not.class);
+        assertThat(((Not) deserialised.getKeyPredicate()).getPredicate().getClass()).isEqualTo(IsA.class);
+        assertThat(((IsMoreThan) deserialised.getValuePredicate()).getControlValue()).isEqualTo(1);
+        assertThat(deserialised.getKeyValuePredicate().getClass()).isEqualTo(AreEqual.class);
     }
 }

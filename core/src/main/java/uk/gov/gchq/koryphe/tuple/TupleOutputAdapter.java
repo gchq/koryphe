@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,26 @@
 
 package uk.gov.gchq.koryphe.tuple;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import uk.gov.gchq.koryphe.Since;
+import uk.gov.gchq.koryphe.Summary;
 
 import java.util.Arrays;
 import java.util.function.BiFunction;
+
+import static uk.gov.gchq.koryphe.util.JavaUtils.requireNonNullElse;
 
 /**
  * @param <R>  The type of reference used by tuples.
  * @param <FO> The adapted output type.
  */
+@Since("1.0.0")
+@Summary("Projects items to a tuple")
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
 public class TupleOutputAdapter<R, FO> implements BiFunction<Tuple<R>, FO, Tuple<R>> {
     private R[] projection;
 
@@ -71,11 +82,7 @@ public class TupleOutputAdapter<R, FO> implements BiFunction<Tuple<R>, FO, Tuple
      */
     @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "Cloning the array would be expensive - we will have to reply on users not modifying the array")
     public void setProjection(final R[] projection) {
-        if (null == projection) {
-            this.projection = (R[]) new Object[0];
-        } else {
-            this.projection = projection;
-        }
+        this.projection = requireNonNullElse(projection, (R[]) new Object[0]);
     }
 
     /**
@@ -83,5 +90,29 @@ public class TupleOutputAdapter<R, FO> implements BiFunction<Tuple<R>, FO, Tuple
      */
     public R[] getProjection() {
         return Arrays.copyOf(projection, projection.length);
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || !getClass().equals(o.getClass())) {
+            return false;
+        }
+
+        final TupleOutputAdapter that = (TupleOutputAdapter) o;
+        return new EqualsBuilder()
+                .append(projection, that.projection)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(43, 67)
+                .append(getClass().hashCode())
+                .append(projection)
+                .toHashCode();
     }
 }

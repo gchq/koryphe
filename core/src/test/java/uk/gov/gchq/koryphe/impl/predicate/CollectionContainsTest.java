@@ -16,8 +16,8 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.CustomObj;
@@ -25,23 +25,22 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class CollectionContainsTest extends PredicateTest {
+public class CollectionContainsTest extends PredicateTest<CollectionContains> {
+
     private static final CustomObj VALUE1 = new CustomObj();
     private static final String VALUE2 = "value2";
 
     private final List<Object> list = new ArrayList<>();
     private final Set<Object> set = new HashSet<>();
 
-    @Before
+    @BeforeEach
     public void setup() {
         list.add(VALUE1);
         set.add(VALUE1);
@@ -52,11 +51,8 @@ public class CollectionContainsTest extends PredicateTest {
         // Given
         final CollectionContains filter = new CollectionContains(VALUE1);
 
-        // When
-        boolean accepted = filter.test(list);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(list);
     }
 
     @Test
@@ -64,11 +60,8 @@ public class CollectionContainsTest extends PredicateTest {
         // Given
         final CollectionContains filter = new CollectionContains(VALUE1);
 
-        // When
-        boolean accepted = filter.test(set);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(set);
     }
 
     @Test
@@ -76,11 +69,8 @@ public class CollectionContainsTest extends PredicateTest {
         // Given
         final CollectionContains filter = new CollectionContains(VALUE2);
 
-        // When
-        boolean accepted = filter.test(list);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(list);
     }
 
     @Test
@@ -88,11 +78,8 @@ public class CollectionContainsTest extends PredicateTest {
         // Given
         final CollectionContains filter = new CollectionContains(VALUE2);
 
-        // When
-        boolean accepted = filter.test(set);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(set);
     }
 
     @Test
@@ -100,11 +87,8 @@ public class CollectionContainsTest extends PredicateTest {
         // Given
         final CollectionContains filter = new CollectionContains(VALUE1);
 
-        // When
-        boolean accepted = filter.test(new ArrayList<>());
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(new ArrayList<>());
     }
 
     @Test
@@ -112,11 +96,8 @@ public class CollectionContainsTest extends PredicateTest {
         // Given
         final CollectionContains filter = new CollectionContains(VALUE1);
 
-        // When
-        boolean accepted = filter.test(new HashSet<>());
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(new HashSet<>());
     }
 
     @Test
@@ -137,17 +118,20 @@ public class CollectionContainsTest extends PredicateTest {
         final CollectionContains deserialisedFilter = JsonSerialiser.deserialise(json, CollectionContains.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(VALUE1, deserialisedFilter.getValue());
-    }
-
-    @Override
-    protected Class<CollectionContains> getPredicateClass() {
-        return CollectionContains.class;
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getValue()).isEqualTo(VALUE1);
     }
 
     @Override
     protected CollectionContains getInstance() {
         return new CollectionContains(VALUE1);
+    }
+
+    @Override
+    protected Iterable<CollectionContains> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new CollectionContains(),
+                new CollectionContains(VALUE2)
+        );
     }
 }

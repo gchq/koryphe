@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class StringAppendTest extends FunctionTest {
+public class StringAppendTest extends FunctionTest<StringAppend> {
 
     @Test
     public void shouldHandleNullInput() {
@@ -37,7 +37,7 @@ public class StringAppendTest extends FunctionTest {
         final String result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -49,7 +49,7 @@ public class StringAppendTest extends FunctionTest {
         final String result = function.apply("Hello");
 
         // Then
-        assertEquals("Hello", result);
+        assertThat(result).isEqualTo("Hello");
     }
 
     @Test
@@ -61,7 +61,7 @@ public class StringAppendTest extends FunctionTest {
         final String result = function.apply("Hello");
 
         // Then
-        assertEquals("Hello!", result);
+        assertThat(result).isEqualTo("Hello!");
     }
 
     @Test
@@ -73,7 +73,7 @@ public class StringAppendTest extends FunctionTest {
         final String result = function.apply("Hello");
 
         // Then
-        assertEquals("Hello", result); // right now result is Hellonull
+        assertThat(result).isEqualTo("Hello"); // right now result is Hellonull
     }
 
     @Override
@@ -82,8 +82,8 @@ public class StringAppendTest extends FunctionTest {
     }
 
     @Override
-    protected Class<? extends StringAppend> getFunctionClass() {
-        return StringAppend.class;
+    protected Iterable<StringAppend> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new StringAppend("different"));
     }
 
     @Override
@@ -96,6 +96,7 @@ public class StringAppendTest extends FunctionTest {
         return new Class[]{ String.class };
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -114,6 +115,6 @@ public class StringAppendTest extends FunctionTest {
         final StringAppend deserialisedMethod = JsonSerialiser.deserialise(json, StringAppend.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

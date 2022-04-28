@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2018-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.impl.predicate.IsA;
@@ -27,12 +28,11 @@ import uk.gov.gchq.koryphe.tuple.function.KorypheFunction2;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -40,7 +40,7 @@ import static org.mockito.Mockito.verify;
 import static uk.gov.gchq.koryphe.util.Util.project;
 import static uk.gov.gchq.koryphe.util.Util.select;
 
-public class IfTest extends FunctionTest {
+public class IfTest extends FunctionTest<If> {
 
     @Override
     protected If<Object, Object> getInstance() {
@@ -50,16 +50,30 @@ public class IfTest extends FunctionTest {
                 .otherwise(new SetValue("value2"));
     }
 
+    @Override
+    protected Iterable<If> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new If<>()
+                        .condition(false)
+                        .then(new SetValue("value1"))
+                        .otherwise(new SetValue("value2")),
+                new If<>()
+                        .condition(true)
+                        .then(new SetValue("differentThenValue"))
+                        .otherwise(new SetValue("value2")),
+                new If<>()
+                        .condition(true)
+                        .then(new SetValue("value1"))
+                        .otherwise(new SetValue("differentOtherwiseValue")),
+                getAltInstance()
+        );
+    }
+
     private If<Comparable, Comparable> getAltInstance() {
         return new If<Comparable, Comparable>()
                 .predicate(new IsA(Integer.class))
                 .then(new SetValue("value2"))
                 .otherwise(new SetValue("value3"));
-    }
-
-    @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return If.class;
     }
 
     @Override
@@ -72,6 +86,7 @@ public class IfTest extends FunctionTest {
         return new Class[] { Object.class };
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -98,10 +113,10 @@ public class IfTest extends FunctionTest {
         final If deserialised = JsonSerialiser.deserialise(json, If.class);
 
         // Then 2
-        assertNotNull(deserialised);
-        assertTrue(deserialised.getCondition());
-        assertEquals("value1", ((SetValue) deserialised.getThen()).getValue());
-        assertEquals("value2", ((SetValue) deserialised.getOtherwise()).getValue());
+        assertThat(deserialised).isNotNull();
+        assertThat(deserialised.getCondition()).isTrue();
+        assertThat(((SetValue) deserialised.getThen()).getValue()).isEqualTo("value1");
+        assertThat(((SetValue) deserialised.getOtherwise()).getValue()).isEqualTo("value2");
     }
 
     @Test
@@ -133,10 +148,10 @@ public class IfTest extends FunctionTest {
         final If deserialised = JsonSerialiser.deserialise(json, If.class);
 
         // Then 2
-        assertNotNull(deserialised);
-        assertEquals(Integer.class.getName(), ((IsA) deserialised.getPredicate()).getType());
-        assertEquals("value2", ((SetValue) deserialised.getThen()).getValue());
-        assertEquals("value3", ((SetValue) deserialised.getOtherwise()).getValue());
+        assertThat(deserialised).isNotNull();
+        assertThat(((IsA) deserialised.getPredicate()).getType()).isEqualTo(Integer.class.getName());
+        assertThat(((SetValue) deserialised.getThen()).getValue()).isEqualTo("value2");
+        assertThat(((SetValue) deserialised.getOtherwise()).getValue()).isEqualTo("value3");
     }
 
     @Test
@@ -149,7 +164,7 @@ public class IfTest extends FunctionTest {
         final Object result = function.apply(input);
 
         // Then
-        assertEquals(input, result);
+        assertThat(result).isEqualTo(input);
     }
 
     @Test
@@ -169,7 +184,7 @@ public class IfTest extends FunctionTest {
         final Object result = function.apply(input);
 
         // Then
-        assertEquals(0, result);
+        assertThat(result).isEqualTo(0);
         verify(predicate).test(input);
         verify(then).apply(input);
         verify(otherwise, never()).apply(input);
@@ -192,7 +207,7 @@ public class IfTest extends FunctionTest {
         final Object result = function.apply(input);
 
         // Then
-        assertEquals(0, result);
+        assertThat(result).isEqualTo(0);
         verify(predicate).test(input);
         verify(then, never()).apply(input);
         verify(otherwise).apply(input);
@@ -214,7 +229,7 @@ public class IfTest extends FunctionTest {
         final Object result = function.apply(input);
 
         // Then
-        assertEquals(input, result);
+        assertThat(result).isEqualTo(input);
         verify(predicate).test(input);
         verify(then, never()).apply(input);
         verify(otherwise).apply(input);
@@ -233,7 +248,7 @@ public class IfTest extends FunctionTest {
         final Object result = function.apply(input);
 
         // Then
-        assertEquals(input, result);
+        assertThat(result).isEqualTo(input);
         verify(then, never()).apply(input);
     }
 
@@ -253,7 +268,7 @@ public class IfTest extends FunctionTest {
         final Object result = function.apply(input);
 
         // Then
-        assertEquals(input, result);
+        assertThat(result).isEqualTo(input);
         verify(predicate).test(input);
     }
 
@@ -277,11 +292,10 @@ public class IfTest extends FunctionTest {
         given(then.apply(secondVal)).willReturn(1);
 
         // When
-        final Object result = function.apply(input);
+        final Tuple<Integer> result = function.apply(input);
 
         // Then
-        final ArrayTuple expectedResult = new ArrayTuple(firstVal, 1, thirdVal);
-        assertEquals(expectedResult, result);
+        assertThat(result).containsExactly(firstVal, 1, thirdVal);
         verify(predicate).test(firstVal);
         verify(then).apply(secondVal);
     }
@@ -306,11 +320,10 @@ public class IfTest extends FunctionTest {
         given(then.apply(refTuple)).willReturn(1);
 
         // When
-        final Object result = function.apply(input);
+        final Tuple<Integer> result = function.apply(input);
 
         // Then
-        final ArrayTuple expectedResult = new ArrayTuple(firstInput, 1, thirdInput);
-        assertEquals(expectedResult, result);
+        assertThat(result).containsExactly(firstInput, 1, thirdInput);
         verify(predicate).test(firstInput);
         verify(then).apply(refTuple);
         verify(otherwise, never()).apply(refTuple);
@@ -325,7 +338,7 @@ public class IfTest extends FunctionTest {
                 .otherwise(new SetValue(2));
 
         // When / Then
-        assertEquals(new Integer(1), function.apply(1));
-        assertEquals(new Integer(2), function.apply(3));
+        assertThat(function.apply(1)).isEqualTo(Integer.valueOf(1));
+        assertThat(function.apply(3)).isEqualTo(Integer.valueOf(2));
     }
 }

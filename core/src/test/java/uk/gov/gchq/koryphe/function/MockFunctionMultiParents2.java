@@ -21,7 +21,4 @@ public class MockFunctionMultiParents2 extends MockFunctionMultiParents1<Double,
     public String apply(final Double aDouble, final Object o, final Integer b) {
         return null;
     }
-
-
 }
-

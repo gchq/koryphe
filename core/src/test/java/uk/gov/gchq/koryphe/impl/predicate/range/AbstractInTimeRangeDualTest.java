@@ -16,9 +16,8 @@
 
 package uk.gov.gchq.koryphe.impl.predicate.range;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.tuple.n.Tuple2;
@@ -33,18 +32,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> extends PredicateTest {
-    @After
+public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> extends PredicateTest<AbstractInTimeRangeDual> {
+
+    @AfterEach
     public void after() {
         System.clearProperty(DateUtil.TIME_ZONE);
     }
 
     @Test
-    public void shouldAcceptValuesInRange() throws IOException {
+    public void shouldAcceptValuesInRange() {
         // Given
         final Predicate filter = createBuilder()
                 .start("1")
@@ -65,7 +63,7 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
     }
 
     @Test
-    public void shouldSetSystemPropertyTimeZone() throws IOException {
+    public void shouldSetSystemPropertyTimeZone() {
         // Given
         final String timeZone = "Etc/GMT+6";
         System.setProperty(DateUtil.TIME_ZONE, timeZone);
@@ -79,11 +77,11 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
                 .build();
 
         // Then
-        assertEquals(timeZone, predicate.getTimeZoneId());
+        assertThat(predicate.getTimeZoneId()).isEqualTo(timeZone);
     }
 
     @Test
-    public void shouldNotOverrideUserTimeZone() throws IOException {
+    public void shouldNotOverrideUserTimeZone() {
         // Given
         final String timeZone = "Etc/GMT+6";
         final String userTimeZone = "Etc/GMT+4";
@@ -99,11 +97,11 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
                 .build();
 
         // Then
-        assertEquals(userTimeZone, predicate.getTimeZoneId());
+        assertThat(predicate.getTimeZoneId()).isEqualTo(userTimeZone);
     }
 
     @Test
-    public void shouldAcceptValuesInUpperUnboundedRange() throws IOException {
+    public void shouldAcceptValuesInUpperUnboundedRange() {
         // Given
         final Predicate filter = createBuilder()
                 .start("1")
@@ -125,7 +123,7 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
     }
 
     @Test
-    public void shouldAcceptValuesInLowerUnboundedRange() throws IOException {
+    public void shouldAcceptValuesInLowerUnboundedRange() {
         // Given
         final Predicate filter = createBuilder()
                 .end("10")
@@ -147,7 +145,7 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
     }
 
     @Test
-    public void shouldRejectNullValue() throws IOException {
+    public void shouldRejectNullValue() {
         // Given
         final Predicate filter = createBuilder()
                 .start("1")
@@ -167,7 +165,7 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
     }
 
     @Test
-    public void shouldRejectValuesNotInRange() throws IOException {
+    public void shouldRejectValuesNotInRange() {
         // Given
         final Predicate filter = createBuilder()
                 .start("1")
@@ -190,7 +188,7 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
     }
 
     @Test
-    public void shouldRejectValuesNotInExclusiveRange() throws IOException {
+    public void shouldRejectValuesNotInExclusiveRange() {
         // Given
         final Predicate filter = createBuilder()
                 .start("1")
@@ -215,7 +213,7 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
     }
 
     @Test
-    public void shouldAcceptValuesInStartAndEndPartiallyContained() throws IOException {
+    public void shouldAcceptValuesInStartAndEndPartiallyContained() {
         // Given
         final Predicate filter = createBuilder()
                 .start("1")
@@ -237,7 +235,7 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
     }
 
     @Test
-    public void shouldAcceptValuesInStartPartiallyContained() throws IOException {
+    public void shouldAcceptValuesInStartPartiallyContained() {
         // Given
         final Predicate filter = createBuilder()
                 .start("1")
@@ -258,7 +256,7 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
     }
 
     @Test
-    public void shouldRejectValuesInStartPartiallyContained() throws IOException {
+    public void shouldRejectValuesInStartPartiallyContained() {
         // Given
         final Predicate filter = createBuilder()
                 .start("1")
@@ -279,7 +277,7 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
     }
 
     @Test
-    public void shouldAcceptValuesInEndPartiallyContained() throws IOException {
+    public void shouldAcceptValuesInEndPartiallyContained() {
         // Given
         final Predicate filter = createBuilder()
                 .start("1")
@@ -300,7 +298,7 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
     }
 
     @Test
-    public void shouldRejectValuesInEndPartiallyContained() throws IOException {
+    public void shouldRejectValuesInEndPartiallyContained() {
         // Given
         final Predicate filter = createBuilder()
                 .start("1")
@@ -321,7 +319,7 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
     }
 
     @Test
-    public void shouldAcceptValuesInStartAndEndPartiallyContainedInclusive() throws IOException {
+    public void shouldAcceptValuesInStartAndEndPartiallyContainedInclusive() {
         // Given
         final Predicate filter = createBuilder()
                 .start("1")
@@ -344,7 +342,7 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
     }
 
     @Test
-    public void shouldRejectValuesInStartAndEndPartiallyContained() throws IOException {
+    public void shouldRejectValuesInStartAndEndPartiallyContained() {
         // Given
         final Predicate filter = createBuilder()
                 .start("1")
@@ -365,7 +363,7 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
     }
 
     @Test
-    public void shouldRejectValuesInStartAndEndPartiallyContainedInclusive() throws IOException {
+    public void shouldRejectValuesInStartAndEndPartiallyContainedInclusive() {
         // Given
         final Predicate filter = createBuilder()
                 .start("1")
@@ -417,9 +415,9 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
         final AbstractInTimeRangeDual<T> deserialisedFilter = (AbstractInTimeRangeDual<T>) deserialise(json);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(start, deserialisedFilter.getStart());
-        assertEquals(end, deserialisedFilter.getEnd());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getStart()).isEqualTo(start);
+        assertThat(deserialisedFilter.getEnd()).isEqualTo(end);
     }
 
     @Test
@@ -446,9 +444,9 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
         final AbstractInTimeRangeDual<T> deserialisedFilter = (AbstractInTimeRangeDual<T>) deserialise(json);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(start, deserialisedFilter.getStart());
-        assertEquals(end, deserialisedFilter.getEnd());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getStart()).isEqualTo(start);
+        assertThat(deserialisedFilter.getEnd()).isEqualTo(end);
     }
 
     @Test
@@ -461,13 +459,13 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
                 .build();
 
         // Then
-        assertEquals(10000L, (long) filter.getStartOffset());
-        assertEquals(1000L, (long) filter.getEndOffset());
-        assertEquals(TimeUnit.MILLISECOND, filter.getOffsetUnit());
+        assertThat((long) filter.getStartOffset()).isEqualTo(10000L);
+        assertThat((long) filter.getEndOffset()).isEqualTo(1000L);
+        assertThat(filter.getOffsetUnit()).isEqualTo(TimeUnit.MILLISECOND);
     }
 
     @Test
-    public void shouldConstructFromOffsetSecond() throws IOException {
+    public void shouldConstructFromOffsetSecond() {
         // When
         final AbstractInTimeRangeDual<T> filter = createBuilderWithTimeOffsets()
                 .startOffset(10000L)
@@ -476,13 +474,13 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
                 .build();
 
         // Then
-        assertEquals(10000L, (long) filter.getStartOffset());
-        assertEquals(1000L, (long) filter.getEndOffset());
-        assertEquals(TimeUnit.SECOND, filter.getOffsetUnit());
+        assertThat((long) filter.getStartOffset()).isEqualTo(10000L);
+        assertThat((long) filter.getEndOffset()).isEqualTo(1000L);
+        assertThat(filter.getOffsetUnit()).isEqualTo(TimeUnit.SECOND);
     }
 
     @Test
-    public void shouldConstructFromOffsetMinute() throws IOException {
+    public void shouldConstructFromOffsetMinute() {
         // When
         final AbstractInTimeRangeDual<T> filter = createBuilderWithTimeOffsets()
                 .startOffset(10000L)
@@ -491,13 +489,13 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
                 .build();
 
         // Then
-        assertEquals(10000L, (long) filter.getStartOffset());
-        assertEquals(1000L, (long) filter.getEndOffset());
-        assertEquals(TimeUnit.MINUTE, filter.getOffsetUnit());
+        assertThat((long) filter.getStartOffset()).isEqualTo(10000L);
+        assertThat((long) filter.getEndOffset()).isEqualTo(1000L);
+        assertThat(filter.getOffsetUnit()).isEqualTo(TimeUnit.MINUTE);
     }
 
     @Test
-    public void shouldConstructFromOffsetHours() throws IOException {
+    public void shouldConstructFromOffsetHours() {
         // When
         final AbstractInTimeRangeDual<T> filter = createBuilderWithTimeOffsets()
                 .startOffset(1000L)
@@ -506,13 +504,13 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
                 .build();
 
         // Then
-        assertEquals(1000L, (long) filter.getStartOffset());
-        assertEquals(100L, (long) filter.getEndOffset());
-        assertEquals(TimeUnit.HOUR, filter.getOffsetUnit());
+        assertThat((long) filter.getStartOffset()).isEqualTo(1000L);
+        assertThat((long) filter.getEndOffset()).isEqualTo(100L);
+        assertThat(filter.getOffsetUnit()).isEqualTo(TimeUnit.HOUR);
     }
 
     @Test
-    public void shouldConstructFromOffsetDays() throws IOException {
+    public void shouldConstructFromOffsetDays() {
         // When
         final AbstractInTimeRangeDual<T> filter = createBuilderWithTimeOffsets()
                 .startOffset(7L)
@@ -520,10 +518,10 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
                 .build();
 
         // Then
-        assertEquals(7L, (long) filter.getStartOffset());
-        assertEquals(2L, (long) filter.getEndOffset());
+        assertThat((long) filter.getStartOffset()).isEqualTo(7L);
+        assertThat((long) filter.getEndOffset()).isEqualTo(2L);
         // default is DAY
-        assertNull(filter.getOffsetUnit());
+        assertThat(filter.getOffsetUnit()).isNull();
     }
 
     @Test
@@ -550,22 +548,31 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
         final AbstractInTimeRangeDual<T> deserialisedFilter = (AbstractInTimeRangeDual<T>) deserialise(json);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(startValue, deserialisedFilter.getStart());
-        assertEquals(endValue, deserialisedFilter.getEnd());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getStart()).isEqualTo(startValue);
+        assertThat(deserialisedFilter.getEnd()).isEqualTo(endValue);
     }
 
     @Override
-    protected Class<? extends Predicate> getPredicateClass() {
-        return getInstance().getClass();
-    }
-
-    @Override
-    protected Predicate getInstance() {
+    protected AbstractInTimeRangeDual getInstance() {
         return createBuilder()
                 .start("1000")
                 .end("1010")
                 .build();
+    }
+
+    @Override
+    protected Iterable<AbstractInTimeRangeDual> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                createBuilder()
+                        .start("100")
+                        .end("1010")
+                        .build(),
+                createBuilder()
+                        .start("1000")
+                        .end("2010")
+                        .build()
+        );
     }
 
     protected abstract AbstractInTimeRangeDual.BaseBuilder<?, ? extends AbstractInTimeRangeDual<T>, T> createBuilderWithTimeOffsets();
@@ -582,7 +589,9 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
 
         // Then
         for (int i = 0; i < values.size(); i++) {
-            assertEquals("Failed for value: " + values.get(i), expectedResult, results.get(i));
+            assertThat(results.get(i))
+                    .isEqualTo(expectedResult)
+                    .withFailMessage("Failed for value: %s", values.get(i));
         }
     }
 

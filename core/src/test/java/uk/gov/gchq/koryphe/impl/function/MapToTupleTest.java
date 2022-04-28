@@ -16,7 +16,7 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.tuple.MapTuple;
@@ -26,12 +26,10 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class MapToTupleTest extends FunctionTest {
+public class MapToTupleTest extends FunctionTest<MapToTuple> {
 
     @Test
     public void shouldConvertMapIntoMapTuple() {
@@ -46,17 +44,17 @@ public class MapToTupleTest extends FunctionTest {
         Tuple output = function.apply(input);
 
         // Then
-        assertEquals(new MapTuple<>(input), output);
+        assertThat(output).isEqualTo(new MapTuple<>(input));
     }
 
     @Override
-    protected Function getInstance() {
+    protected MapToTuple getInstance() {
         return new MapToTuple<String>();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return MapToTuple.class;
+    protected Iterable<MapToTuple> getDifferentInstancesOrNull() {
+        return null;
     }
 
     @Override
@@ -69,6 +67,7 @@ public class MapToTupleTest extends FunctionTest {
         return new Class[]{Tuple.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -86,6 +85,6 @@ public class MapToTupleTest extends FunctionTest {
         final MapToTuple deserialisedMethod = JsonSerialiser.deserialise(json, MapToTuple.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

@@ -16,30 +16,25 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class RegexTest extends PredicateTest {
+public class RegexTest extends PredicateTest<Regex> {
+
     @Test
     public void shouldAccepValidValue() {
         // Given
         final Regex filter = new Regex("te[a-d]{3}st");
 
-
-        // When
-        boolean accepted = filter.test("teaadst");
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts("teaadst");
     }
 
     @Test
@@ -47,11 +42,8 @@ public class RegexTest extends PredicateTest {
         // Given
         final Regex filter = new Regex("fa[a-d]{3}il");
 
-        // When
-        boolean accepted = filter.test("favcdil");
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects("favcdil");
     }
 
     @Test
@@ -74,8 +66,8 @@ public class RegexTest extends PredicateTest {
         final Regex deserialisedFilter = JsonSerialiser.deserialise(json, Regex.class);
 
         // Then 2
-        assertEquals(filter.getControlValue().pattern(), deserialisedFilter.getControlValue().pattern());
-        assertNotNull(deserialisedFilter);
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getControlValue().pattern()).isEqualTo(filter.getControlValue().pattern());
     }
 
     @Override
@@ -84,8 +76,11 @@ public class RegexTest extends PredicateTest {
     }
 
     @Override
-    protected Class<Regex> getPredicateClass() {
-        return Regex.class;
+    protected Iterable<Regex> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new Regex(),
+                new Regex("different")
+        );
     }
 
 }

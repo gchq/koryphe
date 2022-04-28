@@ -16,27 +16,17 @@
 
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.binaryoperator.BinaryOperatorTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-public class SumTest extends BinaryOperatorTest {
-    private Number state;
-
-    @Before
-    public void before() {
-        state = null;
-    }
+public class SumTest extends BinaryOperatorTest<Sum> {
 
     @Test
     public void testAggregateShorts() {
@@ -44,32 +34,36 @@ public class SumTest extends BinaryOperatorTest {
         final Sum sum = new Sum();
 
         // When 1
-        state = sum.apply((short) 1, state);
+        Number state = sum.apply((short) 1, null);
 
         // Then 1
-        assertTrue(state instanceof Short);
-        assertEquals((short) 1, state);
+        assertThat(state)
+                .isEqualTo((short) 1)
+                .isExactlyInstanceOf(Short.class);
 
         // When 2
         state = sum.apply((short) 3, state);
 
         // Then 2
-        assertTrue(state instanceof Short);
-        assertEquals((short) 4, state);
+        assertThat(state)
+                .isEqualTo((short) 4)
+                .isExactlyInstanceOf(Short.class);
 
         // When 3
         state = sum.apply((short) 2, state);
 
         // Then 3
-        assertTrue(state instanceof Short);
-        assertEquals((short) 6, state);
+        assertThat(state)
+                .isEqualTo((short) 6)
+                .isExactlyInstanceOf(Short.class);
 
         // When 4 - check it cannot exceed MAX_VALUE
         state = sum.apply((short) (Short.MAX_VALUE - (short) state + 1), state);
 
         // Then 4
-        assertTrue(state instanceof Short);
-        assertEquals(Short.MAX_VALUE, state);
+        assertThat(state)
+                .isEqualTo(Short.MAX_VALUE)
+                .isExactlyInstanceOf(Short.class);
     }
 
     @Test
@@ -78,25 +72,28 @@ public class SumTest extends BinaryOperatorTest {
         final Sum sum = new Sum();
 
         // When 1
-        state = sum.apply(1, state);
+        Number state = sum.apply(1, null);
 
         // Then 1
-        assertTrue(state instanceof Integer);
-        assertEquals(1, state);
+        assertThat(state)
+                .isEqualTo(1)
+                .isExactlyInstanceOf(Integer.class);
 
         // When 2
         state = sum.apply(3, state);
 
         // Then 2
-        assertTrue(state instanceof Integer);
-        assertEquals(4, state);
+        assertThat(state)
+                .isEqualTo(4)
+                .isExactlyInstanceOf(Integer.class);
 
         // When 3
         state = sum.apply(2, state);
 
         // Then 3
-        assertTrue(state instanceof Integer);
-        assertEquals(6, state);
+        assertThat(state)
+                .isEqualTo(6)
+                .isExactlyInstanceOf(Integer.class);
     }
 
     @Test
@@ -105,33 +102,28 @@ public class SumTest extends BinaryOperatorTest {
         final Sum sum = new Sum();
 
         // When 1
-        state = sum.apply(1, state);
+        Number state = sum.apply(1, null);
 
         // Then 1
-        assertTrue(state instanceof Integer);
-        assertEquals(1, state);
+        assertThat(state)
+                .isEqualTo(1)
+                .isExactlyInstanceOf(Integer.class);
 
         // When 2
-        try {
-            state = sum.apply(2.7d, state);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThatExceptionOfType(ClassCastException.class).isThrownBy(() -> sum.apply(2.7d, state));
 
         // Then 2
-        assertTrue(state instanceof Integer);
-        assertEquals(1, state);
+        assertThat(state)
+                .isEqualTo(1)
+                .isExactlyInstanceOf(Integer.class);
 
         // When 3
-        try {
-            state = sum.apply(1l, state);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThatExceptionOfType(ClassCastException.class).isThrownBy(() -> sum.apply(1L, state));
 
         // Then 3
-        assertTrue(state instanceof Integer);
-        assertEquals(1, state);
+        assertThat(state)
+                .isEqualTo(1)
+                .isExactlyInstanceOf(Integer.class);
     }
 
     @Test
@@ -140,60 +132,59 @@ public class SumTest extends BinaryOperatorTest {
         final Sum sum = new Sum();
 
         // When 1
-        state = sum.apply(2l, state);
+        Number state = sum.apply(2L, null);
 
         // Then 1
-        assertTrue(state instanceof Long);
-        assertEquals(2l, state);
+        assertThat(state)
+                .isEqualTo(2L)
+                .isExactlyInstanceOf(Long.class);
 
         // When 2
-        state = sum.apply(1l, state);
+        state = sum.apply(1L, state);
 
         // Then 2
-        assertTrue(state instanceof Long);
-        assertEquals(3l, state);
+        assertThat(state)
+                .isEqualTo(3L)
+                .isExactlyInstanceOf(Long.class);
 
         // When 3
-        state = sum.apply(3l, state);
+        state = sum.apply(3L, state);
 
         // Then 3
-        assertTrue(state instanceof Long);
-        assertEquals(6l, state);
+        assertThat(state)
+                .isEqualTo(6L)
+                .isExactlyInstanceOf(Long.class);
     }
 
     @Test
     public void testAggregateInLongModeMixedInput() {
         // Given
         final Sum sum = new Sum();
-        state = 0l;
+        final Number state = 0L;
 
         // When 1
-        try {
-            state = sum.apply(1, state);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThatExceptionOfType(ClassCastException.class).isThrownBy(() -> sum.apply(1, state));
 
         // Then 1
-        assertEquals(0l, state);
+        assertThat(state)
+                .isEqualTo(0L)
+                .isExactlyInstanceOf(Long.class);
 
         // When 2
-        state = sum.apply(3l, state);
+        final Number state2 = sum.apply(3L, state);
 
         // Then 2
-        assertTrue(state instanceof Long);
-        assertEquals(3l, state);
+        assertThat(state2)
+                .isEqualTo(3L)
+                .isExactlyInstanceOf(Long.class);
 
         // When 3
-        try {
-            state = sum.apply(2.5d, state);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThatExceptionOfType(ClassCastException.class).isThrownBy(() -> sum.apply(2.5d, state2));
 
         // Then 3
-        assertTrue(state instanceof Long);
-        assertEquals(3l, state);
+        assertThat(state2)
+                .isEqualTo(3L)
+                .isExactlyInstanceOf(Long.class);
     }
 
     @Test
@@ -202,25 +193,28 @@ public class SumTest extends BinaryOperatorTest {
         final Sum sum = new Sum();
 
         // When 1
-        state = sum.apply(1.1f, state);
+        Number state = sum.apply(1.1f, null);
 
         // Then 1
-        assertTrue(state instanceof Float);
-        assertEquals(1.1f, state);
+        assertThat(state)
+                .isEqualTo(1.1f)
+                .isExactlyInstanceOf(Float.class);
 
         // When 2
         state = sum.apply(2f, state);
 
         // Then 2
-        assertTrue(state instanceof Float);
-        assertEquals(3.1f, state);
+        assertThat(state)
+                .isEqualTo(3.1f)
+                .isExactlyInstanceOf(Float.class);
 
         // When 3
         state = sum.apply(1.5f, state);
 
         // Then 3
-        assertTrue(state instanceof Float);
-        assertEquals(4.6f, state);
+        assertThat(state)
+                .isEqualTo(4.6f)
+                .isExactlyInstanceOf(Float.class);
     }
 
     @Test
@@ -229,218 +223,161 @@ public class SumTest extends BinaryOperatorTest {
         final Sum sum = new Sum();
 
         // When 1
-        state = sum.apply(1.1d, state);
+        Number state = sum.apply(1.1d, null);
 
         // Then 1
-        assertTrue(state instanceof Double);
-        assertEquals(1.1d, state);
+        assertThat(state)
+                .isEqualTo(1.1d)
+                .isExactlyInstanceOf(Double.class);
 
         // When 2
         state = sum.apply(2.1d, state);
 
         // Then 2
-        assertTrue(state instanceof Double);
-        assertEquals(3.2d, state);
+        assertThat(state)
+                .isEqualTo(3.2d)
+                .isExactlyInstanceOf(Double.class);
 
         // When 3
         state = sum.apply(1.5d, state);
 
         // Then 3
-        assertTrue(state instanceof Double);
-        assertEquals(4.7d, state);
+        assertThat(state)
+                .isEqualTo(4.7d)
+                .isExactlyInstanceOf(Double.class);
     }
 
     @Test
     public void testAggregateInDoubleModeMixedInput() {
         // Given
         final Sum sum = new Sum();
-        state = 0d;
+        final Number state = 0d;
 
         // When 1
-        try {
-            state = sum.apply(1, state);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThatExceptionOfType(ClassCastException.class).isThrownBy(() -> sum.apply(1, state));
 
         // Then 1
-        assertEquals(0d, state);
+        assertThat(state)
+                .isEqualTo(0d)
+                .isExactlyInstanceOf(Double.class);
 
         // When 2
-        try {
-            state = sum.apply(3l, state);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThatExceptionOfType(ClassCastException.class).isThrownBy(() -> sum.apply(3, state));
 
         // Then 2
-        assertEquals(0d, state);
+        assertThat(state)
+                .isEqualTo(0d)
+                .isExactlyInstanceOf(Double.class);
 
         // When 3
-        state = sum.apply(2.1d, state);
+        final Number state2 = sum.apply(2.1d, state);
 
         // Then 3
-        assertTrue(state instanceof Double);
-        assertEquals(2.1d, state);
+        assertThat(state2)
+                .isEqualTo(2.1d)
+                .isExactlyInstanceOf(Double.class);
     }
 
     @Test
     public void testAggregateInAutoModeIntInputFirst() {
         // Given
         final Sum sum = new Sum();
-        state = 0;
 
         // When 1
-        state = sum.apply(1, state);
+        final Number state = sum.apply(1, 0);
 
         // Then 1
-        assertTrue(state instanceof Integer);
-        assertEquals(1, state);
+        assertThat(state)
+                .isEqualTo(1)
+                .isExactlyInstanceOf(Integer.class);
 
         // When 2
-        try {
-            state = sum.apply(3l, state);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThatExceptionOfType(ClassCastException.class).isThrownBy(() -> sum.apply(3L, state));
 
         // Then 2
-        assertTrue(state instanceof Integer);
-        assertEquals(1, state);
+        assertThat(state)
+                .isEqualTo(1)
+                .isExactlyInstanceOf(Integer.class);
 
         // When 3
-        try {
-            state = sum.apply(2.1d, state);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThatExceptionOfType(ClassCastException.class).isThrownBy(() -> sum.apply(2.1d, state));
 
         // Then 3
-        assertTrue(state instanceof Integer);
-        assertEquals(1, state);
+        assertThat(state)
+                .isEqualTo(1)
+                .isExactlyInstanceOf(Integer.class);
     }
 
     @Test
     public void testAggregateInAutoModeLongInputFirst() {
         // Given
         final Sum sum = new Sum();
-        state = 0l;
 
         // When 1
-        state = sum.apply(1l, state);
+        final Number state = sum.apply(1L, 0L);
 
         // Then 1
-        assertTrue(state instanceof Long);
-        assertEquals(1l, state);
+        assertThat(state)
+                .isEqualTo(1L)
+                .isExactlyInstanceOf(Long.class);
 
         // When 2
-        try {
-            state = sum.apply(3, state);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThatExceptionOfType(ClassCastException.class).isThrownBy(() -> sum.apply(3, state));
 
         // Then 2
-        assertTrue(state instanceof Long);
-        assertEquals(1l, state);
+        assertThat(state)
+                .isEqualTo(1L)
+                .isExactlyInstanceOf(Long.class);
 
         // When 3
-        try {
-            state = sum.apply(2.1d, state);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThatExceptionOfType(ClassCastException.class).isThrownBy(() -> sum.apply(2.1d, state));
 
         // Then 3
-        assertTrue(state instanceof Long);
-        assertEquals(1l, state);
+        assertThat(state)
+                .isEqualTo(1L)
+                .isExactlyInstanceOf(Long.class);
     }
 
     @Test
     public void testAggregateInAutoModeDoubleInputFirst() {
         // Given
         final Sum sum = new Sum();
-        state = 0d;
 
         // When 1
-        state = sum.apply(1.1d, state);
+        final Number state = sum.apply(1.1d, 0d);
 
         // Then 1
-        assertTrue(state instanceof Double);
-        assertEquals(1.1d, state);
+        assertThat(state)
+                .isEqualTo(1.1d)
+                .isExactlyInstanceOf(Double.class);
 
         // When 2
-        try {
-            state = sum.apply(2, state);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThatExceptionOfType(ClassCastException.class).isThrownBy(() -> sum.apply(2, state));
 
         // Then 2
-        assertTrue(state instanceof Double);
-        assertEquals(1.1d, state);
+        assertThat(state)
+                .isEqualTo(1.1d)
+                .isExactlyInstanceOf(Double.class);
 
         // When 3
-        try {
-            state = sum.apply(1l, state);
-            fail();
-        } catch (final ClassCastException cce) {
-        }
+        assertThatExceptionOfType(ClassCastException.class).isThrownBy(() -> sum.apply(1L, state));
 
         // Then 3
-        assertTrue(state instanceof Double);
-        assertEquals(1.1d, state);
+        assertThat(state)
+                .isEqualTo(1.1d)
+                .isExactlyInstanceOf(Double.class);
     }
 
     @Test
-    public void testAggregateInAutoModeNullFirst() {
+    public void testAggregateWhenStateIsNullShouldReturnNull() {
         // Given
         final Sum sum = new Sum();
 
+        // When
+        final Number state = sum.apply(null, null);
 
-        // When 1
-        state = sum.apply(null, state);
-        // Then 1
-        assertEquals(null, state);
-    }
-
-    @Test
-    public void testAggregateInIntModeNullFirst() {
-        // Given
-        final Sum sum = new Sum();
-
-
-        // When 1
-        state = sum.apply(null, state);
-
-        // Then 1
-        assertNull(state);
-    }
-
-    @Test
-    public void testAggregateInLongModeNullFirst() {
-        // Given
-        final Sum sum = new Sum();
-
-
-        // When 1
-        state = sum.apply(null, state);
-
-        // Then 1
-        assertNull(state);
-    }
-
-    @Test
-    public void testAggregateInDoubleModeNullFirst() {
-        // Given
-        final Sum sum = new Sum();
-
-
-        // When 1
-        state = sum.apply(null, state);
-
-        // Then 1
-        assertNull(state);
+        // Then
+        assertThat(state).isNull();
     }
 
     @Test
@@ -448,20 +385,21 @@ public class SumTest extends BinaryOperatorTest {
         // Given
         final Sum sum = new Sum();
 
-
         // When 1
         int firstValue = 1;
-        state = sum.apply(firstValue, state);
+        Number state = sum.apply(firstValue, null);
 
         // Then
-        assertTrue(state instanceof Integer);
-        assertEquals(firstValue, state);
+        assertThat(state)
+                .isEqualTo(firstValue)
+                .isExactlyInstanceOf(Integer.class);
 
         // When 2
         state = sum.apply(null, state);
         // Then
-        assertTrue(state instanceof Integer);
-        assertEquals(firstValue, state);
+        assertThat(state)
+                .isEqualTo(firstValue)
+                .isExactlyInstanceOf(Integer.class);
     }
 
     @Test
@@ -469,20 +407,22 @@ public class SumTest extends BinaryOperatorTest {
         // Given
         final Sum sum = new Sum();
 
-
         // When 1
-        long firstValue = 1l;
-        state = sum.apply(firstValue, state);
+        long firstValue = 1L;
+        Number state = sum.apply(firstValue, null);
 
         // Then
-        assertTrue(state instanceof Long);
-        assertEquals(firstValue, state);
+        assertThat(state)
+                .isEqualTo(firstValue)
+                .isExactlyInstanceOf(Long.class);
 
         // When 2
         state = sum.apply(null, state);
+
         // Then
-        assertTrue(state instanceof Long);
-        assertEquals(firstValue, state);
+        assertThat(state)
+                .isEqualTo(firstValue)
+                .isExactlyInstanceOf(Long.class);
     }
 
     @Test
@@ -490,21 +430,22 @@ public class SumTest extends BinaryOperatorTest {
         // Given
         final Sum sum = new Sum();
 
-
         // When 1
         double firstValue = 1.0f;
-        state = sum.apply(firstValue, state);
+        Number state = sum.apply(firstValue, null);
 
         // Then
-        assertTrue(state instanceof Double);
-        assertEquals(firstValue, state);
+        assertThat(state)
+                .isEqualTo(firstValue)
+                .isExactlyInstanceOf(Double.class);
 
         // When 2
         state = sum.apply(null, state);
 
         // Then
-        assertTrue(state instanceof Double);
-        assertEquals(firstValue, state);
+        assertThat(state)
+                .isEqualTo(firstValue)
+                .isExactlyInstanceOf(Double.class);
     }
 
     @Test
@@ -524,7 +465,7 @@ public class SumTest extends BinaryOperatorTest {
         final Sum deserialisedAggregator = JsonSerialiser.deserialise(json, Sum.class);
 
         // Then 2
-        assertNotNull(deserialisedAggregator);
+        assertThat(deserialisedAggregator).isNotNull();
     }
 
     @Override
@@ -533,7 +474,7 @@ public class SumTest extends BinaryOperatorTest {
     }
 
     @Override
-    protected Class<Sum> getFunctionClass() {
-        return Sum.class;
+    protected Iterable<Sum> getDifferentInstancesOrNull() {
+        return null;
     }
 }

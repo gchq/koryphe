@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,28 +16,26 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
+import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-public class IsATest {
+public class IsATest extends PredicateTest<IsA> {
+
     @Test
     public void shouldAcceptTheValueWhenSameClass() {
         // Given
         final IsA predicate = new IsA(String.class);
 
-        // When
-        boolean valid = predicate.test("Test");
-
-        // Then
-        assertTrue(valid);
+        // When / Then
+        assertThat(predicate).accepts("Test");
     }
 
     @Test
@@ -45,11 +43,8 @@ public class IsATest {
         // Given
         final IsA predicate = new IsA(String.class);
 
-        // When
-        boolean valid = predicate.test(5);
-
-        // Then
-        assertFalse(valid);
+        // When / Then
+        assertThat(predicate).rejects(5);
     }
 
     @Test
@@ -57,11 +52,8 @@ public class IsATest {
         // Given
         final IsA predicate = new IsA(Number.class);
 
-        // When
-        boolean valid = predicate.test(5);
-
-        // Then
-        assertTrue(valid);
+        // When / Then
+        assertThat(predicate).accepts(5);
     }
 
     @Test
@@ -69,11 +61,8 @@ public class IsATest {
         // Given
         final IsA predicate = new IsA(String.class);
 
-        // When
-        boolean valid = predicate.test(null);
-
-        // Then
-        assertTrue(valid);
+        // When / Then
+        assertThat(predicate).accepts((Object) null);
     }
 
     @Test
@@ -85,17 +74,17 @@ public class IsATest {
         final IsA predicate = new IsA(type);
 
         // Then
-        assertNotNull(predicate);
-        assertEquals(predicate.getType(), type);
+        assertThat(predicate).isNotNull();
+        assertThat(predicate.getType()).isEqualTo(type);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void shouldThrowExceptionIfInvalidClassNameProvided() {
         // Given
         final String type = "java.util.String";
 
-        // When
-        final IsA predicate = new IsA(type);
+        // When / Then
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> new IsA(type));
     }
 
     @Test
@@ -108,13 +97,27 @@ public class IsATest {
         final String json = JsonSerialiser.serialise(filter);
 
         // Then
-        assertEquals("{\"class\":\"uk.gov.gchq.koryphe.impl.predicate.IsA\",\"type\":\"java.lang.Integer\"}", json);
+        assertThat(json).isEqualTo("{\"class\":\"uk.gov.gchq.koryphe.impl.predicate.IsA\",\"type\":\"java.lang.Integer\"}");
 
         // When 2
         final IsA deserialisedFilter = JsonSerialiser.deserialise(json, IsA.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(type.getName(), deserialisedFilter.getType());
+        assertThat(deserialisedFilter)
+                .isNotNull();
+        assertThat(deserialisedFilter.getType()).isEqualTo(type.getName());
+    }
+
+    @Override
+    protected IsA getInstance() {
+        return new IsA(String.class);
+    }
+
+    @Override
+    protected Iterable<IsA> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new IsA(),
+                new IsA(Long.class)
+        );
     }
 }

@@ -16,6 +16,9 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
@@ -55,5 +58,29 @@ public class DivideBy extends KorypheFunction<Integer, Tuple2<Integer, Integer>>
         } else {
             return new Tuple2<>(input / by, input % by);
         }
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!super.equals(o)) {
+            return false; // Does class checking
+        }
+
+        DivideBy that = (DivideBy) o;
+        return new EqualsBuilder()
+                .append(by, that.by)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(47, 59)
+                .appendSuper(super.hashCode())
+                .append(by)
+                .toHashCode();
     }
 }

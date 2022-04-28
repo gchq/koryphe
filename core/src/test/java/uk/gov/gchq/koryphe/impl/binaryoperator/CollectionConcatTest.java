@@ -1,6 +1,22 @@
+/*
+ * Copyright 2017-2022 Crown Copyright
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package uk.gov.gchq.koryphe.impl.binaryoperator;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.binaryoperator.BinaryOperatorTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -12,10 +28,10 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.TreeSet;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class CollectionConcatTest extends BinaryOperatorTest {
+public class CollectionConcatTest extends BinaryOperatorTest<CollectionConcat> {
+
     @Test
     public void shouldConcatArraysTogether() {
         // Given
@@ -28,7 +44,7 @@ public class CollectionConcatTest extends BinaryOperatorTest {
         final Collection<Object> result = aggregator.apply(list1, list2);
 
         // Then
-        assertEquals(Arrays.asList(1, 2, 3, "3", "4", 5L), result);
+        assertThat(result).containsExactly(1, 2, 3, "3", "4", 5L);
     }
 
     @Test
@@ -41,19 +57,15 @@ public class CollectionConcatTest extends BinaryOperatorTest {
         treeSet2.add("string3");
         treeSet2.add("string2");
 
-        final TreeSet<String> expectedResult = new TreeSet<>();
-        expectedResult.add("string1");
-        expectedResult.add("string2");
-        expectedResult.add("string3");
-
-        CollectionConcat<String> aggregator = new CollectionConcat<>();
+        final CollectionConcat<String> aggregator = new CollectionConcat<>();
 
         // When
         final Collection<String> result = aggregator.apply(treeSet1, treeSet2);
 
         // Then
-        assertEquals(TreeSet.class, result.getClass());
-        assertEquals(expectedResult, result);
+        assertThat(result)
+                .containsExactly("string1", "string2", "string3")
+                .isExactlyInstanceOf(TreeSet.class);
     }
 
     @Test
@@ -66,19 +78,15 @@ public class CollectionConcatTest extends BinaryOperatorTest {
         hashSet2.add(2);
         hashSet2.add(3);
 
-        final HashSet<Integer> expectedResult = new HashSet<>();
-        expectedResult.add(1);
-        expectedResult.add(2);
-        expectedResult.add(3);
-
         CollectionConcat<Integer> aggregator = new CollectionConcat<>();
 
         // When
         final Collection<Integer> result = aggregator.apply(hashSet1, hashSet2);
 
         // Then
-        assertEquals(HashSet.class, result.getClass());
-        assertEquals(expectedResult, result);
+        assertThat(result)
+                .containsExactly(1, 2, 3)
+                .isExactlyInstanceOf(HashSet.class);
     }
 
     @Test
@@ -96,10 +104,10 @@ public class CollectionConcatTest extends BinaryOperatorTest {
                 "}"), json);
 
         // When 2
-        final CollectionConcat deserialisedAggregator = JsonSerialiser.deserialise(json, getFunctionClass());
+        final CollectionConcat deserialisedAggregator = JsonSerialiser.deserialise(json, CollectionConcat.class);
 
         // Then 2
-        assertNotNull(deserialisedAggregator);
+        assertThat(deserialisedAggregator).isNotNull();
     }
 
     @Override
@@ -108,7 +116,7 @@ public class CollectionConcatTest extends BinaryOperatorTest {
     }
 
     @Override
-    protected Class<CollectionConcat> getFunctionClass() {
-        return CollectionConcat.class;
+    protected Iterable<CollectionConcat> getDifferentInstancesOrNull() {
+        return null;
     }
 }

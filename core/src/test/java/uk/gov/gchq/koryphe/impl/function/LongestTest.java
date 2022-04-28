@@ -1,9 +1,26 @@
+/*
+ * Copyright 2020-2022 Crown Copyright
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package uk.gov.gchq.koryphe.impl.function;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
@@ -13,22 +30,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-public class LongestTest extends FunctionTest {
+public class LongestTest extends FunctionTest<Longest> {
 
     @Test
     public void shouldHandleNullInputs() {
         // Given
         final Longest function = getInstance();
-        final Object input1 = null;
-        final Object input2 = null;
 
         // When
-        final Object result = function.apply(input1, input2);
+        final Object result = function.apply(null, null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -39,12 +55,9 @@ public class LongestTest extends FunctionTest {
         final Object input2 = new Concat();
 
         // When / Then
-        try {
-            function.apply(input1, input2);
-            fail("Exception expected");
-        } catch (final IllegalArgumentException e) {
-            assertTrue(e.getMessage().contains("Could not determine the size of the provided value"));
-        }
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> function.apply(input1, input2))
+                .withMessage("Could not determine the size of the provided value");
     }
 
     @Test
@@ -58,7 +71,7 @@ public class LongestTest extends FunctionTest {
         final String result = function.apply(input1, input2);
 
         // Then
-        assertEquals(input2, result);
+        assertThat(result).isEqualTo(input2);
     }
 
     @Test
@@ -72,7 +85,7 @@ public class LongestTest extends FunctionTest {
         final Object[] result = function.apply(input1, input2);
 
         // Then
-        assertArrayEquals(input2, result);
+        assertThat(result).isEqualTo(input2);
     }
 
     @Test
@@ -86,7 +99,7 @@ public class LongestTest extends FunctionTest {
         final List<Integer> result = function.apply(input1, input2);
 
         // Then
-        assertEquals(input2, result);
+        assertThat(result).isEqualTo(input2);
     }
 
     @Test
@@ -100,21 +113,21 @@ public class LongestTest extends FunctionTest {
         final Set<Integer> result = function.apply(input1, input2);
 
         // Then
-        assertEquals(input2, result);
+        assertThat(result).isEqualTo(input2);
     }
 
     @Test
     public void shouldReturnLongestMapInput() {
         // Given
-        final Longest<Map<String,String>> function = new Longest<>();
-        final Map<String,String> input1 = new HashMap<>();
-        final Map<String,String> input2 = Maps.asMap(Sets.newHashSet("1"), k -> k);
+        final Longest<Map<String, String>> function = new Longest<>();
+        final Map<String, String> input1 = new HashMap<>();
+        final Map<String, String> input2 = Maps.asMap(Sets.newHashSet("1"), k -> k);
 
         // When
-        final Map<String,String> result = function.apply(input1, input2);
+        final Map<String, String> result = function.apply(input1, input2);
 
         // Then
-        assertEquals(input2, result);
+        assertThat(result).isEqualTo(input2);
     }
 
     @Override
@@ -123,20 +136,21 @@ public class LongestTest extends FunctionTest {
     }
 
     @Override
-    protected Class<? extends Longest> getFunctionClass() {
-        return Longest.class;
+    protected Iterable<Longest> getDifferentInstancesOrNull() {
+        return null;
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[]{ Object.class, Object.class };
+        return new Class[] {Object.class, Object.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[]{ Object.class };
+        return new Class[] {Object.class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -154,6 +168,6 @@ public class LongestTest extends FunctionTest {
         final Longest deserialised = JsonSerialiser.deserialise(json, Longest.class);
 
         // Then
-        assertNotNull(deserialised);
+        assertThat(deserialised).isNotNull();
     }
 }

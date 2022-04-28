@@ -16,18 +16,19 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.from;
 
-public class ConcatTest extends FunctionTest {
+public class ConcatTest extends FunctionTest<Concat> {
+
     @Test
     public void shouldConcatStringsWithDefaultSeparator() {
         // Given
@@ -36,7 +37,8 @@ public class ConcatTest extends FunctionTest {
         // When
         String output = concat.apply("1", "2");
 
-        assertEquals("1,2", output);
+        // Then
+        assertThat(output).isEqualTo("1,2");
     }
 
     @Test
@@ -48,7 +50,8 @@ public class ConcatTest extends FunctionTest {
         // When
         final String output = concat.apply("1", "2");
 
-        assertEquals("1 2", output);
+        // Then
+        assertThat(output).isEqualTo("1 2");
     }
 
     @Test
@@ -59,7 +62,8 @@ public class ConcatTest extends FunctionTest {
         // When
         final String output = concat.apply("1", null);
 
-        assertEquals("1", output);
+        // Then
+        assertThat(output).isEqualTo("1");
     }
 
     @Test
@@ -70,7 +74,7 @@ public class ConcatTest extends FunctionTest {
         // When
         final String output = concat.apply(null, null);
 
-        assertNull(output);
+        assertThat(output).isNull();
     }
 
     @Override
@@ -78,6 +82,12 @@ public class ConcatTest extends FunctionTest {
         return new Concat();
     }
 
+    @Override
+    protected Iterable<Concat> getDifferentInstancesOrNull() {
+        return Collections.singletonList(new Concat(" "));
+    }
+
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -98,22 +108,18 @@ public class ConcatTest extends FunctionTest {
         final Concat deserialisedConcat = JsonSerialiser.deserialise(json, Concat.class);
 
         // Then 2
-        assertNotNull(deserialisedConcat);
-        assertEquals(separator, deserialisedConcat.getSeparator());
-    }
-
-    @Override
-    protected Class<Concat> getFunctionClass() {
-        return Concat.class;
+        assertThat(deserialisedConcat)
+                .isNotNull()
+                .returns(separator, from(Concat::getSeparator));
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { Object.class, Object.class };
+        return new Class[] {Object.class, Object.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { String.class };
+        return new Class[] {String.class};
     }
 }

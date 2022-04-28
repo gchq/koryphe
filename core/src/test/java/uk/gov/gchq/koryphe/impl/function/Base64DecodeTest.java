@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2020 Crown Copyright
+ * Copyright 2019-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,39 +17,38 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import org.apache.commons.codec.binary.Base64;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
-import java.util.function.Function;
+import java.nio.charset.StandardCharsets;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class Base64DecodeTest extends FunctionTest {
+public class Base64DecodeTest extends FunctionTest<Base64Decode> {
     @Override
-    protected Function getInstance() {
+    protected Base64Decode getInstance() {
         return new Base64Decode();
     }
 
     @Override
-    protected Class<? extends Function> getFunctionClass() {
-        return Base64Decode.class;
+    protected Iterable<Base64Decode> getDifferentInstancesOrNull() {
+        return null;
     }
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[] { byte[].class };
+        return new Class[] {byte[].class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[] { byte[].class };
+        return new Class[] {byte[].class};
     }
 
+    @Test
     @Override
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
@@ -67,33 +66,32 @@ public class Base64DecodeTest extends FunctionTest {
         final Base64Decode deserialisedMethod = JsonSerialiser.deserialise(json, Base64Decode.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 
     @Test
     public void shouldDecodeBase64() {
         // Given
         final Base64Decode function = new Base64Decode();
-        byte[] input = "test string".getBytes();
+        byte[] input = "test string".getBytes(StandardCharsets.UTF_8);
         final byte[] base64 = Base64.encodeBase64(input);
 
         // When
         final byte[] result = function.apply(base64);
 
         // Then
-        assertArrayEquals(input, result);
+        assertThat(result).isEqualTo(input);
     }
 
     @Test
     public void shouldReturnNullForNullInput() {
         // Given
         final Base64Decode function = new Base64Decode();
-        byte[] input = null;
 
         // When
-        final byte[] result = function.apply(input);
+        final byte[] result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 }

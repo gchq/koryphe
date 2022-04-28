@@ -16,34 +16,29 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class MultiRegexTest extends PredicateTest {
+public class MultiRegexTest extends PredicateTest<MultiRegex> {
 
     @Test
-    public void shouldAccepValidValue() {
+    public void shouldAcceptValidValue() {
         // Given
         Pattern[] patterns = new Pattern[2];
         patterns[0] = Pattern.compile("fail");
         patterns[1] = Pattern.compile("pass");
         final MultiRegex filter = new MultiRegex(patterns);
 
-        // When
-        boolean accepted = filter.test("pass");
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts("pass");
     }
 
     @Test
@@ -54,11 +49,8 @@ public class MultiRegexTest extends PredicateTest {
         patterns[1] = Pattern.compile("reallyFail");
         final MultiRegex filter = new MultiRegex(patterns);
 
-        // When
-        boolean accepted = filter.test("pass");
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects("pass");
     }
 
     @Test
@@ -86,9 +78,9 @@ public class MultiRegexTest extends PredicateTest {
         final MultiRegex deserialisedFilter = JsonSerialiser.deserialise(json, MultiRegex.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(patterns[0].pattern(), deserialisedFilter.getPatterns()[0].pattern());
-        assertEquals(patterns[1].pattern(), deserialisedFilter.getPatterns()[1].pattern());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getPatterns()[0].pattern()).isEqualTo(patterns[0].pattern());
+        assertThat(deserialisedFilter.getPatterns()[1].pattern()).isEqualTo(patterns[1].pattern());
     }
 
     @Override
@@ -96,12 +88,15 @@ public class MultiRegexTest extends PredicateTest {
         Pattern[] patterns = new Pattern[2];
         patterns[0] = Pattern.compile("NOTHING");
         patterns[1] = Pattern.compile("[t,T].*[t,T]");
-        MultiRegex multi = new MultiRegex(patterns);
-        return multi;
+        return new MultiRegex(patterns);
     }
 
     @Override
-    protected Class<MultiRegex> getPredicateClass() {
-        return MultiRegex.class;
+    protected Iterable<MultiRegex> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new MultiRegex(),
+                new MultiRegex(Pattern.compile("Something")),
+                new MultiRegex(Pattern.compile("different"), Pattern.compile("[t,T].*[t,T]"))
+        );
     }
 }

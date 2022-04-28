@@ -16,46 +16,44 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.util.CustomObj;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class IsEqualTest extends PredicateTest {
+public class IsEqualTest extends PredicateTest<IsEqual> {
 
     @Test
     public void shouldAcceptTheTestValue() {
+        // Given
         final IsEqual filter = new IsEqual("test");
 
-        boolean accepted = filter.test("test");
-
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts("test");
     }
 
     @Test
     public void shouldAcceptWhenControlValueAndTestValueAreNull() {
+        // Given
         final IsEqual filter = new IsEqual();
 
-        boolean accepted = filter.test(null);
-
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts((Object) null);
     }
 
     @Test
     public void shouldRejectWhenNotEqual() {
+        // Given
         final IsEqual filter = new IsEqual("test");
 
-        boolean accepted = filter.test("a different value");
-
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects("a different value");
     }
 
     @Test
@@ -77,17 +75,20 @@ public class IsEqualTest extends PredicateTest {
         final IsEqual deserialisedFilter = JsonSerialiser.deserialise(json, IsEqual.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(controlValue, deserialisedFilter.getControlValue());
-    }
-
-    @Override
-    protected Class<IsEqual> getPredicateClass() {
-        return IsEqual.class;
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getControlValue()).isEqualTo(controlValue);
     }
 
     @Override
     protected IsEqual getInstance() {
         return new IsEqual("someString");
+    }
+
+    @Override
+    protected Iterable<IsEqual> getDifferentInstancesOrNull() {
+        return Arrays.asList(
+                new IsEqual(),
+                new IsEqual(4L)
+        );
     }
 }
