@@ -59,6 +59,19 @@ public class IterableFlattenTest extends FunctionTest {
     }
 
     @Test
+    public void shouldFlattenIterableNumbersNull() {
+        // Given
+        final IterableFlatten<Number> function = new IterableFlatten<>(new Sum());
+        final List<Number> input = Lists.newArrayList((Number) null, (Number) null, (Number) null, (Number) null);
+
+        // When
+        final Number result = function.apply(input);
+
+        //then
+        assertNull(result);
+    }
+
+    @Test
     public void shouldFlattenIterableStrings() {
         // Given
         final IterableFlatten<String> function = new IterableFlatten<>((a, b) -> a + b);
@@ -83,12 +96,12 @@ public class IterableFlattenTest extends FunctionTest {
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[]{ Iterable.class };
+        return new Class[]{Iterable.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[]{ Object.class };
+        return new Class[]{Object.class};
     }
 
     @Override

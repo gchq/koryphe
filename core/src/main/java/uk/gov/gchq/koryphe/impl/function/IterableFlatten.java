@@ -23,6 +23,7 @@ import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 import uk.gov.gchq.koryphe.util.CloseableUtil;
 
+import java.util.Objects;
 import java.util.function.BinaryOperator;
 import java.util.stream.StreamSupport;
 
@@ -52,6 +53,7 @@ public class IterableFlatten<I_ITEM> extends KorypheFunction<Iterable<I_ITEM>, I
         if (nonNull(items) && nonNull(operator)) {
             return StreamSupport.stream(items.spliterator(), false)
                     .onClose(() -> CloseableUtil.close(items))
+                    .filter(Objects::nonNull)
                     .reduce(operator)
                     .orElse(null);
         }
