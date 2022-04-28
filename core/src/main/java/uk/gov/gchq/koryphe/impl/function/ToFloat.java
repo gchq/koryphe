@@ -21,8 +21,8 @@ import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 
 /**
- * A <code>ToDouble</code> is a {@link java.util.function.Function} that takes
- * an Object and casts it to a Double.
+ * A <code>ToFloat</code> is a {@link java.util.function.Function} that takes
+ * an Object and casts it to a Float.
  * <p>
  * The resulting object is what is returned from the method.
  */
