@@ -25,11 +25,8 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class IsEmptyTest extends FunctionTest<IsEmpty> {
     @Override
@@ -70,7 +67,7 @@ public class IsEmptyTest extends FunctionTest<IsEmpty> {
         final IsEmpty deserialised = JsonSerialiser.deserialise(json, IsEmpty.class);
 
         // Then 2
-        assertNotNull(deserialised);
+        assertThat(deserialised).isNotNull();
     }
 
     @Test
@@ -83,7 +80,7 @@ public class IsEmptyTest extends FunctionTest<IsEmpty> {
         final Boolean result = function.apply(input);
 
         // Then
-        assertTrue(result);
+        assertThat(result).isTrue();
     }
 
     @Test
@@ -96,7 +93,7 @@ public class IsEmptyTest extends FunctionTest<IsEmpty> {
         final Boolean result = function.apply(input);
 
         // Then
-        assertFalse(result);
+        assertThat(result).isFalse();
     }
 
     @Test
@@ -109,7 +106,7 @@ public class IsEmptyTest extends FunctionTest<IsEmpty> {
         final Boolean result = function.apply(input);
 
         // Then
-        assertFalse(result);
+        assertThat(result).isFalse();
     }
 
     @Test
@@ -118,7 +115,8 @@ public class IsEmptyTest extends FunctionTest<IsEmpty> {
         final IsEmpty function = new IsEmpty();
 
         // When / Then
-        final Exception exception = assertThrows(IllegalArgumentException.class, () -> function.apply(null));
-        assertEquals("Input cannot be null", exception.getMessage());
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> function.apply(null))
+                .withMessageContaining("Input cannot be null");
     }
 }

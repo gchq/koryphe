@@ -29,8 +29,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.from;
 
 public class ParseDateTest extends FunctionTest<ParseDate> {
     @Override
@@ -68,8 +68,9 @@ public class ParseDateTest extends FunctionTest<ParseDate> {
 
         // Then
         JsonSerialiser.assertEquals("{\"class\":\"uk.gov.gchq.koryphe.impl.function.ParseDate\",\"format\":\"yyyy dd\",\"timeZone\":\"GMT\",\"microseconds\":false}", json);
-        assertEquals(function.getFormat(), deserialised.getFormat());
-        assertEquals(function.getTimeZone(), deserialised.getTimeZone());
+        assertThat(deserialised)
+                .returns(function.getFormat(), from(ParseDate::getFormat))
+                .returns(function.getTimeZone(), from(ParseDate::getTimeZone));
     }
 
     @Test
@@ -82,7 +83,9 @@ public class ParseDateTest extends FunctionTest<ParseDate> {
         final Date result = function.apply(input);
 
         // Then
-        assertEquals(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS").parse(input), result);
+        assertThat(result)
+                .isEqualTo(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS").parse(input))
+                .isEqualTo("2000-01-02 03:04:05.006");
     }
 
     @Test
@@ -95,7 +98,8 @@ public class ParseDateTest extends FunctionTest<ParseDate> {
         final Date result = function.apply(input);
 
         // Then
-        assertEquals(new SimpleDateFormat("yyyy-MM hh:mm:ss.SSS").parse(input), result);
+        assertThat(result)
+                .isEqualTo(new SimpleDateFormat("yyyy-MM hh:mm:ss.SSS").parse(input));
     }
 
     @Test
@@ -108,7 +112,7 @@ public class ParseDateTest extends FunctionTest<ParseDate> {
         final Date result = function.apply(input);
 
         // Then
-        assertEquals(new Date(Long.parseLong(input)), result);
+        assertThat(result).isEqualTo(new Date(Long.parseLong(input)));
     }
 
     @Test
@@ -124,7 +128,8 @@ public class ParseDateTest extends FunctionTest<ParseDate> {
 
         // Then
         // Date has millisecond precision, therefore result is floored
-        assertEquals(Long.parseLong(flooredInput), ChronoUnit.MICROS.between(Instant.EPOCH, result.toInstant()));
+        assertThat(ChronoUnit.MICROS.between(Instant.EPOCH, result.toInstant()))
+                .isEqualTo(Long.parseLong(flooredInput));
     }
 
     @Test
@@ -140,8 +145,9 @@ public class ParseDateTest extends FunctionTest<ParseDate> {
 
         // Then
         // Date has millisecond precision, therefore result is floored
-        assertEquals(Long.parseLong(flooredInput), ChronoUnit.MICROS.between(Instant.EPOCH, result.toInstant()));
-    }
+        assertThat(ChronoUnit.MICROS.between(Instant.EPOCH, result.toInstant()))
+                .isEqualTo(Long.parseLong(flooredInput));
+        }
 
     @Test
     public void shouldParseTimestampInMicrosecondsToMilliseconds() throws ParseException {
@@ -155,7 +161,7 @@ public class ParseDateTest extends FunctionTest<ParseDate> {
 
         // Then
         // Date has millisecond precision, therefore result is in milliseconds
-        assertEquals(new Date(Long.parseLong(input.substring(0, input.length() - 3))), result);
+        assertThat(result).isEqualTo(new Date(Long.parseLong(input.substring(0, input.length() - 3))));
     }
 
     @Test
@@ -167,6 +173,6 @@ public class ParseDateTest extends FunctionTest<ParseDate> {
         final Object result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 }

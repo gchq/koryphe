@@ -24,8 +24,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class SetValueTest extends FunctionTest<SetValue> {
 
@@ -40,7 +39,7 @@ public class SetValueTest extends FunctionTest<SetValue> {
         Object output = function.apply("test");
 
         // Then
-        assertEquals(SET_VALUE, output);
+        assertThat(output).isEqualTo(SET_VALUE);
     }
 
     @Override
@@ -85,7 +84,7 @@ public class SetValueTest extends FunctionTest<SetValue> {
         final SetValue deserialisedMethod = JsonSerialiser.deserialise(json, SetValue.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 
     @Test
@@ -106,6 +105,6 @@ public class SetValueTest extends FunctionTest<SetValue> {
         final SetValue deserialisedFunction = JsonSerialiser.deserialise(json, SetValue.class);
 
         // Then 2
-        assertEquals(1L, deserialisedFunction.getValue());
+        assertThat(deserialisedFunction.getValue()).isEqualTo(1L);
     }
 }

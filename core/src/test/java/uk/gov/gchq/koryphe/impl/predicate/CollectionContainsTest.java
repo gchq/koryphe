@@ -30,10 +30,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CollectionContainsTest extends PredicateTest<CollectionContains> {
 
@@ -54,11 +51,8 @@ public class CollectionContainsTest extends PredicateTest<CollectionContains> {
         // Given
         final CollectionContains filter = new CollectionContains(VALUE1);
 
-        // When
-        boolean accepted = filter.test(list);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(list);
     }
 
     @Test
@@ -66,11 +60,8 @@ public class CollectionContainsTest extends PredicateTest<CollectionContains> {
         // Given
         final CollectionContains filter = new CollectionContains(VALUE1);
 
-        // When
-        boolean accepted = filter.test(set);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(set);
     }
 
     @Test
@@ -78,11 +69,8 @@ public class CollectionContainsTest extends PredicateTest<CollectionContains> {
         // Given
         final CollectionContains filter = new CollectionContains(VALUE2);
 
-        // When
-        boolean accepted = filter.test(list);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(list);
     }
 
     @Test
@@ -90,11 +78,8 @@ public class CollectionContainsTest extends PredicateTest<CollectionContains> {
         // Given
         final CollectionContains filter = new CollectionContains(VALUE2);
 
-        // When
-        boolean accepted = filter.test(set);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(set);
     }
 
     @Test
@@ -102,11 +87,8 @@ public class CollectionContainsTest extends PredicateTest<CollectionContains> {
         // Given
         final CollectionContains filter = new CollectionContains(VALUE1);
 
-        // When
-        boolean accepted = filter.test(new ArrayList<>());
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(new ArrayList<>());
     }
 
     @Test
@@ -114,11 +96,8 @@ public class CollectionContainsTest extends PredicateTest<CollectionContains> {
         // Given
         final CollectionContains filter = new CollectionContains(VALUE1);
 
-        // When
-        boolean accepted = filter.test(new HashSet<>());
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(new HashSet<>());
     }
 
     @Test
@@ -139,8 +118,8 @@ public class CollectionContainsTest extends PredicateTest<CollectionContains> {
         final CollectionContains deserialisedFilter = JsonSerialiser.deserialise(json, CollectionContains.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(VALUE1, deserialisedFilter.getValue());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getValue()).isEqualTo(VALUE1);
     }
 
     @Override

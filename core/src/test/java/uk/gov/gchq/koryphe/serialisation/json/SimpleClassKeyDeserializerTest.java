@@ -28,7 +28,7 @@ import uk.gov.gchq.koryphe.util.ReflectionUtil;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -58,7 +58,7 @@ public class SimpleClassKeyDeserializerTest {
         final Class<?> clazz = (Class<?>) deserialiser.deserializeKey(id, context);
 
         // Then
-        assertEquals(expectedClass, clazz);
+        assertThat(clazz).isEqualTo(expectedClass);
         verify(context).findClass(expectedClass.getName());
     }
 
@@ -75,7 +75,7 @@ public class SimpleClassKeyDeserializerTest {
         final Class<?> clazz = (Class<?>) deserialiser.deserializeKey(id, context);
 
         // Then
-        assertEquals(expectedClass, clazz);
+        assertThat(clazz).isEqualTo(expectedClass);
         verify(context).findClass(expectedClass.getName());
     }
 
@@ -92,7 +92,7 @@ public class SimpleClassKeyDeserializerTest {
         final Class<?> clazz = (Class<?>) deserialiser.deserializeKey(id, context);
 
         // Then
-        assertEquals(expectedClass, clazz);
+        assertThat(clazz).isEqualTo(expectedClass);
         verify(context).findClass(expectedClass.getName());
     }
 }

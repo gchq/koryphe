@@ -24,9 +24,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class StringReplaceTest extends FunctionTest<StringReplace> {
 
@@ -39,7 +37,7 @@ public class StringReplaceTest extends FunctionTest<StringReplace> {
         final String result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -52,7 +50,7 @@ public class StringReplaceTest extends FunctionTest<StringReplace> {
         final String result = function.apply(input);
 
         //Then
-        assertEquals("An input string.", result);
+        assertThat(result).isEqualTo("An input string.");
     }
 
     @Test
@@ -65,7 +63,7 @@ public class StringReplaceTest extends FunctionTest<StringReplace> {
         final String result = function.apply(input);
 
         //Then
-        assertEquals("An input string.", result);
+        assertThat(result).isEqualTo("An input string.");
     }
 
     @Test
@@ -78,7 +76,7 @@ public class StringReplaceTest extends FunctionTest<StringReplace> {
         final String result = function.apply(input);
 
         //Then
-        assertEquals("An input string.", result);
+        assertThat(result).isEqualTo("An input string.");
     }
 
     @Test
@@ -91,7 +89,7 @@ public class StringReplaceTest extends FunctionTest<StringReplace> {
         final String result = function.apply(input);
 
         //Then
-        assertEquals("An output string.", result);
+        assertThat(result).isEqualTo("An output string.");
     }
 
     @Override
@@ -137,6 +135,6 @@ public class StringReplaceTest extends FunctionTest<StringReplace> {
         final StringReplace deserialisedMethod = JsonSerialiser.deserialise(json, StringReplace.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

@@ -23,7 +23,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CurrentTimeTest extends FunctionTest<CurrentTime> {
 
@@ -50,8 +50,7 @@ public class CurrentTimeTest extends FunctionTest<CurrentTime> {
 
         // Then
         JsonSerialiser.assertEquals(json, serialised);
-        assertEquals(currentTime, deserialised);
-
+        assertThat(deserialised).isEqualTo(currentTime);
     }
 
     @Override

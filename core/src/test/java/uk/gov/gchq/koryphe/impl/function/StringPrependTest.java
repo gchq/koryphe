@@ -24,9 +24,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class StringPrependTest extends FunctionTest<StringPrepend> {
 
@@ -39,7 +37,7 @@ public class StringPrependTest extends FunctionTest<StringPrepend> {
         final String result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -51,7 +49,7 @@ public class StringPrependTest extends FunctionTest<StringPrepend> {
         final String result = function.apply("Hello");
 
         // Then
-        assertEquals("Hello", result);
+        assertThat(result).isEqualTo("Hello");
     }
     @Test
     public void shouldHandleUnsetSuffix() {
@@ -62,7 +60,7 @@ public class StringPrependTest extends FunctionTest<StringPrepend> {
         final String result = function.apply("Hello");
 
         // Then
-        assertEquals("Hello", result);
+        assertThat(result).isEqualTo("Hello");
     }
     @Test
     public void shouldPrependInputWithString() {
@@ -73,7 +71,7 @@ public class StringPrependTest extends FunctionTest<StringPrepend> {
         final String result = function.apply("Hello");
 
         // Then
-        assertEquals("!Hello", result);
+        assertThat(result).isEqualTo("!Hello");
     }
 
     @Override
@@ -115,6 +113,6 @@ public class StringPrependTest extends FunctionTest<StringPrepend> {
         final StringPrepend deserialisedMethod = JsonSerialiser.deserialise(json, StringPrepend.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

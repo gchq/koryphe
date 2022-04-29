@@ -23,9 +23,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class IsFalseTest extends PredicateTest<IsFalse> {
 
@@ -34,11 +32,8 @@ public class IsFalseTest extends PredicateTest<IsFalse> {
         // Given
         final IsFalse filter = new IsFalse();
 
-        // When
-        boolean accepted = filter.test(false);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(false);
     }
 
     @Test
@@ -46,11 +41,8 @@ public class IsFalseTest extends PredicateTest<IsFalse> {
         // Given
         final IsFalse filter = new IsFalse();
 
-        // When
-        boolean accepted = filter.test(Boolean.FALSE);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(Boolean.FALSE);
     }
 
     @Test
@@ -58,11 +50,8 @@ public class IsFalseTest extends PredicateTest<IsFalse> {
         // Given
         final IsFalse filter = new IsFalse();
 
-        // When
-        boolean accepted = filter.test(null);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects((Boolean) null);
     }
 
     @Test
@@ -70,11 +59,8 @@ public class IsFalseTest extends PredicateTest<IsFalse> {
         // Given
         final IsFalse filter = new IsFalse();
 
-        // When
-        boolean accepted = filter.test(true);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(true);
     }
 
     @Test
@@ -94,7 +80,7 @@ public class IsFalseTest extends PredicateTest<IsFalse> {
         final IsFalse deserialisedFilter = JsonSerialiser.deserialise(json, IsFalse.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
+        assertThat(deserialisedFilter).isNotNull();
     }
 
     @Override

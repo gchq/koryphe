@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -48,7 +48,7 @@ public class FunctionMapTest {
 
         Map<String, Integer> outputMap = functionByKey.apply(inputMap);
 
-        assertEquals(outA, (int) outputMap.get("a"));
-        assertEquals(outB, (int) outputMap.get("b"));
+        assertThat((int) outputMap.get("a")).isEqualTo(outA);
+        assertThat((int) outputMap.get("b")).isEqualTo(outB);
     }
 }

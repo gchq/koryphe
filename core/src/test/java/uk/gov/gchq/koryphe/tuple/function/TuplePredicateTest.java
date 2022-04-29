@@ -28,11 +28,7 @@ import java.io.IOException;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -56,7 +52,7 @@ public class TuplePredicateTest {
         given(function.test(input)).willReturn(true);
 
         // validate
-        assertTrue(predicate.test(tuple));
+        assertThat(predicate).accepts(tuple);
 
         // function should have been tested
         verify(inputAdapter, times(1)).apply(tuple);
@@ -66,7 +62,7 @@ public class TuplePredicateTest {
         given(function.test(input)).willReturn(false);
 
         // and try again
-        assertFalse(predicate.test(tuple));
+        assertThat(predicate).rejects(tuple);
 
         // function should have been tested again
         verify(inputAdapter, times(2)).apply(tuple);
@@ -101,8 +97,11 @@ public class TuplePredicateTest {
 
         // check tuple validation
         for (int i = 0; i < times; i++) {
-            boolean result = i != falseResult;
-            assertEquals(result, predicate.test(tuples[i]));
+            if (i != falseResult) {
+                assertThat(predicate).accepts(tuples[i]);
+            } else {
+                assertThat(predicate).rejects(tuples[i]);
+            }
         }
 
         // and check components were called expected number of times
@@ -124,13 +123,18 @@ public class TuplePredicateTest {
         String json = JsonSerialiser.serialise(predicate);
 
         TupleAdaptedPredicate<String, Object> deserialisedPredicate = JsonSerialiser.deserialise(json, TupleAdaptedPredicate.class);
-        assertNotSame(predicate, deserialisedPredicate);
+        assertThat(deserialisedPredicate)
+                .isNotSameAs(predicate)
+                .isNotNull();
 
         Predicate deserialisedFunction = deserialisedPredicate.getPredicate();
-        assertNotSame(function, deserialisedFunction);
+        assertThat(deserialisedFunction)
+                .isNotSameAs(function)
+                .isNotNull();
 
         Function<Tuple<String>, Object> deserialisedInputAdapter = deserialisedPredicate.getInputAdapter();
-        assertNotSame(inputAdapter, deserialisedInputAdapter);
-        assertNotNull(deserialisedInputAdapter);
+        assertThat(deserialisedInputAdapter)
+                .isNotSameAs(inputAdapter)
+                .isNotNull();
     }
 }

@@ -29,8 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest<InRangeDual> {
 
@@ -370,9 +369,9 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest<InRa
         final InRangeDual<T> deserialisedFilter = (InRangeDual<T>) deserialise(json);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(start, deserialisedFilter.getStart());
-        assertEquals(end, deserialisedFilter.getEnd());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getStart()).isEqualTo(start);
+        assertThat(deserialisedFilter.getEnd()).isEqualTo(end);
     }
 
     @Test
@@ -399,9 +398,9 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest<InRa
         final InRangeDual<T> deserialisedFilter = (InRangeDual<T>) deserialise(json);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(start, deserialisedFilter.getStart());
-        assertEquals(end, deserialisedFilter.getEnd());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getStart()).isEqualTo(start);
+        assertThat(deserialisedFilter.getEnd()).isEqualTo(end);
     }
 
     protected String getStartJson(final T value) {
@@ -454,7 +453,9 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest<InRa
 
         // Then
         for (int i = 0; i < values.size(); i++) {
-            assertEquals(expectedResult, results.get(i), "Failed for value: " + values.get(i));
+            assertThat(results.get(i))
+                    .isEqualTo(expectedResult)
+                    .withFailMessage("Failed for value: %s", values.get(i));
         }
     }
 }

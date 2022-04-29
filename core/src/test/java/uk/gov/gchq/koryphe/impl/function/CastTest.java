@@ -25,8 +25,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CastTest extends FunctionTest<Cast> {
 
@@ -40,7 +39,9 @@ public class CastTest extends FunctionTest<Cast> {
         Object output = function.apply(5L);
 
         // Then
-        assertEquals(Integer.class, output.getClass());
+        assertThat(output)
+                .isExactlyInstanceOf(Integer.class)
+                .isEqualTo(5L);
     }
 
     @Override
@@ -82,6 +83,6 @@ public class CastTest extends FunctionTest<Cast> {
         final Cast deserialisedMethod = JsonSerialiser.deserialise(json, Cast.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

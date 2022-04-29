@@ -23,9 +23,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ToLongTest extends FunctionTest<ToLong> {
 
@@ -38,8 +36,9 @@ public class ToLongTest extends FunctionTest<ToLong> {
         Object output = function.apply(5);
 
         // Then
-        assertEquals(5L, output);
-        assertEquals(Long.class, output.getClass());
+        assertThat(output)
+                .isExactlyInstanceOf(Long.class)
+                .isEqualTo(5L);
     }
 
     @Test
@@ -51,7 +50,7 @@ public class ToLongTest extends FunctionTest<ToLong> {
         final Object output = function.apply(null);
 
         // Then
-        assertNull(output);
+        assertThat(output).isNull();
     }
 
     @Override
@@ -92,6 +91,6 @@ public class ToLongTest extends FunctionTest<ToLong> {
         final ToLong deserialisedMethod = JsonSerialiser.deserialise(json, ToLong.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

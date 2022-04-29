@@ -24,7 +24,8 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.from;
 
 public class IncrementTest extends FunctionTest<Increment> {
     @Override
@@ -50,7 +51,7 @@ public class IncrementTest extends FunctionTest<Increment> {
 
         // Then
         JsonSerialiser.assertEquals(json, serialised);
-        assertEquals(increment, deserialised);
+        assertThat(deserialised).isEqualTo(increment);
     }
 
     @Test
@@ -59,10 +60,10 @@ public class IncrementTest extends FunctionTest<Increment> {
         Increment increment = new Increment(5);
 
         // When
-        Number value = increment.apply(null);
+        Number output = increment.apply(null);
 
         // Then
-        assertEquals(5, value);
+        assertThat(output).isEqualTo(5);
     }
 
     @Test
@@ -74,7 +75,7 @@ public class IncrementTest extends FunctionTest<Increment> {
         Number output = increment.apply(8);
 
         // Then
-        assertEquals(8, output);
+        assertThat(output).isEqualTo(8);
     }
 
     @Test
@@ -86,19 +87,10 @@ public class IncrementTest extends FunctionTest<Increment> {
         Number output = increment.apply(2);
 
         // Then
-        assertEquals(Long.class, output.getClass());
-    }
-
-    @Test
-    public void shouldIncrementByTheSetIncrement() {
-        // Given
-        Increment increment = new Increment(10L);
-
-        // When
-        Number output = increment.apply(2);
-
-        // Then
-        assertEquals(12, output.intValue());
+        assertThat(output)
+                .isEqualTo(12L)
+                .isExactlyInstanceOf(Long.class)
+                .returns(12, from(Number::intValue));
     }
 
     @Test
@@ -110,7 +102,7 @@ public class IncrementTest extends FunctionTest<Increment> {
         Number output = increment.apply(2);
 
         // Then
-        assertEquals(12.5, output);
+        assertThat(output).isEqualTo(12.5);
     }
 
     @Override

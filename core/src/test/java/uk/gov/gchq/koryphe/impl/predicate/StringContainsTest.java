@@ -24,10 +24,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class StringContainsTest extends PredicateTest<StringContains> {
 
@@ -36,74 +33,56 @@ public class StringContainsTest extends PredicateTest<StringContains> {
     @Test
     public void shouldAcceptWhenStringInValue() {
         // Given
-        final StringContains stringContains = new StringContains("used");
+        final StringContains filter = new StringContains("used");
 
-        // When
-        boolean accepted = stringContains.test(INPUT);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(INPUT);
     }
 
     @Test
     public void shouldRejectMismatchedCases() {
         // Given
-        final StringContains stringContains = new StringContains("stringcontains");
+        final StringContains filter = new StringContains("stringcontains");
 
-        // When
-        boolean accepted = stringContains.test(INPUT);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(INPUT);
     }
 
     @Test
     public void shouldAcceptEmptyString() {
         // Given
-        final StringContains stringContains = new StringContains("");
+        final StringContains filter = new StringContains("");
 
-        // When
-        boolean accepted = stringContains.test(INPUT);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(INPUT);
     }
 
     @Test
     public void shouldRejectNullValue() {
         // Given
-        final StringContains stringContains = new StringContains(null);
+        final StringContains filter = new StringContains(null);
 
-        // When
-        boolean accepted = stringContains.test(INPUT);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(INPUT);
     }
 
     @Test
     public void shouldRejectNullInput() {
         // Given
-        final StringContains stringContains = new StringContains("test");
+        final StringContains filter = new StringContains("test");
 
-        // When
-        boolean accepted = stringContains.test(null);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects((String) null);
     }
 
     @Test
     public void shouldMatchWhenIgnoreCaseSet() {
         // Given
-        final StringContains stringContains = new StringContains("stringcontains");
-        stringContains.setIgnoreCase(true);
+        final StringContains filter = new StringContains("stringcontains");
+        filter.setIgnoreCase(true);
 
-        // When
-        boolean accepted = stringContains.test(INPUT);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(INPUT);
     }
 
     @Override
@@ -126,8 +105,8 @@ public class StringContainsTest extends PredicateTest<StringContains> {
         final StringContains deserialisedFilter = JsonSerialiser.deserialise(json, StringContains.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(value, deserialisedFilter.getValue());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getValue()).isEqualTo(value);
     }
 
     @Override

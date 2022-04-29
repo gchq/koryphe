@@ -30,11 +30,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;;
+import static org.assertj.core.api.Assertions.from;
+import static org.assertj.core.api.InstanceOfAssertFactories.COLLECTION;
 
 public class ToSetTest extends FunctionTest<ToSet> {
 
@@ -47,7 +46,12 @@ public class ToSetTest extends FunctionTest<ToSet> {
         final Object result = function.apply(null);
 
         // Then
-        assertEquals(Sets.newHashSet((Object) null), result);
+        assertThat(result)
+                .isEqualTo(Sets.newHashSet((Object) null))
+                .asInstanceOf(COLLECTION)
+                .isNotNull()
+                .isNotEmpty()
+                .containsExactly((Object) null);
     }
 
     @Test
@@ -59,7 +63,11 @@ public class ToSetTest extends FunctionTest<ToSet> {
         final Object result = function.apply(null);
 
         // Then
-        assertEquals(Sets.newTreeSet(), result);
+        assertThat(result)
+                .isExactlyInstanceOf(TreeSet.class)
+                .isEqualTo(Sets.newTreeSet())
+                .asInstanceOf(COLLECTION)
+                .isEmpty();
     }
 
     @Test
@@ -72,7 +80,11 @@ public class ToSetTest extends FunctionTest<ToSet> {
         final Object result = function.apply(value);
 
         // Then
-        assertEquals(Sets.newHashSet(value), result);
+        assertThat(result)
+                .isEqualTo(Sets.newHashSet(value))
+                .isExactlyInstanceOf(HashSet.class)
+                .asInstanceOf(COLLECTION)
+                .containsExactly(value);
     }
 
     @Test
@@ -80,13 +92,16 @@ public class ToSetTest extends FunctionTest<ToSet> {
         // Given
         final ToSet function = new ToSet(TreeSet.class);
         final Object value = "value1";
-        final Set expected = new TreeSet(Sets.newHashSet(value));
 
         // When
         final Object result = function.apply(value);
 
         // Then
-        assertEquals(expected, result);
+        assertThat(result)
+                .isEqualTo(new TreeSet(Sets.newHashSet(value)))
+                .isExactlyInstanceOf(TreeSet.class)
+                .asInstanceOf(COLLECTION)
+                .containsExactly(value);
     }
 
     @Test
@@ -94,13 +109,16 @@ public class ToSetTest extends FunctionTest<ToSet> {
         // Given
         final ToSet function = new ToSet("java.util.TreeSet");
         final Object value = "value1";
-        final Set expected = new TreeSet(Sets.newHashSet(value));
 
         // When
         final Object result = function.apply(value);
 
         // Then
-        assertEquals(expected, result);
+        assertThat(result)
+                .isEqualTo(new TreeSet(Sets.newHashSet(value)))
+                .isExactlyInstanceOf(TreeSet.class)
+                .asInstanceOf(COLLECTION)
+                .containsExactly(value);
     }
 
     @Test
@@ -108,14 +126,17 @@ public class ToSetTest extends FunctionTest<ToSet> {
         // Given
         final ToSet function = new ToSet("TreeSet");
         final Object value = "value1";
-        final Set expected = new TreeSet(Sets.newHashSet(value));
 
         // When
         final Object result = function.apply(value);
 
         // Then
-        assertEquals(expected, result);
-        }
+        assertThat(result)
+                .isEqualTo(new TreeSet(Sets.newHashSet(value)))
+                .isExactlyInstanceOf(TreeSet.class)
+                .asInstanceOf(COLLECTION)
+                .containsExactly(value);
+    }
 
     @Test
     public void shouldConvertArrayToHashSet() {
@@ -127,7 +148,11 @@ public class ToSetTest extends FunctionTest<ToSet> {
         Object result = function.apply(value);
 
         // Then
-        assertEquals(Sets.newHashSet((Object[]) value), result);
+        assertThat(result)
+                .isEqualTo(Sets.newHashSet((Object[]) value))
+                .isExactlyInstanceOf(HashSet.class)
+                .asInstanceOf(COLLECTION)
+                .containsExactlyInAnyOrderElementsOf(Lists.newArrayList((Object[]) value));
     }
 
     @Test
@@ -135,40 +160,50 @@ public class ToSetTest extends FunctionTest<ToSet> {
         // Given
         final ToSet function = new ToSet(TreeSet.class);
         final Object value = new String[] {"value1", "value2"};
-        final Set expected = new TreeSet(Sets.newHashSet((Object[]) value));
 
         // When
         Object result = function.apply(value);
 
         // Then
-        assertEquals(expected, result);
+        assertThat(result)
+                .isEqualTo(new TreeSet(Sets.newHashSet((Object[]) value)))
+                .isExactlyInstanceOf(TreeSet.class)
+                .asInstanceOf(COLLECTION)
+                .containsExactlyInAnyOrderElementsOf(Lists.newArrayList((Object[]) value));
     }
 
     @Test
     public void shouldConvertListToHashSet() {
         // Given
         final ToSet function = new ToSet();
-        final Object value = Lists.newArrayList("value1", "value2");
+        final List<String> value = Lists.newArrayList("value1", "value2");
 
         // When
         final Object result = function.apply(value);
 
         // Then
-        assertEquals(Sets.newHashSet((List) value), result);
+        assertThat(result)
+                .isEqualTo(Sets.newHashSet(value))
+                .isExactlyInstanceOf(HashSet.class)
+                .asInstanceOf(COLLECTION)
+                .containsExactlyInAnyOrderElementsOf(value);
     }
 
     @Test
     public void shouldConvertListToTreeSet() {
         // Given
         final ToSet function = new ToSet(TreeSet.class);
-        final Object value = Lists.newArrayList("value1", "value2");
-        final Set expected = new TreeSet(Sets.newHashSet((List) value));
+        final List<String> value = Lists.newArrayList("value1", "value2");
 
         // When
         final Object result = function.apply(value);
 
         // Then
-        assertEquals(expected, result);
+        assertThat(result)
+                .isEqualTo(new TreeSet(Sets.newHashSet(value)))
+                .isExactlyInstanceOf(TreeSet.class)
+                .asInstanceOf(COLLECTION)
+                .containsExactlyInAnyOrderElementsOf(value);
     }
 
     @Test
@@ -181,7 +216,7 @@ public class ToSetTest extends FunctionTest<ToSet> {
         final Object result = function.apply(value);
 
         // Then
-        assertSame(value, result);
+        assertThat(result).isSameAs(value);
     }
 
     @Test
@@ -194,23 +229,24 @@ public class ToSetTest extends FunctionTest<ToSet> {
         final Object result = function.apply(value);
 
         // Then
-        assertSame(value, result);
+        assertThat(result).isSameAs(value);
     }
 
     @Test
     public void shouldConvertTreeSetToHashSet() {
         // Given
         final ToSet function = new ToSet(HashSet.class);
-        final Set expected = Sets.newHashSet("value1", "value2");
-        final Set value = new TreeSet(expected);
+        final Set value = new TreeSet(Sets.newHashSet("value1", "value2"));
 
         // When
         final Object result = function.apply(value);
 
         // Then
-        assertEquals(expected.getClass(), result.getClass());
-        assertNotEquals(value.getClass(), result.getClass());
-        assertEquals(expected, result);
+        assertThat(result)
+                .isEqualTo(Sets.newHashSet(value))
+                .isExactlyInstanceOf(HashSet.class)
+                .asInstanceOf(COLLECTION)
+                .containsExactlyInAnyOrderElementsOf(value);
     }
 
     @Test
@@ -218,16 +254,16 @@ public class ToSetTest extends FunctionTest<ToSet> {
         // Given
         final ToSet function = new ToSet(TreeSet.class);
         final Set value = Sets.newHashSet("value1", "value2");
-        final Set expected = new TreeSet(value);
-
 
         // When
         final Object result = function.apply(value);
 
         // Then
-        assertEquals(expected.getClass(), result.getClass());
-        assertNotEquals(value.getClass(), result.getClass());
-        assertEquals(expected, result);
+        assertThat(result)
+                .isEqualTo(new TreeSet(value))
+                .isExactlyInstanceOf(TreeSet.class)
+                .asInstanceOf(COLLECTION)
+                .containsExactlyInAnyOrderElementsOf(value);
     }
 
     @Test
@@ -240,9 +276,11 @@ public class ToSetTest extends FunctionTest<ToSet> {
         final Object result = function.apply(value);
 
         // Then
-        assertEquals(HashSet.class, function.getImplementation());
-        assertEquals(HashSet.class, result.getClass());
-        assertEquals(Sets.newHashSet(value), result);
+        assertThat(function).returns(HashSet.class, ToSet::getImplementation);
+        assertThat(result)
+                .isExactlyInstanceOf(HashSet.class)
+                .asInstanceOf(COLLECTION)
+                .containsExactly(value);
     }
 
     @Test
@@ -251,8 +289,9 @@ public class ToSetTest extends FunctionTest<ToSet> {
         final ToSet function = new ToSet(LinkedHashSet.class);
 
         // When / Then
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> function.apply(null));
-        assertEquals("Unrecognised Set implementation", e.getMessage());
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> function.apply(null))
+                .withMessage("Unrecognised Set implementation");
     }
 
     @Override
@@ -294,7 +333,8 @@ public class ToSetTest extends FunctionTest<ToSet> {
         final ToSet deserialisedMethod = JsonSerialiser.deserialise(json, ToSet.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
-        assertEquals(TreeSet.class, deserialisedMethod.getImplementation());
+        assertThat(deserialisedMethod)
+                .isNotNull()
+                .returns(TreeSet.class, from(ToSet::getImplementation));
     }
 }

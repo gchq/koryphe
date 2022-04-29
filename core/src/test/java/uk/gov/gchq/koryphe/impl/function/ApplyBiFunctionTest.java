@@ -27,8 +27,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ApplyBiFunctionTest extends FunctionTest<ApplyBiFunction> {
     @Override
@@ -74,7 +73,7 @@ public class ApplyBiFunctionTest extends FunctionTest<ApplyBiFunction> {
         final Number result = function.apply(input);
 
         // Then
-        assertEquals(3, result);
+        assertThat(result).isEqualTo(3);
     }
 
     @Test
@@ -87,6 +86,6 @@ public class ApplyBiFunctionTest extends FunctionTest<ApplyBiFunction> {
         final Object result = function.apply(input);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 }

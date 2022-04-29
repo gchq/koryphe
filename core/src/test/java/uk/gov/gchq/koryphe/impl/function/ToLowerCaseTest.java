@@ -25,9 +25,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.function.Function;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ToLowerCaseTest extends FunctionTest<ToLowerCase> {
 
@@ -42,7 +40,7 @@ public class ToLowerCaseTest extends FunctionTest<ToLowerCase> {
         final Object output = function.apply(TEST_STRING);
 
         // Then
-        assertEquals(StringUtils.lowerCase(TEST_STRING), output);
+        assertThat(output).isEqualTo(StringUtils.lowerCase(TEST_STRING));
     }
 
     @Test
@@ -55,7 +53,7 @@ public class ToLowerCaseTest extends FunctionTest<ToLowerCase> {
         final Object output = function.apply(input);
 
         // Then
-        assertEquals(StringUtils.lowerCase(input.getClass().getSimpleName().toUpperCase()), output);
+        assertThat(output).isEqualTo(StringUtils.lowerCase(input.getClass().getSimpleName().toUpperCase()));
     }
 
     @Test
@@ -67,7 +65,7 @@ public class ToLowerCaseTest extends FunctionTest<ToLowerCase> {
         Object output = function.apply(null);
 
         // Then
-        assertNull(output);
+        assertThat(output).isNull();
     }
 
     @Override
@@ -108,7 +106,7 @@ public class ToLowerCaseTest extends FunctionTest<ToLowerCase> {
         final ToLowerCase deserialisedMethod = JsonSerialiser.deserialise(json, ToLowerCase.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 
     public final static class ToLowerCaseTestObject {

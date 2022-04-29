@@ -32,8 +32,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ToTupleTest extends FunctionTest<ToTuple> {
 
@@ -46,7 +45,7 @@ public class ToTupleTest extends FunctionTest<ToTuple> {
         Tuple output = function.apply(Lists.newArrayList(1, 2, 3, 4));
 
         // Then
-        assertEquals(new ArrayTuple(1, 2, 3, 4), output);
+        assertThat(output).isEqualTo(new ArrayTuple(1, 2, 3, 4));
     }
 
     @Test
@@ -58,7 +57,7 @@ public class ToTupleTest extends FunctionTest<ToTuple> {
         Tuple output = function.apply(new int[]{1, 2, 3, 4});
 
         // Then
-        assertEquals(new ArrayTuple(1, 2, 3, 4), output);
+        assertThat(output).isEqualTo(new ArrayTuple(1, 2, 3, 4));
     }
 
     @Test
@@ -70,7 +69,7 @@ public class ToTupleTest extends FunctionTest<ToTuple> {
         Tuple output = function.apply(new Integer[]{1, 2, 3, 4});
 
         // Then
-        assertEquals(new ArrayTuple(1, 2, 3, 4), output);
+        assertThat(output).isEqualTo(new ArrayTuple(1, 2, 3, 4));
     }
 
     @Test
@@ -86,7 +85,7 @@ public class ToTupleTest extends FunctionTest<ToTuple> {
         Tuple output = function.apply(input);
 
         // Then
-        assertEquals(new MapTuple<>(input), output);
+        assertThat(output).isEqualTo(new MapTuple<>(input));
     }
 
     @Test
@@ -99,7 +98,7 @@ public class ToTupleTest extends FunctionTest<ToTuple> {
         Tuple output = function.apply(input);
 
         // Then
-        assertEquals(new ReflectiveTuple(input), output);
+        assertThat(output).isEqualTo(new ReflectiveTuple(input));
     }
 
     @Override
@@ -140,7 +139,7 @@ public class ToTupleTest extends FunctionTest<ToTuple> {
         final ToTuple deserialisedMethod = JsonSerialiser.deserialise(json, ToTuple.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 
     private static class SimpleObj {

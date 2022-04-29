@@ -20,16 +20,14 @@ import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
 import uk.gov.gchq.koryphe.serialisation.json.SimpleClassNameCache;
+import uk.gov.gchq.koryphe.signature.InputValidatorAssert;
 import uk.gov.gchq.koryphe.util.CustomObj;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class IsLessThanTest extends PredicateTest<IsLessThan> {
 
@@ -38,11 +36,8 @@ public class IsLessThanTest extends PredicateTest<IsLessThan> {
         // Given
         final IsLessThan filter = new IsLessThan(5);
 
-        // When
-        boolean accepted = filter.test(4);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(4);
     }
 
     @Test
@@ -50,11 +45,8 @@ public class IsLessThanTest extends PredicateTest<IsLessThan> {
         // Given
         final IsLessThan filter = new IsLessThan(5, true);
 
-        // When
-        boolean accepted = filter.test(4);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(4);
     }
 
     @Test
@@ -62,11 +54,8 @@ public class IsLessThanTest extends PredicateTest<IsLessThan> {
         // Given
         final IsLessThan filter = new IsLessThan(5);
 
-        // When
-        boolean accepted = filter.test(6);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(6);
     }
 
     @Test
@@ -74,11 +63,8 @@ public class IsLessThanTest extends PredicateTest<IsLessThan> {
         // Given
         final IsLessThan filter = new IsLessThan(5, true);
 
-        // When
-        boolean accepted = filter.test(6);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(6);
     }
 
     @Test
@@ -86,11 +72,8 @@ public class IsLessThanTest extends PredicateTest<IsLessThan> {
         // Given
         final IsLessThan filter = new IsLessThan(5);
 
-        // When
-        boolean accepted = filter.test(5);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects(5);
     }
 
     @Test
@@ -98,23 +81,8 @@ public class IsLessThanTest extends PredicateTest<IsLessThan> {
         // Given
         final IsLessThan filter = new IsLessThan(5, true);
 
-        // When
-        boolean accepted = filter.test(5);
-
-        // Then
-        assertTrue(accepted);
-    }
-
-    @Test
-    public void shouldRejectTheValueWhenEqual() {
-        // Given
-        final IsLessThan filter = new IsLessThan(5);
-
-        // When
-        boolean accepted = filter.test(5);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).accepts(5);
     }
 
     @Test
@@ -137,8 +105,8 @@ public class IsLessThanTest extends PredicateTest<IsLessThan> {
         final IsLessThan deserialisedFilter = JsonSerialiser.deserialise(json, IsLessThan.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(controlValue, deserialisedFilter.getControlValue());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getControlValue()).isEqualTo(controlValue);
     }
 
     @Test
@@ -166,8 +134,8 @@ public class IsLessThanTest extends PredicateTest<IsLessThan> {
         final IsLessThan deserialisedFilter = JsonSerialiser.deserialise(json, IsLessThan.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(1L, deserialisedFilter.getControlValue());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getControlValue()).isEqualTo(1L);
     }
 
     @Test
@@ -176,9 +144,10 @@ public class IsLessThanTest extends PredicateTest<IsLessThan> {
         final IsLessThan predicate = new IsLessThan(1);
 
         // Then
-        assertTrue(predicate.isInputValid(Integer.class).isValid());
-        assertFalse(predicate.isInputValid(Double.class).isValid());
-        assertFalse(predicate.isInputValid(Integer.class, Integer.class).isValid());
+        InputValidatorAssert.assertThat(predicate)
+                .acceptsInput(Integer.class)
+                .rejectsInput(Double.class)
+                .rejectsInput(Integer.class, Integer.class);
     }
 
     @Override

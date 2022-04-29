@@ -26,7 +26,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class TupleAdaptedPredicateTest extends PredicateTest<TupleAdaptedPredicate> {
 
@@ -50,7 +50,7 @@ class TupleAdaptedPredicateTest extends PredicateTest<TupleAdaptedPredicate> {
 
         // Then
         JsonSerialiser.assertEquals(json, serialised);
-        assertEquals(predicate, deserialised);
+        assertThat(deserialised).isEqualTo(predicate);
     }
 
     @Override

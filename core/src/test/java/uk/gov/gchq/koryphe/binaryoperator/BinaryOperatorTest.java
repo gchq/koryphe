@@ -28,9 +28,7 @@ import uk.gov.gchq.koryphe.util.VersionUtil;
 import java.io.IOException;
 import java.util.function.BinaryOperator;
 
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class BinaryOperatorTest<T extends BinaryOperator> extends EqualityTest<T> {
 
@@ -55,7 +53,7 @@ public abstract class BinaryOperatorTest<T extends BinaryOperator> extends Equal
         final T instance = getInstance();
 
         // Then
-        assertNotEquals(instance, null);
+        assertThat(instance).isNotNull();
     }
 
     @Test
@@ -67,10 +65,15 @@ public abstract class BinaryOperatorTest<T extends BinaryOperator> extends Equal
         final Since annotation = instance.getClass().getAnnotation(Since.class);
 
         // Then
-        assertNotNull(annotation, "Missing Since annotation on class " + instance.getClass().getName());
-        assertNotNull(annotation.value(), "Missing Since annotation on class " + instance.getClass().getName());
-        assertTrue(VersionUtil.validateVersionString(annotation.value()),
-                annotation.value() + " is not a valid value string.");
+        assertThat(annotation)
+                .isNotNull()
+                .withFailMessage("Missing Since annotation on class %s", instance.getClass().getName());
+        assertThat(annotation.value())
+                .isNotNull()
+                .withFailMessage("Missing Since annotation on class %s", instance.getClass().getName());
+        assertThat(VersionUtil.validateVersionString(annotation.value()))
+                .isTrue()
+                .withFailMessage("%s is not a valid value string.", annotation.value());
     }
 
     @Test
@@ -82,9 +85,14 @@ public abstract class BinaryOperatorTest<T extends BinaryOperator> extends Equal
         final Summary annotation = instance.getClass().getAnnotation(Summary.class);
 
         // Then
-        assertNotNull(annotation, "Missing Summary annotation on class " + instance.getClass().getName());
-        assertNotNull(annotation.value(), "Missing Summary annotation on class " + instance.getClass().getName());
-        assertTrue(SummaryUtil.validateSummaryString(annotation.value()),
-                annotation.value() + " is not a valid value string.");
+        assertThat(annotation)
+                .isNotNull()
+                .withFailMessage("Missing Summary annotation on class %s", instance.getClass().getName());
+        assertThat(annotation.value())
+                .isNotNull()
+                .withFailMessage("Missing Summary annotation on class %s", instance.getClass().getName());
+        assertThat(SummaryUtil.validateSummaryString(annotation.value()))
+                .isTrue()
+                .withFailMessage("%s is not a valid value string.", annotation.value());
     }
 }

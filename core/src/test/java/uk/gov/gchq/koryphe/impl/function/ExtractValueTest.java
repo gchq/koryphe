@@ -26,9 +26,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ExtractValueTest extends FunctionTest<ExtractValue> {
     @Override
@@ -70,8 +68,8 @@ public class ExtractValueTest extends FunctionTest<ExtractValue> {
         final ExtractValue deserialised = JsonSerialiser.deserialise(json, ExtractValue.class);
 
         // Then 2
-        assertNotNull(deserialised);
-        assertEquals("test", deserialised.getKey());
+        assertThat(deserialised).isNotNull();
+        assertThat(deserialised.getKey()).isEqualTo("test");
     }
 
     @Test
@@ -88,7 +86,7 @@ public class ExtractValueTest extends FunctionTest<ExtractValue> {
         final Integer result = function.apply(input);
 
         // Then
-        assertEquals(3, result);
+        assertThat(result).isEqualTo(3);
     }
 
     @Test
@@ -100,6 +98,6 @@ public class ExtractValueTest extends FunctionTest<ExtractValue> {
         final Integer result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 }

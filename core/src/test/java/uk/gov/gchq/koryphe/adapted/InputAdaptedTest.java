@@ -25,7 +25,7 @@ import uk.gov.gchq.koryphe.util.EqualityTest;
 
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class InputAdaptedTest extends EqualityTest<InputAdapted> {
 
@@ -53,7 +53,8 @@ class InputAdaptedTest extends EqualityTest<InputAdapted> {
         Long output = inputAdapted.adaptInput(input);
 
         // Then
-        assertEquals(Long.class, output.getClass());
-        assertEquals(5L, output);
+        assertThat(output)
+                .isExactlyInstanceOf(Long.class)
+                .isEqualTo(5L);
     }
 }

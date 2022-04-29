@@ -19,6 +19,7 @@ package uk.gov.gchq.koryphe.impl.predicate;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
+import uk.gov.gchq.koryphe.signature.InputValidatorAssert;
 import uk.gov.gchq.koryphe.tuple.ArrayTuple;
 import uk.gov.gchq.koryphe.tuple.predicate.IntegerTupleAdaptedPredicate;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
@@ -27,9 +28,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.function.Predicate;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -49,11 +48,8 @@ public class OrTest extends PredicateTest<Or> {
         given(func2.test("value")).willReturn(true);
         given(func3.test("value")).willReturn(true);
 
-        // When
-        boolean accepted = or.test("value");
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(or).accepts("value");
         verify(func1).test("value");
         verify(func2).test("value");
         verify(func3, never()).test("value");
@@ -64,11 +60,8 @@ public class OrTest extends PredicateTest<Or> {
         // Given
         final Or or = new Or();
 
-        // When
-        boolean accepted = or.test(new String[]{"test"});
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(or).rejects(new String[]{"test"});
     }
 
     @Test
@@ -76,11 +69,8 @@ public class OrTest extends PredicateTest<Or> {
         // Given
         final Or<String> or = new Or<>();
 
-        // When
-        boolean accepted = or.test(null);
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(or).rejects((String) null);
     }
 
     @Test
@@ -95,11 +85,8 @@ public class OrTest extends PredicateTest<Or> {
         given(func2.test("value")).willReturn(false);
         given(func3.test("value")).willReturn(false);
 
-        // When
-        boolean accepted = or.test("value");
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(or).rejects("value");
         verify(func1).test("value");
         verify(func2).test("value");
         verify(func3).test("value");
@@ -114,11 +101,8 @@ public class OrTest extends PredicateTest<Or> {
                 new IsEqual("test")
         );
 
-        // When
-        final boolean result = or.test("test");
-
-        // Then
-        assertTrue(result);
+        // When / Then
+        assertThat(or).accepts("test");
     }
 
     @Test
@@ -133,13 +117,10 @@ public class OrTest extends PredicateTest<Or> {
                 .execute(new IsEqual("test"))
                 .build();
 
-        // When
-        final boolean result = or.test("test");
-        final boolean tupleResult = or.test(new ArrayTuple("test"));
-
-        // Then
-        assertTrue(result);
-        assertTrue(tupleResult);
+        // When / Then
+        assertThat(or)
+                .accepts("test")
+                .accepts(new ArrayTuple("test"));
     }
 
     @Test
@@ -162,7 +143,7 @@ public class OrTest extends PredicateTest<Or> {
         final Or deserialisedFilter = JsonSerialiser.deserialise(json, Or.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
+        assertThat(deserialisedFilter).isNotNull();
     }
 
     @Test
@@ -203,41 +184,52 @@ public class OrTest extends PredicateTest<Or> {
         final Or deserialisedFilter = JsonSerialiser.deserialise(json, Or.class);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
+        assertThat(deserialisedFilter).isNotNull();
     }
 
     @Test
     public void shouldCheckInputClass() {
+        // When
         Or<?> predicate = new Or<>(new IsMoreThan(1), new IsLessThan(10));
-        assertTrue(predicate.isInputValid(Integer.class).isValid());
-        assertFalse(predicate.isInputValid(Double.class).isValid());
-        assertFalse(predicate.isInputValid(Integer.class, Integer.class).isValid());
-
+        // Then
+        InputValidatorAssert.assertThat(predicate)
+                .acceptsInput(Integer.class)
+                .rejectsInput(Double.class)
+                .rejectsInput(Integer.class, Integer.class);
+        // When
         predicate = new Or<>(new IsMoreThan(1.0), new IsLessThan(10.0));
-        assertTrue(predicate.isInputValid(Double.class).isValid());
-        assertFalse(predicate.isInputValid(Integer.class).isValid());
-
+        // Then
+        InputValidatorAssert.assertThat(predicate)
+                .acceptsInput(Double.class)
+                .rejectsInput(Integer.class);
+        // When
         predicate = new Or<>(new IsMoreThan(1), new IsLessThan(10.0));
-        assertFalse(predicate.isInputValid(Integer.class).isValid());
-        assertFalse(predicate.isInputValid(Integer.class, Double.class).isValid());
-
+        // Then
+        InputValidatorAssert.assertThat(predicate)
+                .rejectsInput(Integer.class)
+                .rejectsInput(Integer.class, Double.class);
+        // When
         predicate = new Or<>(
                 new IntegerTupleAdaptedPredicate(new IsMoreThan(1), 0),
                 new IntegerTupleAdaptedPredicate(new IsLessThan(10.0), 1)
         );
-        assertTrue(predicate.isInputValid(Integer.class, Double.class).isValid());
-        assertFalse(predicate.isInputValid(Integer.class).isValid());
-        assertFalse(predicate.isInputValid(Double.class, Integer.class).isValid());
-
+        // Then
+        InputValidatorAssert.assertThat(predicate)
+                .acceptsInput(Integer.class, Double.class)
+                .rejectsInput(Integer.class)
+                .rejectsInput(Double.class, Integer.class);
+        // When
         predicate = new Or.Builder()
                 .select(0)
                 .execute(new IsMoreThan(1))
                 .select(1)
                 .execute(new IsLessThan(10.0))
                 .build();
-        assertTrue(predicate.isInputValid(Integer.class, Double.class).isValid());
-        assertFalse(predicate.isInputValid(Integer.class).isValid());
-        assertFalse(predicate.isInputValid(Double.class, Integer.class).isValid());
+        // Then
+        InputValidatorAssert.assertThat(predicate)
+                .acceptsInput(Integer.class, Double.class)
+                .rejectsInput(Integer.class)
+                .rejectsInput(Double.class, Integer.class);
     }
 
     @Override

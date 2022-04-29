@@ -23,9 +23,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class StringTrimTest extends FunctionTest<StringTrim> {
 
@@ -38,7 +36,7 @@ public class StringTrimTest extends FunctionTest<StringTrim> {
         final String result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -51,7 +49,7 @@ public class StringTrimTest extends FunctionTest<StringTrim> {
         final String result = function.apply(input);
 
         // Then
-        assertEquals("Input String", result);
+        assertThat(result).isEqualTo("Input String");
     }
 
     @Override
@@ -92,6 +90,6 @@ public class StringTrimTest extends FunctionTest<StringTrim> {
         final StringTrim deserialisedMethod = JsonSerialiser.deserialise(json, StringTrim.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

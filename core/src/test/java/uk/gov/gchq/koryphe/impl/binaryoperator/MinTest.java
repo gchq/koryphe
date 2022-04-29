@@ -23,10 +23,8 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class MinTest extends BinaryOperatorTest<Min> {
 
@@ -39,22 +37,25 @@ public class MinTest extends BinaryOperatorTest<Min> {
         Comparable state = min.apply(1, null);
 
         // Then 1
-        assertTrue(state instanceof Integer);
-        assertEquals(1, state);
+        assertThat(state)
+                .isEqualTo(1)
+                .isExactlyInstanceOf(Integer.class);
 
         // When 2
         state = min.apply(2, state);
 
         // Then 2
-        assertTrue(state instanceof Integer);
-        assertEquals(1, state);
+        assertThat(state)
+                .isEqualTo(1)
+                .isExactlyInstanceOf(Integer.class);
 
         // When 3
         state = min.apply(3, state);
 
         // Then 3
-        assertTrue(state instanceof Integer);
-        assertEquals(1, state);
+        assertThat(state)
+                .isEqualTo(1)
+                .isExactlyInstanceOf(Integer.class);
     }
 
     @Test
@@ -66,22 +67,25 @@ public class MinTest extends BinaryOperatorTest<Min> {
         Comparable state = min.apply(1L, null);
 
         // Then 1
-        assertTrue(state instanceof Long);
-        assertEquals(1L, state);
+        assertThat(state)
+                .isEqualTo(1L)
+                .isExactlyInstanceOf(Long.class);
 
         // When 2
         state = min.apply(2L, state);
 
         // Then 2
-        assertTrue(state instanceof Long);
-        assertEquals(1L, state);
+        assertThat(state)
+                .isEqualTo(1L)
+                .isExactlyInstanceOf(Long.class);
 
         // When 3
         state = min.apply(3L, state);
 
         // Then 3
-        assertTrue(state instanceof Long);
-        assertEquals(1L, state);
+        assertThat(state)
+                .isEqualTo(1L)
+                .isExactlyInstanceOf(Long.class);
     }
 
     @Test
@@ -93,22 +97,25 @@ public class MinTest extends BinaryOperatorTest<Min> {
         Comparable state = min.apply(2.1d, null);
 
         // Then 1
-        assertTrue(state instanceof Double);
-        assertEquals(2.1d, state);
+        assertThat(state)
+                .isEqualTo(2.1d)
+                .isExactlyInstanceOf(Double.class);
 
         // When 2
         state = min.apply(1.1d, state);
 
         // Then 2
-        assertTrue(state instanceof Double);
-        assertEquals(1.1d, state);
+        assertThat(state)
+                .isEqualTo(1.1d)
+                .isExactlyInstanceOf(Double.class);
 
         // When 3
         state = min.apply(3.1d, state);
 
         // Then 3
-        assertTrue(state instanceof Double);
-        assertEquals(1.1d, state);
+        assertThat(state)
+                .isEqualTo(1.1d)
+                .isExactlyInstanceOf(Double.class);
     }
 
     @Test
@@ -120,14 +127,19 @@ public class MinTest extends BinaryOperatorTest<Min> {
         Comparable state = min.apply(5, null);
 
         // When 2
-        assertThrows(ClassCastException.class, () -> min.apply(2L, state));
+        assertThatExceptionOfType(ClassCastException.class).isThrownBy(
+            () -> min.apply(2L, state)
+        );
 
         // When 3
-        assertThrows(ClassCastException.class, () -> min.apply(2.1d, state));
+        assertThatExceptionOfType(ClassCastException.class).isThrownBy(
+            () -> min.apply(2.1d, state)
+        );
 
         // Then 3
-        assertTrue(state instanceof Integer);
-        assertEquals(5, state);
+        assertThat(state)
+                .isEqualTo(5)
+                .isExactlyInstanceOf(Integer.class);
     }
 
     @Test
@@ -147,7 +159,7 @@ public class MinTest extends BinaryOperatorTest<Min> {
         final Min deserialisedAggregator = JsonSerialiser.deserialise(json, Min.class);
 
         // Then 2
-        assertNotNull(deserialisedAggregator);
+        assertThat(deserialisedAggregator).isNotNull();
     }
 
     @Override

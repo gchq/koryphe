@@ -24,9 +24,10 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
-class TupleOutputAdapterTest extends EqualityTest<TupleOutputAdapter> { // Can't extend FunctionTest as TupleOutputAdapter is a BiFunction rather than a Function.
+// Can't extend FunctionTest as TupleOutputAdapter is a BiFunction rather than a Function.
+class TupleOutputAdapterTest extends EqualityTest<TupleOutputAdapter> {
 
     @Test
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
@@ -44,7 +45,7 @@ class TupleOutputAdapterTest extends EqualityTest<TupleOutputAdapter> { // Can't
 
         // Then
         JsonSerialiser.assertEquals(json, serialised);
-        assertEquals(instance, deserialised);
+        assertThat(deserialised).isEqualTo(instance);
     }
 
     @Override
@@ -73,7 +74,7 @@ class TupleOutputAdapterTest extends EqualityTest<TupleOutputAdapter> { // Can't
         Tuple<Integer> adapted = adapter.apply(state, "test");
 
         // Then
-        assertEquals("test", adapted.get(2));
+        assertThat(adapted.get(2)).isEqualTo("test");
     }
 
     @Test
@@ -89,6 +90,6 @@ class TupleOutputAdapterTest extends EqualityTest<TupleOutputAdapter> { // Can't
         Tuple<Integer> adapted = adapter.apply(state, "test");
 
         // Then
-        assertEquals("test", adapted.get(2));
+        assertThat(adapted.get(2)).isEqualTo("test");
     }
 }

@@ -26,9 +26,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DefaultIfEmptyTest extends FunctionTest<DefaultIfEmpty> {
 
@@ -63,7 +61,7 @@ public class DefaultIfEmptyTest extends FunctionTest<DefaultIfEmpty> {
         final Object result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -85,7 +83,7 @@ public class DefaultIfEmptyTest extends FunctionTest<DefaultIfEmpty> {
         final DefaultIfEmpty deserialised = JsonSerialiser.deserialise(json, DefaultIfEmpty.class);
 
         // Then
-        assertNotNull(deserialised);
+        assertThat(deserialised).isNotNull();
     }
 
     @Test
@@ -97,7 +95,7 @@ public class DefaultIfEmptyTest extends FunctionTest<DefaultIfEmpty> {
         final Object result = defaultIfEmpty.apply(Collections.emptyList());
 
         // Then
-        assertEquals(DEFAULT_VALUE, result);
+        assertThat(result).isEqualTo(DEFAULT_VALUE);
     }
 
     @Test
@@ -110,6 +108,6 @@ public class DefaultIfEmptyTest extends FunctionTest<DefaultIfEmpty> {
         final Object result = defaultIfEmpty.apply(iterable);
 
         // Then
-        assertEquals(iterable, result);
+        assertThat(result).isEqualTo(iterable);
     }
 }

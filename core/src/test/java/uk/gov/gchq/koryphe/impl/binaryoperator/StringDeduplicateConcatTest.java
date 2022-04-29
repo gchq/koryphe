@@ -24,8 +24,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class StringDeduplicateConcatTest extends BinaryOperatorTest<StringDeduplicateConcat> {
 
@@ -38,7 +37,7 @@ public class StringDeduplicateConcatTest extends BinaryOperatorTest<StringDedupl
         String output = sdc._apply("test,string", "test,success");
 
         // Then
-        assertEquals("test,string,success", output);
+        assertThat(output).isEqualTo("test,string,success");
     }
 
     @Test
@@ -50,7 +49,7 @@ public class StringDeduplicateConcatTest extends BinaryOperatorTest<StringDedupl
         String output = sdc._apply("test,for,", "trailing,delimiters,");
 
         // Then
-        assertEquals("test,for,trailing,delimiters", output);
+        assertThat(output).isEqualTo("test,for,trailing,delimiters");
     }
 
     @Test
@@ -62,7 +61,7 @@ public class StringDeduplicateConcatTest extends BinaryOperatorTest<StringDedupl
         String output = sdc._apply(",test,for", ",leading,delimiters");
 
         // Then
-        assertEquals("test,for,leading,delimiters", output);
+        assertThat(output).isEqualTo("test,for,leading,delimiters");
     }
 
     @Test
@@ -74,19 +73,19 @@ public class StringDeduplicateConcatTest extends BinaryOperatorTest<StringDedupl
         String nullString = sdc.apply(null, "test,first");
 
         // Then 1
-        assertEquals("test,first", nullString);
+        assertThat(nullString).isEqualTo("test,first");
 
         // When 2
         String stringNull = sdc.apply("test,second", null);
 
         // Then 2
-        assertEquals("test,second", stringNull);
+        assertThat(stringNull).isEqualTo("test,second");
 
         // When 3
         String doubleNull = sdc.apply(null, null);
 
         // Then 3
-        assertNull(doubleNull);
+        assertThat(doubleNull).isNull();
     }
 
     @Test
@@ -99,7 +98,7 @@ public class StringDeduplicateConcatTest extends BinaryOperatorTest<StringDedupl
         String output = sdc._apply("test;string", "with;delimiter");
 
         // Then
-        assertEquals("test;string;with;delimiter", output);
+        assertThat(output).isEqualTo("test;string;with;delimiter");
     }
 
     @Override
@@ -134,6 +133,6 @@ public class StringDeduplicateConcatTest extends BinaryOperatorTest<StringDedupl
                 JsonSerialiser.deserialise(json, StringDeduplicateConcat.class);
 
         // Then 2
-        assertEquals(";", deserialisedOperator.getSeparator());
+        assertThat(deserialisedOperator.getSeparator()).isEqualTo(";");
     }
 }

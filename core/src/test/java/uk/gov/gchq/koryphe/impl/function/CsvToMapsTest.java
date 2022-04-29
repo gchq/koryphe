@@ -16,7 +16,6 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
@@ -24,12 +23,12 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.as;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
+import static org.assertj.core.api.InstanceOfAssertFactories.MAP;
 
 public class CsvToMapsTest extends FunctionTest<CsvToMaps> {
     @Override
@@ -93,11 +92,13 @@ public class CsvToMapsTest extends FunctionTest<CsvToMaps> {
         Iterable<Map<String, Object>> result = function.apply(input);
 
         // Then
-        final HashMap<Object, Object> expected = new HashMap<>();
-        expected.put("header1", "value1");
-        expected.put("header2", "value2");
-        expected.put("header3", "value3");
-        assertEquals(Collections.singletonList(expected), Lists.newArrayList(result));
+        assertThat(result)
+                .hasSize(1)
+                .first(as(MAP))
+                .containsOnly(
+                        entry("header1", "value1"),
+                        entry("header2", "value2"),
+                        entry("header3", "value3"));
     }
 
     @Test
@@ -109,6 +110,6 @@ public class CsvToMapsTest extends FunctionTest<CsvToMaps> {
         Object result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 }

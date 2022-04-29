@@ -29,10 +29,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.function.Predicate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -86,10 +83,10 @@ public class IfTest extends PredicateTest<If> {
         final If deserialised = JsonSerialiser.deserialise(json, If.class);
 
         // Then 2
-        assertNotNull(deserialised);
-        assertTrue(deserialised.getCondition());
-        assertEquals(String.class.getName(), ((IsA) deserialised.getThen()).getType());
-        assertEquals(Integer.class.getName(), ((IsA) deserialised.getOtherwise()).getType());
+        assertThat(deserialised).isNotNull();
+        assertThat(deserialised.getCondition()).isTrue();
+        assertThat(((IsA) deserialised.getThen()).getType()).isEqualTo(String.class.getName());
+        assertThat(((IsA) deserialised.getOtherwise()).getType()).isEqualTo(Integer.class.getName());
     }
 
     @Test
@@ -122,10 +119,10 @@ public class IfTest extends PredicateTest<If> {
         final If deserialised = JsonSerialiser.deserialise(json, If.class);
 
         // Then 2
-        assertNotNull(deserialised);
-        assertEquals(Integer.class.getName(), ((IsA) deserialised.getPredicate()).getType());
-        assertEquals(3, ((IsLessThan) deserialised.getThen()).getControlValue());
-        assertEquals(String.class.getName(), ((IsA) deserialised.getOtherwise()).getType());
+        assertThat(deserialised).isNotNull();
+        assertThat(((IsA) deserialised.getPredicate()).getType()).isEqualTo(Integer.class.getName());
+        assertThat(((IsLessThan) deserialised.getThen()).getControlValue()).isEqualTo(3);
+        assertThat(((IsA) deserialised.getOtherwise()).getType()).isEqualTo(String.class.getName());
     }
 
     @Test
@@ -139,11 +136,8 @@ public class IfTest extends PredicateTest<If> {
 
         given(then.test(input)).willReturn(true);
 
-        // When
-        final boolean accepted = filter.test(input);
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts(input);
         verify(otherwise, never()).test(input);
     }
 
@@ -158,11 +152,8 @@ public class IfTest extends PredicateTest<If> {
 
         given(otherwise.test(input)).willReturn(false);
 
-        // When
-        final boolean denied = filter.test(input);
-
-        // Then
-        assertFalse(denied);
+        // When / Then
+        assertThat(filter).rejects(input);
         verify(then, never()).test(input);
     }
 
@@ -172,11 +163,8 @@ public class IfTest extends PredicateTest<If> {
         final Object input = "testValue";
         final If<Object> filter = new If<>();
 
-        // When
-        final boolean denied = filter.test(input);
-
-        // Then
-        assertFalse(denied);
+        // When / Then
+        assertThat(filter).rejects(input);
     }
 
     @Test
@@ -192,11 +180,8 @@ public class IfTest extends PredicateTest<If> {
         given(predicate.test(input)).willReturn(true);
         given(then.test(input)).willReturn(true);
 
-        // When
-        final boolean result = filter.test(input);
-
-        // Then
-        assertTrue(result);
+        // When / Then
+        assertThat(filter).accepts(input);
         verify(predicate).test(input);
         verify(then).test(input);
         verify(otherwise, never()).test(input);
@@ -215,11 +200,8 @@ public class IfTest extends PredicateTest<If> {
         given(predicate.test(input)).willReturn(false);
         given(otherwise.test(input)).willReturn(true);
 
-        // When
-        final boolean result = filter.test(input);
-
-        // Then
-        assertTrue(result);
+        // When / Then
+        assertThat(filter).accepts(input);
         verify(predicate).test(input);
         verify(then, never()).test(input);
         verify(otherwise).test(input);
@@ -238,11 +220,8 @@ public class IfTest extends PredicateTest<If> {
         given(predicate.test(input)).willReturn(true);
         given(then.test(input)).willReturn(false);
 
-        // When
-        final boolean result = filter.test(input);
-
-        // Then
-        assertFalse(result);
+        // When / Then
+        assertThat(filter).rejects(input);
         verify(predicate).test(input);
         verify(then).test(input);
         verify(otherwise, never()).test(input);
@@ -261,11 +240,8 @@ public class IfTest extends PredicateTest<If> {
         given(predicate.test(input)).willReturn(false);
         given(otherwise.test(input)).willReturn(false);
 
-        // When
-        final boolean result = filter.test(input);
-
-        // Then
-        assertFalse(result);
+        // When / Then
+        assertThat(filter).rejects(input);
         verify(predicate).test(input);
         verify(then, never()).test(input);
         verify(otherwise).test(input);
@@ -280,11 +256,8 @@ public class IfTest extends PredicateTest<If> {
         final Predicate otherwise = mock(Predicate.class);
         final If<Comparable> filter = new If<>(predicate, then, otherwise);
 
-        // When
-        final boolean result = filter.test(input);
-
-        // Then
-        assertFalse(result);
+        // When / Then
+        assertThat(filter).rejects(input);
         verify(predicate).test(input);
         verify(then, never()).test(input);
         verify(otherwise).test(input);
@@ -299,11 +272,8 @@ public class IfTest extends PredicateTest<If> {
 
         final If<Object> filter = new If<>(predicate, then);
 
-        // When
-        final boolean result = filter.test(input);
-
-        // Then
-        assertFalse(result);
+        // When / Then
+        assertThat(filter).rejects(input);
         verify(then, never()).test(input);
     }
 
@@ -319,11 +289,8 @@ public class IfTest extends PredicateTest<If> {
 
         given(predicate.test(input)).willReturn(true);
 
-        // When
-        final boolean result = filter.test(input);
-
-        // Then
-        assertFalse(result);
+        // When / Then
+        assertThat(filter).rejects(input);
         verify(predicate).test(input);
     }
 
@@ -347,11 +314,8 @@ public class IfTest extends PredicateTest<If> {
         given(predicate.test(firstVal)).willReturn(true);
         given(then.test(secondVal)).willReturn(true);
 
-        // When
-        final boolean result = filter.test(input);
-
-        // Then
-        assertTrue(result);
+        // When / Then
+        assertThat(filter).accepts(input);
         verify(predicate).test(firstVal);
         verify(then).test(secondVal);
     }
@@ -376,11 +340,8 @@ public class IfTest extends PredicateTest<If> {
         given(predicate.test(firstInput)).willReturn(true);
         given(then.test(refTuple)).willReturn(true);
 
-        // When
-        final boolean result = filter.test(input);
-
-        // Then
-        assertTrue(result);
+        // When / Then
+        assertThat(filter).accepts(input);
         verify(predicate).test(firstInput);
         verify(then).test(refTuple);
         verify(otherwise, never()).test(refTuple);
@@ -392,8 +353,9 @@ public class IfTest extends PredicateTest<If> {
         If filter = new If<>(new IsLessThan(2), new IsLessThan(0), new IsLessThan(4));
 
         // When / Then
-        assertFalse(filter.test(1));
-        assertTrue(filter.test(-1));
-        assertTrue(filter.test(3));
+        assertThat(filter)
+                .rejects(1)
+                .accepts(-1)
+                .accepts(3);
     }
 }

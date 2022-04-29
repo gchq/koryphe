@@ -27,9 +27,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FirstValidTest extends FunctionTest<FirstValid> {
 
@@ -46,7 +44,7 @@ public class FirstValidTest extends FunctionTest<FirstValid> {
         final Integer result = predicate.apply(items);
 
         // Then
-        assertEquals(Integer.valueOf(2), result);
+        assertThat(result).isEqualTo(Integer.valueOf(2));
     }
 
     @Test
@@ -62,7 +60,7 @@ public class FirstValidTest extends FunctionTest<FirstValid> {
         final Integer result = predicate.apply(items);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -76,7 +74,7 @@ public class FirstValidTest extends FunctionTest<FirstValid> {
         final Integer result = predicate.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Override
@@ -121,7 +119,7 @@ public class FirstValidTest extends FunctionTest<FirstValid> {
         final FirstValid deserialised = JsonSerialiser.deserialise(json, FirstValid.class);
 
         // Then 2
-        assertNotNull(deserialised);
-        assertEquals(1, ((IsMoreThan) deserialised.getPredicate()).getControlValue());
+        assertThat(deserialised).isNotNull();
+        assertThat(((IsMoreThan) deserialised.getPredicate()).getControlValue()).isEqualTo(1);
     }
 }

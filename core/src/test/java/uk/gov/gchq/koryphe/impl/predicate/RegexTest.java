@@ -24,10 +24,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class RegexTest extends PredicateTest<Regex> {
 
@@ -36,11 +33,8 @@ public class RegexTest extends PredicateTest<Regex> {
         // Given
         final Regex filter = new Regex("te[a-d]{3}st");
 
-        // When
-        boolean accepted = filter.test("teaadst");
-
-        // Then
-        assertTrue(accepted);
+        // When / Then
+        assertThat(filter).accepts("teaadst");
     }
 
     @Test
@@ -48,11 +42,8 @@ public class RegexTest extends PredicateTest<Regex> {
         // Given
         final Regex filter = new Regex("fa[a-d]{3}il");
 
-        // When
-        boolean accepted = filter.test("favcdil");
-
-        // Then
-        assertFalse(accepted);
+        // When / Then
+        assertThat(filter).rejects("favcdil");
     }
 
     @Test
@@ -75,8 +66,8 @@ public class RegexTest extends PredicateTest<Regex> {
         final Regex deserialisedFilter = JsonSerialiser.deserialise(json, Regex.class);
 
         // Then 2
-        assertEquals(filter.getControlValue().pattern(), deserialisedFilter.getControlValue().pattern());
-        assertNotNull(deserialisedFilter);
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getControlValue().pattern()).isEqualTo(filter.getControlValue().pattern());
     }
 
     @Override
@@ -92,4 +83,4 @@ public class RegexTest extends PredicateTest<Regex> {
         );
     }
 
-    }
+}

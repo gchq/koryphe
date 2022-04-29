@@ -18,8 +18,7 @@ package uk.gov.gchq.koryphe.util;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * A TestClass which checks for equality and inequality using both the Equals and Hashcode methods of an object
@@ -52,7 +51,7 @@ public abstract class EqualityTest<T> {
         T itself = instance; // only added this line to make the test explicit and read better
 
         // Then
-        assertEquals(instance, itself);
+        assertThat(instance).isEqualTo(itself);
     }
 
     @Test
@@ -64,7 +63,7 @@ public abstract class EqualityTest<T> {
         T itself = instance; // only added this line to make the test explicit and read better
 
         // Then
-        assertEquals(instance.hashCode(), itself.hashCode());
+        assertThat(instance.hashCode()).isEqualTo(itself.hashCode());
     }
 
     @Test
@@ -76,7 +75,7 @@ public abstract class EqualityTest<T> {
         T sameObject = getInstance();
 
         // Then
-        assertEquals(instance, sameObject);
+        assertThat(instance).isEqualTo(sameObject);
     }
 
     @Test
@@ -88,7 +87,8 @@ public abstract class EqualityTest<T> {
         T sameObject = getInstance();
 
         // Then
-        assertEquals(instance.hashCode(), sameObject.hashCode());
+        assertThat(instance.hashCode()).isEqualTo(sameObject.hashCode());
+
     }
 
     @Test
@@ -100,7 +100,7 @@ public abstract class EqualityTest<T> {
         T nullObject = null; // only added this line to make the test explicit and read better
 
         // Then
-        assertNotEquals(instance, nullObject);
+        assertThat(instance).isNotEqualTo(nullObject);
     }
 
     @Test
@@ -112,7 +112,7 @@ public abstract class EqualityTest<T> {
         DifferentClass differentObject = new DifferentClass(); // only added this line to make the test explicit and read better
 
         // Then
-        assertNotEquals(instance, differentObject);
+        assertThat(instance).isNotEqualTo(differentObject);
     }
 
     @Test
@@ -122,13 +122,13 @@ public abstract class EqualityTest<T> {
         Iterable<T> alternativeInstances = getDifferentInstancesOrNull();
 
         // When
-        if (alternativeInstances == null) {
+        if (null == alternativeInstances) {
             return;
         }
 
         // Then
         for (T alternativeInstance : alternativeInstances) {
-            assertNotEquals(instance, alternativeInstance);
+            assertThat(alternativeInstance).isNotEqualTo(instance);
         }
     }
 
@@ -139,13 +139,13 @@ public abstract class EqualityTest<T> {
         Iterable<T> alternativeInstances = getDifferentInstancesOrNull();
 
         // When
-        if (alternativeInstances == null) {
+        if (null == alternativeInstances) {
             return;
         }
 
         // Then
         for (T alternativeInstance : alternativeInstances) {
-            assertNotEquals(instance.hashCode(), alternativeInstance.hashCode());
+            assertThat(alternativeInstance.hashCode()).isNotEqualTo(instance.hashCode());
         }
     }
 

@@ -18,8 +18,6 @@ package uk.gov.gchq.koryphe.util;
 
 import com.google.common.collect.Sets;
 import com.google.common.primitives.UnsignedLong;
-import org.hamcrest.Matcher;
-import org.hamcrest.core.IsCollectionContaining;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,11 +29,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class ReflectionUtilTest {
 
@@ -52,7 +47,8 @@ public class ReflectionUtilTest {
         final Set<Class> subclasses = ReflectionUtil.getSubTypes(Number.class);
 
         // When / Then
-        assertThrows(UnsupportedOperationException.class, () -> subclasses.add(String.class));
+        assertThatExceptionOfType(UnsupportedOperationException.class)
+                .isThrownBy(() -> subclasses.add(String.class));
     }
 
     @Test
@@ -61,7 +57,8 @@ public class ReflectionUtilTest {
         final Map<String, Set<Class>> simpleClassNames = ReflectionUtil.getSimpleClassNames(Number.class);
 
         // When / Then
-        assertThrows(UnsupportedOperationException.class, () -> simpleClassNames.put("test", new HashSet<>()));
+        assertThatExceptionOfType(UnsupportedOperationException.class)
+                .isThrownBy(() -> simpleClassNames.put("test", new HashSet<>()));
     }
 
     @Test
@@ -73,7 +70,7 @@ public class ReflectionUtilTest {
         final Set<Class> subclasses2 = ReflectionUtil.getSubTypes(Number.class);
 
         // Then
-        assertSame(subclasses, subclasses2);
+        assertThat(subclasses2).isSameAs(subclasses);
     }
 
     @Test
@@ -85,7 +82,7 @@ public class ReflectionUtilTest {
         final Map<String, Set<Class>> simpleClassNames2 = ReflectionUtil.getSimpleClassNames(Number.class);
 
         // Then
-        assertSame(simpleClassNames, simpleClassNames2);
+        assertThat(simpleClassNames2).isSameAs(simpleClassNames);
     }
 
     @Test
@@ -94,11 +91,9 @@ public class ReflectionUtilTest {
         final Set<Class> subclasses = ReflectionUtil.getSubTypes(Number.class);
 
         // Then
-        final HashSet<Class<? extends Number>> expected = Sets.newHashSet(
-                TestCustomNumber.class, uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class
-        );
-        assertEquals(expected, subclasses);
-        assertFalse(subclasses.contains(UnsignedLong.class));
+        assertThat(subclasses)
+                .containsExactlyInAnyOrder(TestCustomNumber.class, uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class)
+                .doesNotContain(UnsignedLong.class);
     }
 
     @Test
@@ -107,12 +102,15 @@ public class ReflectionUtilTest {
         final Map<String, Set<Class>> simpleClassNames = ReflectionUtil.getSimpleClassNames(Number.class);
 
         // Then
-        final HashSet<Class<? extends Number>> expected = Sets.newHashSet(
-                TestCustomNumber.class,
-                uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class
-        );
-        assertEquals(expected, simpleClassNames.get(TestCustomNumber.class.getSimpleName()));
-        assertFalse(simpleClassNames.containsKey(UnsignedLong.class.getSimpleName()));
+        assertThat(simpleClassNames)
+                .containsEntry(
+                    TestCustomNumber.class.getSimpleName(),
+                    Sets.newHashSet(
+                        TestCustomNumber.class,
+                        uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class
+                    )
+                )
+                .doesNotContainKey(UnsignedLong.class.getSimpleName());
     }
 
     @Test
@@ -122,12 +120,11 @@ public class ReflectionUtilTest {
         final Set<Class> subclasses = ReflectionUtil.getSubTypes(Number.class);
 
         // Then
-        final Matcher<Iterable<Class>> matcher = IsCollectionContaining.hasItems(
-                TestCustomNumber.class,
-                uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class,
-                UnsignedLong.class
+        assertThat(subclasses).contains(
+            TestCustomNumber.class,
+            uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class,
+            UnsignedLong.class
         );
-        assertThat(subclasses, matcher);
     }
 
     @Test
@@ -137,35 +134,46 @@ public class ReflectionUtilTest {
         final Map<String, Set<Class>> simpleClassNames = ReflectionUtil.getSimpleClassNames(Number.class);
 
         // Then
-        final HashSet<Class<? extends Number>> expected1 = Sets.newHashSet(
-                TestCustomNumber.class,
-                uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class
-        );
-        assertEquals(expected1, simpleClassNames.get(TestCustomNumber.class.getSimpleName()));
-        assertEquals(Collections.singleton(UnsignedLong.class), simpleClassNames.get(UnsignedLong.class.getSimpleName()));
+        assertThat(simpleClassNames)
+                .containsEntry(
+                    TestCustomNumber.class.getSimpleName(),
+                    Sets.newHashSet(
+                        TestCustomNumber.class,
+                        uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class
+                    )
+                )
+                .containsEntry(
+                    UnsignedLong.class.getSimpleName(),
+                    Collections.singleton(UnsignedLong.class)
+                );
 
-        final Set<String> expected2 = Sets.newHashSet(ReflectionUtil.DEFAULT_PACKAGES);
-        expected2.add(UnsignedLong.class.getPackage().getName());
-        assertEquals(expected2, ReflectionUtil.getReflectionPackages());
+        assertThat(ReflectionUtil.getReflectionPackages())
+                .containsAnyElementsOf(ReflectionUtil.DEFAULT_PACKAGES)
+                .contains(UnsignedLong.class.getPackage().getName());
     }
 
     @Test
     public void shouldReturnSimpleClassNamesWithExtraClassesInPathWithTrailingDot() {
         // When
         ReflectionUtil.addReflectionPackages(UnsignedLong.class.getPackage().getName() + ".");
-
-        // Then
         final Map<String, Set<Class>> simpleClassNames = ReflectionUtil.getSimpleClassNames(Number.class);
 
-        final HashSet<Class<? extends Number>> expected1 = Sets.newHashSet(
-                TestCustomNumber.class,
-                uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class
-        );
-        assertEquals(expected1, simpleClassNames.get(TestCustomNumber.class.getSimpleName()));
-        assertEquals(Collections.singleton(UnsignedLong.class), simpleClassNames.get(UnsignedLong.class.getSimpleName()));
+        // Then
+        assertThat(simpleClassNames)
+                .containsEntry(
+                    TestCustomNumber.class.getSimpleName(),
+                    Sets.newHashSet(
+                        TestCustomNumber.class,
+                        uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class
+                    )
+                )
+                .containsEntry(
+                    UnsignedLong.class.getSimpleName(),
+                    Collections.singleton(UnsignedLong.class)
+                );
 
-        final Set<String> expected = Sets.newHashSet(ReflectionUtil.DEFAULT_PACKAGES);
-        expected.add(UnsignedLong.class.getPackage().getName());
-        assertEquals(expected, ReflectionUtil.getReflectionPackages());
+        assertThat(ReflectionUtil.getReflectionPackages())
+                .containsAnyElementsOf(ReflectionUtil.DEFAULT_PACKAGES)
+                .contains(UnsignedLong.class.getPackage().getName());
     }
 }

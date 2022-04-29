@@ -28,9 +28,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class InRangeTest<T extends Comparable<T>> extends PredicateTest<InRange> {
 
@@ -154,11 +152,11 @@ public class InRangeTest<T extends Comparable<T>> extends PredicateTest<InRange>
         final InRange<T> deserialisedFilter = (InRange<T>) deserialise(json);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(convert(1000L), deserialisedFilter.getStart());
-        assertEquals(convert(1010L), deserialisedFilter.getEnd());
-        assertFalse(deserialisedFilter.isStartInclusive());
-        assertFalse(deserialisedFilter.isEndInclusive());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getStart()).isEqualTo(convert(1000L));
+        assertThat(deserialisedFilter.getEnd()).isEqualTo(convert(1010L));
+        assertThat(deserialisedFilter.isStartInclusive()).isFalse();
+        assertThat(deserialisedFilter.isEndInclusive()).isFalse();
     }
 
     @Test
@@ -183,9 +181,9 @@ public class InRangeTest<T extends Comparable<T>> extends PredicateTest<InRange>
         final InRange<T> deserialisedFilter = (InRange<T>) deserialise(json);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(convert(1000L), deserialisedFilter.getStart());
-        assertEquals(convert(1010L), deserialisedFilter.getEnd());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getStart()).isEqualTo(convert(1000L));
+        assertThat(deserialisedFilter.getEnd()).isEqualTo(convert(1010L));
     }
 
     protected String getStartJson(final T value) {
@@ -238,7 +236,9 @@ public class InRangeTest<T extends Comparable<T>> extends PredicateTest<InRange>
 
         // Then
         for (int i = 0; i < values.size(); i++) {
-            assertEquals(expectedResult, results.get(i), "Failed for value: " + values.get(i));
+            assertThat(results.get(i))
+                    .isEqualTo(expectedResult)
+                    .withFailMessage("Failed for value: %s", values.get(i));
         }
     }
 }

@@ -29,9 +29,8 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class TupleAdaptedBinaryOperatorCompositeTest
         extends BinaryOperatorTest<TupleAdaptedBinaryOperatorComposite<Object>> {
@@ -61,8 +60,7 @@ public class TupleAdaptedBinaryOperatorCompositeTest
 
         // Then
         JsonSerialiser.assertEquals(json, serialised);
-        assertEquals(instance, deserialised);
-
+        assertThat(deserialised).isEqualTo(instance);
     }
 
     @Override
@@ -110,9 +108,8 @@ public class TupleAdaptedBinaryOperatorCompositeTest
                 .build();
 
         // Then
-        final ClassCastException actual = assertThrows(ClassCastException.class,
-                () -> boc.apply(stateTuple, inputTuple));
-        assertNotNull(actual.getMessage());
+        assertThatExceptionOfType(ClassCastException.class)
+                .isThrownBy(() -> boc.apply(stateTuple, inputTuple));
     }
 
     @Test
@@ -134,8 +131,8 @@ public class TupleAdaptedBinaryOperatorCompositeTest
         final Tuple<Integer> agg = boc.apply(stateTuple, inputTuple);
 
         // Then
-        assertEquals(5, agg.get(0));
-        assertEquals(10, agg.get(1));
-        assertEquals(18, agg.get(2));
+        assertThat(agg.get(0)).isEqualTo(5);
+        assertThat(agg.get(1)).isEqualTo(10);
+        assertThat(agg.get(2)).isEqualTo(18);
     }
 }

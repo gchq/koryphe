@@ -25,7 +25,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 class BinaryOperatorCompositeTest extends BinaryOperatorTest<BinaryOperatorComposite> {
@@ -51,8 +51,7 @@ class BinaryOperatorCompositeTest extends BinaryOperatorTest<BinaryOperatorCompo
 
         // Then
         JsonSerialiser.assertEquals(json, serialised);
-        assertEquals(boc, deserialised);
-
+        assertThat(deserialised).isEqualTo(boc);
     }
 
     @Override
@@ -92,8 +91,7 @@ class BinaryOperatorCompositeTest extends BinaryOperatorTest<BinaryOperatorCompo
         Object aggregatedInReverseOrder = reversed.apply(5, 10);
 
         // Then
-        assertEquals(150, aggregated); // (5 + 10) x 10 = 150
-        assertEquals(60, aggregatedInReverseOrder); // (5 x 10) + 10 = 60
-
+        assertThat(aggregated).isEqualTo(150); // (5 + 10) x 10 = 150
+        assertThat(aggregatedInReverseOrder).isEqualTo(60); // (5 x 10) + 10 = 60
     }
 }

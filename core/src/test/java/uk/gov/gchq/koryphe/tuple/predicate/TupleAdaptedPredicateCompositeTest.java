@@ -29,9 +29,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class TupleAdaptedPredicateCompositeTest extends PredicateTest<TupleAdaptedPredicateComposite> {
 
@@ -69,7 +67,7 @@ class TupleAdaptedPredicateCompositeTest extends PredicateTest<TupleAdaptedPredi
 
         // Then
         JsonSerialiser.assertEquals(json, serialised);
-        assertEquals(instance, deserialised);
+        assertThat(deserialised).isEqualTo(instance);
     }
 
     @Override
@@ -139,11 +137,8 @@ class TupleAdaptedPredicateCompositeTest extends PredicateTest<TupleAdaptedPredi
         objects.put("fail", 5L); // not a string will cause IsA check to fail
         objects.put("error", new IsLessThan()); // IsLessThan does not implement Comparable so will error.
 
-        // When
-        boolean result = composite.test(objects); // no error
-
-        // Then
-        assertFalse(result);
+        // When / Then
+        assertThat(composite).rejects(objects);
     }
 
     @Test
@@ -156,11 +151,6 @@ class TupleAdaptedPredicateCompositeTest extends PredicateTest<TupleAdaptedPredi
         objects.put("differentTest", "pass");
         
         // When
-        boolean test = instance.test(objects);
-
-        // Then
-        assertTrue(test);
+        assertThat(instance).accepts(objects);
     }
-
-
 }

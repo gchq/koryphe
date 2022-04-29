@@ -23,11 +23,8 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class ToDoubleTest extends FunctionTest<ToDouble> {
 
@@ -36,14 +33,10 @@ public class ToDoubleTest extends FunctionTest<ToDouble> {
         // Given
         final ToDouble function = new ToDouble();
 
-        // When
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> function.apply(true));
-
-        String expectedMessage = "Could not convert value to Double: ";
-        String actualMessage = exception.getMessage();
-
-        // Then
-        assertTrue(actualMessage.contains(expectedMessage));
+        // When / Then
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> function.apply(true))
+                .withMessageContaining("Could not convert value to Double: ");
     }
 
     @Test
@@ -55,8 +48,9 @@ public class ToDoubleTest extends FunctionTest<ToDouble> {
         Object output = function.apply("5.2");
 
         // Then
-        assertEquals(5.2, output);
-        assertEquals(Double.class, output.getClass());
+        assertThat(output)
+                .isEqualTo(5.2)
+                .isExactlyInstanceOf(Double.class);
     }
 
     @Test
@@ -68,8 +62,9 @@ public class ToDoubleTest extends FunctionTest<ToDouble> {
         Object output = function.apply(5);
 
         // Then
-        assertEquals(5.0, output);
-        assertEquals(Double.class, output.getClass());
+        assertThat(output)
+                .isEqualTo(5.0)
+                .isExactlyInstanceOf(Double.class);
     }
 
     @Test
@@ -81,7 +76,7 @@ public class ToDoubleTest extends FunctionTest<ToDouble> {
         final Object output = function.apply(null);
 
         // Then
-        assertNull(output);
+        assertThat(output).isNull();
     }
 
     @Override
@@ -122,6 +117,6 @@ public class ToDoubleTest extends FunctionTest<ToDouble> {
         final ToDouble deserialisedMethod = JsonSerialiser.deserialise(json, ToDouble.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

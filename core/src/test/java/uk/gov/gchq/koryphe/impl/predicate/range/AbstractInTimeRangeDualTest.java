@@ -32,9 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> extends PredicateTest<AbstractInTimeRangeDual> {
 
@@ -79,7 +77,7 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
                 .build();
 
         // Then
-        assertEquals(timeZone, predicate.getTimeZoneId());
+        assertThat(predicate.getTimeZoneId()).isEqualTo(timeZone);
     }
 
     @Test
@@ -99,7 +97,7 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
                 .build();
 
         // Then
-        assertEquals(userTimeZone, predicate.getTimeZoneId());
+        assertThat(predicate.getTimeZoneId()).isEqualTo(userTimeZone);
     }
 
     @Test
@@ -417,9 +415,9 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
         final AbstractInTimeRangeDual<T> deserialisedFilter = (AbstractInTimeRangeDual<T>) deserialise(json);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(start, deserialisedFilter.getStart());
-        assertEquals(end, deserialisedFilter.getEnd());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getStart()).isEqualTo(start);
+        assertThat(deserialisedFilter.getEnd()).isEqualTo(end);
     }
 
     @Test
@@ -446,9 +444,9 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
         final AbstractInTimeRangeDual<T> deserialisedFilter = (AbstractInTimeRangeDual<T>) deserialise(json);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(start, deserialisedFilter.getStart());
-        assertEquals(end, deserialisedFilter.getEnd());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getStart()).isEqualTo(start);
+        assertThat(deserialisedFilter.getEnd()).isEqualTo(end);
     }
 
     @Test
@@ -461,9 +459,9 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
                 .build();
 
         // Then
-        assertEquals(10000L, (long) filter.getStartOffset());
-        assertEquals(1000L, (long) filter.getEndOffset());
-        assertEquals(TimeUnit.MILLISECOND, filter.getOffsetUnit());
+        assertThat((long) filter.getStartOffset()).isEqualTo(10000L);
+        assertThat((long) filter.getEndOffset()).isEqualTo(1000L);
+        assertThat(filter.getOffsetUnit()).isEqualTo(TimeUnit.MILLISECOND);
     }
 
     @Test
@@ -476,9 +474,9 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
                 .build();
 
         // Then
-        assertEquals(10000L, (long) filter.getStartOffset());
-        assertEquals(1000L, (long) filter.getEndOffset());
-        assertEquals(TimeUnit.SECOND, filter.getOffsetUnit());
+        assertThat((long) filter.getStartOffset()).isEqualTo(10000L);
+        assertThat((long) filter.getEndOffset()).isEqualTo(1000L);
+        assertThat(filter.getOffsetUnit()).isEqualTo(TimeUnit.SECOND);
     }
 
     @Test
@@ -491,9 +489,9 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
                 .build();
 
         // Then
-        assertEquals(10000L, (long) filter.getStartOffset());
-        assertEquals(1000L, (long) filter.getEndOffset());
-        assertEquals(TimeUnit.MINUTE, filter.getOffsetUnit());
+        assertThat((long) filter.getStartOffset()).isEqualTo(10000L);
+        assertThat((long) filter.getEndOffset()).isEqualTo(1000L);
+        assertThat(filter.getOffsetUnit()).isEqualTo(TimeUnit.MINUTE);
     }
 
     @Test
@@ -506,9 +504,9 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
                 .build();
 
         // Then
-        assertEquals(1000L, (long) filter.getStartOffset());
-        assertEquals(100L, (long) filter.getEndOffset());
-        assertEquals(TimeUnit.HOUR, filter.getOffsetUnit());
+        assertThat((long) filter.getStartOffset()).isEqualTo(1000L);
+        assertThat((long) filter.getEndOffset()).isEqualTo(100L);
+        assertThat(filter.getOffsetUnit()).isEqualTo(TimeUnit.HOUR);
     }
 
     @Test
@@ -520,10 +518,10 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
                 .build();
 
         // Then
-        assertEquals(7L, (long) filter.getStartOffset());
-        assertEquals(2L, (long) filter.getEndOffset());
+        assertThat((long) filter.getStartOffset()).isEqualTo(7L);
+        assertThat((long) filter.getEndOffset()).isEqualTo(2L);
         // default is DAY
-        assertNull(filter.getOffsetUnit());
+        assertThat(filter.getOffsetUnit()).isNull();
     }
 
     @Test
@@ -550,9 +548,9 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
         final AbstractInTimeRangeDual<T> deserialisedFilter = (AbstractInTimeRangeDual<T>) deserialise(json);
 
         // Then 2
-        assertNotNull(deserialisedFilter);
-        assertEquals(startValue, deserialisedFilter.getStart());
-        assertEquals(endValue, deserialisedFilter.getEnd());
+        assertThat(deserialisedFilter).isNotNull();
+        assertThat(deserialisedFilter.getStart()).isEqualTo(startValue);
+        assertThat(deserialisedFilter.getEnd()).isEqualTo(endValue);
     }
 
     @Override
@@ -591,7 +589,9 @@ public abstract class AbstractInTimeRangeDualTest<T extends Comparable<T>> exten
 
         // Then
         for (int i = 0; i < values.size(); i++) {
-            assertEquals(expectedResult, results.get(i), "Failed for value: " + values.get(i));
+            assertThat(results.get(i))
+                    .isEqualTo(expectedResult)
+                    .withFailMessage("Failed for value: %s", values.get(i));
         }
     }
 

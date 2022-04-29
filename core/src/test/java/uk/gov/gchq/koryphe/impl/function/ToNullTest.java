@@ -21,8 +21,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ToNullTest extends FunctionTest<ToNull> {
 
@@ -35,7 +34,7 @@ public class ToNullTest extends FunctionTest<ToNull> {
         final Object output = function.apply("test");
 
         // Then
-        assertNull(output);
+        assertThat(output).isNull();
     }
 
     @Test
@@ -47,7 +46,7 @@ public class ToNullTest extends FunctionTest<ToNull> {
         final Object output = function.apply(null);
 
         // Then
-        assertNull(output);
+        assertThat(output).isNull();
     }
 
     @Override
@@ -88,6 +87,6 @@ public class ToNullTest extends FunctionTest<ToNull> {
         final ToNull deserialisedMethod = JsonSerialiser.deserialise(json, ToNull.class);
 
         // Then 2
-        assertNotNull(deserialisedMethod);
+        assertThat(deserialisedMethod).isNotNull();
     }
 }

@@ -26,9 +26,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
@@ -54,25 +53,21 @@ public class ReflectiveTupleTest {
 
     @Test
     public void shouldNotFindMissingField() {
-        // When
-        final Exception exception = assertThrows(RuntimeException.class, () -> testObj.get(FIELD_X));
-
-        // Then
-        assertEquals(String.format(SELECTION_S_DOES_NOT_EXIST, FIELD_X), exception.getMessage());
+        assertThatExceptionOfType(RuntimeException.class)
+                .isThrownBy(() -> testObj.get(FIELD_X))
+                .withMessage(SELECTION_S_DOES_NOT_EXIST, FIELD_X);
     }
 
     @Test
     public void shouldNotFindMissingMethod() {
-        // When
-        final Exception exception = assertThrows(RuntimeException.class, () -> testObj.get("get" + FIELD_X));
-
-        // Then
-        assertEquals(String.format(SELECTION_S_DOES_NOT_EXIST, "get" + FIELD_X), exception.getMessage());
+        assertThatExceptionOfType(RuntimeException.class)
+                .isThrownBy(() -> testObj.get("get" + FIELD_X))
+                .withMessage(SELECTION_S_DOES_NOT_EXIST, "get" + FIELD_X);
     }
 
     @Test
     public void shouldFindPublicField() {
-        assertEquals("fa", testObj.get(FIELD_A));
+        assertThat(testObj.get(FIELD_A)).isEqualTo("fa");
     }
 
     @Test
@@ -80,20 +75,17 @@ public class ReflectiveTupleTest {
         // Given
         testObj = new ReflectiveTuple(new ExampleNestedObj1());
 
-        // When
-        final Exception exception = assertThrows(IllegalArgumentException.class, () -> testObj.get("nestedField."));
-
-        // Then
-        assertEquals("nested field reference is required", exception.getMessage());
+        // When / Then
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> testObj.get("nestedField."))
+                .withMessage("nested field reference is required");
     }
 
     @Test
     public void shouldNotFindPublicFieldWithDotAtStart() {
-        // When
-        final Exception exception = assertThrows(IllegalArgumentException.class, () -> testObj.get("." + FIELD_A));
-
-        // Then
-        assertEquals("field reference is required", exception.getMessage());
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> testObj.get("." + FIELD_A))
+                .withMessage("field reference is required");
     }
 
     @Test
@@ -101,11 +93,10 @@ public class ReflectiveTupleTest {
         // Given
         testObj = new ReflectiveTuple(new ExampleNestedObj1());
 
-        // When
-        final Exception exception = assertThrows(IllegalArgumentException.class, () -> testObj.get("nestedField.." + FIELD_A));
-
-        // Then
-        assertEquals("field reference is required", exception.getMessage());
+        // When / Then
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> testObj.get("nestedField.." + FIELD_A))
+                .withMessage("field reference is required");
     }
 
     @Test
@@ -114,30 +105,26 @@ public class ReflectiveTupleTest {
         testObj = new ReflectiveTuple(new ExampleNestedObj1());
 
         // When / Then
-        assertEquals("fa", testObj.get(NESTED_FIELD));
+        assertThat(testObj.get(NESTED_FIELD)).isEqualTo("fa");
     }
 
     @Test
     public void shouldNotFindPrivateField() {
-        // When
-        final Exception exception = assertThrows(RuntimeException.class, () -> testObj.get(FIELD_B));
-
-        // Then
-        assertEquals(String.format(SELECTION_S_DOES_NOT_EXIST, FIELD_B), exception.getMessage());
+        assertThatExceptionOfType(RuntimeException.class)
+                .isThrownBy(() -> testObj.get(FIELD_B))
+                .withMessage(SELECTION_S_DOES_NOT_EXIST, FIELD_B);
     }
 
     @Test
     public void shouldFindPublicMethod() {
-        assertEquals("ma", testObj.get("methodA"));
+        assertThat(testObj.get("methodA")).isEqualTo("ma");
     }
 
     @Test
     public void shouldNotFindPrivateMethod() {
-        // When
-        final Exception exception = assertThrows(RuntimeException.class, () -> testObj.get(METHOD_B));
-
-        // Then
-        assertEquals(String.format(SELECTION_S_DOES_NOT_EXIST, METHOD_B), exception.getMessage());
+        assertThatExceptionOfType(RuntimeException.class)
+                .isThrownBy(() -> testObj.get(METHOD_B))
+                .withMessage(SELECTION_S_DOES_NOT_EXIST, METHOD_B);
     }
 
     @Test
@@ -150,7 +137,7 @@ public class ReflectiveTupleTest {
         testObj.put("fieldA", "changed");
 
         // Then
-        assertEquals("changed", record.fieldA);
+        assertThat(record.fieldA).isEqualTo("changed");
     }
 
 
@@ -160,12 +147,10 @@ public class ReflectiveTupleTest {
         final ExampleObj3 record = new ExampleObj3();
         testObj = new ReflectiveTuple(record);
 
-        // When
-        final Exception exception = assertThrows(IllegalArgumentException.class, () -> testObj.put("fieldA", 1));
-
-        // Then
-        final String expected = String.format(ReflectiveTuple.ERROR_WRONG_PARAM, "field", "fieldA", String.class, Integer.class.getSimpleName());
-        assertEquals(expected, exception.getMessage());
+        // When / Then
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> testObj.put("fieldA", 1))
+                .withMessage(ReflectiveTuple.ERROR_WRONG_PARAM, "field", "fieldA", String.class, Integer.class.getSimpleName());
     }
 
     @Test
@@ -178,7 +163,8 @@ public class ReflectiveTupleTest {
         testObj.put("fieldB", "changed");
 
         // Then
-        assertEquals("changed", record.fieldB);
+        assertThat(record.fieldB).isEqualTo("changed");
+
     }
 
     @Test
@@ -186,20 +172,18 @@ public class ReflectiveTupleTest {
         // Given
         testObj = new ReflectiveTuple(new ExampleNestedObj1());
 
-        // When
-        final Exception exception = assertThrows(IllegalArgumentException.class, () -> testObj.put("nestedField.", "changed"));
-
-        // Then
-        assertEquals("nested field reference is required", exception.getMessage());
+        // When / Then
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> testObj.put("nestedField.", "changed"))
+                .withMessage("nested field reference is required");
     }
 
     @Test
     public void shouldNotPutFieldWithDotAtStart() {
-        // When
-        final Exception exception = assertThrows(IllegalArgumentException.class, () -> testObj.put("." + FIELD_A, "changed"));
-
-        // Then
-        assertEquals("field reference is required", exception.getMessage());
+        // When / Then
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> testObj.put("." + FIELD_A, "changed"))
+                .withMessage("field reference is required");
     }
 
     @Test
@@ -207,11 +191,10 @@ public class ReflectiveTupleTest {
         // Given
         testObj = new ReflectiveTuple(new ExampleNestedObj1());
 
-        // When
-        final Exception exception = assertThrows(IllegalArgumentException.class, () -> testObj.put("nestedField.." + FIELD_A, "changed"));
-
-        // Then
-        assertEquals("field reference is required", exception.getMessage());
+        // When / Then
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> testObj.put("nestedField.." + FIELD_A, "changed"))
+                .withMessage("field reference is required");
     }
 
     @Test
@@ -220,13 +203,11 @@ public class ReflectiveTupleTest {
         final ExampleObj3 record = new ExampleObj3();
         testObj = new ReflectiveTuple(record);
 
-        // When
-        final Exception exception = assertThrows(IllegalArgumentException.class, () -> testObj.put("fieldB", 1));
-
-        // Then
-        final String expected = String.format(ReflectiveTuple.ERROR_WRONG_PARAM, "method", "setFieldB",
+        // When / Then
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> testObj.put("fieldB", 1))
+                .withMessage(ReflectiveTuple.ERROR_WRONG_PARAM, "method", "setFieldB",
                 Collections.singletonList(String.class), Integer.class.getSimpleName());
-        assertEquals(expected, exception.getMessage());
     }
 
     @Test
@@ -235,11 +216,10 @@ public class ReflectiveTupleTest {
         final ExampleObj3 record = new ExampleObj3();
         testObj = new ReflectiveTuple(record);
 
-        // When
-        final Exception exception = assertThrows(RuntimeException.class, () -> testObj.put("fieldC", 1));
-
-        // Then
-        assertEquals(String.format(ReflectiveTuple.SELECTION_S_DOES_NOT_EXIST, "fieldC"), exception.getMessage());
+        // When / Then
+        assertThatExceptionOfType(RuntimeException.class)
+                .isThrownBy(() -> testObj.put("fieldC", 1))
+                .withMessage(ReflectiveTuple.SELECTION_S_DOES_NOT_EXIST, "fieldC");
     }
 
     @Test
@@ -252,12 +232,13 @@ public class ReflectiveTupleTest {
         testObj.put(NESTED_FIELD, "changed");
 
         // Then
-        assertEquals("changed", record.getNestedField().fieldA);
+        assertThat(record.getNestedField().fieldA).isEqualTo("changed");
     }
 
     @Test
     public void shouldNotValues() {
-        assertThrows(UnsupportedOperationException.class, () -> testObj.values());
+        assertThatExceptionOfType(UnsupportedOperationException.class)
+                .isThrownBy(() -> testObj.values());
     }
 
     @Test
@@ -266,9 +247,9 @@ public class ReflectiveTupleTest {
         testObj = new ReflectiveTuple(new ExampleObj2());
 
         // Then
-        assertEquals("fa", testObj.get("valueA"));
-        assertEquals("mb", testObj.get("valueB"));
-        assertEquals("isc", testObj.get("valueC"));
+        assertThat(testObj.get("valueA")).isEqualTo("fa");
+        assertThat(testObj.get("valueB")).isEqualTo("mb");
+        assertThat(testObj.get("valueC")).isEqualTo("isc");
     }
 
     @Test
@@ -286,8 +267,8 @@ public class ReflectiveTupleTest {
         final Object valueB1 = testObj.get("valueB");
 
         // Then
-        assertEquals("fa", valueA1);
-        assertEquals("mb", valueB1);
+        assertThat(valueA1).isEqualTo("fa");
+        assertThat(valueB1).isEqualTo("mb");
         verify(fieldCache, times(1)).put(eq(ExampleObj2.class), eq("valueA"), any(Field.class));
         verify(methodCache, times(1)).put(eq(ExampleObj2.class), eq("getValueB"), any(Method.class));
 
@@ -300,8 +281,8 @@ public class ReflectiveTupleTest {
         final Object valueB2 = testObj.get("valueB");
 
         // Then
-        assertEquals("falt", valueA2);
-        assertEquals("mbAlt", valueB2);
+        assertThat(valueA2).isEqualTo("falt");
+        assertThat(valueB2).isEqualTo("mbAlt");
         verify(fieldCache, times(2)).get(ExampleObj2.class, "valueA");
         verify(methodCache, times(2)).get(ExampleObj2.class, "getValueB");
     }
@@ -315,7 +296,7 @@ public class ReflectiveTupleTest {
         AccessibleObject actual = cache.get(String.class, "string");
 
         // Then
-        assertNull(actual);
+        assertThat(actual).isNull();
 
         // Given - cache updated
         final Method toStringMethod = String.class.getMethod("toString");
@@ -325,7 +306,7 @@ public class ReflectiveTupleTest {
         actual = cache.get(String.class, "myToString");
 
         // Then
-        assertEquals(toStringMethod, actual);
+        assertThat(actual).isEqualTo(toStringMethod);
     }
 
     private static class ExampleObj {

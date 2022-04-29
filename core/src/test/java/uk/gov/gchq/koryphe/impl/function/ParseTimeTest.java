@@ -27,8 +27,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ParseTimeTest extends FunctionTest<ParseTime> {
     @Override
@@ -78,7 +77,7 @@ public class ParseTimeTest extends FunctionTest<ParseTime> {
         long result = function.apply(input);
 
         // Then
-        assertEquals(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS").parse(input).getTime(), result);
+        assertThat(result).isEqualTo(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS").parse(input).getTime());
     }
 
     @Test
@@ -91,7 +90,7 @@ public class ParseTimeTest extends FunctionTest<ParseTime> {
         long result = function.apply(input);
 
         // Then
-        assertEquals(new SimpleDateFormat("yyyy-MM hh:mm:ss.SSS").parse(input).getTime(), result);
+        assertThat(result).isEqualTo(new SimpleDateFormat("yyyy-MM hh:mm:ss.SSS").parse(input).getTime());
     }
 
     @Test
@@ -103,6 +102,6 @@ public class ParseTimeTest extends FunctionTest<ParseTime> {
         final Object result = function.apply(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 }

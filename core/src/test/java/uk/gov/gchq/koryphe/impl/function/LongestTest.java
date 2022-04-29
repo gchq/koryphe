@@ -30,11 +30,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class LongestTest extends FunctionTest<Longest> {
 
@@ -47,7 +44,7 @@ public class LongestTest extends FunctionTest<Longest> {
         final Object result = function.apply(null, null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -58,8 +55,9 @@ public class LongestTest extends FunctionTest<Longest> {
         final Object input2 = new Concat();
 
         // When / Then
-        final Exception exception = assertThrows(IllegalArgumentException.class, () -> function.apply(input1, input2));
-        assertEquals("Could not determine the size of the provided value", exception.getMessage());
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> function.apply(input1, input2))
+                .withMessage("Could not determine the size of the provided value");
     }
 
     @Test
@@ -73,7 +71,7 @@ public class LongestTest extends FunctionTest<Longest> {
         final String result = function.apply(input1, input2);
 
         // Then
-        assertEquals(input2, result);
+        assertThat(result).isEqualTo(input2);
     }
 
     @Test
@@ -87,7 +85,7 @@ public class LongestTest extends FunctionTest<Longest> {
         final Object[] result = function.apply(input1, input2);
 
         // Then
-        assertArrayEquals(input2, result);
+        assertThat(result).isEqualTo(input2);
     }
 
     @Test
@@ -101,7 +99,7 @@ public class LongestTest extends FunctionTest<Longest> {
         final List<Integer> result = function.apply(input1, input2);
 
         // Then
-        assertEquals(input2, result);
+        assertThat(result).isEqualTo(input2);
     }
 
     @Test
@@ -115,7 +113,7 @@ public class LongestTest extends FunctionTest<Longest> {
         final Set<Integer> result = function.apply(input1, input2);
 
         // Then
-        assertEquals(input2, result);
+        assertThat(result).isEqualTo(input2);
     }
 
     @Test
@@ -129,7 +127,7 @@ public class LongestTest extends FunctionTest<Longest> {
         final Map<String, String> result = function.apply(input1, input2);
 
         // Then
-        assertEquals(input2, result);
+        assertThat(result).isEqualTo(input2);
     }
 
     @Override
@@ -170,6 +168,6 @@ public class LongestTest extends FunctionTest<Longest> {
         final Longest deserialised = JsonSerialiser.deserialise(json, Longest.class);
 
         // Then
-        assertNotNull(deserialised);
+        assertThat(deserialised).isNotNull();
     }
 }
