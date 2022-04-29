@@ -16,6 +16,8 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
@@ -26,16 +28,18 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
  * <p>
  * The resulting object is what is returned from the method.
  */
+
 @Since("2.0.0")
 @Summary("Casts input Object to a Boolean")
 public class ToBoolean extends KorypheFunction<Object, Boolean> {
 
+    @SuppressFBWarnings(value = "NP_BOOLEAN_RETURN_NULL",
+    justification = "null values should be allowed")
     @Override
     public Boolean apply(final Object value) {
         if (null == value) {
             return null;
         }
-
         if (value instanceof String) {
             return Boolean.parseBoolean((String) value);
         }

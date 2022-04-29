@@ -29,7 +29,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 public class ToBooleanTest extends FunctionTest<ToBoolean> {
 
     @Test
-    public void shouldThrowException() {
+    public void shouldThrowExceptionIfIncorrectTypeGiven() {
         // Given
         final ToBoolean function = new ToBoolean();
 
@@ -37,6 +37,20 @@ public class ToBooleanTest extends FunctionTest<ToBoolean> {
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> function.apply(5.2))
                 .withMessageContaining("Could not convert value to Boolean: ");
+    }
+
+    @Test
+    public void shouldConvertStringToBoolean() {
+        // Given
+        final ToBoolean function = new ToBoolean();
+
+        // When
+        Object output = function.apply("test");
+
+        // Then
+        assertThat(output)
+                .isEqualTo(false)
+                .isExactlyInstanceOf(Boolean.class);
     }
 
     @Test
