@@ -51,7 +51,7 @@ public class IterableFlattenTest extends FunctionTest<IterableFlatten> {
     public void shouldFlattenIterableNumbers() {
         // Given
         final IterableFlatten<Number> function = new IterableFlatten<>(new Sum());
-        final List<Number> input = Lists.newArrayList(1, 2, 3, 4, 5);
+        final List<Number> input = Lists.newArrayList(1, 2, 3, 4, null, 5);
 
         // When
         final Number result = function.apply(input);
