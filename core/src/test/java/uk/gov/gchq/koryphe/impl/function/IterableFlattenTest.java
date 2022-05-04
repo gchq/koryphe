@@ -51,7 +51,7 @@ public class IterableFlattenTest extends FunctionTest<IterableFlatten> {
     public void shouldFlattenIterableNumbers() {
         // Given
         final IterableFlatten<Number> function = new IterableFlatten<>(new Sum());
-        final List<Number> input = Lists.newArrayList(1, 2, 3, 4, null, 5);
+        final List<Number> input = Lists.newArrayList(1, 2, 3, 4, 5);
 
         // When
         final Number result = function.apply(input);
@@ -61,10 +61,22 @@ public class IterableFlattenTest extends FunctionTest<IterableFlatten> {
     }
 
     @Test
-    public void shouldFlattenIterableNumbersNull() {
+    public void shouldFlattenIterableNumbersWithNull() {
         // Given
         final IterableFlatten<Number> function = new IterableFlatten<>(new Sum());
-        final List<Number> input = Lists.newArrayList((Number) null, (Number) null, (Number) null, (Number) null);
+        final List<Number> input = Lists.newArrayList(2, 4, 6, 8, null, 10);
+
+        // When
+        final Number result = function.apply(input);
+
+        // Then
+        assertThat(result).isEqualTo(30);
+    }
+    @Test
+    public void shouldFlattenIterableNumbersAllNull() {
+        // Given
+        final IterableFlatten<Number> function = new IterableFlatten<>(new Sum());
+        final List<Number> input = Lists.newArrayList(null, null, null, null);
 
         // When
         final Number result = function.apply(input);

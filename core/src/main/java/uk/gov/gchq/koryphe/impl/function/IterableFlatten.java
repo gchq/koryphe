@@ -33,7 +33,9 @@ import static java.util.Objects.nonNull;
 
 /**
  * A {@code IterableFlatten} is a {@link java.util.function.Function} that takes items from an {@link Iterable} and
- * combines them into a single result based on a provided {@link BinaryOperator}
+ * combines them into a single result based on a provided {@link BinaryOperator}.
+ *
+ * Any {@code null} items are ignored.
  *
  * @param <I_ITEM> the type of object in the iterable
  */
