@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class IterableFlattenTest extends FunctionTest<IterableFlatten> {
 
@@ -60,6 +61,31 @@ public class IterableFlattenTest extends FunctionTest<IterableFlatten> {
     }
 
     @Test
+    public void shouldFlattenIterableNumbersWithNull() {
+        // Given
+        final IterableFlatten<Number> function = new IterableFlatten<>(new Sum());
+        final List<Number> input = Lists.newArrayList(2, 4, 6, 8, null, 10);
+
+        // When
+        final Number result = function.apply(input);
+
+        // Then
+        assertThat(result).isEqualTo(30);
+    }
+    @Test
+    public void shouldFlattenIterableNumbersAllNull() {
+        // Given
+        final IterableFlatten<Number> function = new IterableFlatten<>(new Sum());
+        final List<Number> input = Lists.newArrayList(null, null, null, null);
+
+        // When
+        final Number result = function.apply(input);
+
+        //then
+        assertNull(result);
+    }
+
+    @Test
     public void shouldFlattenIterableStrings() {
         // Given
         final IterableFlatten<String> function = new IterableFlatten<>((a, b) -> a + b);
@@ -84,12 +110,12 @@ public class IterableFlattenTest extends FunctionTest<IterableFlatten> {
 
     @Override
     protected Class[] getExpectedSignatureInputClasses() {
-        return new Class[]{ Iterable.class };
+        return new Class[]{Iterable.class};
     }
 
     @Override
     protected Class[] getExpectedSignatureOutputClasses() {
-        return new Class[]{ Object.class };
+        return new Class[]{Object.class};
     }
 
     @Test
