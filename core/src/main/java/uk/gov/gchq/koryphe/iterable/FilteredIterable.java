@@ -14,35 +14,34 @@
  * limitations under the License.
  */
 
-package uk.gov.gchq.koryphe.commonutil.iterable;
+package uk.gov.gchq.koryphe.iterable;
 
 import uk.gov.gchq.koryphe.util.CloseableUtil;
 
 import java.io.Closeable;
 import java.util.Iterator;
+import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * @param <T> the type of items in the iterator
  */
-public class ChainedIterable<T> implements Closeable, Iterable<T> {
-    private final Iterable<? extends Iterable<? extends T>> iterables;
+public class FilteredIterable<T> implements Closeable, Iterable<T> {
+    private final Iterable<T> iterable;
+    private final List<Predicate> predicates;
 
-    public ChainedIterable(final Iterable<? extends Iterable<? extends T>> iterables) {
-        if (null == iterables) {
-            throw new IllegalArgumentException("iterables are required");
-        }
-        this.iterables = iterables;
+    public FilteredIterable(final Iterable<T> iterable, final List<Predicate> predicates) {
+        this.iterable = iterable;
+        this.predicates = predicates;
     }
 
     @Override
     public Iterator<T> iterator() {
-        return new ChainedIterator<>(iterables.iterator());
+        return new FilteredIterator<>(iterable.iterator(), predicates);
     }
 
     @Override
     public void close() {
-        for (final Iterable<? extends T> iterable : iterables) {
-            CloseableUtil.close(iterable);
-        }
+        CloseableUtil.close(iterable);
     }
 }
