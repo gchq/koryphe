@@ -23,6 +23,7 @@ import uk.gov.gchq.koryphe.util.CloseableUtil;
 import java.io.Closeable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -48,10 +49,8 @@ public class MappedIterable<I_ITEM, O_ITEM> implements Closeable, Iterable<O_ITE
         if (null == functions) {
             throw new IllegalArgumentException("List of functions cannot be null");
         }
-        for (final Function function : functions) {
-            if (null == function) {
-                throw new IllegalArgumentException("Functions list cannot contain a null function");
-            }
+        if (functions.stream().anyMatch(Objects::isNull)) {
+            throw new IllegalArgumentException("Functions list cannot contain a null function");
         }
 
         this.iterable = iterable;

@@ -23,6 +23,7 @@ import uk.gov.gchq.koryphe.util.CloseableUtil;
 import java.io.Closeable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 /**
@@ -47,10 +48,8 @@ public class FilteredIterable<T> implements Closeable, Iterable<T> {
         if (null == predicates) {
             throw new IllegalArgumentException("List of predicates cannot be null");
         }
-        for (final Predicate predicate : predicates) {
-            if (null == predicate) {
-                throw new IllegalArgumentException("Predicates list cannot contain a null predicate");
-            }
+        if (predicates.stream().anyMatch(Objects::isNull)) {
+            throw new IllegalArgumentException("Predicates list cannot contain a null predicate");
         }
 
         this.iterable = iterable;

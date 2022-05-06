@@ -23,6 +23,7 @@ import java.io.Closeable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 /**
@@ -39,11 +40,10 @@ public class FilteredIterator<T> implements Closeable, Iterator<T> {
         if (null == predicates) {
             throw new IllegalArgumentException("List of predicates cannot be null");
         }
-        for (final Predicate predicate : predicates) {
-            if (null == predicate) {
-                throw new IllegalArgumentException("Predicates list cannot contain a null predicate");
-            }
+        if (predicates.stream().anyMatch(Objects::isNull)) {
+            throw new IllegalArgumentException("Predicates list cannot contain a null predicate");
         }
+
         this.iterator = iterator;
         this.andPredicate = new And<>(predicates);
     }
