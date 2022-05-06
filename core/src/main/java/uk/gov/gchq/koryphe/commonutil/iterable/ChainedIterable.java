@@ -46,5 +46,3 @@ public class ChainedIterable<T> implements Closeable, Iterable<T> {
         }
     }
 }
-
-}
