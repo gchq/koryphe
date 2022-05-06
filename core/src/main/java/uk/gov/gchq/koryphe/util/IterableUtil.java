@@ -18,6 +18,7 @@ package uk.gov.gchq.koryphe.util;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import uk.gov.gchq.koryphe.commonutil.iterable.ChainedIterable;
 import uk.gov.gchq.koryphe.impl.predicate.And;
 
 import java.io.Closeable;
@@ -259,80 +260,6 @@ public final class IterableUtil {
         @Override
         public void close() {
             CloseableUtil.close(iterator);
-        }
-    }
-
-    /**
-     * @param <T> the type of items in the iterator
-     */
-    private static class ChainedIterable<T> implements Closeable, Iterable<T> {
-        private final Iterable<? extends Iterable<? extends T>> iterables;
-
-        ChainedIterable(final Iterable<? extends Iterable<? extends T>> iterables) {
-            if (null == iterables) {
-                throw new IllegalArgumentException("iterables are required");
-            }
-            this.iterables = iterables;
-        }
-
-        @Override
-        public Iterator<T> iterator() {
-            return new ChainedIterator<>(iterables.iterator());
-        }
-
-        @Override
-        public void close() {
-            for (final Iterable<? extends T> iterable : iterables) {
-                CloseableUtil.close(iterable);
-            }
-        }
-    }
-
-    /**
-     * @param <T> the type of items in the iterator
-     */
-    private static class ChainedIterator<T> implements Closeable, Iterator<T> {
-        private final Iterator<? extends Iterable<? extends T>> iterablesIterator;
-        private Iterator<? extends T> currentIterator = Collections.emptyIterator();
-
-        ChainedIterator(final Iterator<? extends Iterable<? extends T>> iterablesIterator) {
-            this.iterablesIterator = iterablesIterator;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return getIterator().hasNext();
-        }
-
-        @Override
-        public T next() {
-            return getIterator().next();
-        }
-
-        @Override
-        public void remove() {
-            currentIterator.remove();
-        }
-
-        @Override
-        public void close() {
-            CloseableUtil.close(currentIterator);
-            while (iterablesIterator.hasNext()) {
-                CloseableUtil.close(iterablesIterator.next());
-            }
-        }
-
-        private Iterator<? extends T> getIterator() {
-            while (!currentIterator.hasNext()) {
-                CloseableUtil.close(currentIterator);
-                if (iterablesIterator.hasNext()) {
-                    currentIterator = iterablesIterator.next().iterator();
-                } else {
-                    break;
-                }
-            }
-
-            return currentIterator;
         }
     }
 
