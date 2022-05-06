@@ -16,6 +16,8 @@
 
 package uk.gov.gchq.koryphe.iterable;
 
+import com.google.common.collect.Lists;
+
 import uk.gov.gchq.koryphe.util.CloseableUtil;
 
 import java.io.Closeable;
@@ -35,9 +37,21 @@ public class MappedIterable<I_ITEM, O_ITEM> implements Closeable, Iterable<O_ITE
     private final Iterable<I_ITEM> iterable;
     private final List<Function> functions;
 
+    public MappedIterable(final Iterable<I_ITEM> iterable, final Function... functions) {
+        this(iterable, Lists.newArrayList(functions));
+    }
+
     public MappedIterable(final Iterable<I_ITEM> iterable, final List<Function> functions) {
         if (null == iterable) {
             throw new IllegalArgumentException("iterable is required");
+        }
+        if (null == functions) {
+            throw new IllegalArgumentException("List of functions cannot be null");
+        }
+        for (final Function function : functions) {
+            if (null == function) {
+                throw new IllegalArgumentException("Functions list cannot contain a null function");
+            }
         }
 
         this.iterable = iterable;

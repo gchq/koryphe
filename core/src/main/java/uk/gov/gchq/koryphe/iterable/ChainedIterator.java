@@ -30,6 +30,9 @@ public class ChainedIterator<T> implements Closeable, Iterator<T> {
     private Iterator<? extends T> currentIterator = Collections.emptyIterator();
 
     public ChainedIterator(final Iterator<? extends Iterable<? extends T>> iterablesIterator) {
+        if (null == iterablesIterator) {
+            throw new IllegalArgumentException("iterables are required");
+        }
         this.iterablesIterator = iterablesIterator;
     }
 

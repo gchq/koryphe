@@ -31,18 +31,27 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 public class MappedIterableTest {
 
     @Test
-    public void shouldThrowIAXWhenArrayOfIterablesAreNull() {
+    public void shouldThrowIAXWhenArrayOfIterablesIsNull() {
         assertThatIllegalArgumentException().isThrownBy(() -> new MappedIterable(null, Lists.newArrayList(new Increment(4))));
+    }
+
+    @Test
+    public void shouldThrowIAXWhenListOfFunctionsIsNull() {
+        assertThatIllegalArgumentException().isThrownBy(() -> new MappedIterable(Lists.newArrayList(1, 2, 3, 4, 5), (List) null));
+    }
+
+    @Test
+    public void shouldThrowIAXWhenOneFunctionIsNull() {
+        assertThatIllegalArgumentException().isThrownBy(() -> new MappedIterable(Lists.newArrayList(1, 2, 3, 4, 5), Lists.newArrayList(new Increment(4), (Function) null)));
     }
 
     @Test
     public void shouldCorrectlyApplySingleFunction() {
         // Given
         final List<Integer> itr = Lists.newArrayList(1, 2, 3, 4, 5);
-        final List<Function> functions = Lists.newArrayList(new Increment(4));
 
         // When
-        MappedIterable<Integer, Integer> mappedIterable = new MappedIterable<Integer, Integer>(itr, functions);
+        MappedIterable<Integer, Integer> mappedIterable = new MappedIterable<Integer, Integer>(itr, new Increment(4));
         
         // Then
         assertThat(mappedIterable).containsExactly(5, 6, 7, 8, 9);

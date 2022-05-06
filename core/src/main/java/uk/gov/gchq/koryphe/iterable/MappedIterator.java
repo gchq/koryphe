@@ -34,6 +34,14 @@ public class MappedIterator<I_ITEM, O_ITEM> implements Closeable, Iterator<O_ITE
         if (null == iterator) {
             throw new IllegalArgumentException("iterator is required");
         }
+        if (null == functions) {
+            throw new IllegalArgumentException("List of functions cannot be null");
+        }
+        for (final Function function : functions) {
+            if (null == function) {
+                throw new IllegalArgumentException("Functions list cannot contain a null function");
+            }
+        }
 
         this.iterator = iterator;
         this.functions = functions;

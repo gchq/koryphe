@@ -16,6 +16,8 @@
 
 package uk.gov.gchq.koryphe.iterable;
 
+import com.google.common.collect.Lists;
+
 import uk.gov.gchq.koryphe.util.CloseableUtil;
 
 import java.io.Closeable;
@@ -34,9 +36,21 @@ public class FilteredIterable<T> implements Closeable, Iterable<T> {
     private final Iterable<T> iterable;
     private final List<Predicate> predicates;
 
+    public FilteredIterable(final Iterable<T> iterable, final Predicate... predicates) {
+        this(iterable, Lists.newArrayList(predicates));
+    }
+
     public FilteredIterable(final Iterable<T> iterable, final List<Predicate> predicates) {
         if (null == iterable) {
             throw new IllegalArgumentException("iterable is required");
+        }
+        if (null == predicates) {
+            throw new IllegalArgumentException("List of predicates cannot be null");
+        }
+        for (final Predicate predicate : predicates) {
+            if (null == predicate) {
+                throw new IllegalArgumentException("Predicates list cannot contain a null predicate");
+            }
         }
 
         this.iterable = iterable;

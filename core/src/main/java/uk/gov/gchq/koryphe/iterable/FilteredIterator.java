@@ -36,7 +36,14 @@ public class FilteredIterator<T> implements Closeable, Iterator<T> {
         if (null == iterator) {
             throw new IllegalArgumentException("iterator is required");
         }
-
+        if (null == predicates) {
+            throw new IllegalArgumentException("List of predicates cannot be null");
+        }
+        for (final Predicate predicate : predicates) {
+            if (null == predicate) {
+                throw new IllegalArgumentException("Predicates list cannot contain a null predicate");
+            }
+        }
         this.iterator = iterator;
         this.andPredicate = new And<>(predicates);
     }

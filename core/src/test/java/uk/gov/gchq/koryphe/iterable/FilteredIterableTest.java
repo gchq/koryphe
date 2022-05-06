@@ -31,18 +31,27 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 public class FilteredIterableTest {
 
     @Test
-    public void shouldThrowIAXWhenArrayOfIterablesAreNull() {
+    public void shouldThrowIAXWhenArrayOfIterablesIsNull() {
         assertThatIllegalArgumentException().isThrownBy(() -> new FilteredIterable(null, Lists.newArrayList(new IsLessThan(4))));
+    }
+
+    @Test
+    public void shouldThrowIAXWhenListOfPredicatesIsNull() {
+        assertThatIllegalArgumentException().isThrownBy(() -> new FilteredIterable(Lists.newArrayList(1, 2, 3, 4, 5), (List) null));
+    }
+
+    @Test
+    public void shouldThrowIAXWhenOnePredicateIsNull() {
+        assertThatIllegalArgumentException().isThrownBy(() -> new FilteredIterable(Lists.newArrayList(1, 2, 3, 4, 5), Lists.newArrayList(new IsLessThan(4), (Predicate) null)));
     }
 
     @Test
     public void shouldCorrectlyFilterSinglePredicate() {
         // Given
         final List<Integer> itr = Lists.newArrayList(1, 2, 3, 4, 5);
-        final List<Predicate> predicates = Lists.newArrayList(new IsLessThan(4));
 
         // When
-        FilteredIterable<Integer> filteredIterable = new FilteredIterable<Integer>(itr, predicates);
+        FilteredIterable<Integer> filteredIterable = new FilteredIterable<Integer>(itr, new IsLessThan(4));
         
         // Then
         assertThat(filteredIterable).containsExactly(1, 2, 3);

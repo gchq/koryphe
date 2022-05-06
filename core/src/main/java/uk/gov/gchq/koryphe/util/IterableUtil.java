@@ -49,9 +49,6 @@ public final class IterableUtil {
      * @return the lazily filtered iterable
      */
     public static <T> Iterable<T> filter(final Iterable<T> iterable, final Predicate predicate) {
-        if (null == predicate) {
-            throw new IllegalArgumentException("Predicate cannot be null");
-        }
         return filter(iterable, Collections.singletonList(predicate));
     }
 
@@ -68,39 +65,16 @@ public final class IterableUtil {
         if (null == iterable) {
             return null;
         }
-
-        if (null == predicates) {
-            throw new IllegalArgumentException("List of predicates cannot be null");
-        }
-
-        for (final Predicate predicate : predicates) {
-            if (null == predicate) {
-                throw new IllegalArgumentException("Predicates list cannot contain a null predicate");
-            }
-        }
         return new FilteredIterable<>(iterable, predicates);
     }
 
     public static <I_ITEM, O_ITEM> Iterable<O_ITEM> map(final Iterable<I_ITEM> iterable, final Function function) {
-        if (null == function) {
-            throw new IllegalArgumentException("Function cannot be null");
-        }
         return map(iterable, Collections.singletonList(function));
     }
 
     public static <I_ITEM, O_ITEM> Iterable<O_ITEM> map(final Iterable<I_ITEM> iterable, final List<Function> functions) {
         if (null == iterable) {
             return null;
-        }
-
-        if (null == functions) {
-            throw new IllegalArgumentException("List of functions cannot be null");
-        }
-
-        for (final Function func : functions) {
-            if (null == func) {
-                throw new IllegalArgumentException("Functions list cannot contain a null function");
-            }
         }
         return new MappedIterable<>(iterable, functions);
     }
