@@ -24,6 +24,10 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
+ * A {@code MappedIterable} is a {@link java.io.Closeable}
+ * {@link java.lang.Iterable} which applied a {@link java.util.List}
+ * of {@link java.util.function.Function}s to an {@link java.lang.Iterable}.
+ *
  * @param <I_ITEM> input type of items in the input iterator
  * @param <O_ITEM> output type of items in the output iterator
  */
@@ -32,6 +36,10 @@ public class MappedIterable<I_ITEM, O_ITEM> implements Closeable, Iterable<O_ITE
     private final List<Function> functions;
 
     public MappedIterable(final Iterable<I_ITEM> iterable, final List<Function> functions) {
+        if (null == iterable) {
+            throw new IllegalArgumentException("iterable is required");
+        }
+
         this.iterable = iterable;
         this.functions = functions;
     }

@@ -33,6 +33,10 @@ public class FilteredIterator<T> implements Closeable, Iterator<T> {
     private final And<T> andPredicate;
 
     public FilteredIterator(final Iterator<T> iterator, final List<Predicate> predicates) {
+        if (null == iterator) {
+            throw new IllegalArgumentException("iterator is required");
+        }
+
         this.iterator = iterator;
         this.andPredicate = new And<>(predicates);
     }

@@ -24,13 +24,21 @@ import java.util.List;
 import java.util.function.Predicate;
 
 /**
- * @param <T> the type of items in the iterator
+ * A {@code FilteredIterable} is a {@link java.io.Closeable}
+ * {@link java.lang.Iterable} which can filter out elements
+ * based on a {@link java.util.List} of {@link java.util.function.Predicate}s.
+ *
+ * @param <T> the type of items in the iterable.
  */
 public class FilteredIterable<T> implements Closeable, Iterable<T> {
     private final Iterable<T> iterable;
     private final List<Predicate> predicates;
 
     public FilteredIterable(final Iterable<T> iterable, final List<Predicate> predicates) {
+        if (null == iterable) {
+            throw new IllegalArgumentException("iterable is required");
+        }
+
         this.iterable = iterable;
         this.predicates = predicates;
     }
