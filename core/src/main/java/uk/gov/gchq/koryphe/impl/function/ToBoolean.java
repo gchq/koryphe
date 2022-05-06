@@ -41,7 +41,10 @@ public class ToBoolean extends KorypheFunction<Object, Boolean> {
             return null;
         }
         if (value instanceof String) {
-            return Boolean.parseBoolean((String) value);
+            return Boolean.valueOf((String) value);
+        }
+        if (value instanceof Boolean) {
+            return (Boolean) value;
         }
 
         throw new IllegalArgumentException("Could not convert value to Boolean: " + value);

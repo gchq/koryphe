@@ -40,7 +40,7 @@ public class ToBooleanTest extends FunctionTest<ToBoolean> {
     }
 
     @Test
-    public void shouldConvertStringToBoolean() {
+    public void shouldConvertNonBooleanStringToFalseBoolean() {
         // Given
         final ToBoolean function = new ToBoolean();
 
@@ -78,6 +78,20 @@ public class ToBooleanTest extends FunctionTest<ToBoolean> {
         // Then
         assertThat(output)
                 .isEqualTo(false)
+                .isExactlyInstanceOf(Boolean.class);
+    }
+
+    @Test
+    public void shouldReturnAGivenBoolean() {
+        // Given
+        final ToBoolean function = new ToBoolean();
+
+        // When
+        Object output = function.apply(Boolean.TRUE);
+
+        // Then
+        assertThat(output)
+                .isEqualTo(Boolean.TRUE)
                 .isExactlyInstanceOf(Boolean.class);
     }
 
