@@ -49,7 +49,7 @@ Koryphe provides a number of useful Functions, BinaryOperators and Predicates fo
 Koryphe is licensed under the [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0) and is covered by [Crown Copyright](https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/copyright-and-re-use/crown-copyright/).
 
 ## Contributing
-We welcome contributions to the project. Detailed information on our ways of working can be found [here](https://gchq.github.io/gaffer-doc/other/ways-of-working.html). In brief:
+We welcome contributions to the project. Detailed information on our ways of working can be found [here](https://gchq.github.io/gaffer-doc/latest/ways-of-working/). In brief:
 
 - Sign the [GCHQ Contributor Licence Agreement](https://cla-assistant.io/gchq/koryphe);
 - Push your changes to a fork;
