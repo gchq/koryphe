@@ -51,6 +51,7 @@
         <org.json.version>20211205</org.json.version>
         <compiler.plugin.verson>3.9.0</compiler.plugin.verson>
         <spotbugs.plugin.version>4.5.3.0</spotbugs.plugin.version>
+        <spotless.plugin.version>2.22.1</spotless.plugin.version>
         <gpg.plugin.version>3.0.1</gpg.plugin.version>
         <jacoco.plugin.version>0.8.7</jacoco.plugin.version>
         <jar.plugin.version>3.2.2</jar.plugin.version>
@@ -228,8 +229,6 @@
                     <encoding>UTF-8</encoding>
                     <consoleOutput>true</consoleOutput>
                     <failsOnError>true</failsOnError>
-                    <headerLocation>code-style/licenseHeader.txt
-                    </headerLocation>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -248,8 +247,6 @@
                             <encoding>UTF-8</encoding>
                             <consoleOutput>true</consoleOutput>
                             <failsOnError>true</failsOnError>
-                            <headerLocation>code-style/licenseHeader.txt
-                            </headerLocation>
                         </configuration>
                         <goals>
                             <goal>check</goal>
@@ -358,6 +355,26 @@
                     <skipDeletedFiles>true</skipDeletedFiles>
                     <pubScmUrl>${scm.connection}</pubScmUrl>
                     <scmBranch>gh-pages</scmBranch>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>${spotless.plugin.version}</version>
+                <configuration>
+                    <ratchetFrom>origin/develop</ratchetFrom>
+                    <lineEndings>UNIX</lineEndings>
+                    <java>
+                        <licenseHeader>
+                            <file>code-style/licence-header-java.txt</file>
+                        </licenseHeader>
+                    </java>
+                    <pom>
+                        <licenseHeader>
+                            <file>code-style/licence-header-pom.txt</file>
+                            <delimiter>.project</delimiter>
+                        </licenseHeader>
+                    </pom>
                 </configuration>
             </plugin>
         </plugins>
