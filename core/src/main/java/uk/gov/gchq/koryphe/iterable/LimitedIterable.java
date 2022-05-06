@@ -27,13 +27,20 @@ import java.util.Iterator;
 import static uk.gov.gchq.koryphe.util.JavaUtils.requireNonNullElse;
 
 /**
- * @param <T> the type of items in the iterator
+ * A {@code LimitedIterable} is a {@link java.io.Closeable}
+ * {@link java.lang.Iterable} which is limited to a maximum size.
+ *
+ * @param <T> the type of items in the iterable.
  */
 public final class LimitedIterable<T> implements Closeable, Iterable<T> {
     private final Iterable<T> iterable;
     private final int start;
     private final Integer end;
     private final Boolean truncate;
+
+    public LimitedIterable(final Iterable<T> iterable, final int start, final Integer end) {
+        this(iterable, start, end, true);
+    }
 
     public LimitedIterable(final Iterable<T> iterable, final int start, final Integer end, final boolean truncate) {
         if (null != end && start > end) {

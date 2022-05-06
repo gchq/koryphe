@@ -26,13 +26,27 @@ import java.util.NoSuchElementException;
 import static uk.gov.gchq.koryphe.util.JavaUtils.requireNonNullElse;
 
 /**
- * @param <T> the type of items in the iterator
+ * An {@code LimitedIterator} is a {@link java.io.Closeable}
+ * {@link java.util.Iterator} which is limited to a maximum size. This is
+ * achieved by iterating through the objects contained in the iterator
+ * until the preconfigured starting point is reached
+ * (and discarding these), then by retrieving objects until either:
+ * <ul>
+ *     <li>the end of the iterator is reached, or</li>
+ *     <li>the iterator pointer exceeds the specified limit</li>
+ * </ul>
+ *
+ * @param <T> the type of items in the iterator.
  */
 public final class LimitedIterator<T> implements Closeable, Iterator<T> {
     private final Iterator<T> iterator;
     private final Integer end;
     private int index = 0;
     private Boolean truncate = true;
+
+    public LimitedIterator(final Iterator<T> iterator, final int start, final Integer end) {
+        this(iterator, start, end, true);
+    }
 
     public LimitedIterator(final Iterator<T> iterator, final int start, final Integer end, final boolean truncate) {
         if (null != end && start > end) {
@@ -78,5 +92,10 @@ public final class LimitedIterator<T> implements Closeable, Iterator<T> {
 
         index++;
         return iterator.next();
+    }
+
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException();
     }
 }

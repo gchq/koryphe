@@ -16,16 +16,29 @@
 
 package uk.gov.gchq.koryphe.iterable;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import uk.gov.gchq.koryphe.util.CloseableUtil;
 
 import java.io.Closeable;
+import java.util.Arrays;
 import java.util.Iterator;
 
 /**
- * @param <T> the type of items in the iterator
+ * A {@code ChainedIterable} is a {@link java.io.Closeable}
+ * {@link java.lang.Iterable} composed of other {@link java.lang.Iterable}s.
+ *
+ * As a client iterates through this iterable, the child iterables are consumed
+ * sequentially.
+ *
+ * @param <T> the type of items in the iterable.
  */
 public class ChainedIterable<T> implements Closeable, Iterable<T> {
     private final Iterable<? extends Iterable<? extends T>> iterables;
+
+    public ChainedIterable(final Iterable<? extends T>... iterables) {
+        this(ArrayUtils.isEmpty(iterables) ? null : Arrays.asList(iterables));
+    }
 
     public ChainedIterable(final Iterable<? extends Iterable<? extends T>> iterables) {
         if (null == iterables) {
