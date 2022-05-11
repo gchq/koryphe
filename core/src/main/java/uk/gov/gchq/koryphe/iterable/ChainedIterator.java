@@ -22,6 +22,8 @@ import java.io.Closeable;
 import java.util.Collections;
 import java.util.Iterator;
 
+import static java.util.Objects.nonNull;
+
 /**
  * @param <T> the type of items in the iterator
  */
@@ -63,7 +65,10 @@ public class ChainedIterator<T> implements Closeable, Iterator<T> {
         while (!currentIterator.hasNext()) {
             CloseableUtil.close(currentIterator);
             if (iterablesIterator.hasNext()) {
-                currentIterator = iterablesIterator.next().iterator();
+                final Iterable<? extends T> next = iterablesIterator.next();
+                if (nonNull(next)) {
+                    currentIterator = next.iterator();
+                }
             } else {
                 break;
             }
