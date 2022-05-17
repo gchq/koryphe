@@ -89,6 +89,37 @@ public class ChainedIterableTest {
         assertThat(wrappedItr).containsExactly(0, 1, 2, 3, 4, 5, 6);
     }
 
+    @Test
+    public void shouldWrapAllArrayOfIterablesWithNulls() {
+        // Given
+        final List<Integer> itr1 = Collections.singletonList(0);
+        final List<Integer> emptyItr2 = new ArrayList<>(0);
+        final List<Integer> itrWithNull = Lists.newArrayList((Integer) null);
+        final List<Integer> itr3 = Lists.newArrayList(1, null, 2, null, 3, 4);
+        final List<Integer> itr4 = Lists.newArrayList(5, 6);
+
+        // When
+        final ChainedIterable<Integer> wrappedItr = new ChainedIterable<>(itr1, emptyItr2, itrWithNull, itr3, itr4);
+
+        // Then
+        assertThat(wrappedItr).containsExactly(0, null, 1, null, 2, null, 3, 4, 5, 6);
+    }
+
+    @Test
+    public void shouldHandleNullsOfIterables() {
+        // Given
+        final List<Integer> itr1 = Collections.singletonList(0);
+        final List<Integer> emptyItr2 = new ArrayList<>(0);
+        final List<Integer> itr3 = Lists.newArrayList(1, 2, 3, 4);
+        final List<Integer> itr4 = Lists.newArrayList(5, 6);
+
+        // When
+        final ChainedIterable<Integer> wrappedItr = new ChainedIterable<>(null, itr1, null, emptyItr2, null, itr3, itr4);
+
+        // Then
+        assertThat(wrappedItr).containsExactly(0, 1, 2, 3, 4, 5, 6);
+    }
+
     @SuppressWarnings({"unchecked"})
     @Test
     public void shouldRemoveElementFromFirstIterable() {
