@@ -69,7 +69,7 @@ public class ChainedIterator<T> implements Closeable, Iterator<T> {
                 if (next instanceof Iterable) {
                     currentIterator = (Iterator<? extends T>) ((Iterable<?>) next).iterator();
                 } else if (nonNull(next) && !(next instanceof Iterable)) {
-                    throw new IllegalStateException(String.format("Iterator of Iterator contains non-iterable class: %s object: %s", next.getClass(), next));
+                    throw new IllegalStateException(String.format("Iterable of Iterable contains non-iterable class: %s object: %s", next.getClass(), next));
                 }
             } else {
                 break;
