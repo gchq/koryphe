@@ -80,7 +80,7 @@ public class CsvLinesToMaps extends KorypheFunction<Iterable<String>, Iterable<M
         return map;
     }
 
-    private CSVRecord parseCsv(final String csv, boolean isHeader) {
+    private CSVRecord parseCsv(final String csv, final boolean isHeader) {
         final CSVRecord csvRecord;
         try (final CSVParser csvParser = new CSVParser(new StringReader(csv), getCsvFormat())) {
             csvRecord = csvParser.iterator().next();
@@ -194,7 +194,7 @@ public class CsvLinesToMaps extends KorypheFunction<Iterable<String>, Iterable<M
         return trim;
     }
 
-    public void setTrim(boolean trim) {
+    public void setTrim(final boolean trim) {
         this.trim = trim;
     }
 
@@ -207,7 +207,7 @@ public class CsvLinesToMaps extends KorypheFunction<Iterable<String>, Iterable<M
         return nullString;
     }
 
-    public void setNullString(String nullString) {
+    public void setNullString(final String nullString) {
         this.nullString = nullString;
     }
 

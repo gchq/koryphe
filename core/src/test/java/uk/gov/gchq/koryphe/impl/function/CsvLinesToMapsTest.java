@@ -103,7 +103,6 @@ public class CsvLinesToMapsTest extends FunctionTest<CsvLinesToMaps> {
                         entry("header1", "value1"),
                         entry("header2", "value2"),
                         entry("header3", "value3"));
-                        
     }
 
     @Test
