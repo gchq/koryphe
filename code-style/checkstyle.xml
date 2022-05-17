@@ -27,10 +27,6 @@
         <property name="eachLine" value="true"/>
     </module>
 
-    <module name="RegexpHeader">
-        <property name="headerFile" value="${checkstyle.header.file}"/>
-    </module>
-
     <module name="RegexpSingleline">
         <property name="format" value="\s+$"/>
         <property name="message" value="Line has trailing spaces."/>

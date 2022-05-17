@@ -16,19 +16,15 @@
 
 package uk.gov.gchq.koryphe.util;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import uk.gov.gchq.koryphe.iterable.ChainedIterable;
+import uk.gov.gchq.koryphe.iterable.FilteredIterable;
+import uk.gov.gchq.koryphe.iterable.LimitedIterable;
+import uk.gov.gchq.koryphe.iterable.MappedIterable;
 
-import uk.gov.gchq.koryphe.impl.predicate.And;
-
-import java.io.Closeable;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.function.Predicate;
-
-import static uk.gov.gchq.koryphe.util.JavaUtils.requireNonNullElse;
 
 /**
  * An {@code IterableUtil} is a utility class providing capabilities for:
@@ -53,9 +49,6 @@ public final class IterableUtil {
      * @return the lazily filtered iterable
      */
     public static <T> Iterable<T> filter(final Iterable<T> iterable, final Predicate predicate) {
-        if (null == predicate) {
-            throw new IllegalArgumentException("Predicate cannot be null");
-        }
         return filter(iterable, Collections.singletonList(predicate));
     }
 
@@ -72,39 +65,16 @@ public final class IterableUtil {
         if (null == iterable) {
             return null;
         }
-
-        if (null == predicates) {
-            throw new IllegalArgumentException("List of predicates cannot be null");
-        }
-
-        for (final Predicate predicate : predicates) {
-            if (null == predicate) {
-                throw new IllegalArgumentException("Predicates list cannot contain a null predicate");
-            }
-        }
         return new FilteredIterable<>(iterable, predicates);
     }
 
     public static <I_ITEM, O_ITEM> Iterable<O_ITEM> map(final Iterable<I_ITEM> iterable, final Function function) {
-        if (null == function) {
-            throw new IllegalArgumentException("Function cannot be null");
-        }
         return map(iterable, Collections.singletonList(function));
     }
 
     public static <I_ITEM, O_ITEM> Iterable<O_ITEM> map(final Iterable<I_ITEM> iterable, final List<Function> functions) {
         if (null == iterable) {
             return null;
-        }
-
-        if (null == functions) {
-            throw new IllegalArgumentException("List of functions cannot be null");
-        }
-
-        for (final Function func : functions) {
-            if (null == func) {
-                throw new IllegalArgumentException("Functions list cannot contain a null function");
-            }
         }
         return new MappedIterable<>(iterable, functions);
     }
@@ -117,320 +87,4 @@ public final class IterableUtil {
         return new LimitedIterable<>(iterable, start, end, truncate);
     }
 
-    /**
-     * @param <I_ITEM> input type of items in the input iterator
-     * @param <O_ITEM> output type of items in the output iterator
-     */
-    private static class MappedIterable<I_ITEM, O_ITEM> implements Closeable, Iterable<O_ITEM> {
-        private final Iterable<I_ITEM> iterable;
-        private final List<Function> functions;
-
-        MappedIterable(final Iterable<I_ITEM> iterable, final List<Function> functions) {
-            this.iterable = iterable;
-            this.functions = functions;
-        }
-
-        @Override
-        public Iterator<O_ITEM> iterator() {
-            return new MappedIterator<>(iterable.iterator(), functions);
-        }
-
-        @Override
-        public void close() {
-            CloseableUtil.close(iterable);
-        }
-    }
-
-    /**
-     * @param <O_ITEM> the type of items in the iterator
-     */
-    private static class MappedIterator<I_ITEM, O_ITEM> implements Closeable, Iterator<O_ITEM> {
-        private final Iterator<? extends I_ITEM> iterator;
-        private final List<Function> functions;
-
-        MappedIterator(final Iterator<I_ITEM> iterator, final List<Function> functions) {
-            this.iterator = iterator;
-            this.functions = functions;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return iterator.hasNext();
-        }
-
-        @Override
-        public O_ITEM next() {
-            Object item = iterator.next();
-            try {
-                for (final Function function : functions) {
-                    item = function.apply(item);
-                }
-                return (O_ITEM) item;
-            } catch (final ClassCastException c) {
-                throw new IllegalArgumentException("The input/output types of the functions were incompatible", c);
-            }
-        }
-
-        @Override
-        public void close() {
-            CloseableUtil.close(iterator);
-        }
-    }
-
-    /**
-     * @param <T> the type of items in the iterator
-     */
-    private static class FilteredIterable<T> implements Closeable, Iterable<T> {
-        private final Iterable<T> iterable;
-        private final List<Predicate> predicates;
-
-        FilteredIterable(final Iterable<T> iterable, final List<Predicate> predicates) {
-            this.iterable = iterable;
-            this.predicates = predicates;
-        }
-
-        @Override
-        public Iterator<T> iterator() {
-            return new FilteredIterator<>(iterable.iterator(), predicates);
-        }
-
-        @Override
-        public void close() {
-            CloseableUtil.close(iterable);
-        }
-    }
-
-    /**
-     * @param <T> the type of items in the iterator
-     */
-    private static class FilteredIterator<T> implements Closeable, Iterator<T> {
-        private final Iterator<? extends T> iterator;
-        private final And<T> andPredicate;
-
-        FilteredIterator(final Iterator<T> iterator, final List<Predicate> predicates) {
-            this.iterator = iterator;
-            this.andPredicate = new And<>(predicates);
-        }
-
-        private T nextElement;
-        private Boolean hasNext;
-
-        @Override
-        public boolean hasNext() {
-            if (null == hasNext) {
-                while (iterator.hasNext()) {
-                    final T possibleNext = iterator.next();
-                    if (andPredicate.test(possibleNext)) {
-                        nextElement = possibleNext;
-                        hasNext = true;
-                        return true;
-                    }
-                }
-                hasNext = false;
-                nextElement = null;
-            }
-
-            final boolean hasNextResult = Boolean.TRUE.equals(hasNext);
-            if (!hasNextResult) {
-                close();
-            }
-
-            return hasNextResult;
-        }
-
-        @Override
-        public T next() {
-            if ((null == hasNext) && (!hasNext())) {
-                throw new NoSuchElementException("Reached the end of the iterator");
-            }
-
-            final T elementToReturn = nextElement;
-            nextElement = null;
-            hasNext = null;
-
-            return elementToReturn;
-        }
-
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException("Cannot call remove on a " + getClass().getSimpleName());
-        }
-
-        @Override
-        public void close() {
-            CloseableUtil.close(iterator);
-        }
-    }
-
-    /**
-     * @param <T> the type of items in the iterator
-     */
-    private static class ChainedIterable<T> implements Closeable, Iterable<T> {
-        private final Iterable<? extends Iterable<? extends T>> iterables;
-
-        ChainedIterable(final Iterable<? extends Iterable<? extends T>> iterables) {
-            if (null == iterables) {
-                throw new IllegalArgumentException("iterables are required");
-            }
-            this.iterables = iterables;
-        }
-
-        @Override
-        public Iterator<T> iterator() {
-            return new ChainedIterator<>(iterables.iterator());
-        }
-
-        @Override
-        public void close() {
-            for (final Iterable<? extends T> iterable : iterables) {
-                CloseableUtil.close(iterable);
-            }
-        }
-    }
-
-    /**
-     * @param <T> the type of items in the iterator
-     */
-    private static class ChainedIterator<T> implements Closeable, Iterator<T> {
-        private final Iterator<? extends Iterable<? extends T>> iterablesIterator;
-        private Iterator<? extends T> currentIterator = Collections.emptyIterator();
-
-        ChainedIterator(final Iterator<? extends Iterable<? extends T>> iterablesIterator) {
-            this.iterablesIterator = iterablesIterator;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return getIterator().hasNext();
-        }
-
-        @Override
-        public T next() {
-            return getIterator().next();
-        }
-
-        @Override
-        public void remove() {
-            currentIterator.remove();
-        }
-
-        @Override
-        public void close() {
-            CloseableUtil.close(currentIterator);
-            while (iterablesIterator.hasNext()) {
-                CloseableUtil.close(iterablesIterator.next());
-            }
-        }
-
-        private Iterator<? extends T> getIterator() {
-            while (!currentIterator.hasNext()) {
-                CloseableUtil.close(currentIterator);
-                if (iterablesIterator.hasNext()) {
-                    currentIterator = iterablesIterator.next().iterator();
-                } else {
-                    break;
-                }
-            }
-
-            return currentIterator;
-        }
-    }
-
-    /**
-     * @param <T> the type of items in the iterator
-     */
-    private static final class LimitedIterable<T> implements Closeable, Iterable<T> {
-        private final Iterable<T> iterable;
-        private final int start;
-        private final Integer end;
-        private final Boolean truncate;
-
-        private LimitedIterable(final Iterable<T> iterable, final int start, final Integer end, final boolean truncate) {
-            if (null != end && start > end) {
-                throw new IllegalArgumentException("The start pointer must be less than the end pointer.");
-            }
-
-            this.iterable = requireNonNullElse(iterable, Collections.emptyList());
-
-            this.start = start;
-            this.end = end;
-            this.truncate = truncate;
-        }
-
-        @JsonIgnore
-        public int getStart() {
-            return start;
-        }
-
-        @JsonIgnore
-        public Integer getEnd() {
-            return end;
-        }
-
-        @Override
-        public void close() {
-            CloseableUtil.close(iterable);
-        }
-
-        @Override
-        public Iterator<T> iterator() {
-            return new LimitedIterator<>(iterable.iterator(), start, end, truncate);
-        }
-    }
-
-    /**
-     * @param <T> the type of items in the iterator
-     */
-    private static final class LimitedIterator<T> implements Closeable, Iterator<T> {
-        private final Iterator<T> iterator;
-        private final Integer end;
-        private int index = 0;
-        private Boolean truncate = true;
-
-        private LimitedIterator(final Iterator<T> iterator, final int start, final Integer end, final boolean truncate) {
-            if (null != end && start > end) {
-                throw new IllegalArgumentException("start should be less than end");
-            }
-
-            this.iterator = requireNonNullElse(iterator, Collections.emptyIterator());
-            this.end = end;
-            this.truncate = truncate;
-
-            while (index < start && hasNext()) {
-                next();
-            }
-        }
-
-        @Override
-        public void close() {
-            CloseableUtil.close(iterator);
-        }
-
-        @Override
-        public boolean hasNext() {
-            final boolean withinLimit = (null == end || index < end);
-
-            if (!withinLimit && !truncate && iterator.hasNext()) {
-                // Throw an exception if we are - not within the limit, we don't want to truncate and there are items remaining.
-                throw new NoSuchElementException("Limit of " + end + " exceeded.");
-            }
-
-            final boolean hasNext = withinLimit && iterator.hasNext();
-            if (!hasNext) {
-                close();
-            }
-
-            return hasNext;
-        }
-
-        @Override
-        public T next() {
-            if (!hasNext()) {
-                throw new NoSuchElementException();
-            }
-
-            index++;
-            return iterator.next();
-        }
-    }
 }
