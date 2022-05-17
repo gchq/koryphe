@@ -44,7 +44,7 @@ import static java.util.Objects.isNull;
 
 @Since("1.8.0")
 @Summary("Parses CSV lines into Maps")
-@JsonPropertyOrder(value = { "header", "firstRow", "delimiter", "quoted", "quoteChar" }, alphabetic = true)
+@JsonPropertyOrder(value = { "header", "firstRow", "delimiter", "quoted", "quoteChar", "trim", "nullString" }, alphabetic = true)
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class CsvLinesToMaps extends KorypheFunction<Iterable<String>, Iterable<Map<String, Object>>>
         implements Serializable {
@@ -54,6 +54,8 @@ public class CsvLinesToMaps extends KorypheFunction<Iterable<String>, Iterable<M
     private char delimiter = ',';
     private boolean quoted = false;
     private char quoteChar = '\"';
+    private boolean trim = false;
+    private String nullString = "";
 
     @Override
     public Iterable<Map<String, Object>> apply(final Iterable<String> csvStrings) {
@@ -66,7 +68,7 @@ public class CsvLinesToMaps extends KorypheFunction<Iterable<String>, Iterable<M
     }
 
     private Map<String, Object> createMap(final String csvItem) {
-        return extractMap(parseCsv(csvItem));
+        return extractMap(parseCsv(csvItem, false));
     }
 
     private Map<String, Object> extractMap(final CSVRecord csvRecord) {
@@ -78,7 +80,7 @@ public class CsvLinesToMaps extends KorypheFunction<Iterable<String>, Iterable<M
         return map;
     }
 
-    private CSVRecord parseCsv(final String csv) {
+    private CSVRecord parseCsv(final String csv, final boolean isHeader) {
         final CSVRecord csvRecord;
         try (final CSVParser csvParser = new CSVParser(new StringReader(csv), getCsvFormat())) {
             csvRecord = csvParser.iterator().next();
@@ -86,7 +88,7 @@ public class CsvLinesToMaps extends KorypheFunction<Iterable<String>, Iterable<M
             throw new RuntimeException(e);
         }
 
-        if (csvRecord.size() != header.size()) {
+        if (csvRecord.size() != header.size() && !isHeader) {
             throw new IllegalArgumentException(
                     "CSV has " + csvRecord.size()
                             + " columns, but there are " + header.size()
@@ -96,7 +98,10 @@ public class CsvLinesToMaps extends KorypheFunction<Iterable<String>, Iterable<M
     }
 
     private CSVFormat getCsvFormat() {
-        final CSVFormat.Builder formatBuilder = CSVFormat.DEFAULT.builder().setDelimiter(delimiter);
+        final CSVFormat.Builder formatBuilder = CSVFormat.DEFAULT.builder()
+                .setDelimiter(delimiter)
+                .setTrim(trim)
+                .setNullString(nullString);
         if (quoted) {
             formatBuilder.setQuote(quoteChar);
         }
@@ -129,6 +134,11 @@ public class CsvLinesToMaps extends KorypheFunction<Iterable<String>, Iterable<M
     public CsvLinesToMaps header(final String... header) {
         Collections.addAll(this.header, header);
         return this;
+    }
+
+    public CsvLinesToMaps parseHeader(final String header) {
+        CSVRecord record = parseCsv(header, true);
+        return header(record.toList());
     }
 
     public CsvLinesToMaps header(final Collection<String> header) {
@@ -180,6 +190,32 @@ public class CsvLinesToMaps extends KorypheFunction<Iterable<String>, Iterable<M
         return this;
     }
 
+    public boolean getTrim() {
+        return trim;
+    }
+
+    public void setTrim(final boolean trim) {
+        this.trim = trim;
+    }
+
+    public CsvLinesToMaps trim(final Boolean trim) {
+        this.trim = trim;
+        return this;
+    }
+
+    public String getNullString() {
+        return nullString;
+    }
+
+    public void setNullString(final String nullString) {
+        this.nullString = nullString;
+    }
+
+    public CsvLinesToMaps nullString(final String nullString) {
+        this.nullString = nullString;
+        return this;
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
@@ -197,6 +233,8 @@ public class CsvLinesToMaps extends KorypheFunction<Iterable<String>, Iterable<M
                 .append(quoteChar, that.quoteChar)
                 .append(firstRow, that.firstRow)
                 .append(delimiter, that.delimiter)
+                .append(trim, that.trim)
+                .append(nullString, that.nullString)
                 .isEquals();
     }
 
@@ -209,6 +247,8 @@ public class CsvLinesToMaps extends KorypheFunction<Iterable<String>, Iterable<M
                 .append(quoteChar)
                 .append(firstRow)
                 .append(delimiter)
+                .append(trim)
+                .append(nullString)
                 .toHashCode();
     }
 }
