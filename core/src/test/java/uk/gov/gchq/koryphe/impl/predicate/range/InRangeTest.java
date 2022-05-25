@@ -237,8 +237,8 @@ public class InRangeTest<T extends Comparable<T>> extends PredicateTest<InRange>
         // Then
         for (int i = 0; i < values.size(); i++) {
             assertThat(results.get(i))
-                    .isEqualTo(expectedResult)
-                    .withFailMessage("Failed for value: %s", values.get(i));
+                    .withFailMessage("Failed for value: %s", values.get(i))
+                    .isEqualTo(expectedResult);
         }
     }
 }

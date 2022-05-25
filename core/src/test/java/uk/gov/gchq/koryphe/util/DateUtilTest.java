@@ -104,7 +104,7 @@ public class DateUtilTest {
     private void assertDate(final String expected, final String testDate, final String format) throws ParseException {
         final Date expectedDate = DateUtils.parseDate(expected, Locale.getDefault(), format);
         assertThat(DateUtil.parse(testDate))
-                .isEqualTo(expectedDate)
-                .withFailMessage("Failed to parse date: %s", testDate);
+                .withFailMessage("Failed to parse date: %s", testDate)
+                .isEqualTo(expectedDate);
     }
 }

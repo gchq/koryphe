@@ -57,14 +57,14 @@ public abstract class PredicateTest<T extends Predicate> extends EqualityTest<T>
 
         // Then
         assertThat(annotation)
-                .isNotNull()
-                .withFailMessage("Missing Since annotation on class %s", instance.getClass().getName());
+                .withFailMessage("Missing Since annotation on class %s", instance.getClass().getName())
+                .isNotNull();
         assertThat(annotation)
-                .isNotNull()
-                .withFailMessage("Missing Since annotation on class %s", instance.getClass().getName());
+                .withFailMessage("Missing Since annotation on class %s", instance.getClass().getName())
+                .isNotNull();
         assertThat(VersionUtil.validateVersionString(annotation.value()))
-                .isTrue()
-                .withFailMessage("%s is not a valid value string.", annotation.value());
+                .withFailMessage("%s is not a valid value string.", annotation.value())
+                .isTrue();
     }
 
     @Test
@@ -77,13 +77,13 @@ public abstract class PredicateTest<T extends Predicate> extends EqualityTest<T>
 
         // Then
         assertThat(annotation)
-                .isNotNull()
-                .withFailMessage("Missing Summary annotation on class %s", instance.getClass().getName());
+                .withFailMessage("Missing Summary annotation on class %s", instance.getClass().getName())
+                .isNotNull();
         assertThat(annotation)
-                .isNotNull()
-                .withFailMessage("Missing Summary annotation on class %s", instance.getClass().getName());
+                .withFailMessage("Missing Summary annotation on class %s", instance.getClass().getName())
+                .isNotNull();
         assertThat(SummaryUtil.validateSummaryString(annotation.value()))
-                .isTrue()
-                .withFailMessage("%s is not a valid value string.", annotation.value());
+                .withFailMessage("%s is not a valid value string.", annotation.value())
+                .isTrue();
     }
 }
