@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2020 Crown Copyright
+ * Copyright 2016-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -104,7 +104,7 @@ public class DateUtilTest {
     private void assertDate(final String expected, final String testDate, final String format) throws ParseException {
         final Date expectedDate = DateUtils.parseDate(expected, Locale.getDefault(), format);
         assertThat(DateUtil.parse(testDate))
-                .isEqualTo(expectedDate)
-                .withFailMessage("Failed to parse date: %s", testDate);
+                .withFailMessage("Failed to parse date: %s", testDate)
+                .isEqualTo(expectedDate);
     }
 }

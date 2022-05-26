@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -454,8 +454,8 @@ public class InRangeDualTest<T extends Comparable<T>> extends PredicateTest<InRa
         // Then
         for (int i = 0; i < values.size(); i++) {
             assertThat(results.get(i))
-                    .isEqualTo(expectedResult)
-                    .withFailMessage("Failed for value: %s", values.get(i));
+                    .withFailMessage("Failed for value: %s", values.get(i))
+                    .isEqualTo(expectedResult);
         }
     }
 }

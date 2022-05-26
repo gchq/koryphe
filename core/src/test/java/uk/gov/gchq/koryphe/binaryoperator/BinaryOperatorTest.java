@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2021 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 package uk.gov.gchq.koryphe.binaryoperator;
 
 import org.junit.jupiter.api.Test;
-
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.util.EqualityTest;
@@ -66,14 +65,14 @@ public abstract class BinaryOperatorTest<T extends BinaryOperator> extends Equal
 
         // Then
         assertThat(annotation)
-                .isNotNull()
-                .withFailMessage("Missing Since annotation on class %s", instance.getClass().getName());
+                .withFailMessage("Missing Since annotation on class %s", instance.getClass().getName())
+                .isNotNull();
         assertThat(annotation.value())
-                .isNotNull()
-                .withFailMessage("Missing Since annotation on class %s", instance.getClass().getName());
+                .withFailMessage("Missing Since annotation on class %s", instance.getClass().getName())
+                .isNotNull();
         assertThat(VersionUtil.validateVersionString(annotation.value()))
-                .isTrue()
-                .withFailMessage("%s is not a valid value string.", annotation.value());
+                .withFailMessage("%s is not a valid value string.", annotation.value())
+                .isTrue();
     }
 
     @Test
@@ -86,13 +85,13 @@ public abstract class BinaryOperatorTest<T extends BinaryOperator> extends Equal
 
         // Then
         assertThat(annotation)
-                .isNotNull()
-                .withFailMessage("Missing Summary annotation on class %s", instance.getClass().getName());
+                .withFailMessage("Missing Summary annotation on class %s", instance.getClass().getName())
+                .isNotNull();
         assertThat(annotation.value())
-                .isNotNull()
-                .withFailMessage("Missing Summary annotation on class %s", instance.getClass().getName());
+                .withFailMessage("Missing Summary annotation on class %s", instance.getClass().getName())
+                .isNotNull();
         assertThat(SummaryUtil.validateSummaryString(annotation.value()))
-                .isTrue()
-                .withFailMessage("%s is not a valid value string.", annotation.value());
+                .withFailMessage("%s is not a valid value string.", annotation.value())
+                .isTrue();
     }
 }

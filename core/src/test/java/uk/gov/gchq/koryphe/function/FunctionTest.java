@@ -72,14 +72,14 @@ public abstract class FunctionTest<T extends Function> extends EqualityTest<T> {
 
         // Then
         assertThat(annotation)
-                .isNotNull()
-                .withFailMessage("Missing Since annotation on class %s", instance.getClass().getName());
+                .withFailMessage("Missing Since annotation on class %s", instance.getClass().getName())
+                .isNotNull();
         assertThat(annotation.value())
-                .isNotNull()
-                .withFailMessage("Missing Since annotation on class %s", instance.getClass().getName());
+                .withFailMessage("Missing Since annotation on class %s", instance.getClass().getName())
+                .isNotNull();
         assertThat(VersionUtil.validateVersionString(annotation.value()))
-                .isTrue()
-                .withFailMessage("%s is not a valid value string.", annotation.value());
+                .withFailMessage("%s is not a valid value string.", annotation.value())
+                .isTrue();
     }
 
     @Test
@@ -92,14 +92,14 @@ public abstract class FunctionTest<T extends Function> extends EqualityTest<T> {
 
         // Then
         assertThat(annotation)
-                .isNotNull()
-                .withFailMessage("Missing Summary annotation on class %s", instance.getClass().getName());
+                .withFailMessage("Missing Summary annotation on class %s", instance.getClass().getName())
+                .isNotNull();
         assertThat(annotation.value())
-                .isNotNull()
-                .withFailMessage("Missing Summary annotation on class %s", instance.getClass().getName());
+                .withFailMessage("Missing Summary annotation on class %s", instance.getClass().getName())
+                .isNotNull();
         assertThat(SummaryUtil.validateSummaryString(annotation.value()))
-                .isTrue()
-                .withFailMessage("%s is not a valid value string.", annotation.value());
+                .withFailMessage("%s is not a valid value string.", annotation.value())
+                .isTrue();
     }
 
     @Test
