@@ -24,7 +24,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -182,7 +181,7 @@ public class IterableUtilTest {
         final Iterable<Integer> limitedValues = IterableUtil.limit(values, start, end, truncate);
 
         // Then
-        assertThatExceptionOfType(NoSuchElementException.class)
+        assertThatExceptionOfType(RuntimeException.class)
                 .isThrownBy(() -> {
                     for (final Integer i : limitedValues) {
                         // Do nothing

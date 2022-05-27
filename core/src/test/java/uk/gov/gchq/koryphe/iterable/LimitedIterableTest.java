@@ -22,7 +22,6 @@ import uk.gov.gchq.koryphe.util.CloseableUtil;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -91,7 +90,7 @@ public class LimitedIterableTest {
         // When
         final Iterable<Integer> limitedValues = new LimitedIterable<>(values, start, end, truncate);
 
-        assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(() -> {
+        assertThatExceptionOfType(RuntimeException.class).isThrownBy(() -> {
             for (final Integer i : limitedValues) {
                 // Do nothing until LimitExceededException is thrown
             }

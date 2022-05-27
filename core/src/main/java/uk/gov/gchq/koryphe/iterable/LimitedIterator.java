@@ -73,7 +73,7 @@ public final class LimitedIterator<T> implements Closeable, Iterator<T> {
 
         if (!withinLimit && !truncate && iterator.hasNext()) {
             // Throw an exception if we are - not within the limit, we don't want to truncate and there are items remaining.
-            throw new NoSuchElementException("Limit of " + end + " exceeded.");
+            throw new RuntimeException("Limit of " + end + " exceeded.");
         }
 
         final boolean hasNext = withinLimit && iterator.hasNext();
