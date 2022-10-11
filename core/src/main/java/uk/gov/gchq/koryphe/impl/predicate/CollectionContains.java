@@ -55,7 +55,7 @@ public class CollectionContains extends KoryphePredicate<Collection<?>> {
 
     @Override
     public boolean test(final Collection<?> input) {
-        return input.contains(value);
+        return input != null && input.contains(value);
     }
 
     @Override
