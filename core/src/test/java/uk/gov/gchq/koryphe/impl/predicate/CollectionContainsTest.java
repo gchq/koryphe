@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -98,6 +98,24 @@ public class CollectionContainsTest extends PredicateTest<CollectionContains> {
 
         // When / Then
         assertThat(filter).rejects(new HashSet<>());
+    }
+
+    @Test
+    public void shouldRejectNullLists() {
+        // Given
+        final CollectionContains filter = new CollectionContains(VALUE1);
+
+        // When / Then
+        assertThat(filter).rejects((ArrayList<?>) null);
+    }
+
+    @Test
+    public void shouldRejectNullSets() {
+        // Given
+        final CollectionContains filter = new CollectionContains(VALUE1);
+
+        // When / Then
+        assertThat(filter).rejects((HashSet<?>) null);
     }
 
     @Test
