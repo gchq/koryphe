@@ -1,4 +1,4 @@
-package uk.gov.gchq.koryphe.impl.function;/*
+/*
  * Copyright 2018-2020 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +13,8 @@ package uk.gov.gchq.koryphe.impl.function;/*
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package uk.gov.gchq.koryphe.impl.function;
 
 import org.junit.jupiter.api.Test;
 
