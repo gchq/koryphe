@@ -1,22 +1,14 @@
-Copyright 2017-2022 Crown Copyright
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-  http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-<img src="logos/koryphe_logo_text.png" width="300">
+<img align="right" width="200" height="auto" src="logos/koryphe_logo_text.png">
 
 # Koryphe
 
-Koryphe is an extensible functions library for filtering, aggregating and transforming data based on the Java Function API. It provides:
+![ci](https://github.com/gchq/koryphe/actions/workflows/continuous-integration.yaml/badge.svg?branch=develop)
+[![codecov](https://codecov.io/gh/gchq/koryphe/branch/master/graph/badge.svg?token=vdFm5s0HCR)](https://codecov.io/gh/gchq/koryphe)
+[<img src="https://img.shields.io/badge/docs-passing-success.svg?logo=readthedocs">](https://gchq.github.io/gaffer-doc/latest/)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/uk.gov.gchq.koryphe/koryphe/badge.svg)](https://maven-badges.herokuapp.com/maven-central/uk.gov.gchq.koryphe/koryphe)
+
+Koryphe is an extensible functions library for filtering, aggregating and transforming data  
+based on the Java Function API. It provides:
 
  - Context adapted functions.
  - Function composition.

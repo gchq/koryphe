@@ -6,6 +6,7 @@ on:
     branches:
       - 'release/**'
       - 'hotfix/**'
+      - develop
 
 jobs:
   build:
