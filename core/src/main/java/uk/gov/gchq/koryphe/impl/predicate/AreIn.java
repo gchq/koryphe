@@ -46,9 +46,9 @@ public class AreIn extends KoryphePredicate<Collection<?>> {
         // Required for serialisation
     }
 
-    public AreIn(final Collection<?> allowedValues,boolean isNullOrEmptyAllowed) {
+    public AreIn(final Collection<?> allowedValues, final boolean isNullOrEmptyAllowed) {
         this.allowedValues = allowedValues;
-        this.isNullOrEmptyAllowed=isNullOrEmptyAllowed;
+        this.isNullOrEmptyAllowed = isNullOrEmptyAllowed;
     }
 
     public AreIn(final Object... allowedValues) {
@@ -82,7 +82,10 @@ public class AreIn extends KoryphePredicate<Collection<?>> {
 
     @Override
     public boolean test(final Collection<?> input) {
-        if (isNullOrEmptyAllowed) return (!(null == allowedValues || allowedValues.isEmpty()));
+        if (isNullOrEmptyAllowed) {
+            return (!(null == allowedValues || allowedValues.isEmpty()));
+        }
+
         return null == allowedValues || allowedValues.isEmpty() || (null != input && allowedValues.containsAll(input));
     }
 
