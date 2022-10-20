@@ -24,7 +24,7 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
 import java.util.Arrays;
 import java.util.Collections;
 
-@Since("2.4.1")
+@Since("2.5.0")
 @Summary("Converts an object into a Iterable")
 public class ToIterable extends KorypheFunction<Object, Iterable<Object>> {
     public ToIterable() {
