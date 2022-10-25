@@ -40,7 +40,7 @@ import java.util.HashSet;
 @Summary("Checks if a provided collection contains all the provided input values")
 public class AreIn extends KoryphePredicate<Collection<?>> {
     private Collection<?> allowedValues;
-    private boolean isNullOrEmptyAllowed;
+    private boolean isNullOrEmptyAllowed = true;
 
     public AreIn() {
         // Required for serialisation
@@ -82,11 +82,11 @@ public class AreIn extends KoryphePredicate<Collection<?>> {
 
     @Override
     public boolean test(final Collection<?> input) {
-        if (isNullOrEmptyAllowed) {
-            return (!(null == allowedValues || allowedValues.isEmpty()));
+        if (null == allowedValues || allowedValues.isEmpty()) {
+            return (isNullOrEmptyAllowed);
         }
 
-        return null == allowedValues || allowedValues.isEmpty() || (null != input && allowedValues.containsAll(input));
+        return (null != input && allowedValues.containsAll(input));
     }
 
     @Override
