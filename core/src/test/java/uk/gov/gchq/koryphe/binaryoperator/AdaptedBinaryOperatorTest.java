@@ -117,7 +117,7 @@ class AdaptedBinaryOperatorTest extends BinaryOperatorTest<AdaptedBinaryOperator
         state.put(0, "tuple");
 
         ArrayTuple input = new ArrayTuple();
-        state.put(0, "test");;
+        state.put(0, "test");
 
         TupleInputAdapter<Integer, String> inputAdapter = new TupleInputAdapter<>();
         inputAdapter.setSelection(new Integer[] { 0 });
