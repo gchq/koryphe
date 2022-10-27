@@ -16,8 +16,8 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.google.common.collect.Sets;
@@ -36,7 +36,7 @@ import java.util.HashSet;
 /**
  * An <code>AreIn</code> is a {@link java.util.function.BiPredicate}
  * that checks if a provided {@link java.util.Collection} contains all the provided input values.
- * 
+ *
  * There is also a nullOrEmptyAllowedValuesAccepted flag which defaults to true.
  * If the provided allowedValues collection is null or empty, the flag's value
  * will be used as the result for any input test.
