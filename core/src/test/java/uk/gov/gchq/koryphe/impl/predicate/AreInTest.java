@@ -69,6 +69,33 @@ public class AreInTest extends PredicateTest<AreIn> {
     }
 
     @Test
+    public void shouldRejectWhenValuesIsEmptyAndEmptyNotAllowed() {
+        // Given
+        final AreIn filter = new AreIn(new ArrayList<>(), false);
+
+        // When / Then
+        assertThat(filter).rejects(list);
+    }
+
+    @Test
+    public void shouldAcceptWhenValuesIsNull() {
+        // Given
+        final AreIn filter = new AreIn(null, true);
+
+        // When / Then
+        assertThat(filter).accepts(list);
+    }
+
+    @Test
+    public void shouldRejectWhenValuesIsNullAndNullNotAllowed() {
+        // Given
+        final AreIn filter = new AreIn(null, false);
+
+        // When / Then
+        assertThat(filter).rejects(list);
+    }
+
+    @Test
     public void shouldRejectWhenInputIsNullAndValuesNotEmpty() {
         // Given
         final AreIn filter = new AreIn(VALUE1, VALUE2);
@@ -165,68 +192,5 @@ public class AreInTest extends PredicateTest<AreIn> {
                 new AreIn(VALUE1, VALUE2),
                 new AreIn(VALUE2)
         );
-    }
-
-    @Test
-    public void shouldRejectWhenValuesIsEmptyAndEmptyNotAllowed() {
-        List<Object> anotherList = new ArrayList<>();
-
-        // Given
-        final AreIn filter = new AreIn(anotherList,false);
-
-        // When / Then
-        assertThat(filter).rejects(anotherList);
-    }
-
-    @Test
-    public void shouldAcceptWhenValuesIsEmptyAndEmptyIsAllowed() {
-        List<Object> anotherList = new ArrayList<>();
-
-        // Given
-        final AreIn filter = new AreIn(anotherList,true);
-
-        // When / Then
-        assertThat(filter).accepts(anotherList);
-    }
-    @Test
-    public void shouldAcceptWhenValuesIsNullAndNullIsAllowed() {
-        List<Object> anotherList = new ArrayList<>();
-
-        // Given
-        final AreIn filter = new AreIn(null,true);
-
-        // When / Then
-        assertThat(filter).accepts(anotherList);
-    }
-    @Test
-    public void shouldRejectWhenValuesIsNullAndNullNotAllowed() {
-        List<Object> anotherList = new ArrayList<>();
-
-        // Given
-        final AreIn filter = new AreIn(null,false);
-
-        // When / Then
-        assertThat(filter).rejects(anotherList);
-    }
-
-    @Test
-    public void shouldAcceptWhenListIsEmptyAndEmptyIsAllowed() {
-        List<Object> anotherlist = Collections.<Object>emptyList();
-
-        // Given
-        final AreIn filter = new AreIn(anotherlist,true);
-
-        // When / Then
-        assertThat(filter).accepts(anotherlist);
-    }
-    @Test
-    public void shouldRejectWhenListIsEmptyAndEmptyNotAllowed() {
-        List<Object> anotherlist = Collections.<Object>emptyList();
-
-        // Given
-        final AreIn filter = new AreIn(anotherlist,false);
-
-        // When / Then
-        assertThat(filter).rejects(anotherlist);
     }
 }
