@@ -16,6 +16,7 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -35,27 +36,29 @@ import java.util.HashSet;
 /**
  * An <code>AreIn</code> is a {@link java.util.function.BiPredicate}
  * that checks if a provided {@link java.util.Collection} contains all the provided input values.
+ * 
+ * There is also a nullOrEmptyAllowedValuesAccepted flag which defaults to true.
+ * If the provided allowedValues collection is null or empty, the flag's value
+ * will be used as the result for any input test.
  */
 @Since("1.0.0")
 @Summary("Checks if a provided collection contains all the provided input values")
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class AreIn extends KoryphePredicate<Collection<?>> {
     private Collection<?> allowedValues;
-    private boolean isNullOrEmptyAllowed = true;
+    private boolean nullOrEmptyAllowedValuesAccepted = true;
 
     public AreIn() {
         // Required for serialisation
     }
 
-    public AreIn(final Collection<?> allowedValues, final boolean isNullOrEmptyAllowed) {
+    public AreIn(final Collection<?> allowedValues, final boolean nullOrEmptyAllowedValuesAccepted) {
         this.allowedValues = allowedValues;
-        this.isNullOrEmptyAllowed = isNullOrEmptyAllowed;
+        this.nullOrEmptyAllowedValuesAccepted = nullOrEmptyAllowedValuesAccepted;
     }
 
     public AreIn(final Object... allowedValues) {
         this.allowedValues = Sets.newHashSet(allowedValues);
-        if (allowedValues[allowedValues.length - 1] instanceof Boolean) {
-            isNullOrEmptyAllowed = (boolean) allowedValues[allowedValues.length - 1];
-        }
     }
 
     @JsonIgnore
@@ -83,10 +86,20 @@ public class AreIn extends KoryphePredicate<Collection<?>> {
         }
     }
 
+    @JsonProperty("nullOrEmptyValuesAccepted")
+    public boolean getNullOrEmptyAllowedValuesAccepted() {
+        return nullOrEmptyAllowedValuesAccepted;
+    }
+
+    @JsonProperty("nullOrEmptyValuesAccepted")
+    public void setNullOrEmptyAllowedValuesAccepted(final boolean nullOrEmptyAllowedValuesAccepted) {
+        this.nullOrEmptyAllowedValuesAccepted = nullOrEmptyAllowedValuesAccepted;
+    }
+
     @Override
     public boolean test(final Collection<?> input) {
         if (null == allowedValues || allowedValues.isEmpty()) {
-            return isNullOrEmptyAllowed;
+            return nullOrEmptyAllowedValuesAccepted;
         }
 
         return (null != input && allowedValues.containsAll(input));

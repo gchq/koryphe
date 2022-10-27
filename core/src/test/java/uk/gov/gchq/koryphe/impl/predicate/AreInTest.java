@@ -51,7 +51,7 @@ public class AreInTest extends PredicateTest<AreIn> {
     }
 
     @Test
-    public void shouldAcceptWhenValuesAndInputAreNullOrEmpty() {
+    public void shouldAcceptWhenValuesEmptyAndInputNull() {
         // Given
         final AreIn filter = new AreIn();
 
@@ -105,6 +105,33 @@ public class AreInTest extends PredicateTest<AreIn> {
     }
 
     @Test
+    public void shouldAcceptEmptyInputWithEmptyAllowedValuesNotAccepted() {
+        // Given
+        final AreIn filter = new AreIn(list, false);
+
+        // When / Then
+        assertThat(filter).accepts(new ArrayList<>());
+    }
+
+    @Test
+    public void shouldAcceptEmptyLists() {
+        // Given
+        final AreIn filter = new AreIn(VALUE1);
+
+        // When / Then
+        assertThat(filter).accepts(new ArrayList<>());
+    }
+
+    @Test
+    public void shouldAcceptEmptySets() {
+        // Given
+        final AreIn filter = new AreIn(VALUE1);
+
+        // When / Then
+        assertThat(filter).accepts(new HashSet<>());
+    }
+
+    @Test
     public void shouldAcceptWhenAllValuesInList() {
         // Given
         final AreIn filter = new AreIn(VALUE1, VALUE2);
@@ -141,24 +168,6 @@ public class AreInTest extends PredicateTest<AreIn> {
     }
 
     @Test
-    public void shouldAcceptEmptyLists() {
-        // Given
-        final AreIn filter = new AreIn(VALUE1);
-
-        // When / Then
-        assertThat(filter).accepts(new ArrayList<>());
-    }
-
-    @Test
-    public void shouldAcceptEmptySets() {
-        // Given
-        final AreIn filter = new AreIn(VALUE1);
-
-        // When / Then
-        assertThat(filter).accepts(new HashSet<>());
-    }
-
-    @Test
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
         final AreIn filter = new AreIn(VALUE1);
@@ -192,14 +201,5 @@ public class AreInTest extends PredicateTest<AreIn> {
                 new AreIn(VALUE1, VALUE2),
                 new AreIn(VALUE2)
         );
-    }
-    @Test
-    public void shouldRejectWhenSetIsEmptyAndEmptyNotAllowed() {
-        Set<Object> anotherSet = Collections.<Object>emptySet();
-        // Given
-        final AreIn filter = new AreIn(anotherSet,false);
-
-        // When / Then
-        assertThat(filter).rejects(anotherSet);
     }
 }
