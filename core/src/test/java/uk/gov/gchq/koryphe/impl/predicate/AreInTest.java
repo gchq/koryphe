@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ public class AreInTest extends PredicateTest<AreIn> {
     }
 
     @Test
-    public void shouldAcceptWhenValuesAndInputAreNullOrEmpty() {
+    public void shouldAcceptWhenValuesEmptyAndInputNull() {
         // Given
         final AreIn filter = new AreIn();
 
@@ -69,12 +69,66 @@ public class AreInTest extends PredicateTest<AreIn> {
     }
 
     @Test
+    public void shouldRejectWhenValuesIsEmptyAndEmptyNotAllowed() {
+        // Given
+        final AreIn filter = new AreIn(new ArrayList<>(), false);
+
+        // When / Then
+        assertThat(filter).rejects(list);
+    }
+
+    @Test
+    public void shouldAcceptWhenValuesIsNull() {
+        // Given
+        final AreIn filter = new AreIn(null, true);
+
+        // When / Then
+        assertThat(filter).accepts(list);
+    }
+
+    @Test
+    public void shouldRejectWhenValuesIsNullAndNullNotAllowed() {
+        // Given
+        final AreIn filter = new AreIn(null, false);
+
+        // When / Then
+        assertThat(filter).rejects(list);
+    }
+
+    @Test
     public void shouldRejectWhenInputIsNullAndValuesNotEmpty() {
         // Given
         final AreIn filter = new AreIn(VALUE1, VALUE2);
 
         // When / Then
         assertThat(filter).rejects((Collection) null);
+    }
+
+    @Test
+    public void shouldAcceptEmptyInputWithEmptyAllowedValuesNotAccepted() {
+        // Given
+        final AreIn filter = new AreIn(list, false);
+
+        // When / Then
+        assertThat(filter).accepts(new ArrayList<>());
+    }
+
+    @Test
+    public void shouldAcceptEmptyLists() {
+        // Given
+        final AreIn filter = new AreIn(VALUE1);
+
+        // When / Then
+        assertThat(filter).accepts(new ArrayList<>());
+    }
+
+    @Test
+    public void shouldAcceptEmptySets() {
+        // Given
+        final AreIn filter = new AreIn(VALUE1);
+
+        // When / Then
+        assertThat(filter).accepts(new HashSet<>());
     }
 
     @Test
@@ -111,24 +165,6 @@ public class AreInTest extends PredicateTest<AreIn> {
 
         // When / Then
         assertThat(filter).rejects(set);
-    }
-
-    @Test
-    public void shouldAcceptEmptyLists() {
-        // Given
-        final AreIn filter = new AreIn(VALUE1);
-
-        // When / Then
-        assertThat(filter).accepts(new ArrayList<>());
-    }
-
-    @Test
-    public void shouldAcceptEmptySets() {
-        // Given
-        final AreIn filter = new AreIn(VALUE1);
-
-        // When / Then
-        assertThat(filter).accepts(new HashSet<>());
     }
 
     @Test

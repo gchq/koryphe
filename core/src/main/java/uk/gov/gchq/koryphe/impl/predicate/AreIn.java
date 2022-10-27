@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2022 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package uk.gov.gchq.koryphe.impl.predicate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.google.common.collect.Sets;
@@ -35,18 +36,25 @@ import java.util.HashSet;
 /**
  * An <code>AreIn</code> is a {@link java.util.function.BiPredicate}
  * that checks if a provided {@link java.util.Collection} contains all the provided input values.
+ *
+ * There is also a nullOrEmptyAllowedValuesAccepted flag which defaults to true.
+ * If the provided allowedValues collection is null or empty, the flag's value
+ * will be used as the result for any input test.
  */
 @Since("1.0.0")
 @Summary("Checks if a provided collection contains all the provided input values")
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class AreIn extends KoryphePredicate<Collection<?>> {
     private Collection<?> allowedValues;
+    private boolean nullOrEmptyAllowedValuesAccepted = true;
 
     public AreIn() {
         // Required for serialisation
     }
 
-    public AreIn(final Collection<?> allowedValues) {
+    public AreIn(final Collection<?> allowedValues, final boolean nullOrEmptyAllowedValuesAccepted) {
         this.allowedValues = allowedValues;
+        this.nullOrEmptyAllowedValuesAccepted = nullOrEmptyAllowedValuesAccepted;
     }
 
     public AreIn(final Object... allowedValues) {
@@ -78,9 +86,23 @@ public class AreIn extends KoryphePredicate<Collection<?>> {
         }
     }
 
+    @JsonProperty("nullOrEmptyValuesAccepted")
+    public boolean getNullOrEmptyAllowedValuesAccepted() {
+        return nullOrEmptyAllowedValuesAccepted;
+    }
+
+    @JsonProperty("nullOrEmptyValuesAccepted")
+    public void setNullOrEmptyAllowedValuesAccepted(final boolean nullOrEmptyAllowedValuesAccepted) {
+        this.nullOrEmptyAllowedValuesAccepted = nullOrEmptyAllowedValuesAccepted;
+    }
+
     @Override
     public boolean test(final Collection<?> input) {
-        return null == allowedValues || allowedValues.isEmpty() || (null != input && allowedValues.containsAll(input));
+        if (null == allowedValues || allowedValues.isEmpty()) {
+            return nullOrEmptyAllowedValuesAccepted;
+        }
+
+        return (null != input && allowedValues.containsAll(input));
     }
 
     @Override
