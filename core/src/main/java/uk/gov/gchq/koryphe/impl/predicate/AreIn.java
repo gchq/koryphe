@@ -83,7 +83,7 @@ public class AreIn extends KoryphePredicate<Collection<?>> {
     @Override
     public boolean test(final Collection<?> input) {
         if (null == allowedValues || allowedValues.isEmpty()) {
-            return (isNullOrEmptyAllowed);
+            return isNullOrEmptyAllowed;
         }
 
         return (null != input && allowedValues.containsAll(input));

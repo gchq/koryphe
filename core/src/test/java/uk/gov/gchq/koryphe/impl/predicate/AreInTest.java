@@ -188,4 +188,45 @@ public class AreInTest extends PredicateTest<AreIn> {
         // When / Then
         assertThat(filter).accepts(anotherList);
     }
+    @Test
+    public void shouldAcceptWhenValuesIsNullAndNullIsAllowed() {
+        List<Object> anotherList = new ArrayList<>();
+
+        // Given
+        final AreIn filter = new AreIn(null,true);
+
+        // When / Then
+        assertThat(filter).accepts(anotherList);
+    }
+    @Test
+    public void shouldRejectWhenValuesIsNullAndNullNotAllowed() {
+        List<Object> anotherList = new ArrayList<>();
+
+        // Given
+        final AreIn filter = new AreIn(null,false);
+
+        // When / Then
+        assertThat(filter).rejects(anotherList);
+    }
+
+    @Test
+    public void shouldAcceptWhenListIsEmptyAndEmptyIsAllowed() {
+        List<Object> anotherlist = Collections.<Object>emptyList();
+
+        // Given
+        final AreIn filter = new AreIn(anotherlist,true);
+
+        // When / Then
+        assertThat(filter).accepts(anotherlist);
+    }
+    @Test
+    public void shouldRejectWhenListIsEmptyAndEmptyNotAllowed() {
+        List<Object> anotherlist = Collections.<Object>emptyList();
+
+        // Given
+        final AreIn filter = new AreIn(anotherlist,false);
+
+        // When / Then
+        assertThat(filter).rejects(anotherlist);
+    }
 }
