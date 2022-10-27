@@ -193,4 +193,13 @@ public class AreInTest extends PredicateTest<AreIn> {
                 new AreIn(VALUE2)
         );
     }
+    @Test
+    public void shouldRejectWhenSetIsEmptyAndEmptyNotAllowed() {
+        Set<Object> anotherSet = Collections.<Object>emptySet();
+        // Given
+        final AreIn filter = new AreIn(anotherSet,false);
+
+        // When / Then
+        assertThat(filter).rejects(anotherSet);
+    }
 }

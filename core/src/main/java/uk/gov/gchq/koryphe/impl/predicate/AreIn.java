@@ -53,6 +53,9 @@ public class AreIn extends KoryphePredicate<Collection<?>> {
 
     public AreIn(final Object... allowedValues) {
         this.allowedValues = Sets.newHashSet(allowedValues);
+        if (allowedValues[allowedValues.length - 1] instanceof Boolean) {
+            isNullOrEmptyAllowed = (boolean) allowedValues[allowedValues.length - 1];
+        }
     }
 
     @JsonIgnore
