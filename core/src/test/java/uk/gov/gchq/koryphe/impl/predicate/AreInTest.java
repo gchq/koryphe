@@ -168,6 +168,15 @@ public class AreInTest extends PredicateTest<AreIn> {
     }
 
     @Test
+    public void shouldAllowSingleCollection() {
+        // Given
+        final AreIn filter = new AreIn(list);
+
+        // When / Then
+        assertThat(filter).accepts(list);
+    }
+
+    @Test
     public void shouldJsonSerialiseAndDeserialise() throws IOException {
         // Given
         final AreIn filter = new AreIn(VALUE1);
