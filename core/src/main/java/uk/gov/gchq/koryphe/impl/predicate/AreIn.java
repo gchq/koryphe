@@ -52,6 +52,10 @@ public class AreIn extends KoryphePredicate<Collection<?>> {
         // Required for serialisation
     }
 
+    public AreIn(final Collection<?> allowedValues) {
+        this.allowedValues = allowedValues;
+    }
+
     public AreIn(final Collection<?> allowedValues, final boolean nullOrEmptyAllowedValuesAccepted) {
         this.allowedValues = allowedValues;
         this.nullOrEmptyAllowedValuesAccepted = nullOrEmptyAllowedValuesAccepted;
