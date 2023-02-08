@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright 2017-2022 Crown Copyright
+  ~ Copyright 2017-2023 Crown Copyright
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@
     </modules>
 
     <properties>
-        <spotbugs.version>4.5.3</spotbugs.version>
+        <spotbugs.version>4.7.3</spotbugs.version>
         <guava.version>29.0-jre</guava.version>
         <assertj.version>3.22.0</assertj.version>
         <jackson.version>2.13.4</jackson.version>
@@ -50,7 +50,7 @@
         <commons-io.version>2.11.0</commons-io.version>
         <org.json.version>20211205</org.json.version>
         <compiler.plugin.verson>3.9.0</compiler.plugin.verson>
-        <spotbugs.plugin.version>4.5.3.0</spotbugs.plugin.version>
+        <spotbugs.plugin.version>${spotbugs.version}.0</spotbugs.plugin.version>
         <spotless.plugin.version>2.22.1</spotless.plugin.version>
         <gpg.plugin.version>3.0.1</gpg.plugin.version>
         <jacoco.plugin.version>0.8.7</jacoco.plugin.version>
@@ -259,13 +259,10 @@
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>${spotbugs.plugin.version}</version>
                 <configuration>
-                    <effort>Low</effort>
-                    <threshold>Low</threshold>
-                    <xmlOutput>true</xmlOutput>
-                    <spotbugsXmlOutputDirectory>
-                        ${project.build.directory}/findbugs
-                    </spotbugsXmlOutputDirectory>
-                    <excludeFilterFile>code-style/spotbugs-exclude.xml</excludeFilterFile>
+                    <effort>Max</effort>
+                    <excludeFilterFile>
+                        code-style/spotbugs-exclude.xml
+                    </excludeFilterFile>
                 </configuration>
                 <executions>
                     <execution>
@@ -274,14 +271,6 @@
                         <goals>
                             <goal>check</goal>
                         </goals>
-                        <configuration>
-                            <effort>Low</effort>
-                            <threshold>Low</threshold>
-                            <xmlOutput>true</xmlOutput>
-                            <spotbugsXmlOutputDirectory>
-                                ${project.build.directory}/findbugs
-                            </spotbugsXmlOutputDirectory>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
