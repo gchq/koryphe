@@ -17,7 +17,6 @@
 package uk.gov.gchq.koryphe.impl.predicate;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.google.common.collect.Lists;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.Since;
@@ -25,6 +24,7 @@ import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.predicate.PredicateComposite;
 import uk.gov.gchq.koryphe.tuple.predicate.IntegerTupleAdaptedPredicate;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -42,7 +42,7 @@ public class And<I> extends PredicateComposite<I, Predicate<I>> {
     }
 
     public And(final Predicate<?>... predicates) {
-        this(Lists.newArrayList(predicates));
+        this(Arrays.asList(predicates));
     }
 
     public And(final List<Predicate> predicates) {

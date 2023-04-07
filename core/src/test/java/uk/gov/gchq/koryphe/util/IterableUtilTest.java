@@ -16,7 +16,6 @@
 
 package uk.gov.gchq.koryphe.util;
 
-import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -35,8 +34,8 @@ public class IterableUtilTest {
         // Given
         final List<Integer> itr1 = Collections.singletonList(0);
         final List<Integer> itr2 = new ArrayList<>(0);
-        final List<Integer> itr3 = Lists.newArrayList(1, 2, 3, 4);
-        final List<Integer> itr4 = Lists.newArrayList(5, 6);
+        final List<Integer> itr3 = Arrays.asList(1, 2, 3, 4);
+        final List<Integer> itr4 = Arrays.asList(5, 6);
 
         // When
         final Iterable<Integer> itrConcat = IterableUtil.concat(Arrays.asList(itr1, itr2, itr3, itr4));
@@ -48,10 +47,10 @@ public class IterableUtilTest {
     @Test
     public void shouldRemoveElementFromFirstIterable() {
         // Given
-        final List<Integer> itr1 = Lists.newArrayList(0);
+        final List<Integer> itr1 = new ArrayList<>(Arrays.asList(0));
         final List<Integer> itr2 = new ArrayList<>(0);
-        final List<Integer> itr3 = Lists.newArrayList(1, 2, 3, 4);
-        final List<Integer> itr4 = Lists.newArrayList(5, 6);
+        final List<Integer> itr3 = Arrays.asList(1, 2, 3, 4);
+        final List<Integer> itr4 = Arrays.asList(5, 6);
 
         final int itr1Size = itr1.size();
         final int itr2Size = itr2.size();
@@ -75,10 +74,10 @@ public class IterableUtilTest {
     @Test
     public void shouldRemoveElementFromThirdIterable() {
         // Given
-        final List<Integer> itr1 = Lists.newArrayList(0);
+        final List<Integer> itr1 = Arrays.asList(0);
         final List<Integer> itr2 = new ArrayList<>(0);
-        final List<Integer> itr3 = Lists.newArrayList(1, 2, 3, 4);
-        final List<Integer> itr4 = Lists.newArrayList(5, 6);
+        final List<Integer> itr3 = new ArrayList<>(Arrays.asList(1, 2, 3, 4));
+        final List<Integer> itr4 = Arrays.asList(5, 6);
 
         final int itr1Size = itr1.size();
         final int itr2Size = itr2.size();

@@ -17,7 +17,6 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.google.common.collect.Iterables;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -25,6 +24,7 @@ import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 import uk.gov.gchq.koryphe.util.CloseableUtil;
+import uk.gov.gchq.koryphe.util.IterableUtil;
 
 import java.util.function.Predicate;
 
@@ -53,7 +53,7 @@ public class FirstValid<I_ITEM> extends KorypheFunction<Iterable<I_ITEM>, I_ITEM
     public I_ITEM apply(final Iterable<I_ITEM> iterable) {
         if (nonNull(iterable) && nonNull(predicate)) {
             try {
-                return Iterables.getFirst(filter(iterable, predicate), null);
+                return IterableUtil.getFirst(filter(iterable, predicate));
             } finally {
                 CloseableUtil.close(iterable);
             }

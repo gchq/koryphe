@@ -16,13 +16,13 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import com.google.common.collect.Iterables;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 import uk.gov.gchq.koryphe.util.CloseableUtil;
+import uk.gov.gchq.koryphe.util.IterableUtil;
 
 /**
  * A {@code LastItem} is a {@link KorypheFunction} that returns the last item from a provided
@@ -41,7 +41,7 @@ public class LastItem<T> extends KorypheFunction<Iterable<T>, T> {
             throw new IllegalArgumentException("Input cannot be null");
         }
         try {
-            return Iterables.getLast(input, null);
+            return IterableUtil.getLast(input);
         } finally {
             CloseableUtil.close(input);
         }

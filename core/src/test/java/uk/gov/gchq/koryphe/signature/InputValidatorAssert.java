@@ -16,9 +16,10 @@
 
 package uk.gov.gchq.koryphe.signature;
 
-import com.google.common.collect.Sets;
-
 import org.assertj.core.api.AbstractAssert;
+
+import java.util.Arrays;
+import java.util.HashSet;
 
 public class InputValidatorAssert extends AbstractAssert<InputValidatorAssert, InputValidator> {
 
@@ -33,7 +34,7 @@ public class InputValidatorAssert extends AbstractAssert<InputValidatorAssert, I
     public InputValidatorAssert acceptsInput(Class<?>... arguments) {
         isNotNull();
         if (!actual.isInputValid(arguments).isValid()) {
-            failWithMessage("Expected Class %s to accept inputs %s", actual, Sets.newHashSet(arguments));
+            failWithMessage("Expected Class %s to accept inputs %s", actual, new HashSet<>(Arrays.asList(arguments)));
         }
         return this;
     }
@@ -41,7 +42,7 @@ public class InputValidatorAssert extends AbstractAssert<InputValidatorAssert, I
     public InputValidatorAssert rejectsInput(Class<?>... arguments) {
         isNotNull();
         if (actual.isInputValid(arguments).isValid()) {
-            failWithMessage("Expected Class %s to reject inputs %s", actual, Sets.newHashSet(arguments));
+            failWithMessage("Expected Class %s to reject inputs %s", actual, new HashSet<>(Arrays.asList(arguments)));
         }
         return this;
     }

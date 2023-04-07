@@ -16,12 +16,12 @@
 
 package uk.gov.gchq.koryphe.iterable;
 
-import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.util.CloseableUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -62,8 +62,8 @@ public class ChainedIterableTest {
         // Given
         final List<Integer> itr1 = Collections.singletonList(0);
         final List<Integer> emptyItr2 = new ArrayList<>(0);
-        final List<Integer> itr3 = Lists.newArrayList(1, 2, 3, 4);
-        final List<Integer> itr4 = Lists.newArrayList(5, 6);
+        final List<Integer> itr3 = Arrays.asList(1, 2, 3, 4);
+        final List<Integer> itr4 = Arrays.asList(5, 6);
 
         // When
         final List<List<Integer>> collect = Stream.of(itr1, emptyItr2, itr3, itr4).collect(Collectors.toList());
@@ -79,8 +79,8 @@ public class ChainedIterableTest {
         // Given
         final List<Integer> itr1 = Collections.singletonList(0);
         final List<Integer> emptyItr2 = new ArrayList<>(0);
-        final List<Integer> itr3 = Lists.newArrayList(1, 2, 3, 4);
-        final List<Integer> itr4 = Lists.newArrayList(5, 6);
+        final List<Integer> itr3 = Arrays.asList(1, 2, 3, 4);
+        final List<Integer> itr4 = Arrays.asList(5, 6);
 
         // When
         final ChainedIterable<Integer> wrappedItr = new ChainedIterable<>(itr1, emptyItr2, itr3, itr4);
@@ -94,9 +94,9 @@ public class ChainedIterableTest {
         // Given
         final List<Integer> itr1 = Collections.singletonList(0);
         final List<Integer> emptyItr2 = new ArrayList<>(0);
-        final List<Integer> itrWithNull = Lists.newArrayList((Integer) null);
-        final List<Integer> itr3 = Lists.newArrayList(1, null, 2, null, 3, 4);
-        final List<Integer> itr4 = Lists.newArrayList(5, 6);
+        final List<Integer> itrWithNull = Arrays.asList((Integer) null);
+        final List<Integer> itr3 = Arrays.asList(1, null, 2, null, 3, 4);
+        final List<Integer> itr4 = Arrays.asList(5, 6);
 
         // When
         final ChainedIterable<Integer> wrappedItr = new ChainedIterable<>(itr1, emptyItr2, itrWithNull, itr3, itr4);
@@ -110,8 +110,8 @@ public class ChainedIterableTest {
         // Given
         final List<Integer> itr1 = Collections.singletonList(0);
         final List<Integer> emptyItr2 = new ArrayList<>(0);
-        final List<Integer> itr3 = Lists.newArrayList(1, 2, 3, 4);
-        final List<Integer> itr4 = Lists.newArrayList(5, 6);
+        final List<Integer> itr3 = Arrays.asList(1, 2, 3, 4);
+        final List<Integer> itr4 = Arrays.asList(5, 6);
 
         // When
         final ChainedIterable<Integer> wrappedItr = new ChainedIterable<>(null, itr1, null, emptyItr2, null, itr3, itr4);
@@ -124,10 +124,10 @@ public class ChainedIterableTest {
     @Test
     public void shouldRemoveElementFromFirstIterable() {
         // Given
-        final List<String> itr1 = Lists.newArrayList("a");
+        final List<String> itr1 = new ArrayList<>(Arrays.asList("a"));
         final List<String> emptyItr2 = new ArrayList<>(0);
-        final List<String> itr3 = Lists.newArrayList("b", "c", "d", "e");
-        final List<String> itr4 = Lists.newArrayList("f", "g");
+        final List<String> itr3 = Arrays.asList("b", "c", "d", "e");
+        final List<String> itr4 = Arrays.asList("f", "g");
 
         ChainedIterable<String> wrappedItr = null;
         Iterator<String> itr = null;
@@ -154,10 +154,10 @@ public class ChainedIterableTest {
     @Test
     public void shouldRemoveElementFromThirdIterable() {
         // Given
-        final List<String> itr1 = Lists.newArrayList("a");
+        final List<String> itr1 = Arrays.asList("a");
         final List<String> emptyItr2 = new ArrayList<>(0);
-        final List<String> itr3 = Lists.newArrayList("b", "c", "d", "e");
-        final List<String> itr4 = Lists.newArrayList("f", "g");
+        final List<String> itr3 = new ArrayList<>(Arrays.asList("b", "c", "d", "e"));
+        final List<String> itr4 = Arrays.asList("f", "g");
 
         // When
         ChainedIterable<String> wrappedItr = null;

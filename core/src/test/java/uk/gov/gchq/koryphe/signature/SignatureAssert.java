@@ -16,9 +16,10 @@
 
 package uk.gov.gchq.koryphe.signature;
 
-import com.google.common.collect.Sets;
-
 import org.assertj.core.api.AbstractObjectAssert;
+
+import java.util.Arrays;
+import java.util.HashSet;
 
 public class SignatureAssert extends AbstractObjectAssert<SignatureAssert, Signature> {
 
@@ -33,7 +34,7 @@ public class SignatureAssert extends AbstractObjectAssert<SignatureAssert, Signa
     public SignatureAssert isAssignableFrom(Class<?>... arguments) {
         isNotNull();
         if (!actual.assignable(arguments).isValid()) {
-            failWithMessage("Expected Signature %s to be assignable from %s", actual, Sets.newHashSet(arguments));
+            failWithMessage("Expected Signature %s to be assignable from %s", actual, new HashSet<>(Arrays.asList(arguments)));
         }
         return this;
     }
@@ -41,7 +42,7 @@ public class SignatureAssert extends AbstractObjectAssert<SignatureAssert, Signa
     public SignatureAssert isNotAssignableFrom(Class<?>... arguments) {
         isNotNull();
         if (actual.assignable(arguments).isValid()) {
-            failWithMessage("Expected Signature %s not to be assignable from %s", actual, Sets.newHashSet(arguments));
+            failWithMessage("Expected Signature %s not to be assignable from %s", actual, new HashSet<>(Arrays.asList(arguments)));
         }
         return this;
     }

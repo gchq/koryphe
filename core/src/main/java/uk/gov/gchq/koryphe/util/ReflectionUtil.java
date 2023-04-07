@@ -16,11 +16,11 @@
 
 package uk.gov.gchq.koryphe.util;
 
-import com.google.common.collect.Sets;
 import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -209,7 +209,7 @@ public final class ReflectionUtil {
             if (1 == newPackages.length) {
                 addReflectionPackages(Collections.singleton(newPackages[0]));
             } else {
-                addReflectionPackages(Sets.newHashSet(newPackages));
+                addReflectionPackages(new HashSet<>(Arrays.asList(newPackages)));
             }
         }
     }

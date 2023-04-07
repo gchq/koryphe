@@ -16,16 +16,16 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -92,8 +92,8 @@ public class LongestTest extends FunctionTest<Longest> {
     public void shouldReturnLongestListInput() {
         // Given
         final Longest<List<Integer>> function = new Longest<>();
-        final List<Integer> input1 = Lists.newArrayList(1);
-        final List<Integer> input2 = Lists.newArrayList(1, 2, 3);
+        final List<Integer> input1 = Arrays.asList(1);
+        final List<Integer> input2 = Arrays.asList(1, 2, 3);
 
         // When
         final List<Integer> result = function.apply(input1, input2);
@@ -106,8 +106,8 @@ public class LongestTest extends FunctionTest<Longest> {
     public void shouldReturnLongestSetInput() {
         // Given
         final Longest<Set<Integer>> function = new Longest<>();
-        final Set<Integer> input1 = Sets.newHashSet(1);
-        final Set<Integer> input2 = Sets.newHashSet(1, 2, 3);
+        final Set<Integer> input1 = new HashSet<>(Arrays.asList(1));
+        final Set<Integer> input2 = new HashSet<>(Arrays.asList(1, 2, 3));
 
         // When
         final Set<Integer> result = function.apply(input1, input2);
@@ -121,7 +121,7 @@ public class LongestTest extends FunctionTest<Longest> {
         // Given
         final Longest<Map<String, String>> function = new Longest<>();
         final Map<String, String> input1 = new HashMap<>();
-        final Map<String, String> input2 = Maps.asMap(Sets.newHashSet("1"), k -> k);
+        final Map<String, String> input2 = Collections.singletonMap("1", "1");
 
         // When
         final Map<String, String> result = function.apply(input1, input2);

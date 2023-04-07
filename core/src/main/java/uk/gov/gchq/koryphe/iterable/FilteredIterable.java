@@ -16,11 +16,10 @@
 
 package uk.gov.gchq.koryphe.iterable;
 
-import com.google.common.collect.Lists;
-
 import uk.gov.gchq.koryphe.util.CloseableUtil;
 
 import java.io.Closeable;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -38,7 +37,7 @@ public class FilteredIterable<T> implements Closeable, Iterable<T> {
     private final List<Predicate> predicates;
 
     public FilteredIterable(final Iterable<T> iterable, final Predicate... predicates) {
-        this(iterable, Lists.newArrayList(predicates));
+        this(iterable, Arrays.asList(predicates));
     }
 
     public FilteredIterable(final Iterable<T> iterable, final List<Predicate> predicates) {

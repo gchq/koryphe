@@ -17,13 +17,14 @@
 package uk.gov.gchq.koryphe.serialisation.json;
 
 import com.fasterxml.jackson.databind.JavaType;
-import com.google.common.collect.Sets;
 import org.apache.commons.lang3.StringUtils;
 
 import uk.gov.gchq.koryphe.util.JavaUtils;
 import uk.gov.gchq.koryphe.util.ReflectionUtil;
 
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -189,7 +190,7 @@ public final class SimpleClassNameCache {
                 final Package classPackage = nonArrayClass.getPackage();
                 if (null != classPackage && corePackages.contains(classPackage.getName())) {
                     // Found the class, so cache the result for next time.
-                    addIdClasses(id, Sets.newHashSet(nonArrayClass));
+                    addIdClasses(id, new HashSet<>(Arrays.asList((nonArrayClass))));
                 } else {
                     id = null;
                 }
@@ -244,7 +245,7 @@ public final class SimpleClassNameCache {
                     final Class<?> clazz = ReflectionUtil.getClassFromName(classNameTmp);
                     if (null != clazz) {
                         className = classNameTmp;
-                        addIdClasses(nonArrayId, Sets.newHashSet(clazz));
+                        addIdClasses(nonArrayId, new HashSet<>(Arrays.asList(clazz)));
                         break;
                     }
                 }
@@ -354,7 +355,7 @@ public final class SimpleClassNameCache {
         final String id = StringUtils.capitalize(clazz.getSimpleName());
         final Set<Class> value = map.get(id);
         if (null == value) {
-            map.put(id, Sets.newHashSet(clazz));
+            map.put(id, new HashSet<>(Arrays.asList(clazz)));
         } else {
             value.add(clazz);
         }
@@ -366,7 +367,7 @@ public final class SimpleClassNameCache {
             final String id = StringUtils.capitalize(entry.getKey());
             final Set<Class> value = map.get(id);
             if (null == value) {
-                map.put(id, Sets.newHashSet(entry.getValue()));
+                map.put(id, entry.getValue());
             } else {
                 value.addAll(entry.getValue());
             }

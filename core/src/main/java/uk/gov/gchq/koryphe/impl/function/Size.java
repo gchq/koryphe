@@ -16,13 +16,13 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import com.google.common.collect.Iterables;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 import uk.gov.gchq.koryphe.util.CloseableUtil;
+import uk.gov.gchq.koryphe.util.IterableUtil;
 
 /**
  * A {@code Size} is a {@link KorypheFunction} which returns the size of a provided
@@ -38,7 +38,7 @@ public class Size extends KorypheFunction<Iterable, Integer> {
             throw new IllegalArgumentException("Input cannot be null");
         }
         try {
-            return Iterables.size(input);
+            return IterableUtil.size(input);
         } finally {
             CloseableUtil.close(input);
         }

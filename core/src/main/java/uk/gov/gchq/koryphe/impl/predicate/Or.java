@@ -17,7 +17,6 @@
 package uk.gov.gchq.koryphe.impl.predicate;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.google.common.collect.Lists;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import uk.gov.gchq.koryphe.Since;
@@ -27,6 +26,7 @@ import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.tuple.predicate.IntegerTupleAdaptedPredicate;
 import uk.gov.gchq.koryphe.tuple.predicate.TupleAdaptedPredicate;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -44,7 +44,7 @@ public class Or<I> extends PredicateComposite<I, Predicate<I>> {
     }
 
     public Or(final Predicate<?>... predicates) {
-        this(Lists.newArrayList(predicates));
+        this(Arrays.asList(predicates));
     }
 
     public Or(final List<Predicate> predicates) {

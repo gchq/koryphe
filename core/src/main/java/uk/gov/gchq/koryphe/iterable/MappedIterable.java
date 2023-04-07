@@ -16,11 +16,10 @@
 
 package uk.gov.gchq.koryphe.iterable;
 
-import com.google.common.collect.Lists;
-
 import uk.gov.gchq.koryphe.util.CloseableUtil;
 
 import java.io.Closeable;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -39,7 +38,7 @@ public class MappedIterable<I_ITEM, O_ITEM> implements Closeable, Iterable<O_ITE
     private final List<Function> functions;
 
     public MappedIterable(final Iterable<I_ITEM> iterable, final Function... functions) {
-        this(iterable, Lists.newArrayList(functions));
+        this(iterable, Arrays.asList(functions));
     }
 
     public MappedIterable(final Iterable<I_ITEM> iterable, final List<Function> functions) {

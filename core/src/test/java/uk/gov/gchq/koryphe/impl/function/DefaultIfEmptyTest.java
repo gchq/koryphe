@@ -16,13 +16,13 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -101,7 +101,7 @@ public class DefaultIfEmptyTest extends FunctionTest<DefaultIfEmpty> {
     @Test
     public void shouldReturnOriginalValueIfNotEmpty() {
         // Given
-        final List<String> iterable = Lists.newArrayList("first", "second");
+        final List<String> iterable = Arrays.asList("first", "second");
         final DefaultIfEmpty defaultIfEmpty = new DefaultIfEmpty(DEFAULT_VALUE);
 
         // When

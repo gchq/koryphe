@@ -16,7 +16,6 @@
 
 package uk.gov.gchq.koryphe.util;
 
-import com.google.common.collect.Sets;
 import com.google.common.primitives.UnsignedLong;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,6 +23,7 @@ import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.serialisation.json.obj.first.TestCustomNumber;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
@@ -105,11 +105,11 @@ public class ReflectionUtilTest {
         assertThat(simpleClassNames)
                 .containsEntry(
                     TestCustomNumber.class.getSimpleName(),
-                    Sets.newHashSet(
+                    new HashSet<>(Arrays.asList(
                         TestCustomNumber.class,
                         uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class
                     )
-                )
+                ))
                 .doesNotContainKey(UnsignedLong.class.getSimpleName());
     }
 
@@ -137,11 +137,11 @@ public class ReflectionUtilTest {
         assertThat(simpleClassNames)
                 .containsEntry(
                     TestCustomNumber.class.getSimpleName(),
-                    Sets.newHashSet(
+                    new HashSet<>(Arrays.asList(
                         TestCustomNumber.class,
                         uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class
                     )
-                )
+                ))
                 .containsEntry(
                     UnsignedLong.class.getSimpleName(),
                     Collections.singleton(UnsignedLong.class)
@@ -162,11 +162,11 @@ public class ReflectionUtilTest {
         assertThat(simpleClassNames)
                 .containsEntry(
                     TestCustomNumber.class.getSimpleName(),
-                    Sets.newHashSet(
+                    new HashSet<>(Arrays.asList(
                         TestCustomNumber.class,
                         uk.gov.gchq.koryphe.serialisation.json.obj.second.TestCustomNumber.class
                     )
-                )
+                ))
                 .containsEntry(
                     UnsignedLong.class.getSimpleName(),
                     Collections.singleton(UnsignedLong.class)

@@ -20,7 +20,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.google.common.collect.Sets;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -62,7 +61,7 @@ public class AreIn extends KoryphePredicate<Collection<?>> {
     }
 
     public AreIn(final Object... allowedValues) {
-        this.allowedValues = Sets.newHashSet(allowedValues);
+        this.allowedValues = new HashSet<>(Arrays.asList(allowedValues));
     }
 
     @JsonIgnore

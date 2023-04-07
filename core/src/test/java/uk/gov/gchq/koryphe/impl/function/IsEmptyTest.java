@@ -16,7 +16,6 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import com.google.common.collect.Sets;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
@@ -24,6 +23,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -74,7 +74,7 @@ public class IsEmptyTest extends FunctionTest<IsEmpty> {
     public void shouldReturnTrueForEmptyIterable() {
         // Given
         final IsEmpty function = new IsEmpty();
-        final Iterable input = Sets.newHashSet();
+        final Iterable input = new HashSet<>(Arrays.asList());
 
         // When
         final Boolean result = function.apply(input);

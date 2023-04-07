@@ -16,15 +16,15 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -48,7 +48,7 @@ public class StringJoinTest extends FunctionTest<StringJoin> {
     public void shouldHandleNullDelimiter() {
         // Given
         final StringJoin<String> function = new StringJoin<>(null);
-        final Set<String> input = Sets.newHashSet("a", "b", "c");
+        final Set<String> input = new HashSet<>(Arrays.asList("a", "b", "c"));
 
         // When
         final String result = function.apply(input);
@@ -61,7 +61,7 @@ public class StringJoinTest extends FunctionTest<StringJoin> {
     public void shouldJoinIterableOfStrings() {
         // Given
         final StringJoin<String> function = new StringJoin<>();
-        final Set<String> input = Sets.newHashSet("a", "b", "c");
+        final Set<String> input = new HashSet<>(Arrays.asList("a", "b", "c"));
 
         // When
         final String result = function.apply(input);
@@ -74,7 +74,7 @@ public class StringJoinTest extends FunctionTest<StringJoin> {
     public void shouldJoinIterableOfIntegers() {
         // Given
         final StringJoin<Integer> function = new StringJoin<>();
-        final List<Integer> input = Lists.newArrayList(1, 2, 3, 4, 5);
+        final List<Integer> input = Arrays.asList(1, 2, 3, 4, 5);
 
         // When
         final String result = function.apply(input);
@@ -87,7 +87,7 @@ public class StringJoinTest extends FunctionTest<StringJoin> {
     public void shouldJoinIterableOfStringsWithDelimiter() {
         // Given
         final StringJoin<String> function = new StringJoin<>(",");
-        final Set<String> input = Sets.newHashSet("a", "b", "c");
+        final Set<String> input = new HashSet<>(Arrays.asList("a", "b", "c"));
 
         // When
         final String result = function.apply(input);
@@ -100,7 +100,7 @@ public class StringJoinTest extends FunctionTest<StringJoin> {
     public void shouldJoinIterableOfIntegersWithDelimiter() {
         // Given
         final StringJoin<Integer> function = new StringJoin<>(" ");
-        final List<Integer> input = Lists.newArrayList(1, 2, 3, 4, 5);
+        final List<Integer> input = Arrays.asList(1, 2, 3, 4, 5);
 
         // When
         final String result = function.apply(input);

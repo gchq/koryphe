@@ -17,7 +17,6 @@
 package uk.gov.gchq.koryphe.impl.function;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.google.common.collect.Lists;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
@@ -25,6 +24,7 @@ import uk.gov.gchq.koryphe.function.FunctionComposite;
 import uk.gov.gchq.koryphe.tuple.function.TupleAdaptedFunction;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
@@ -43,7 +43,7 @@ public class FunctionChain<I, O> extends FunctionComposite<I, O, Function<I, O>>
     }
 
     public FunctionChain(final Function... functions) {
-        this(Lists.newArrayList(functions));
+        this(Arrays.asList(functions));
     }
 
     public FunctionChain(final List<Function> functions) {

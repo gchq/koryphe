@@ -16,7 +16,6 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import com.google.common.collect.Iterables;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -58,9 +57,9 @@ public class Length extends KorypheFunction<Object, Integer> implements InputVal
             length = ((Object[]) value).length;
         } else if (value instanceof Iterable) {
             if (null != maxLength) {
-                length = Iterables.size(IterableUtil.limit((Iterable) value, 0, maxLength, true));
+                length = IterableUtil.size(IterableUtil.limit((Iterable) value, 0, maxLength, true));
             } else {
-                length = Iterables.size((Iterable) value);
+                length = IterableUtil.size((Iterable) value);
             }
         } else if (value instanceof Map) {
             length = ((Map) value).size();

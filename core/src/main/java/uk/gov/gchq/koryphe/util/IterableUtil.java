@@ -21,10 +21,14 @@ import uk.gov.gchq.koryphe.iterable.FilteredIterable;
 import uk.gov.gchq.koryphe.iterable.LimitedIterable;
 import uk.gov.gchq.koryphe.iterable.MappedIterable;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.StreamSupport;
 
 /**
  * An {@code IterableUtil} is a utility class providing capabilities for:
@@ -87,4 +91,35 @@ public final class IterableUtil {
         return new LimitedIterable<>(iterable, start, end, truncate);
     }
 
+    public static int size(final Iterable<?> iterable) {
+        if (iterable instanceof Collection) {
+            return ((Collection<?>) iterable).size();
+        }
+        return (int) StreamSupport.stream(iterable.spliterator(), false).count();
+    }
+
+    public static <T> List<T> toList(final Iterable<T> iterable) {
+        if (iterable instanceof List) {
+            return (List<T>) iterable;
+        }
+        if (iterable instanceof Set) {
+            return new ArrayList<>((Set<T>) iterable);
+        }
+        List<T> asList = new ArrayList<>();
+        iterable.forEach(asList::add);
+        return asList;
+    }
+
+    public static boolean isEmpty(final Iterable<?> iterable) {
+        return size(iterable) == 0;
+    }
+
+    public static <T> T getFirst(final Iterable<T> iterable) {
+        return iterable.iterator().next();
+    }
+
+    public static <T> T getLast(final Iterable<T> iterable) {
+        List<T> list = toList(iterable);
+        return list.get(list.size() - 1);
+    }
 }

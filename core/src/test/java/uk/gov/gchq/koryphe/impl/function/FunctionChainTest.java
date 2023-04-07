@@ -16,7 +16,6 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import com.google.common.collect.Sets;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
@@ -25,6 +24,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.InstanceOfAssertFactories.ARRAY;
@@ -98,7 +98,7 @@ public class FunctionChainTest extends FunctionTest<FunctionChain> {
         assertThat(result)
                 .extracting("values")
                 .asInstanceOf(ARRAY)
-                .containsExactly("someString", "SOMESTRING", Sets.newHashSet("SOMESTRING"));
+                .containsExactly("someString", "SOMESTRING", new HashSet<>(Arrays.asList("SOMESTRING")));
     }
 
     @Test

@@ -16,12 +16,12 @@
 
 package uk.gov.gchq.koryphe.iterable;
 
-import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.impl.predicate.IsLessThan;
 import uk.gov.gchq.koryphe.impl.predicate.IsMoreThan;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -32,23 +32,23 @@ public class FilteredIterableTest {
 
     @Test
     public void shouldThrowIAXWhenArrayOfIterablesIsNull() {
-        assertThatIllegalArgumentException().isThrownBy(() -> new FilteredIterable(null, Lists.newArrayList(new IsLessThan(4))));
+        assertThatIllegalArgumentException().isThrownBy(() -> new FilteredIterable(null, Arrays.asList(new IsLessThan(4))));
     }
 
     @Test
     public void shouldThrowIAXWhenListOfPredicatesIsNull() {
-        assertThatIllegalArgumentException().isThrownBy(() -> new FilteredIterable(Lists.newArrayList(1, 2, 3, 4, 5), (List) null));
+        assertThatIllegalArgumentException().isThrownBy(() -> new FilteredIterable(Arrays.asList(1, 2, 3, 4, 5), (List) null));
     }
 
     @Test
     public void shouldThrowIAXWhenOnePredicateIsNull() {
-        assertThatIllegalArgumentException().isThrownBy(() -> new FilteredIterable(Lists.newArrayList(1, 2, 3, 4, 5), Lists.newArrayList(new IsLessThan(4), (Predicate) null)));
+        assertThatIllegalArgumentException().isThrownBy(() -> new FilteredIterable(Arrays.asList(1, 2, 3, 4, 5), Arrays.asList(new IsLessThan(4), (Predicate) null)));
     }
 
     @Test
     public void shouldCorrectlyFilterSinglePredicate() {
         // Given
-        final List<Integer> itr = Lists.newArrayList(1, 2, 3, 4, 5);
+        final List<Integer> itr = Arrays.asList(1, 2, 3, 4, 5);
 
         // When
         FilteredIterable<Integer> filteredIterable = new FilteredIterable<Integer>(itr, new IsLessThan(4));
@@ -60,8 +60,8 @@ public class FilteredIterableTest {
     @Test
     public void shouldCorrectlyFilterMultiplePredicates() {
         // Given
-        final List<Integer> itr = Lists.newArrayList(1, 2, 3, 4, 5);
-        final List<Predicate> predicates = Lists.newArrayList(new IsLessThan(4), new IsMoreThan(1));
+        final List<Integer> itr = Arrays.asList(1, 2, 3, 4, 5);
+        final List<Predicate> predicates = Arrays.asList(new IsLessThan(4), new IsMoreThan(1));
 
         // When
         FilteredIterable<Integer> filteredIterable = new FilteredIterable<Integer>(itr, predicates);

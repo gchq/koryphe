@@ -16,12 +16,12 @@
 
 package uk.gov.gchq.koryphe.iterable;
 
-import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.impl.function.Increment;
 import uk.gov.gchq.koryphe.impl.function.MultiplyBy;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
@@ -32,23 +32,23 @@ public class MappedIterableTest {
 
     @Test
     public void shouldThrowIAXWhenArrayOfIterablesIsNull() {
-        assertThatIllegalArgumentException().isThrownBy(() -> new MappedIterable(null, Lists.newArrayList(new Increment(4))));
+        assertThatIllegalArgumentException().isThrownBy(() -> new MappedIterable(null, Arrays.asList(new Increment(4))));
     }
 
     @Test
     public void shouldThrowIAXWhenListOfFunctionsIsNull() {
-        assertThatIllegalArgumentException().isThrownBy(() -> new MappedIterable(Lists.newArrayList(1, 2, 3, 4, 5), (List) null));
+        assertThatIllegalArgumentException().isThrownBy(() -> new MappedIterable(Arrays.asList(1, 2, 3, 4, 5), (List) null));
     }
 
     @Test
     public void shouldThrowIAXWhenOneFunctionIsNull() {
-        assertThatIllegalArgumentException().isThrownBy(() -> new MappedIterable(Lists.newArrayList(1, 2, 3, 4, 5), Lists.newArrayList(new Increment(4), (Function) null)));
+        assertThatIllegalArgumentException().isThrownBy(() -> new MappedIterable(Arrays.asList(1, 2, 3, 4, 5), Arrays.asList(new Increment(4), (Function) null)));
     }
 
     @Test
     public void shouldCorrectlyApplySingleFunction() {
         // Given
-        final List<Integer> itr = Lists.newArrayList(1, 2, 3, 4, 5);
+        final List<Integer> itr = Arrays.asList(1, 2, 3, 4, 5);
 
         // When
         MappedIterable<Integer, Integer> mappedIterable = new MappedIterable<Integer, Integer>(itr, new Increment(4));
@@ -60,8 +60,8 @@ public class MappedIterableTest {
     @Test
     public void shouldCorrectlyApplyMultipleFunctions() {
         // Given
-        final List<Integer> itr = Lists.newArrayList(1, 2, 3, 4, 5);
-        final List<Function> functions = Lists.newArrayList(new Increment(4), new MultiplyBy(2));
+        final List<Integer> itr = Arrays.asList(1, 2, 3, 4, 5);
+        final List<Function> functions = Arrays.asList(new Increment(4), new MultiplyBy(2));
 
         // When
         MappedIterable<Integer, Integer> mappedIterable = new MappedIterable<Integer, Integer>(itr, functions);

@@ -19,7 +19,6 @@ package uk.gov.gchq.koryphe.impl.predicate;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.google.common.collect.Sets;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -51,7 +50,7 @@ public class IsIn extends KoryphePredicate<Object> {
     }
 
     public IsIn(final Object... controlData) {
-        this.allowedValues = Sets.newHashSet(controlData);
+        this.allowedValues = new HashSet<>(Arrays.asList(controlData));
     }
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)

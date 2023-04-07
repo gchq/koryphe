@@ -16,7 +16,6 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import com.google.common.collect.Lists;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.junit.jupiter.api.Test;
@@ -29,6 +28,7 @@ import uk.gov.gchq.koryphe.tuple.Tuple;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,7 +42,7 @@ public class ToTupleTest extends FunctionTest<ToTuple> {
         final ToTuple function = new ToTuple();
 
         // When
-        Tuple output = function.apply(Lists.newArrayList(1, 2, 3, 4));
+        Tuple output = function.apply(Arrays.asList(1, 2, 3, 4));
 
         // Then
         assertThat(output).isEqualTo(new ArrayTuple(1, 2, 3, 4));

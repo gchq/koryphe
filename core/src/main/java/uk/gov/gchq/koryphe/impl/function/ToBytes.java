@@ -19,7 +19,6 @@ package uk.gov.gchq.koryphe.impl.function;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.google.common.base.Charsets;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -30,6 +29,7 @@ import uk.gov.gchq.koryphe.function.KorypheFunction;
 
 import java.nio.charset.Charset;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -41,7 +41,7 @@ import static java.util.Objects.nonNull;
 @Since("1.8.0")
 @Summary("Extracts the bytes from a string")
 public class ToBytes extends KorypheFunction<String, byte[]> {
-    public static final Charset DEFAULT_CHARSET = Charsets.UTF_8;
+    public static final Charset DEFAULT_CHARSET = UTF_8;
 
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     private Charset charset;

@@ -16,12 +16,13 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import com.google.common.collect.Lists;
-
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
+import uk.gov.gchq.koryphe.util.IterableUtil;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -37,20 +38,17 @@ public class ToList extends KorypheFunction<Object, List<?>> {
     @Override
     public List<?> apply(final Object value) {
         if (null == value) {
-            return Lists.newArrayList((Object) null);
+            return Arrays.asList((Object) null);
         }
 
         if (value instanceof Object[]) {
-            return Lists.newArrayList((Object[]) value);
+            return new ArrayList<>(Arrays.asList((Object[]) value));
         }
 
         if (value instanceof Iterable) {
-            if (value instanceof List) {
-                return (List<?>) value;
-            }
-            return Lists.newArrayList((Iterable) value);
+            return IterableUtil.toList((Iterable) value);
         }
 
-        return Lists.newArrayList(value);
+        return new ArrayList<>(Arrays.asList(value));
     }
 }

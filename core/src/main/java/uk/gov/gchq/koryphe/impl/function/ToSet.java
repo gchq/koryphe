@@ -19,13 +19,14 @@ package uk.gov.gchq.koryphe.impl.function;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.google.common.collect.Sets;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
 import uk.gov.gchq.koryphe.serialisation.json.SimpleClassNameIdResolver;
+import uk.gov.gchq.koryphe.util.IterableUtil;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -76,9 +77,9 @@ public class ToSet extends KorypheFunction<Object, Set<?>> {
         } else if (implementation.isInstance(value)) {
            return (Set) value;
         } else if (value instanceof Object[]) {
-            setImpl.addAll(Sets.newHashSet((Object[]) value));
+            setImpl.addAll(new HashSet<>(Arrays.asList((Object[]) value)));
         } else if (value instanceof Iterable) {
-            setImpl.addAll(Sets.newHashSet((Iterable) value));
+            setImpl.addAll(new HashSet<>(IterableUtil.toList((Iterable) value)));
         } else {
             setImpl.add(value);
         }

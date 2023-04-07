@@ -16,8 +16,6 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
@@ -25,6 +23,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -59,7 +58,7 @@ public class ToArrayTest extends FunctionTest<ToArray> {
     public void shouldConvertListToArray() {
         // Given
         final ToArray function = new ToArray();
-        final Object value = Lists.newArrayList("value1", "value2");
+        final Object value = Arrays.asList("value1", "value2");
 
         // When
         final Object[] result = function.apply(value);
@@ -72,7 +71,7 @@ public class ToArrayTest extends FunctionTest<ToArray> {
     public void shouldConvertSetToArray() {
         // Given
         final ToArray function = new ToArray();
-        final Object value = Sets.newLinkedHashSet(Arrays.asList("value1", "value2"));
+        final Object value = new LinkedHashSet<>(Arrays.asList("value1", "value2"));
 
         // When
         final Object[] result = function.apply(value);
