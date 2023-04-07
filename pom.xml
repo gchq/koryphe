@@ -33,6 +33,8 @@
     </modules>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
         <spotbugs.version>4.7.3</spotbugs.version>
         <guava.version>29.0-jre</guava.version>
         <assertj.version>3.24.2</assertj.version>
