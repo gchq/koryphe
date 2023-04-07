@@ -71,14 +71,13 @@ public class ToListTest extends FunctionTest<ToList> {
         // Given
         final ToList function = new ToList();
         final Object value = new String[] {"value1", "value2"};
-        final List<Object> valueAsList = Arrays.asList("value1", "value2");
 
         // When
         final Object result = function.apply(value);
 
         // Then
         assertThat(result)
-                .isEqualTo(valueAsList)
+                .isEqualTo(Arrays.asList((Object[]) value))
                 .isExactlyInstanceOf(ArrayList.class)
                 .asList()
                 .containsExactlyElementsOf(Arrays.asList((Object[]) value));
