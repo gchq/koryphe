@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 Crown Copyright
+ * Copyright 2018-2023 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
@@ -26,6 +24,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -43,7 +42,7 @@ public class ToListTest extends FunctionTest<ToList> {
 
         // Then
         assertThat(result)
-                .isEqualTo(Lists.newArrayList((Object) null))
+                .isEqualTo(Arrays.asList((Object) null))
                 .asList()
                 .isNotNull()
                 .isNotEmpty()
@@ -61,7 +60,7 @@ public class ToListTest extends FunctionTest<ToList> {
 
         // Then
         assertThat(result)
-                .isEqualTo(Lists.newArrayList(value))
+                .isEqualTo(Arrays.asList(value))
                 .isExactlyInstanceOf(ArrayList.class)
                 .asList()
                 .containsExactly(value);
@@ -78,24 +77,24 @@ public class ToListTest extends FunctionTest<ToList> {
 
         // Then
         assertThat(result)
-                .isEqualTo(Lists.newArrayList((Object []) value))
+                .isEqualTo(Arrays.asList((Object[]) value))
                 .isExactlyInstanceOf(ArrayList.class)
                 .asList()
-                .containsExactlyElementsOf(Lists.newArrayList((Object[]) value));
+                .containsExactlyElementsOf(Arrays.asList((Object[]) value));
     }
 
     @Test
     public void shouldConvertSetToList() {
         // Given
         final ToList function = new ToList();
-        final Set<String> value = Sets.newLinkedHashSet(Arrays.asList("value1", "value2"));
+        final Set<String> value = new LinkedHashSet<>(Arrays.asList("value1", "value2"));
 
         // When
         final Object result = function.apply(value);
 
         // Then
         assertThat(result)
-                .isEqualTo(Lists.newArrayList(value))
+                .isEqualTo(new ArrayList<>(value))
                 .isExactlyInstanceOf(ArrayList.class)
                 .asList()
                 .containsExactlyElementsOf(value);
@@ -105,7 +104,7 @@ public class ToListTest extends FunctionTest<ToList> {
     public void shouldReturnAGivenList() {
         // Given
         final ToList function = new ToList();
-        final Object value = Lists.newArrayList("value1", "value2");
+        final Object value = Arrays.asList("value1", "value2");
 
         // When
         final Object result = function.apply(value);

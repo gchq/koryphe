@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2023 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,12 @@
 
 package uk.gov.gchq.koryphe.tuple;
 
-import com.google.common.collect.Iterables;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import uk.gov.gchq.koryphe.util.IterableUtil;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -43,7 +44,7 @@ public class ArrayTuple implements Tuple<Integer> {
     }
 
     public ArrayTuple(final Iterable<?> values) {
-        this(Iterables.toArray(values, Object.class));
+        this(IterableUtil.toList(values).toArray());
     }
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Crown Copyright
+ * Copyright 2022-2023 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package uk.gov.gchq.koryphe.util;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 
@@ -41,7 +42,7 @@ public final class JavaUtils {
 
         @SafeVarargs
         public static <T> java.util.Set<T> of(final T... item) {
-            return Collections.unmodifiableSet(com.google.common.collect.Sets.newHashSet(item));
+            return Collections.unmodifiableSet(new HashSet<>(Arrays.asList(item)));
         }
 
         public static <T> java.util.Set<T> copyOf(final java.util.Set<T> set) {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2023 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 package uk.gov.gchq.koryphe.impl.predicate;
 
-import com.google.common.collect.Sets;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.predicate.PredicateTest;
@@ -26,6 +25,7 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -69,7 +69,7 @@ public class IsInTest extends PredicateTest<IsIn> {
 
         // Then 2
         assertThat(deserialisedFilter).isNotNull();
-        assertThat(deserialisedFilter.getAllowedValues()).containsExactlyElementsOf(Sets.newHashSet(controlData));
+        assertThat(deserialisedFilter.getAllowedValues()).containsExactlyElementsOf(new HashSet<>(Arrays.asList(controlData)));
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 Crown Copyright
+ * Copyright 2018-2023 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import com.google.common.collect.Iterables;
-
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
 import uk.gov.gchq.koryphe.function.KorypheFunction;
+import uk.gov.gchq.koryphe.util.IterableUtil;
 
 /**
  * A {@code ToArray} is a {@link java.util.function.Function} that takes
@@ -43,7 +42,7 @@ public class ToArray extends KorypheFunction<Object, Object[]> {
         }
 
         if (value instanceof Iterable) {
-            return Iterables.toArray(((Iterable) value), Object.class);
+            return IterableUtil.toList(((Iterable) value)).toArray();
         }
 
         return new Object[]{value};

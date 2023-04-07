@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2022 Crown Copyright
+ * Copyright 2020-2023 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Test;
 
 import uk.gov.gchq.koryphe.function.FunctionTest;
 import uk.gov.gchq.koryphe.util.JsonSerialiser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,7 +45,7 @@ public class IterableLongestTest extends FunctionTest<IterableLongest> {
     public void shouldGetLongestItemFromList() {
         // Given
         final IterableLongest function = getInstance();
-        final List<String> list = Lists.newArrayList("a", "ab", "abc");
+        final List<String> list = Arrays.asList("a", "ab", "abc");
 
         // When
         final Object result = function.apply(list);

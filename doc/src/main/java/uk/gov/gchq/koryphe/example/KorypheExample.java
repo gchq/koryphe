@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2023 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 package uk.gov.gchq.koryphe.example;
 
-import com.google.common.collect.Lists;
-
 import uk.gov.gchq.koryphe.example.annotation.Example;
 import uk.gov.gchq.koryphe.tuple.MapTuple;
 import uk.gov.gchq.koryphe.tuple.Tuple;
+import uk.gov.gchq.koryphe.util.IterableUtil;
 
 import java.util.stream.Stream;
 
@@ -78,7 +77,7 @@ public abstract class KorypheExample<I, O> {
     }
 
     protected <T> void printIterable(final Iterable<T> iterable) {
-        System.out.println(Lists.newArrayList(iterable));
+        System.out.println(IterableUtil.toList(iterable));
     }
 
     protected Tuple<String> createMapTuple(final Object valueA, final Object valueB, final Object valueC) {

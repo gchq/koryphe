@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2020 Crown Copyright
+ * Copyright 2019-2023 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 package uk.gov.gchq.koryphe.impl.function;
 
-import com.google.common.collect.Maps;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -82,7 +81,7 @@ public class DictionaryLookupTest extends FunctionTest<DictionaryLookup<?, ?>> {
     protected Iterable<DictionaryLookup<?, ?>> getDifferentInstancesOrNull() {
         return Arrays.asList(
                 new DictionaryLookup<>(null),
-                new DictionaryLookup<>(Maps.newHashMap())
+                new DictionaryLookup<>(new HashMap<>())
         );
     }
 
