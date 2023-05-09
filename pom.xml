@@ -49,7 +49,7 @@
         <commons-csv.version>1.9.0</commons-csv.version>
         <commons-codec.version>1.15</commons-codec.version>
         <commons-io.version>2.11.0</commons-io.version>
-        <org.json.version>20211205</org.json.version>
+        <org.json.version>20230227</org.json.version>
         <compiler.plugin.verson>3.9.0</compiler.plugin.verson>
         <spotbugs.plugin.version>${spotbugs.version}.0</spotbugs.plugin.version>
         <spotless.plugin.version>2.22.1</spotless.plugin.version>
