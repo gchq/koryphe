@@ -43,4 +43,4 @@ jobs:
       run: mvn -B -q spotless:check
 
     - name: Upload Coverage
-      uses: codecov/codecov-action@v2
+      uses: codecov/codecov-action@v3
