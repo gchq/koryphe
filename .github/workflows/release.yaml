@@ -44,7 +44,7 @@ jobs:
 
     - name: Output branch name
       id: branch
-      run: echo "{branch_name}={$BRANCH_NAME}" >> $GITHUB_OUTPUT
+      run: echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
 
     - name: Fail if no branch found
       if: ${{ !env.BRANCH_NAME }}
