@@ -49,10 +49,7 @@ public class StringJoinTest extends FunctionTest<StringJoin> {
     public void shouldHandleNullDelimiter() {
         // Given
         final StringJoin<String> function = new StringJoin<>(null);
-        final Set<String> input = new LinkedHashSet<>();
-	input.add("a");
-	input.add("b");
-	input.add("c");
+        final Set<String> input = new LinkedHashSet<>(Lists.newArrayList("a", "b", "c"));
 
         // When
         final String result = function.apply(input);
@@ -65,10 +62,7 @@ public class StringJoinTest extends FunctionTest<StringJoin> {
     public void shouldJoinIterableOfStrings() {
         // Given
         final StringJoin<String> function = new StringJoin<>();
-        final Set<String> input = new LinkedHashSet<>();
-	input.add("a");
-	input.add("b");
-	input.add("c");
+        final Set<String> input = new LinkedHashSet<>(Lists.newArrayList("a", "b", "c"));
 
         // When
         final String result = function.apply(input);
@@ -94,10 +88,7 @@ public class StringJoinTest extends FunctionTest<StringJoin> {
     public void shouldJoinIterableOfStringsWithDelimiter() {
         // Given
         final StringJoin<String> function = new StringJoin<>(",");
-        final Set<String> input = new LinkedHashSet<>();
-	input.add("a");
-	input.add("b");
-	input.add("c");
+        final Set<String> input = new LinkedHashSet<>(Lists.newArrayList("a", "b", "c"));
 
         // When
         final String result = function.apply(input);
