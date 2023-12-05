@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Crown Copyright
+ * Copyright 2020-2023 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ public class StringJoinTest extends FunctionTest<StringJoin> {
     public void shouldHandleNullDelimiter() {
         // Given
         final StringJoin<String> function = new StringJoin<>(null);
-        final Set<String> input = Sets.newHashSet("a", "b", "c");
+        final List<String> input = new Lists.newArrayList("a", "b", "c");
 
         // When
         final String result = function.apply(input);
@@ -61,7 +61,7 @@ public class StringJoinTest extends FunctionTest<StringJoin> {
     public void shouldJoinIterableOfStrings() {
         // Given
         final StringJoin<String> function = new StringJoin<>();
-        final Set<String> input = Sets.newHashSet("a", "b", "c");
+        final List<String> input = new Lists.newArrayList("a", "b", "c");
 
         // When
         final String result = function.apply(input);
@@ -87,7 +87,7 @@ public class StringJoinTest extends FunctionTest<StringJoin> {
     public void shouldJoinIterableOfStringsWithDelimiter() {
         // Given
         final StringJoin<String> function = new StringJoin<>(",");
-        final Set<String> input = Sets.newHashSet("a", "b", "c");
+        final List<String> input = new Lists.newArrayList("a", "b", "c");
 
         // When
         final String result = function.apply(input);
