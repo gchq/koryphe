@@ -26,7 +26,8 @@ import java.util.stream.Stream;
 public class IterableConcatExample extends KorypheIterableFunctionExample<Iterable<Iterable<Integer>>, Iterable<Integer>> {
     @Override
     public Function<Iterable<Iterable<Integer>>, Iterable<Integer>> getFunction() {
-        return new IterableConcat();
+        Function<? extends Iterable<? extends Iterable<Integer>>, Iterable<Integer>> f = new IterableConcat<>();
+        return ((Function<Iterable<Iterable<Integer>>, Iterable<Integer>>) f);
     }
 
     @Override
