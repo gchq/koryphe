@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2024 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,9 +29,9 @@ import uk.gov.gchq.koryphe.util.IterableUtil;
  */
 @Since("1.1.0")
 @Summary("Concatenates 2 iterables")
-public class IterableConcat<I_ITEM> extends KorypheFunction<Iterable<Iterable<I_ITEM>>, Iterable<I_ITEM>> {
+public class IterableConcat<I_ITEM> extends KorypheFunction<Iterable<? extends Iterable<I_ITEM>>, Iterable<I_ITEM>> {
     @Override
-    public Iterable<I_ITEM> apply(final Iterable<Iterable<I_ITEM>> items) {
+    public Iterable<I_ITEM> apply(final Iterable<? extends Iterable<I_ITEM>> items) {
         return IterableUtil.concat(items);
     }
 }
