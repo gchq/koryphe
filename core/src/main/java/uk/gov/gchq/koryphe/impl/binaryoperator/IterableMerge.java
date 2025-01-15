@@ -32,7 +32,7 @@ import java.util.Arrays;
 public class IterableMerge<T> extends KorypheBinaryOperator<Iterable<T>> {
 
     @Override
-    protected Iterable<T> _apply(Iterable<T> a, Iterable<T> b) {
+    protected Iterable<T> _apply(final Iterable<T> a, final Iterable<T> b) {
         return IterableUtil.concat(Arrays.asList(a, b));
     }
 }
