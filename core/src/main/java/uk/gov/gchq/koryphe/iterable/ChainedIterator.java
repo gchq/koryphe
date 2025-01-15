@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Crown Copyright
+ * Copyright 2025 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,12 @@
 
 package uk.gov.gchq.koryphe.iterable;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import uk.gov.gchq.koryphe.util.CloseableUtil;
 
 import java.io.Closeable;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 
@@ -30,6 +33,10 @@ import static java.util.Objects.nonNull;
 public class ChainedIterator<T> implements Closeable, Iterator<T> {
     private final Iterator<? extends Iterable<? extends T>> iterablesIterator;
     private Iterator<? extends T> currentIterator = Collections.emptyIterator();
+
+    public ChainedIterator(final Iterable<? extends T>... iterators) {
+        this(ArrayUtils.isEmpty(iterators) ? null : Arrays.asList(iterators).iterator());
+    }
 
     public ChainedIterator(final Iterator<? extends Iterable<? extends T>> iterablesIterator) {
         if (null == iterablesIterator) {
