@@ -16,8 +16,6 @@
 
 package uk.gov.gchq.koryphe.iterable;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import uk.gov.gchq.koryphe.util.CloseableUtil;
 
 import java.io.Closeable;
@@ -35,7 +33,7 @@ public class ChainedIterator<T> implements Closeable, Iterator<T> {
     private Iterator<? extends T> currentIterator = Collections.emptyIterator();
 
     public ChainedIterator(final Iterable<? extends T>... iterators) {
-        this(ArrayUtils.isEmpty(iterators) ? null : Arrays.asList(iterators).iterator());
+        this((iterators== null || iterators.length == 0) ? null : Arrays.asList(iterators).iterator());
     }
 
     public ChainedIterator(final Iterator<? extends Iterable<? extends T>> iterablesIterator) {
