@@ -34,7 +34,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * An <code>IsIn</code> is a {@link java.util.function.Predicate} that checks that the input is
+ * <code>IsIn</code> is a {@link java.util.function.Predicate} that checks that the input is
  * in a set of allowed values.
  */
 @Since("1.0.0")
