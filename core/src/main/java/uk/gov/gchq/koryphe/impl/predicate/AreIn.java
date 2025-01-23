@@ -38,8 +38,8 @@ import java.util.HashSet;
  * that checks if a provided {@link java.util.Collection} contains all the provided input values.
  *
  * An optional nullOrEmptyAllowedValuesAccepted flag (defaults to true) can determine
- * whether the provided allowedValues collection can be null or empty. When used
- * the flag sets the result for any input test.
+ * whether the provided allowedValues collection can be null or empty. The return value
+ * for any null or empty input will be equal to the value of the nullOrEmptyAllowedValuesAccepted flag.
  */
 @Since("1.0.0")
 @Summary("Checks if a provided collection contains all the provided input values")
