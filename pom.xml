@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright 2017-2023 Crown Copyright
+  ~ Copyright 2017-2025 Crown Copyright
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <commons-csv.version>1.9.0</commons-csv.version>
         <commons-codec.version>1.15</commons-codec.version>
-        <commons-io.version>2.11.0</commons-io.version>
+        <commons-io.version>2.14.0</commons-io.version>
         <org.json.version>20230227</org.json.version>
         <compiler.plugin.verson>3.9.0</compiler.plugin.verson>
         <spotbugs.plugin.version>${spotbugs.version}.0</spotbugs.plugin.version>
