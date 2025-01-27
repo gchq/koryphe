@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2022 Crown Copyright
+ * Copyright 2018-2025 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -90,7 +90,7 @@ public class If<I, O> extends KorypheFunction<I, O> {
             return (O) input;
         }
 
-        if (null != otherwise) {
+        if (null != otherwise && predicate != null) {
             return otherwise.apply(input);
         }
         return (O) input;

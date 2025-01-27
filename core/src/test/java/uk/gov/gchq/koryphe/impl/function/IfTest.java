@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2022 Crown Copyright
+ * Copyright 2018-2025 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ import static org.mockito.Mockito.verify;
 import static uk.gov.gchq.koryphe.util.Util.project;
 import static uk.gov.gchq.koryphe.util.Util.select;
 
-public class IfTest extends FunctionTest<If> {
+class IfTest extends FunctionTest<If> {
 
     @Override
     protected If<Object, Object> getInstance() {
@@ -120,7 +120,7 @@ public class IfTest extends FunctionTest<If> {
     }
 
     @Test
-    public void shouldJsonSerialiseAndDeserialiseAlternative() throws IOException {
+    void shouldJsonSerialiseAndDeserialiseAlternative() throws IOException {
         // Given
         final If ifAltPredicate = getAltInstance();
 
@@ -155,7 +155,7 @@ public class IfTest extends FunctionTest<If> {
     }
 
     @Test
-    public void shouldReturnInputWithNullFunctions() {
+    void shouldReturnInputWithNullFunctions() {
         // Given
         final Object input = "testValue";
         final If<Object, Object> function = new If<>();
@@ -168,7 +168,7 @@ public class IfTest extends FunctionTest<If> {
     }
 
     @Test
-    public void shouldApplyPredicateAndCallThen() {
+    void shouldApplyPredicateAndCallThen() {
         // Given
         final Object input = mock(Object.class);
         final Predicate<Object> predicate = mock(Predicate.class);
@@ -191,7 +191,7 @@ public class IfTest extends FunctionTest<If> {
     }
 
     @Test
-    public void shouldApplyPredicateAndCallOtherwise() {
+    void shouldApplyPredicateAndCallOtherwise() {
         // Given
         final Object input = mock(Object.class);
         final Predicate<Object> predicate = mock(Predicate.class);
@@ -214,7 +214,7 @@ public class IfTest extends FunctionTest<If> {
     }
 
     @Test
-    public void shouldDelegateNullInputToFunctions() {
+    void shouldDelegateNullInputToFunctions() {
         // Given
         final Comparable input = null;
         final Predicate<Comparable> predicate = mock(Predicate.class);
@@ -236,13 +236,14 @@ public class IfTest extends FunctionTest<If> {
     }
 
     @Test
-    public void shouldReturnInputForNullConditionalPredicate() {
+    void shouldReturnInputForNullConditionalPredicate() {
         // Given
         final Object input = "testValue";
         final Predicate<Object> predicate = null;
         final Function<Object, Object> then = mock(Function.class);
+        final Function<Object, Object> otherwise = mock(Function.class);
 
-        final If<Object, Object> function = new If<>().predicate(predicate).then(then);
+        final If<Object, Object> function = new If<>().predicate(predicate).then(then).otherwise(otherwise);
 
         // When
         final Object result = function.apply(input);
@@ -250,10 +251,11 @@ public class IfTest extends FunctionTest<If> {
         // Then
         assertThat(result).isEqualTo(input);
         verify(then, never()).apply(input);
+        verify(otherwise, never()).apply(input);
     }
 
     @Test
-    public void shouldReturnInputForNullThenOrOtherwise() {
+    void shouldReturnInputForNullThenOrOtherwise() {
         // Given
         final Object input = "testValue";
         final Predicate<Object> predicate = mock(Predicate.class);
@@ -273,7 +275,7 @@ public class IfTest extends FunctionTest<If> {
     }
 
     @Test
-    public void shouldApplyTuplePredicateAndFunction() {
+    void shouldApplyTuplePredicateAndFunction() {
         // Given
         final Integer firstVal = 6;
         final Integer secondVal = 2;
@@ -301,7 +303,7 @@ public class IfTest extends FunctionTest<If> {
     }
 
     @Test
-    public void shouldApplyFunctionsToMultipleSelections() {
+    void shouldApplyFunctionsToMultipleSelections() {
         // Given
         final Integer firstInput = 2;
         final Integer secondInput = 7;
@@ -330,7 +332,7 @@ public class IfTest extends FunctionTest<If> {
     }
 
     @Test
-    public void shouldUseCorrectInputOnEachUse() {
+    void shouldUseCorrectInputOnEachUse() {
         // Given
         If<Integer, Integer> function = new If<Integer, Integer>()
                 .predicate(new IsLessThan(2))
