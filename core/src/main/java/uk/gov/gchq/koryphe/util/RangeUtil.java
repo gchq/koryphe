@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2025 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ public final class RangeUtil {
      * @param startValue     the start value to test
      * @param endValue       the end value to test
      * @param rangeStart     the start of the defined allowed range
-     * @param rangeEnd       the start of the defined allowed range
+     * @param rangeEnd       the end of the defined allowed range
      * @param startInclusive true if the start of the range is inclusive
      * @param endInclusive   true if the end of the range is inclusive
      * @param <T>            the type of the range
