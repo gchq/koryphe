@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2024 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,8 @@ import uk.gov.gchq.koryphe.util.JsonSerialiser;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -84,6 +86,23 @@ public class IterableConcatTest extends FunctionTest<IterableConcat> {
         assertThat(result)
                 .isNotNull()
                 .containsExactly(1, 2, 3, 4, 5, 6);
+    }
+
+    @Test
+    public void shouldFlattenWhenIterableNestedTypeExtendsIterable() {
+        // Given
+        final IterableConcat<Integer> function = new IterableConcat<>();
+        final Iterable<Set<Integer>> input = Arrays.asList(
+                new HashSet<>(Arrays.asList(5)),
+                new HashSet<>(Arrays.asList(10)));
+
+        // When
+        final Iterable<Integer> result = function.apply(input);
+
+        // Then
+        assertThat(result)
+                .isNotNull()
+                .containsExactly(5, 10);
     }
 
     @Test

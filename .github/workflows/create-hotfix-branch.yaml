@@ -29,12 +29,12 @@ jobs:
 
     - name: Get latest tag
       if: ${{ !github.event.inputs.version }}
-      uses: actions-ecosystem/action-get-latest-tag@v1
+      run: echo "LATEST_TAG= $(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_ENV
       id: get-latest-tag
 
     - name: Format latest tag
       if: ${{ !github.event.inputs.version }}
-      run: echo "CURRENT_VERSION=$(echo ${{ steps.get-latest-tag.outputs.tag }} | sed 's/^koryphe-//')" >> $GITHUB_ENV
+      run: echo "CURRENT_VERSION=$(echo ${{ env.LATEST_TAG }} | sed 's/^koryphe-//')" >> $GITHUB_ENV
 
     - name: Bump latest tag variable version
       if: ${{ !github.event.inputs.version }}
