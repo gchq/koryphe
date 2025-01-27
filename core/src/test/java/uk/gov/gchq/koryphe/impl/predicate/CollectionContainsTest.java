@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2022 Crown Copyright
+ * Copyright 2017-2025 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CollectionContainsTest extends PredicateTest<CollectionContains> {
+class CollectionContainsTest extends PredicateTest<CollectionContains> {
 
     private static final CustomObj VALUE1 = new CustomObj();
     private static final String VALUE2 = "value2";
@@ -47,7 +47,7 @@ public class CollectionContainsTest extends PredicateTest<CollectionContains> {
     }
 
     @Test
-    public void shouldAcceptWhenValueInList() {
+    void shouldAcceptWhenValueInList() {
         // Given
         final CollectionContains filter = new CollectionContains(VALUE1);
 
@@ -56,7 +56,7 @@ public class CollectionContainsTest extends PredicateTest<CollectionContains> {
     }
 
     @Test
-    public void shouldAcceptWhenValueInSet() {
+    void shouldAcceptWhenValueInSet() {
         // Given
         final CollectionContains filter = new CollectionContains(VALUE1);
 
@@ -65,7 +65,7 @@ public class CollectionContainsTest extends PredicateTest<CollectionContains> {
     }
 
     @Test
-    public void shouldRejectWhenValueNotPresentInList() {
+    void shouldRejectWhenValueNotPresentInList() {
         // Given
         final CollectionContains filter = new CollectionContains(VALUE2);
 
@@ -74,7 +74,7 @@ public class CollectionContainsTest extends PredicateTest<CollectionContains> {
     }
 
     @Test
-    public void shouldRejectWhenValueNotPresentInSet() {
+    void shouldRejectWhenValueNotPresentInSet() {
         // Given
         final CollectionContains filter = new CollectionContains(VALUE2);
 
@@ -83,7 +83,7 @@ public class CollectionContainsTest extends PredicateTest<CollectionContains> {
     }
 
     @Test
-    public void shouldRejectEmptyLists() {
+    void shouldRejectEmptyLists() {
         // Given
         final CollectionContains filter = new CollectionContains(VALUE1);
 
@@ -92,7 +92,7 @@ public class CollectionContainsTest extends PredicateTest<CollectionContains> {
     }
 
     @Test
-    public void shouldRejectEmptySets() {
+    void shouldRejectEmptySets() {
         // Given
         final CollectionContains filter = new CollectionContains(VALUE1);
 
@@ -101,7 +101,7 @@ public class CollectionContainsTest extends PredicateTest<CollectionContains> {
     }
 
     @Test
-    public void shouldRejectNullLists() {
+    void shouldRejectNullLists() {
         // Given
         final CollectionContains filter = new CollectionContains(VALUE1);
 
@@ -110,7 +110,7 @@ public class CollectionContainsTest extends PredicateTest<CollectionContains> {
     }
 
     @Test
-    public void shouldRejectNullSets() {
+    void shouldRejectNullSets() {
         // Given
         final CollectionContains filter = new CollectionContains(VALUE1);
 

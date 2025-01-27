@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2022 Crown Copyright
+ * Copyright 2017-2025 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,9 @@ import java.util.Collection;
 /**
  * An <code>CollectionContains</code> is a {@link java.util.function.Predicate}
  * that checks if a {@link java.util.Collection} contains a provided value.
+ *
+ * If the collection contains null values or is empty, then false will be returned.
+ *
  */
 @Since("1.0.0")
 @Summary("Checks if a collection contains a provided value")
