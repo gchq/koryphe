@@ -20,7 +20,7 @@
 
     <groupId>uk.gov.gchq.koryphe</groupId>
     <artifactId>koryphe</artifactId>
-    <version>2.5.3-SNAPSHOT</version>
+    <version>2.6.0</version>
     <packaging>pom</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
