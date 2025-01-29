@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2025 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,10 +29,10 @@ import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class IsInTest extends PredicateTest<IsIn> {
+class IsInTest extends PredicateTest<IsIn> {
 
     @Test
-    public void shouldAcceptWhenValueInList() {
+    void shouldAcceptWhenValueInList() {
         // Given
         final IsIn filter = new IsIn(Arrays.asList("A", "B", "C"));
 
@@ -41,7 +41,7 @@ public class IsInTest extends PredicateTest<IsIn> {
     }
 
     @Test
-    public void shouldRejectWhenValueNotInList() {
+    void shouldRejectWhenValueNotInList() {
         // Given
         final IsIn filter = new IsIn(Arrays.asList("A", "B", "C"));
 

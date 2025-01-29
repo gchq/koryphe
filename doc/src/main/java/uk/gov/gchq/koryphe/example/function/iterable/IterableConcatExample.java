@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2024 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,8 @@ import java.util.stream.Stream;
 public class IterableConcatExample extends KorypheIterableFunctionExample<Iterable<Iterable<Integer>>, Iterable<Integer>> {
     @Override
     public Function<Iterable<Iterable<Integer>>, Iterable<Integer>> getFunction() {
-        return new IterableConcat<>();
+        Function<? extends Iterable<? extends Iterable<Integer>>, Iterable<Integer>> f = new IterableConcat<>();
+        return ((Function<Iterable<Iterable<Integer>>, Iterable<Integer>>) f);
     }
 
     @Override

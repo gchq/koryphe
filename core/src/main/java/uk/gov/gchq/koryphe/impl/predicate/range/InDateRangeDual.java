@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Crown Copyright
+ * Copyright 2017-2025 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,23 +29,27 @@ import java.util.Date;
 /**
  * <p>
  * An <code>InDateRangeDual</code> is a {@link java.util.function.Predicate}
- * that tests if a start {@link Comparable} and end {@link Comparable} is
- * within a provided range [start, end]. Specifically the start {@link Comparable}
- * has to be greater than the start bound and the end {@link Comparable} has to
- * be less than the end bound.
- * By default the range is inclusive, you can toggle this using the startInclusive
- * and endInclusive booleans.
+ * that tests if there is an overlap between a start {@link Comparable} and
+ * end {@link Comparable} within a provided range [start, end].
+ *
+ * The provided start and end dates do not need to be within the range configured,
+ * they only need to overlap. To ensure the provided start and/or end are within the
+ * configured range the booleans startFullyContained and/or
+ * endFullyContained should be set to true (false by default).
+ *
+ * By default the start and end date comparison is inclusive,
+ * you can toggle this using the startInclusive and endInclusive
+ * booleans.
  * </p>
  * <p>
- * If the start is not set then this will be treated as unbounded.
- * Similarly with the end.
+ * If the start or end are not set then they will be treated as unbounded.
  * </p>
  * <p>
  * If the test value is null then the predicate will return false.
  * </p>
  * <p>
  * This range predicate takes 2 values to test, if you want to test
- * a single value lies within a range then you can use the
+ * whether a single value lies within a range then you should use the
  * {@link InDateRange} predicate.
  * </p>
  * <p>
@@ -55,8 +59,8 @@ import java.util.Date;
  * By default the offset is measured in Days, this can be changed to
  * DAY, HOUR, MINUTE, SECOND and MILLISECOND using the offsetUnit field.
  * <p>
- * At the point when test is called on the class the
- * current system time is used to calculate the start and end values based on:
+ * When the test is called on the class the current system time is used
+ * to calculate the start and end values based on:
  * System.currentTimeMillis() + offset.
  * </p>
  * <p>

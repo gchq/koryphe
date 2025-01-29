@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright 2017-2023 Crown Copyright
+  ~ Copyright 2017-2025 Crown Copyright
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 
     <groupId>uk.gov.gchq.koryphe</groupId>
     <artifactId>koryphe</artifactId>
-    <version>2.5.2</version>
+    <version>2.6.0</version>
     <packaging>pom</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -33,13 +33,14 @@
     </modules>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
         <spotbugs.version>4.7.3</spotbugs.version>
         <guava.version>29.0-jre</guava.version>
-        <assertj.version>3.22.0</assertj.version>
+        <assertj.version>3.24.2</assertj.version>
         <jackson.version>2.13.4</jackson.version>
-        <junit5.version>5.8.2</junit5.version>
-        <junitSurefireProvider.version>1.3.2</junitSurefireProvider.version>
-        <mockito.version>3.12.4</mockito.version>
+        <junit5.version>5.9.2</junit5.version>
+        <mockito.version>5.2.0</mockito.version>
         <slf4j.api.version>1.7.36</slf4j.api.version>
 
         <checkstyle.plugin.version>3.1.2</checkstyle.plugin.version>
@@ -47,8 +48,8 @@
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <commons-csv.version>1.9.0</commons-csv.version>
         <commons-codec.version>1.15</commons-codec.version>
-        <commons-io.version>2.11.0</commons-io.version>
-        <org.json.version>20211205</org.json.version>
+        <commons-io.version>2.14.0</commons-io.version>
+        <org.json.version>20231013</org.json.version>
         <compiler.plugin.verson>3.9.0</compiler.plugin.verson>
         <spotbugs.plugin.version>${spotbugs.version}.0</spotbugs.plugin.version>
         <spotless.plugin.version>2.22.1</spotless.plugin.version>
@@ -179,12 +180,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-surefire-provider</artifactId>
-            <version>${junitSurefireProvider.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>${mockito.version}</version>
@@ -291,6 +286,11 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${surefire.plugin.version}</version>
+                <configuration>>
+                    <argLine>${argLine}</argLine>
+                    <parallel>classes</parallel>
+                    <useUnlimitedThreads>true</useUnlimitedThreads>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -563,16 +563,6 @@
             <id>coverage</id>
             <build>
                 <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>${surefire.plugin.version}</version>
-                        <configuration>
-                            <forkCount>1</forkCount>
-                            <reuseForks>false</reuseForks>
-                            <argLine>${argLine}</argLine>
-                        </configuration>
-                    </plugin>
                     <plugin>
                         <groupId>com.github.spotbugs</groupId>
                         <artifactId>spotbugs-maven-plugin</artifactId>

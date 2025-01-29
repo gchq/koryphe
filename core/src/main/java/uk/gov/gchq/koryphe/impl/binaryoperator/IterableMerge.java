@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2024 Crown Copyright
+ * Copyright 2025 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,25 @@
  * limitations under the License.
  */
 
-package uk.gov.gchq.koryphe.impl.function;
+package uk.gov.gchq.koryphe.impl.binaryoperator;
 
 import uk.gov.gchq.koryphe.Since;
 import uk.gov.gchq.koryphe.Summary;
-import uk.gov.gchq.koryphe.function.KorypheFunction;
+import uk.gov.gchq.koryphe.binaryoperator.KorypheBinaryOperator;
 import uk.gov.gchq.koryphe.util.IterableUtil;
 
+import java.util.Arrays;
+
 /**
- * An {@code IterableConcat} is a {@link KorypheFunction} which flattens an
- * {@link Iterable} of {@link Iterable}s by concatenating them.
- *
- * @param <I_ITEM> the type of objects in the innermost iterable
+ * An <code>IterableMerge</code> is a {@link KorypheBinaryOperator} that takes two
+ * {@link java.lang.Iterable}s and merges them together.
  */
-@Since("1.1.0")
-@Summary("Concatenates 2 iterables")
-public class IterableConcat<I_ITEM> extends KorypheFunction<Iterable<? extends Iterable<I_ITEM>>, Iterable<I_ITEM>> {
+@Since("2.6.0")
+@Summary("Merges two iterables together.")
+public class IterableMerge<T> extends KorypheBinaryOperator<Iterable<T>> {
+
     @Override
-    public Iterable<I_ITEM> apply(final Iterable<? extends Iterable<I_ITEM>> items) {
-        return IterableUtil.concat(items);
+    protected Iterable<T> _apply(final Iterable<T> a, final Iterable<T> b) {
+        return IterableUtil.concat(Arrays.asList(a, b));
     }
 }
