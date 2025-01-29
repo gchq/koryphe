@@ -35,7 +35,7 @@ import java.util.Date;
  * The provided start and end dates do not need to be within the range configured,
  * they only need to overlap. To ensure the provided start and/or end are within the
  * configured range the booleans startFullyContained and/or
- * endFullyContained> should be set to true (false by default).
+ * endFullyContained should be set to true (false by default).
  *
  * By default the start and end date comparison is inclusive,
  * you can toggle this using the startInclusive and endInclusive
