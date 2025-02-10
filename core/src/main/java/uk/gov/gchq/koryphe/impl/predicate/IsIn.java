@@ -30,7 +30,8 @@ import uk.gov.gchq.koryphe.predicate.KoryphePredicate;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -47,11 +48,11 @@ public class IsIn extends KoryphePredicate<Object> {
     }
 
     public IsIn(final Collection<Object> controlData) {
-        this.allowedValues = new HashSet<>(controlData);
+        this.allowedValues = new LinkedHashSet<>(controlData);
     }
 
     public IsIn(final Object... controlData) {
-        this.allowedValues = Sets.newHashSet(controlData);
+        this.allowedValues = new LinkedHashSet<>(Arrays.asList(controlData));
     }
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
@@ -64,9 +65,9 @@ public class IsIn extends KoryphePredicate<Object> {
     @JsonProperty("values")
     public void setAllowedValues(final Object[] allowedValuesArray) {
         if (null != allowedValuesArray) {
-            allowedValues = new HashSet<>(Arrays.asList(allowedValuesArray));
+            allowedValues = new LinkedHashSet<>(Arrays.asList(allowedValuesArray));
         } else {
-            allowedValues = new HashSet<>(0);
+            allowedValues = new LinkedHashSet<>(0);
         }
     }
 
