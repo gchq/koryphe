@@ -1,6 +1,13 @@
 <img align="right" width="200" height="auto" src="logos/koryphe_logo_text.png">
 
 # Koryphe
+## This project has been archived
+
+**This project has been archived and is no longer under active maintenance. Should you have any questions or require further information, please do not hesitate to reach out to us at the following email address.**
+
+**oss@gchq.gov.uk**
+
+---
 
 ![ci](https://github.com/gchq/koryphe/actions/workflows/continuous-integration.yaml/badge.svg?branch=develop)
 [![codecov](https://codecov.io/gh/gchq/koryphe/branch/master/graph/badge.svg?token=vdFm5s0HCR)](https://codecov.io/gh/gchq/koryphe)
